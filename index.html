@@ -1,35 +1,351 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="UTF-8">
- <title>القافية</title>
-60  <link rel="stylesheet" href="fonts/fonts.css">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>قافية</title>
+
+    <!-- الخط -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- JavaScript -->
+    <script src="script.js" defer></script>
 </head>
+
 <body>
-  <header>
-    <h1>القافية</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">الرئيسية</a></li>
-        <li><a href="Poems.html">القصائد</a></li>   
-        <li><a href="articles.html">المقالات</a></li>     
-        <li><a href="about.html">نبذة عن الموقع</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <main>
-    <section id="intro">
-      <h2> القافية </h2>
-      <p>موسوعة عربية مختصة في الشعر و الأدب العربي  </p>
-    </section>
-  </main>
+    <!-- ==================== الرأس ==================== -->
+    <header class="site-header">
 
-  <footer>
-    <p></p>
-  </footer>
+        <div class="header-container">
+
+            <!-- زر القائمة -->
+            <button
+                class="menu-button"
+                id="menuButton"
+                type="button"
+                aria-label="فتح القائمة"
+                aria-expanded="false"
+                aria-controls="sideMenu">
+                ☰
+            </button>
+
+            <!-- اسم الموقع -->
+            <a href="index.html" class="site-logo">
+                قافية
+            </a>
+
+            <!-- أدوات المستخدم -->
+            <div class="header-actions">
+
+                <!-- الإشعارات -->
+                <button
+                    class="notification-button"
+                    id="notificationButton"
+                    type="button"
+                    aria-label="الإشعارات">
+                    🔔
+                    <span class="notification-count" id="notificationCount">0</span>
+                </button>
+
+                <!-- تسجيل الدخول -->
+                <button
+                    class="login-button"
+                    id="loginButton"
+                    type="button">
+                    تسجيل الدخول
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ==================== القائمة الجانبية ==================== -->
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <aside
+        class="side-menu"
+        id="sideMenu"
+        aria-hidden="true">
+
+        <div class="side-menu-header">
+
+            <h2>قافية</h2>
+
+            <button
+                class="close-menu-button"
+                id="closeMenuButton"
+                type="button"
+                aria-label="إغلاق القائمة">
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- حساب المستخدم -->
+
+        <div class="user-section">
+
+            <div class="user-avatar">
+                👤
+            </div>
+
+            <div class="user-info">
+                <strong>مرحبًا بك</strong>
+                <span>سجّل الدخول للوصول إلى حسابك</span>
+            </div>
+
+        </div>
+
+
+        <!-- روابط القائمة -->
+
+        <nav class="side-navigation">
+
+            <a href="index.html">
+                <span>⌂</span>
+                <span>الرئيسية</span>
+            </a>
+
+            <a href="Poems.html">
+                <span>📜</span>
+                <span>القصائد</span>
+            </a>
+
+            <a href="articles.html">
+                <span>📝</span>
+                <span>المقالات</span>
+            </a>
+
+            <a href="#" id="profileLink">
+                <span>👤</span>
+                <span>الملف الشخصي</span>
+            </a>
+
+            <a href="#" id="favoritesLink">
+                <span>⭐</span>
+                <span>المفضلة</span>
+            </a>
+
+            <a href="#" id="settingsLink">
+                <span>⚙️</span>
+                <span>الإعدادات</span>
+            </a>
+
+            <a href="about.html">
+                <span>ℹ️</span>
+                <span>نبذة عن الموقع</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- ==================== نافذة الإشعارات ==================== -->
+
+    <div
+        class="notification-panel"
+        id="notificationPanel"
+        aria-hidden="true">
+
+        <div class="notification-header">
+
+            <h3>الإشعارات</h3>
+
+            <button
+                id="closeNotificationButton"
+                type="button"
+                aria-label="إغلاق الإشعارات">
+                ×
+            </button>
+
+        </div>
+
+        <div class="notification-content" id="notificationContent">
+
+            <p>لا توجد إشعارات جديدة.</p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================== المحتوى الرئيسي ==================== -->
+
+    <main>
+
+        <section id="intro" class="hero-section">
+
+            <div class="hero-content">
+
+                <h1>قافية</h1>
+
+                <p>
+                    موسوعة عربية مختصة في الشعر والأدب العربي
+                </p>
+
+                <div class="hero-actions">
+
+                    <a href="Poems.html" class="primary-button">
+                        استكشف القصائد
+                    </a>
+
+                    <a href="articles.html" class="secondary-button">
+                        تصفح المقالات
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================== أقسام الموقع ==================== -->
+
+        <section class="site-sections">
+
+            <div class="section-title">
+
+                <h2>استكشف قافية</h2>
+
+                <p>
+                    اكتشف الشعر والأدب العربي في مكان واحد.
+                </p>
+
+            </div>
+
+
+            <div class="section-cards">
+
+                <a href="Poems.html" class="section-card">
+
+                    <span class="card-icon">📜</span>
+
+                    <h3>القصائد</h3>
+
+                    <p>
+                        مجموعة من القصائد العربية والشعراء عبر العصور.
+                    </p>
+
+                </a>
+
+
+                <a href="articles.html" class="section-card">
+
+                    <span class="card-icon">📝</span>
+
+                    <h3>المقالات</h3>
+
+                    <p>
+                        مقالات عن الشعر والأدب وتاريخهما.
+                    </p>
+
+                </a>
+
+
+                <a href="about.html" class="section-card">
+
+                    <span class="card-icon">ℹ️</span>
+
+                    <h3>عن قافية</h3>
+
+                    <p>
+                        تعرف على فكرة الموقع وأهدافه.
+                    </p>
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ==================== تسجيل الدخول ==================== -->
+
+    <div
+        class="login-modal"
+        id="loginModal"
+        aria-hidden="true">
+
+        <div class="login-box">
+
+            <button
+                class="close-login-button"
+                id="closeLoginButton"
+                type="button"
+                aria-label="إغلاق">
+                ×
+            </button>
+
+            <h2>تسجيل الدخول</h2>
+
+            <p>
+                سجّل دخولك إلى حسابك في قافية
+            </p>
+
+
+            <button
+                class="login-method"
+                id="appleLoginButton"
+                type="button">
+                 تسجيل الدخول باستخدام Apple
+            </button>
+
+
+            <div class="login-divider">
+                <span>أو</span>
+            </div>
+
+
+            <label for="emailLogin">
+                البريد الإلكتروني
+            </label>
+
+            <input
+                type="email"
+                id="emailLogin"
+                placeholder="أدخل بريدك الإلكتروني"
+                autocomplete="email">
+
+
+            <button
+                class="login-submit"
+                id="emailLoginButton"
+                type="button">
+                متابعة
+            </button>
+
+
+            <p class="login-note">
+                يمكنك لاحقًا تسجيل الدخول أيضًا باستخدام رقم الجوال.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================== التذييل ==================== -->
+
+    <footer class="site-footer">
+
+        <p>
+            © قافية — موسوعة عربية للشعر والأدب
+        </p>
+
+    </footer>
+
 </body>
+
 </html>
