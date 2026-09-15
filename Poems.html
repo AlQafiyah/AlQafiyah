@@ -1,75 +1,362 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="UTF-8">
-  <title>القصائد - قافية</title>
-  <link rel="stylesheet" href="fonts/fonts.css">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
+    <meta charset="UTF-8">
+
+    <title>القصائد - قافية</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js" defer></script>
+<script src="script.js" defer></script>
 </head>
+
 <body>
-  <header>
-    <h1>قافية</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">الرئيسية</a></li>
-        <li><a href="Poems.html">القصائد</a></li>   
-        <li><a href="articles.html">المقالات</a></li>     
-        <li><a href="about.html">نبذة عن الموقع</a></li>   
-      </ul>
-    </nav>
-  </header>
 
-  <main>
-    <section id="Poems">
-      <h2>القصائد</h2>
-      <P1>“جادك الغيث” هي واحدة من أشهر القصائد الأندلسية في وصف الحنين والاشتياق إلى الأندلس وجمالها في زمن ازدهارها.
-        كتبها الشاعر والأديب الأندلسي "لِسَانِ اَلدِّينِ ابْنِ اَلْخَطِيبِ" في القرن الثامن الهجري، أثناء فترة حكم المسلمين في غرناطة.
-  
-      وعدد أبياتها 52 بيت ومنها:
-    <br>
-<p>
-جادَكَ الغَيْثُ إذا الغَيْثُ هَمى... يا زَمانَ الوَصْلِ بالأَنْدَلُسِ
-<br>
-لَمْ يَكُنْ وَصْلُكَ إلا حُلْماً... في الكَرى أو خِلْسَةَ المُخْتَلِسِ
-<br>
-فِي لَيالٍ كَتَمَتْ سِرَّ الهَوى... بِالدُّجَى لَوْلا شُمُوسُ الغُرَرِ
-<br>
-مالَ نَجْمُ الكَأْسِ فِيها وَهَوى... مُسْتَقِيمَ السَّيْرِ سَعْدَ الأَثَرِ
-<br>
-وَطَرٌ ما فِيهِ مِنْ عَيْبٍ سِوى... أَنَّهُ مَرَّ كَلَمْحِ البَصَرِ
-<br>
-حِينَ لَذَّ الأُنْسُ مَع حُلْوِ اللَّمى... هَجَمَ الصُّبْحُ هُجُومَ الحَرَسِ
-<br>
-غَارَتِ الشُّهْبُ بِنا أَو رُبَّما... أَثَّرَتْ فِيها عُيُونُ النَّرْجِسِ
-<br>
-يا أُهَيْلَ الحَيِّ مِنْ وادِي الغَضا... وَبِقَلْبِي مَسْكَنٌ أَنْتُمْ بِهِ
-<br>
-ضاقَ عَنْ وُجْدِي بِكُمْ رَحْبُ الفَضا... لا أُبالِي شَرْقُهُ مِنْ غَرْبِهِ
-<br>
-فَأَعِيدُوا عَهْدَ أُنْسٍ قَدْ مَضَى... تُعْتِقُوا عانِيَكُمْ مِنْ كَرْبِهِ
-<br>
-وَاتَّقُوا اللهَ وَأَحْيُوا مُغْرَماً... يَتَلاشَى نَفَساً فِي نَفَسِ
-<br>
-ساحِرُ المُقْلَةِ معْسولُ اللّمى... جالَ في النّفسِ مَجالَ النّفَسِ
-<br>
-سدَّدَ السّهْمَ وسمّى ورَمى... ففؤادي نُهْبَةُ المُفْتَرِسِ
-</p1>
+    <!-- الهيدر -->
+    <header class="site-header">
+
+        <div class="header-container">
+
+            <button
+                class="icon-button menu-button"
+                id="menuButton"
+                type="button"
+                aria-label="فتح القائمة"
+            >
+                ☰
+            </button>
+
+            <a href="index.html" class="site-logo">
+                قافية
+            </a>
+
+            <div class="header-actions">
+
+                <button
+                    class="icon-button notification-button"
+                    id="notificationButton"
+                    type="button"
+                    aria-label="الإشعارات"
+                >
+                    🔔
+                    <span id="notificationCount" class="notification-count">0</span>
+                </button>
+
+                <button
+                    class="login-button"
+                    id="loginButton"
+                    type="button"
+                >
+                    تسجيل الدخول
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
 
 
+    <!-- القائمة الجانبية -->
+    <aside class="side-menu" id="sideMenu">
 
-<div class="video-box">
-      <video controls src="video1.mp4" width="600" style="display: block; margin: auto;"></video>
-</div>
-      <br>
-  
-      <p2>سنكمل قريباً....</p2>
-    </section>
-  </main>
+        <div class="side-menu-header">
 
-  <footer>
-    <p></p>
-  </footer>
+            <h2>قافية</h2>
+
+            <button
+                class="close-menu"
+                id="closeMenuButton"
+                type="button"
+                aria-label="إغلاق القائمة"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="side-menu-user">
+
+            <div class="user-avatar">
+                👤
+            </div>
+
+            <div>
+
+                <strong id="menuUserName">
+                    زائر
+                </strong>
+
+                <span id="menuUserStatus">
+                    لم تسجل الدخول
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="side-navigation">
+
+            <a href="index.html">
+                <span>⌂</span>
+                الرئيسية
+            </a>
+
+            <a href="Poems.html">
+                <span>📜</span>
+                القصائد
+            </a>
+
+            <a href="articles.html">
+                <span>📝</span>
+                المقالات
+            </a>
+
+            <a href="#" id="profileLink">
+                <span>👤</span>
+                الملف الشخصي
+            </a>
+
+            <a href="#" id="favoritesLink">
+                <span>⭐</span>
+                المفضلة
+            </a>
+
+            <a href="#" id="settingsLink">
+                <span>⚙️</span>
+                الإعدادات
+            </a>
+
+            <a href="about.html">
+                <span>ℹ️</span>
+                نبذة عن الموقع
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- خلفية القائمة -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+
+    <!-- لوحة الإشعارات -->
+    <div class="notification-panel" id="notificationPanel">
+
+        <div class="notification-panel-header">
+            <h3>الإشعارات</h3>
+        </div>
+
+        <div
+            class="notification-empty"
+            id="notificationEmpty"
+        >
+            لا توجد إشعارات جديدة.
+        </div>
+
+    </div>
+
+
+    <!-- المحتوى الرئيسي -->
+    <main>
+
+        <section class="page-hero">
+
+            <div class="hero-content">
+
+                <span class="section-label">
+                    قافية | القصائد
+                </span>
+
+                <h1>
+                    القصائد
+                </h1>
+
+                <p>
+                    مختارات من الشعر العربي والأندلسي.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section id="Poems" class="content-section">
+
+
+            <!-- قصيدة جادك الغيث -->
+            <article class="content-card poem-card">
+
+                <h2>
+                    جادك الغيث
+                </h2>
+
+                <p class="poem-introduction">
+                    “جادك الغيث” هي واحدة من أشهر القصائد الأندلسية في وصف الحنين والاشتياق إلى الأندلس وجمالها في زمن ازدهارها.
+                    كتبها الشاعر والأديب الأندلسي "لِسَانِ اَلدِّينِ ابْنِ اَلْخَطِيبِ" في القرن الثامن الهجري، أثناء فترة حكم المسلمين في غرناطة.
+
+                    وعدد أبياتها 52 بيت ومنها:
+                </p>
+
+
+                <div class="poem-text">
+
+                    <p>
+                        جادَكَ الغَيْثُ إذا الغَيْثُ هَمى... يا زَمانَ الوَصْلِ بالأَنْدَلُسِ
+                    </p>
+
+                    <p>
+                        لَمْ يَكُنْ وَصْلُكَ إلا حُلْماً... في الكَرى أو خِلْسَةَ المُخْتَلِسِ
+                    </p>
+
+                    <p>
+                        فِي لَيالٍ كَتَمَتْ سِرَّ الهَوى... بِالدُّجَى لَوْلا شُمُوسُ الغُرَرِ
+                    </p>
+
+                    <p>
+                        مالَ نَجْمُ الكَأْسِ فِيها وَهَوى... مُسْتَقِيمَ السَّيْرِ سَعْدَ الأَثَرِ
+                    </p>
+
+                    <p>
+                        وَطَرٌ ما فِيهِ مِنْ عَيْبٍ سِوى... أَنَّهُ مَرَّ كَلَمْحِ البَصَرِ
+                    </p>
+
+                    <p>
+                        حِينَ لَذَّ الأُنْسُ مَع حُلْوِ اللَّمى... هَجَمَ الصُّبْحُ هُجُومَ الحَرَسِ
+                    </p>
+
+                    <p>
+                        غَارَتِ الشُّهْبُ بِنا أَو رُبَّما... أَثَّرَتْ فِيها عُيُونُ النَّرْجِسِ
+                    </p>
+
+                    <p>
+                        يا أُهَيْلَ الحَيِّ مِنْ وادِي الغَضا... وَبِقَلْبِي مَسْكَنٌ أَنْتُمْ بِهِ
+                    </p>
+
+                    <p>
+                        ضاقَ عَنْ وُجْدِي بِكُمْ رَحْبُ الفَضا... لا أُبالِي شَرْقُهُ مِنْ غَرْبِهِ
+                    </p>
+
+                    <p>
+                        فَأَعِيدُوا عَهْدَ أُنْسٍ قَدْ مَضَى... تُعْتِقُوا عانِيَكُمْ مِنْ كَرْبِهِ
+                    </p>
+
+                    <p>
+                        وَاتَّقُوا اللهَ وَأَحْيُوا مُغْرَماً... يَتَلاشَى نَفَساً فِي نَفَسِ
+                    </p>
+
+                    <p>
+                        ساحِرُ المُقْلَةِ معْسولُ اللّمى... جالَ في النّفسِ مَجالَ النّفَسِ
+                    </p>
+
+                    <p>
+                        سدَّدَ السّهْمَ وسمّى ورَمى... ففؤادي نُهْبَةُ المُفْتَرِسِ
+                    </p>
+
+                </div>
+
+
+                <!-- الفيديو -->
+                <div class="video-box">
+
+                    <video
+                        controls
+                        src="video1.mp4"
+                        width="600"
+                    ></video>
+
+                </div>
+
+
+                <p class="coming-soon">
+                    سنكمل قريباً....
+                </p>
+
+            </article>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- نافذة تسجيل الدخول -->
+    <div class="modal-overlay" id="loginModal">
+
+        <div class="login-modal">
+
+            <button
+                class="modal-close"
+                id="closeLoginModal"
+                type="button"
+                aria-label="إغلاق"
+            >
+                ×
+            </button>
+
+            <h2>
+                تسجيل الدخول
+            </h2>
+
+            <p class="modal-description">
+                سجّل دخولك إلى قافية للوصول إلى حسابك ومزايا الموقع.
+            </p>
+
+            <button
+                class="apple-login-button"
+                id="appleLoginButton"
+                type="button"
+            >
+                 تسجيل الدخول باستخدام Apple
+            </button>
+
+            <div class="login-divider">
+                <span>أو</span>
+            </div>
+
+            <label for="emailLogin">
+                البريد الإلكتروني
+            </label>
+
+            <input
+                type="email"
+                id="emailLogin"
+                placeholder="أدخل بريدك الإلكتروني"
+                autocomplete="email"
+            >
+
+            <button
+                class="email-login-button"
+                id="emailLoginButton"
+                type="button"
+            >
+                تسجيل الدخول
+            </button>
+
+            <p class="login-note">
+                تسجيل الدخول برقم الجوال والتحقق عبر رمز OTP سيتم تفعيله لاحقًا.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- التذييل -->
+    <footer class="site-footer">
+
+        <p>
+            © قافية - موسوعة الشعر والأدب العربي
+        </p>
+
+    </footer>
+
+
 </body>
 </html>

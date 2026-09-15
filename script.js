@@ -160,60 +160,115 @@ if (loginModal) {
 
 }
 
-
 // ================================
-// زر Apple
+// تسجيل الدخول وإنشاء الحساب
 // ================================
 
 const appleLoginButton = document.getElementById("appleLoginButton");
+const emailLoginButton = document.getElementById("emailLoginButton");
+const registerButton = document.getElementById("registerButton");
+
+const emailLogin = document.getElementById("emailLogin");
+const passwordLogin = document.getElementById("passwordLogin");
+
+
+// ================================
+// تسجيل الدخول باستخدام Apple
+// ================================
 
 if (appleLoginButton) {
+    appleLoginButton.addEventListener("click", async () => {
 
-    appleLoginButton.addEventListener("click", function () {
+        const { error } = await supabaseClient.auth.signInWithOAuth({
+            provider: "apple"
+        });
 
-        alert("سيتم تفعيل تسجيل الدخول باستخدام Apple بعد ربط نظام الحسابات.");
-
+        if (error) {
+            console.error(error);
+            alert("تعذر تسجيل الدخول باستخدام Apple.");
+        }
     });
-
 }
 
 
 // ================================
-// تسجيل الدخول بالبريد الإلكتروني
+// تسجيل الدخول بالبريد وكلمة المرور
 // ================================
-
-const emailLoginButton = document.getElementById("emailLoginButton");
-const emailLogin = document.getElementById("emailLogin");
-
 
 if (emailLoginButton) {
-
-    emailLoginButton.addEventListener("click", function () {
+    emailLoginButton.addEventListener("click", async () => {
 
         const email = emailLogin ? emailLogin.value.trim() : "";
+        const password = passwordLogin ? passwordLogin.value : "";
 
-        if (email === "") {
-
-            alert("يرجى إدخال البريد الإلكتروني.");
-
-            return;
-        }
-
-
-        if (!email.includes("@")) {
-
+        if (!email || !email.includes("@")) {
             alert("يرجى إدخال بريد إلكتروني صحيح.");
-
             return;
         }
 
+        if (!password) {
+            alert("يرجى إدخال كلمة المرور.");
+            return;
+        }
 
-        alert("سيتم تفعيل نظام تسجيل الدخول الحقيقي بعد ربط قاعدة البيانات.");
+        const { data, error } =
+            await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
 
+        if (error) {
+            console.error(error);
+            alert("تعذر تسجيل الدخول: " + error.message);
+            return;
+        }
+
+        alert("تم تسجيل الدخول بنجاح.");
+
+        console.log("قافية: تم تسجيل الدخول", data.user);
+
+        closeLoginModalFunction();
     });
-
 }
 
+
+// ================================
+// إنشاء حساب جديد
+// ================================
+
+if (registerButton) {
+    registerButton.addEventListener("click", async () => {
+
+        const email = emailLogin ? emailLogin.value.trim() : "";
+        const password = passwordLogin ? passwordLogin.value : "";
+
+        if (!email || !email.includes("@")) {
+            alert("يرجى إدخال بريد إلكتروني صحيح.");
+            return;
+        }
+
+        if (password.length < 6) {
+            alert("كلمة المرور يجب أن تكون 6 أحرف على الأقل.");
+            return;
+        }
+
+        const { data, error } =
+            await supabaseClient.auth.signUp({
+                email: email,
+                password: password
+            });
+
+        if (error) {
+            console.error(error);
+            alert("تعذر إنشاء الحساب: " + error.message);
+            return;
+        }
+
+        alert("تم إنشاء الحساب بنجاح.");
+
+        console.log("قافية: تم إنشاء الحساب", data.user);
+    });
+}
 
 // ================================
 // زر الملف الشخصي

@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="style.css">
 
     <!-- JavaScript -->
-    <script src="script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js" defer></script>
+<script src="script.js" defer></script>
 </head>
 
 <body>
@@ -271,69 +273,81 @@
     </main>
 
 
-    <!-- ==================== تسجيل الدخول ==================== -->
+<!-- ==================== تسجيل الدخول ==================== -->
 
-    <div
-        class="login-modal"
-        id="loginModal"
-        aria-hidden="true">
+<div
+    class="login-modal"
+    id="loginModal"
+    aria-hidden="true">
 
-        <div class="login-box">
+    <div class="login-box">
 
-            <button
-                class="close-login-button"
-                id="closeLoginButton"
-                type="button"
-                aria-label="إغلاق">
-                ×
-            </button>
+        <button
+            class="close-login-button"
+            id="closeLoginButton"
+            type="button"
+            aria-label="إغلاق">
+            ×
+        </button>
 
-            <h2>تسجيل الدخول</h2>
+        <h2>تسجيل الدخول</h2>
 
-            <p>
-                سجّل دخولك إلى حسابك في قافية
-            </p>
+        <p>
+            سجّل دخولك إلى حسابك في قافية
+        </p>
 
+        <button
+            class="login-method"
+            id="appleLoginButton"
+            type="button">
+             تسجيل الدخول باستخدام Apple
+        </button>
 
-            <button
-                class="login-method"
-                id="appleLoginButton"
-                type="button">
-                 تسجيل الدخول باستخدام Apple
-            </button>
-
-
-            <div class="login-divider">
-                <span>أو</span>
-            </div>
-
-
-            <label for="emailLogin">
-                البريد الإلكتروني
-            </label>
-
-            <input
-                type="email"
-                id="emailLogin"
-                placeholder="أدخل بريدك الإلكتروني"
-                autocomplete="email">
-
-
-            <button
-                class="login-submit"
-                id="emailLoginButton"
-                type="button">
-                متابعة
-            </button>
-
-
-            <p class="login-note">
-                يمكنك لاحقًا تسجيل الدخول أيضًا باستخدام رقم الجوال.
-            </p>
-
+        <div class="login-divider">
+            <span>أو</span>
         </div>
 
+        <label for="emailLogin">
+            البريد الإلكتروني
+        </label>
+
+        <input
+            type="email"
+            id="emailLogin"
+            placeholder="أدخل بريدك الإلكتروني"
+            autocomplete="email">
+
+        <label for="passwordLogin">
+            كلمة المرور
+        </label>
+
+        <input
+            type="password"
+            id="passwordLogin"
+            placeholder="أدخل كلمة المرور"
+            autocomplete="current-password">
+
+        <button
+            class="login-submit"
+            id="emailLoginButton"
+            type="button">
+            تسجيل الدخول
+        </button>
+
+        <button
+            class="login-register"
+            id="registerButton"
+            type="button">
+            إنشاء حساب جديد
+        </button>
+
+        <p class="login-note">
+            يمكنك لاحقًا تسجيل الدخول أيضًا باستخدام رقم الجوال.
+        </p>
+
     </div>
+
+</div>
 
 
     <!-- ==================== التذييل ==================== -->

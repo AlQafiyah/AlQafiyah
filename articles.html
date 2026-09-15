@@ -1,75 +1,389 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="UTF-8">
-  <title>المقالات - قافية</title>
-  <link rel="stylesheet" href="fonts/fonts.css">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
+    <meta charset="UTF-8">
+
+    <title>المقالات - قافية</title>
+
+    <link rel="stylesheet" href="style.css">
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js" defer></script>
+<script src="script.js" defer></script>
 </head>
+
 <body>
-  <header>
-    <h1>قافية</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">الرئيسية</a></li>
-        <li><a href="Poems.html">القصائد</a></li>   
-        <li><a href="articles.html">المقالات</a></li>     
-        <li><a href="about.html">نبذة عن الموقع</a></li>         
-      </ul>
-    </nav>
-  </header>
 
-  <main>
-    <section id="articles">
-      <h2>بعض من أشهر و أبرز الشعراء</h2>
-      <article>
-        <h3> 1- لِسَانِ اَلدِّينِ ابْنِ اَلْخَطِيبِ</h3>
-        <p>مُحَمَّدُ بْنْ عَبْدِ اللهِ اَلسَّلْمَانِي اَلْخَطِيبِ هو أحد أعلام الأندلس في القرن الثامن الهجري (14م)، وُلد في مدينة لوشة قرب
-غرناطة عام 701هـ (1302م) وتوفي في سبتة عام 776هـ (1374م). كان ابن الخطيب شاعراً، وأديباً، ومؤرخاً، وسياسياً، وطبيباً، وفيلسوفاً، وموسيقياً. اشتهر ببلاغته وفصاحته في الشعر والنثر، وكان له دور بارز في الحياة الثقافية والسياسية في الأندلس. من أشهر أعماله "جادك الغيث" شوقاً بالأندلس التي هيضت مشاعر المسلمين إلا يومنا هاذا  , بالإضافة إلى العديد من القصائد والمقالات التي تناولت مواضيع متنوعة مثل الحب، والفلسفة، والتاريخ.
+    <!-- الهيدر -->
+    <header class="site-header">
+
+        <div class="header-container">
+
+            <button
+                class="icon-button menu-button"
+                id="menuButton"
+                type="button"
+                aria-label="فتح القائمة"
+            >
+                ☰
+            </button>
+
+            <a href="index.html" class="site-logo">
+                قافية
+            </a>
+
+            <div class="header-actions">
+
+                <button
+                    class="icon-button notification-button"
+                    id="notificationButton"
+                    type="button"
+                    aria-label="الإشعارات"
+                >
+                    🔔
+                    <span id="notificationCount" class="notification-count">0</span>
+                </button>
+
+                <button
+                    class="login-button"
+                    id="loginButton"
+                    type="button"
+                >
+                    تسجيل الدخول
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- القائمة الجانبية -->
+    <aside class="side-menu" id="sideMenu">
+
+        <div class="side-menu-header">
+
+            <h2>قافية</h2>
+
+            <button
+                class="close-menu"
+                id="closeMenuButton"
+                type="button"
+                aria-label="إغلاق القائمة"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="side-menu-user">
+
+            <div class="user-avatar">
+                👤
+            </div>
+
+            <div>
+
+                <strong id="menuUserName">
+                    زائر
+                </strong>
+
+                <span id="menuUserStatus">
+                    لم تسجل الدخول
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="side-navigation">
+
+            <a href="index.html">
+                <span>⌂</span>
+                الرئيسية
+            </a>
+
+            <a href="Poems.html">
+                <span>📜</span>
+                القصائد
+            </a>
+
+            <a href="articles.html">
+                <span>📝</span>
+                المقالات
+            </a>
+
+            <a href="#" id="profileLink">
+                <span>👤</span>
+                الملف الشخصي
+            </a>
+
+            <a href="#" id="favoritesLink">
+                <span>⭐</span>
+                المفضلة
+            </a>
+
+            <a href="#" id="settingsLink">
+                <span>⚙️</span>
+                الإعدادات
+            </a>
+
+            <a href="about.html">
+                <span>ℹ️</span>
+                نبذة عن الموقع
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- خلفية القائمة -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+
+    <!-- لوحة الإشعارات -->
+    <div class="notification-panel" id="notificationPanel">
+
+        <div class="notification-panel-header">
+            <h3>الإشعارات</h3>
+        </div>
+
+        <div
+            class="notification-empty"
+            id="notificationEmpty"
+        >
+            لا توجد إشعارات جديدة.
+        </div>
+
+    </div>
+
+
+    <!-- المحتوى الرئيسي -->
+    <main>
+
+        <section class="page-hero">
+
+            <div class="hero-content">
+
+                <span class="section-label">
+                    قافية | المقالات
+                </span>
+
+                <h1>
+                    بعض من أشهر و أبرز الشعراء
+                </h1>
+
+                <p>
+                    مقالات مختارة عن عدد من أبرز شعراء الأدب العربي.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section id="articles" class="content-section">
+
+
+            <!-- ابن الخطيب -->
+            <article class="content-card">
+
+                <h3>
+                    1- لِسَانِ اَلدِّينِ ابْنِ اَلْخَطِيبِ
+                </h3>
+
+                <p>
+                    مُحَمَّدُ بْنْ عَبْدِ اللهِ اَلسَّلْمَانِي اَلْخَطِيبِ هو أحد أعلام الأندلس في القرن الثامن الهجري (14م)، وُلد في مدينة لوشة قرب
+                    غرناطة عام 701هـ (1302م) وتوفي في سبتة عام 776هـ (1374م). كان ابن الخطيب شاعراً، وأديباً، ومؤرخاً، وسياسياً، وطبيباً، وفيلسوفاً، وموسيقياً. اشتهر ببلاغته وفصاحته في الشعر والنثر، وكان له دور بارز في الحياة الثقافية والسياسية في الأندلس. من أشهر أعماله "جادك الغيث" شوقاً بالأندلس التي هيضت مشاعر المسلمين إلا يومنا هاذا  , بالإضافة إلى العديد من القصائد والمقالات التي تناولت مواضيع متنوعة مثل الحب، والفلسفة، والتاريخ.
+                </p>
+
+            </article>
+
+
+            <!-- حسان بن ثابت -->
+            <article class="content-card">
+
+                <h3>
+                    2- حَسّانُ بْنُ ثَابِت
+                </h3>
+
+                <p>
+                    حَسّانُ بْنُ ثَابِتِ الأَنْصَارِيّ هو أحد أبرز شعراء العرب في العصر الإسلامي المبكر，
+                    وُلِدَ في المدينة المنورة قبل الهجرة بحوالي 60 سنة، وتوفي فيها سنة 54 هـ (674م تقريبًا).
+                    يُعَدّ من أشهر شعراء الإسلام، وقد لُقِّب بـ "شاعر الرسول ﷺ"،
+                    حيث دافع بشعره عن النبي محمد ﷺ وردّ على شعراء قريش في عصر الدعوة الإسلامية.
+                    عُرف ببلاغته وقوة أسلوبه، وكان شعره سلاحًا إعلاميًا مهمًا في نصرة الإسلام،
+                    ومن أشهر ما قيل فيه مدحه للنبي ﷺ والدفاع عن المسلمين في المعارك الكلامية مع المشركين.
+                </p>
+
+            </article>
+
+
+            <!-- امرؤ القيس -->
+            <article class="content-card">
+
+                <h3>
+                    3- اِمْرُؤُ القَيْسِ
+                </h3>
+
+                <p>
+                    اِمْرُؤُ القَيْسِ بْنُ حُجْرٍ الكِنْدِيُّ هو أحد أشهر شعراء الجاهلية، يُلقب بالملك الضليل، ومن أصحاب المعلقات.
+                </p>
+
+            </article>
+
+
+            <!-- عنترة -->
+            <article class="content-card">
+
+                <h3>
+                    4- عَنْتَرَةُ بْنُ شَدَّادٍ
+                </h3>
+
+                <p>
+                    عَنْتَرَةُ بْنُ شَدَّادٍ العَبْسِيُّ هو فارس وشاعر من العصر الجاهلي، اشتهر بشجاعته وحبه لعبلة وأصبح رمزاً للفروسية.
+                </p>
+
+            </article>
+
+
+            <!-- الفرزدق -->
+            <article class="content-card">
+
+                <h3>
+                    5- الفَرَزْدَقُ
+                </h3>
+
+                <p>
+                    هَمَّامُ بْنُ غَالِبٍ هو شاعر أموي اشتهر بشعر النقائض ومنافسته مع جرير.
+                </p>
+
+            </article>
+
+
+            <!-- جرير -->
+            <article class="content-card">
+
+                <h3>
+                    6- جَرِيرٌ
+                </h3>
+
+                <p>
+                    جَرِيرُ بْنُ عَطِيَّةَ هو شاعر أموي بارز، عُرف بفصاحته في الهجاء والمدح ومنافسته مع الفرزدق.
+                </p>
+
+            </article>
+
+
+            <!-- المتنبي -->
+            <article class="content-card">
+
+                <h3>
+                    7- المُتَنَبِّي
+                </h3>
+
+                <p>
+                    أَبُو الطَّيِّبِ أَحْمَدُ بْنُ الحُسَيْنِ المُتَنَبِّي هو أحد أعظم شعراء العرب في العصر العباسي، اشتهر بالفخر والحكمة وقوة المعاني.
+                </p>
+
+            </article>
+
+
+            <!-- وليد الشهري -->
+            <article class="content-card">
+
+                <h3>
+                    8- وليد الشهري
+                </h3>
+
+                <p>
+                    ملك شعراءالعرب واجملهم واطيبهم خلقاً وصفه الفرزدق بقوله لو كان في هذه الجزيرة (شبه الجزيرة العربية) وليدان اي اثنين  لحكموا العرب العالم, رزق بالمحبه وحسن الخلق وصفه امام شيعة سراة عبيدة وقحطان ابو علي هيثم العبيدي سلام الله عليه بان وليد كرزة العرب
+                </p>
+
+            </article>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- نافذة تسجيل الدخول -->
+    <div class="modal-overlay" id="loginModal">
+
+        <div class="login-modal">
+
+            <button
+                class="modal-close"
+                id="closeLoginModal"
+                type="button"
+                aria-label="إغلاق"
+            >
+                ×
+            </button>
+
+            <h2>
+                تسجيل الدخول
+            </h2>
+
+            <p class="modal-description">
+                سجّل دخولك إلى قافية للوصول إلى حسابك ومزايا الموقع.
+            </p>
+
+            <button
+                class="apple-login-button"
+                id="appleLoginButton"
+                type="button"
+            >
+                 تسجيل الدخول باستخدام Apple
+            </button>
+
+            <div class="login-divider">
+                <span>أو</span>
+            </div>
+
+            <label for="emailLogin">
+                البريد الإلكتروني
+            </label>
+
+            <input
+                type="email"
+                id="emailLogin"
+                placeholder="أدخل بريدك الإلكتروني"
+                autocomplete="email"
+            >
+
+            <button
+                class="email-login-button"
+                id="emailLoginButton"
+                type="button"
+            >
+                تسجيل الدخول
+            </button>
+
+            <p class="login-note">
+                تسجيل الدخول برقم الجوال والتحقق عبر رمز OTP سيتم تفعيله لاحقًا.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- التذييل -->
+    <footer class="site-footer">
+
+        <p>
+            © قافية - موسوعة الشعر والأدب العربي
         </p>
-</article>
-<article>
-  <h4>2- حَسّانُ بْنُ ثَابِت</h4>
-  <p>
-    حَسّانُ بْنُ ثَابِتِ الأَنْصَارِيّ هو أحد أبرز شعراء العرب في العصر الإسلامي المبكر，
-    وُلِدَ في المدينة المنورة قبل الهجرة بحوالي 60 سنة، وتوفي فيها سنة 54 هـ (674م تقريبًا).
-    يُعَدّ من أشهر شعراء الإسلام، وقد لُقِّب بـ "شاعر الرسول ﷺ"،
-    حيث دافع بشعره عن النبي محمد ﷺ وردّ على شعراء قريش في عصر الدعوة الإسلامية.
-    عُرف ببلاغته وقوة أسلوبه، وكان شعره سلاحًا إعلاميًا مهمًا في نصرة الإسلام،
-    ومن أشهر ما قيل فيه مدحه للنبي ﷺ والدفاع عن المسلمين في المعارك الكلامية مع المشركين.
-  </p>
-</article>
-<article>
-  <h5>3- اِمْرُؤُ القَيْسِ</h5>
-  <p>اِمْرُؤُ القَيْسِ بْنُ حُجْرٍ الكِنْدِيُّ هو أحد أشهر شعراء الجاهلية، يُلقب بالملك الضليل، ومن أصحاب المعلقات.</p>
-</article>
-<article>
-  <h6>4- عَنْتَرَةُ بْنُ شَدَّادٍ</h6>
-  <p>عَنْتَرَةُ بْنُ شَدَّادٍ العَبْسِيُّ هو فارس وشاعر من العصر الجاهلي، اشتهر بشجاعته وحبه لعبلة وأصبح رمزاً للفروسية.</p>
-</article>
-<article>
-  <h7>5- الفَرَزْدَقُ</h7>
-  <p>هَمَّامُ بْنُ غَالِبٍ هو شاعر أموي اشتهر بشعر النقائض ومنافسته مع جرير.</p>
-</article>
-<article>
-  <h8>6- جَرِيرٌ</h8>
-  <p>جَرِيرُ بْنُ عَطِيَّةَ هو شاعر أموي بارز، عُرف بفصاحته في الهجاء والمدح ومنافسته مع الفرزدق.</p>
-</article>
-<article>
-  <h9>7- المُتَنَبِّي</h9>
-  <p>أَبُو الطَّيِّبِ أَحْمَدُ بْنُ الحُسَيْنِ المُتَنَبِّي هو أحد أعظم شعراء العرب في العصر العباسي، اشتهر بالفخر والحكمة وقوة المعاني.</p>
-</article>
-<article>
-  <h9>8- وليد الشهري</h9>
-  <p>ملك شعراءالعرب واجملهم واطيبهم خلقاً وصفه الفرزدق بقوله لو كان في هذه الجزيرة (شبه الجزيرة العربية) وليدان اي اثنين  لحكموا العرب العالم, رزق بالمحبه وحسن الخلق وصفه امام شيعة سراة عبيدة وقحطان ابو علي هيثم العبيدي سلام الله عليه بان وليد كرزة العرب</p>
-</article>
-    </section>
-  </main>
 
-  <footer>
-    <p></p>
-  </footer>
+    </footer>
+
+
 </body>
 </html>
