@@ -1,7 +1,13 @@
+css
+/* =========================================================
+   قافية — ملف التصميم الرئيسي
+   النسخة النهائية
+========================================================= */
 
-/* =========================
+
+/* =========================================================
    الألوان الأساسية
-========================= */
+========================================================= */
 
 :root {
     --color-primary: #3E2723;
@@ -13,12 +19,28 @@
     --color-gray: #6D6875;
     --color-card: #35221F;
     --color-border: rgba(255, 232, 214, 0.18);
+
+    --color-danger: #b3261e;
+    --color-danger-light: #ff8d85;
+
+    --shadow-small:
+        0 4px 18px rgba(0, 0, 0, 0.10);
+
+    --shadow-medium:
+        0 12px 35px rgba(0, 0, 0, 0.16);
+
+    --shadow-large:
+        0 20px 60px rgba(0, 0, 0, 0.25);
+
+    --radius-small: 10px;
+    --radius-medium: 15px;
+    --radius-large: 20px;
 }
 
 
-/* =========================
+/* =========================================================
    الخط
-========================= */
+========================================================= */
 
 @font-face {
     font-family: 'Saudi';
@@ -29,9 +51,9 @@
 }
 
 
-/* =========================
+/* =========================================================
    الإعدادات العامة
-========================= */
+========================================================= */
 
 * {
     box-sizing: border-box;
@@ -44,6 +66,9 @@ html {
 body {
     margin: 0;
     padding: 0;
+
+    min-height: 100vh;
+
     overflow-x: hidden;
 
     font-family: 'Saudi', Arial, sans-serif;
@@ -52,32 +77,95 @@ body {
     color: var(--color-light);
 
     line-height: 1.7;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+    font-family: 'Saudi', Arial, sans-serif;
 }
 
 a {
     color: inherit;
 }
 
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
 button {
-    font-family: inherit;
+    border: 0;
+}
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+svg {
+    display: block;
+}
+
+::selection {
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+}
+
+:focus-visible {
+    outline: 3px solid rgba(203, 153, 126, 0.65);
+    outline-offset: 3px;
 }
 
 
-/* =========================
+/* =========================================================
+   إخفاء بصري لعناصر الوصول
+========================================================= */
+
+.sr-only {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    padding: 0;
+    margin: -1px;
+
+    overflow: hidden;
+
+    clip: rect(0, 0, 0, 0);
+
+    white-space: nowrap;
+
+    border: 0;
+}
+
+
+/* =========================================================
    رأس الموقع
-========================= */
+========================================================= */
 
 .site-header {
+    position: sticky;
+    top: 0;
+
     width: 100%;
 
     background-color: var(--color-light);
     color: var(--color-primary);
 
-    position: sticky;
-    top: 0;
     z-index: 1000;
 
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.12);
 }
 
 .header-container {
@@ -94,42 +182,62 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    زر القائمة
-========================= */
+========================================================= */
 
 .menu-button {
     width: 48px;
     height: 48px;
 
-    border: none;
+    padding: 0;
+
     border-radius: 12px;
 
     background-color: transparent;
     color: var(--color-primary);
 
-    font-size: 28px;
-
     cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
 
     transition:
         background-color 0.25s ease,
         transform 0.25s ease;
 }
 
+.menu-button span {
+    width: 22px;
+    height: 2px;
+
+    border-radius: 10px;
+
+    background-color: currentColor;
+
+    display: block;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+
 .menu-button:hover {
     background-color: var(--color-accent);
+
     transform: scale(1.05);
 }
 
 
-/* =========================
+/* =========================================================
    شعار الموقع
-========================= */
+========================================================= */
 
 .site-logo {
-    text-decoration: none;
-
     color: var(--color-primary);
 
     font-size: 2.4rem;
@@ -137,17 +245,23 @@ button {
 
     line-height: 1;
 
-    transition: opacity 0.25s ease;
+    text-decoration: none;
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
 }
 
 .site-logo:hover {
     opacity: 0.75;
+
+    transform: translateY(-1px);
 }
 
 
-/* =========================
+/* =========================================================
    أدوات المستخدم
-========================= */
+========================================================= */
 
 .header-actions {
     display: flex;
@@ -157,9 +271,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    زر الإشعارات
-========================= */
+========================================================= */
 
 .notification-button {
     position: relative;
@@ -167,13 +281,12 @@ button {
     width: 48px;
     height: 48px;
 
-    border: none;
+    padding: 0;
+
     border-radius: 12px;
 
     background-color: transparent;
     color: var(--color-primary);
-
-    font-size: 22px;
 
     cursor: pointer;
 
@@ -188,6 +301,7 @@ button {
 
 .notification-button:hover {
     background-color: var(--color-accent);
+
     transform: scale(1.05);
 }
 
@@ -201,8 +315,8 @@ button {
 .notification-count {
     position: absolute;
 
-    top: 4px;
-    right: 4px;
+    top: 3px;
+    right: 3px;
 
     min-width: 18px;
     height: 18px;
@@ -211,12 +325,12 @@ button {
 
     border-radius: 20px;
 
-    background-color: #b3261e;
-    color: white;
+    background-color: var(--color-danger);
+    color: #ffffff;
 
     font-family: Arial, sans-serif;
     font-size: 11px;
-    font-weight: bold;
+    font-weight: 700;
 
     display: none;
     align-items: center;
@@ -224,9 +338,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    زر تسجيل الدخول
-========================= */
+========================================================= */
 
 .login-button {
     min-height: 44px;
@@ -245,18 +359,21 @@ button {
 
     transition:
         background-color 0.25s ease,
-        color 0.25s ease;
+        color 0.25s ease,
+        transform 0.2s ease;
 }
 
 .login-button:hover {
     background-color: transparent;
     color: var(--color-primary);
+
+    transform: translateY(-1px);
 }
 
 
-/* =========================
-   منطقة الحساب
-========================= */
+/* =========================================================
+   منطقة الحساب القديمة
+========================================================= */
 
 .account-area {
     position: relative;
@@ -314,9 +431,9 @@ button {
 }
 
 
-/* =========================
-   قائمة الحساب الصغيرة
-========================= */
+/* =========================================================
+   قائمة الحساب القديمة
+========================================================= */
 
 .account-dropdown {
     position: absolute;
@@ -334,8 +451,7 @@ button {
     background-color: var(--color-light);
     color: var(--color-primary);
 
-    box-shadow:
-        0 12px 35px rgba(0, 0, 0, 0.16);
+    box-shadow: var(--shadow-medium);
 
     opacity: 0;
     visibility: hidden;
@@ -360,7 +476,6 @@ button {
 .account-dropdown a,
 .account-dropdown button {
     width: 100%;
-
     min-height: 44px;
 
     padding: 9px 12px;
@@ -393,9 +508,9 @@ button {
 }
 
 
-/* =========================
-   منطقة الحساب الجديدة
-========================= */
+/* =========================================================
+   منطقة الحساب الحالية
+========================================================= */
 
 .qafiyah-account-area {
     position: relative;
@@ -455,9 +570,9 @@ button {
 }
 
 
-/* =========================
-   قائمة الحساب الجديدة
-========================= */
+/* =========================================================
+   قائمة الحساب الحالية
+========================================================= */
 
 .qafiyah-account-dropdown {
     position: fixed;
@@ -528,9 +643,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    القائمة الجانبية
-========================= */
+========================================================= */
 
 .side-menu {
     position: fixed;
@@ -540,6 +655,9 @@ button {
 
     width: min(360px, 88vw);
     height: 100vh;
+    height: 100dvh;
+
+    padding-bottom: 15px;
 
     background-color: var(--color-light);
     color: var(--color-primary);
@@ -548,12 +666,15 @@ button {
 
     transform: translateX(105%);
 
-    transition: transform 0.3s ease;
+    transition:
+        transform 0.3s ease;
 
     box-shadow:
-        -10px 0 35px rgba(0, 0, 0, 0.2);
+        -10px 0 35px rgba(0, 0, 0, 0.20);
 
     overflow-y: auto;
+
+    overscroll-behavior: contain;
 }
 
 .side-menu.open {
@@ -561,16 +682,16 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    خلفية القائمة
-========================= */
+========================================================= */
 
 .menu-overlay {
     position: fixed;
 
     inset: 0;
 
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.50);
 
     z-index: 1500;
 
@@ -588,9 +709,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    رأس القائمة
-========================= */
+========================================================= */
 
 .side-menu-header {
     min-height: 82px;
@@ -616,15 +737,24 @@ button {
     width: 44px;
     height: 44px;
 
-    border: none;
+    padding: 0;
+
     border-radius: 10px;
 
     background-color: transparent;
     color: var(--color-primary);
 
     font-size: 32px;
+    line-height: 1;
 
     cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        background-color 0.2s ease;
 }
 
 .close-menu-button:hover {
@@ -632,9 +762,9 @@ button {
 }
 
 
-/* =========================
-   قسم المستخدم
-========================= */
+/* =========================================================
+   قسم المستخدم في القائمة
+========================================================= */
 
 .user-section {
     margin: 20px;
@@ -651,6 +781,17 @@ button {
     gap: 12px;
 
     cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.user-section:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 18px rgba(62, 39, 35, 0.08);
 }
 
 .user-avatar {
@@ -713,9 +854,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    روابط القائمة
-========================= */
+========================================================= */
 
 .side-navigation {
     padding: 5px 15px 25px;
@@ -725,9 +866,12 @@ button {
     min-height: 52px;
 
     margin-bottom: 5px;
+
     padding: 10px 14px;
 
     border-radius: 10px;
+
+    color: var(--color-primary);
 
     text-decoration: none;
 
@@ -736,11 +880,10 @@ button {
 
     gap: 14px;
 
-    color: var(--color-primary);
-
     transition:
         background-color 0.2s ease,
-        transform 0.2s ease;
+        transform 0.2s ease,
+        color 0.2s ease;
 }
 
 .side-navigation a span:first-child {
@@ -749,17 +892,88 @@ button {
     text-align: center;
 
     font-size: 19px;
+
+    flex-shrink: 0;
 }
 
 .side-navigation a:hover {
     background-color: var(--color-accent);
+
     transform: translateX(-3px);
 }
 
+.side-navigation a.active {
+    background-color: var(--color-accent);
 
-/* =========================
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   تذييل القائمة الجانبية
+========================================================= */
+
+.side-menu-footer {
+    margin-top: auto;
+
+    padding: 10px 20px 20px;
+
+    text-align: center;
+}
+
+.side-menu-footer p {
+    margin: 12px 0 0;
+
+    color: var(--color-gray);
+
+    font-size: 12px;
+}
+
+.side-menu-socials {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+}
+
+.side-menu-socials a {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 10px;
+
+    color: var(--color-primary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.side-menu-socials a:hover {
+    background-color: var(--color-accent);
+
+    transform: translateY(-2px);
+}
+
+.side-menu-socials svg {
+    width: 19px;
+    height: 19px;
+
+    fill: currentColor;
+}
+
+
+/* =========================================================
    نافذة الإشعارات
-========================= */
+========================================================= */
 
 .notification-panel {
     position: fixed;
@@ -815,14 +1029,25 @@ button {
     width: 35px;
     height: 35px;
 
-    border: none;
+    padding: 0;
+
     border-radius: 8px;
 
     background: transparent;
+    color: var(--color-primary);
 
     font-size: 25px;
+    line-height: 1;
 
     cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-header button:hover {
+    background-color: var(--color-accent);
 }
 
 .notification-content {
@@ -831,10 +1056,14 @@ button {
     color: var(--color-gray);
 }
 
+.notification-content p {
+    margin: 0;
+}
 
-/* =========================
-   الصفحة الرئيسية
-========================= */
+
+/* =========================================================
+   الأبطال — الصفحة الرئيسية
+========================================================= */
 
 .hero-section {
     min-height: 520px;
@@ -882,9 +1111,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    أزرار الصفحة الرئيسية
-========================= */
+========================================================= */
 
 .hero-actions {
     display: flex;
@@ -906,10 +1135,15 @@ button {
 
     text-decoration: none;
 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
     transition:
         transform 0.2s ease,
         background-color 0.2s ease,
-        color 0.2s ease;
+        color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .primary-button {
@@ -920,6 +1154,7 @@ button {
 .secondary-button {
     border: 1px solid var(--color-accent);
 
+    background-color: transparent;
     color: var(--color-accent);
 }
 
@@ -928,15 +1163,20 @@ button {
     transform: translateY(-2px);
 }
 
+.primary-button:hover {
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
 .secondary-button:hover {
     background-color: var(--color-accent);
     color: var(--color-primary);
 }
 
 
-/* =========================
+/* =========================================================
    أقسام الموقع
-========================= */
+========================================================= */
 
 .site-sections {
     padding: 70px 20px;
@@ -945,9 +1185,9 @@ button {
 }
 
 .section-title {
-    text-align: center;
-
     margin-bottom: 40px;
+
+    text-align: center;
 }
 
 .section-title h2 {
@@ -963,9 +1203,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    بطاقات الأقسام
-========================= */
+========================================================= */
 
 .section-cards {
     width: 100%;
@@ -989,19 +1229,25 @@ button {
 
     background-color: var(--color-card);
 
+    color: var(--color-light);
+
     text-decoration: none;
 
     text-align: center;
 
     transition:
         transform 0.25s ease,
-        border-color 0.25s ease;
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 .section-card:hover {
     transform: translateY(-5px);
 
     border-color: var(--color-accent-dark);
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.15);
 }
 
 .card-icon {
@@ -1029,9 +1275,922 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
+   الأبطال الداخلية
+========================================================= */
+
+.page-hero {
+    position: relative;
+
+    min-height: 360px;
+
+    padding: 80px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(203, 153, 126, 0.18),
+            transparent 48%
+        ),
+        linear-gradient(
+            180deg,
+            #3E2723 0%,
+            #35221F 100%
+        );
+}
+
+.page-hero::before {
+    content: "";
+
+    position: absolute;
+
+    width: 320px;
+    height: 320px;
+
+    top: -180px;
+    left: -100px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 232, 214, 0.08);
+
+    pointer-events: none;
+}
+
+.page-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    right: -200px;
+    bottom: -280px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 232, 214, 0.07);
+
+    pointer-events: none;
+}
+
+.page-hero .hero-content {
+    position: relative;
+
+    z-index: 1;
+
+    max-width: 900px;
+}
+
+.section-label {
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    color: var(--color-accent-dark);
+
+    font-size: 0.90rem;
+
+    letter-spacing: 0.02em;
+}
+
+.page-hero h1 {
+    margin: 0 0 15px;
+
+    color: var(--color-light);
+
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+
+    line-height: 1.15;
+}
+
+.page-hero p {
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    color: var(--color-accent);
+
+    font-size: clamp(1rem, 2.2vw, 1.2rem);
+}
+
+
+/* =========================================================
+   شريط المقالات والشعراء
+========================================================= */
+
+.articles-toolbar {
+    width: min(1180px, calc(100% - 40px));
+
+    margin: 0 auto;
+
+    padding: 30px 0;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(190px, 220px);
+
+    gap: 14px;
+
+    align-items: center;
+}
+
+.poets-toolbar {
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(170px, 210px)
+        minmax(170px, 210px);
+}
+
+.articles-search {
+    width: 100%;
+}
+
+.search-input-wrapper {
+    position: relative;
+
+    width: 100%;
+}
+
+.search-icon {
+    position: absolute;
+
+    top: 50%;
+    right: 17px;
+
+    width: 21px;
+    height: 21px;
+
+    color: var(--color-gray);
+
+    transform: translateY(-50%);
+
+    pointer-events: none;
+}
+
+.articles-search input {
+    width: 100%;
+
+    min-height: 54px;
+
+    padding: 11px 50px 11px 17px;
+
+    border: 1px solid rgba(255, 232, 214, 0.22);
+    border-radius: 13px;
+
+    outline: none;
+
+    background-color: var(--color-card);
+    color: var(--color-light);
+
+    font-size: 15px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.articles-search input::placeholder {
+    color: #bdb2af;
+}
+
+.articles-search input:focus {
+    border-color: var(--color-accent-dark);
+
+    background-color: #3b2521;
+
+    box-shadow:
+        0 0 0 3px rgba(203, 153, 126, 0.12);
+}
+
+.articles-search input::-webkit-search-cancel-button {
+    filter: grayscale(1);
+}
+
+.articles-filter {
+    width: 100%;
+}
+
+.articles-filter select {
+    width: 100%;
+
+    min-height: 54px;
+
+    padding: 11px 15px;
+
+    border: 1px solid rgba(255, 232, 214, 0.22);
+    border-radius: 13px;
+
+    outline: none;
+
+    background-color: var(--color-card);
+    color: var(--color-light);
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.articles-filter select:focus {
+    border-color: var(--color-accent-dark);
+
+    box-shadow:
+        0 0 0 3px rgba(203, 153, 126, 0.12);
+}
+
+
+/* =========================================================
+   قائمة المقالات
+========================================================= */
+
+.articles-list,
+.poets-list {
+    width: min(1180px, calc(100% - 40px));
+
+    margin: 0 auto;
+
+    padding: 10px 0 80px;
+}
+
+.articles-container {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 22px;
+}
+
+
+/* =========================================================
+   بطاقات المقالات الديناميكية
+========================================================= */
+
+.article-card {
+    position: relative;
+
+    min-width: 0;
+
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+
+    background-color: var(--color-card);
+
+    overflow: hidden;
+
+    text-decoration: none;
+
+    display: flex;
+    flex-direction: column;
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+
+    border-color: var(--color-accent-dark);
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.17);
+}
+
+.article-card-image {
+    width: 100%;
+    height: 210px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(203, 153, 126, 0.20),
+            rgba(181, 131, 141, 0.12)
+        );
+
+    overflow: hidden;
+}
+
+.article-card-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition:
+        transform 0.35s ease;
+}
+
+.article-card:hover .article-card-image img {
+    transform: scale(1.035);
+}
+
+.article-card-body {
+    padding: 22px;
+
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+}
+
+.article-card-category {
+    margin-bottom: 8px;
+
+    color: var(--color-accent-dark);
+
+    font-size: 12px;
+}
+
+.article-card h2,
+.article-card h3 {
+    margin: 0 0 10px;
+
+    color: var(--color-light);
+
+    font-size: 1.25rem;
+
+    line-height: 1.5;
+}
+
+.article-card p {
+    margin: 0;
+
+    color: #d8d0ce;
+
+    font-size: 0.92rem;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+.article-card-meta {
+    margin-top: auto;
+    padding-top: 18px;
+
+    color: #a99e9a;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   حالات المقالات
+========================================================= */
+
+.articles-empty,
+.articles-loading,
+.poets-empty,
+.poets-loading {
+    width: 100%;
+
+    padding: 70px 20px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+
+    background-color: var(--color-card);
+
+    text-align: center;
+}
+
+.articles-empty[hidden],
+.articles-loading[hidden],
+.poets-empty[hidden],
+.poets-loading[hidden] {
+    display: none;
+}
+
+.articles-empty-icon,
+.poets-empty-icon {
+    width: 68px;
+    height: 68px;
+
+    margin: 0 auto 18px;
+
+    border-radius: 18px;
+
+    background-color: rgba(255, 232, 214, 0.08);
+    color: var(--color-accent-dark);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.articles-empty-icon svg,
+.poets-empty-icon svg {
+    width: 32px;
+    height: 32px;
+}
+
+.articles-empty h2,
+.poets-empty h2 {
+    margin: 0 0 8px;
+
+    color: var(--color-light);
+
+    font-size: 1.35rem;
+}
+
+.articles-empty p,
+.poets-empty p {
+    max-width: 500px;
+
+    margin: 0 auto;
+
+    color: #bdb2af;
+
+    font-size: 0.92rem;
+}
+
+.articles-loading,
+.poets-loading {
+    color: var(--color-accent);
+
+    font-size: 0.95rem;
+}
+
+
+/* =========================================================
+   الشعراء
+========================================================= */
+
+.poets-container {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+/* =========================================================
+   بطاقة الشاعر
+========================================================= */
+
+.poet-card {
+    position: relative;
+
+    min-width: 0;
+
+    padding: 24px 20px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+
+    background-color: var(--color-card);
+
+    color: var(--color-light);
+
+    text-decoration: none;
+
+    text-align: center;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.poet-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    top: -85px;
+    right: -65px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 232, 214, 0.08);
+
+    pointer-events: none;
+}
+
+.poet-card:hover {
+    transform: translateY(-5px);
+
+    border-color: var(--color-accent-dark);
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.17);
+}
+
+.poet-card-image {
+    width: 105px;
+    height: 105px;
+
+    margin: 0 auto 17px;
+
+    border: 2px solid var(--color-accent-dark);
+    border-radius: 50%;
+
+    background-color: var(--color-primary);
+    color: var(--color-accent);
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.poet-card-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.poet-card-image svg {
+    width: 45px;
+    height: 45px;
+}
+
+.poet-card h2,
+.poet-card h3 {
+    margin: 0 0 6px;
+
+    color: var(--color-light);
+
+    font-size: 1.15rem;
+}
+
+.poet-card-era {
+    color: var(--color-accent-dark);
+
+    font-size: 12px;
+}
+
+.poet-card-category {
+    margin-top: 4px;
+
+    color: #bdb2af;
+
+    font-size: 12px;
+}
+
+.poet-card-description {
+    margin: 12px 0 0;
+
+    color: #d8d0ce;
+
+    font-size: 0.86rem;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   صفحات المحتوى العامة
+========================================================= */
+
+.content-section {
+    width: min(1100px, calc(100% - 40px));
+
+    margin: 0 auto;
+
+    padding: 55px 0;
+}
+
+.content-card {
+    padding: 35px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+
+    background-color: var(--color-card);
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.12);
+}
+
+.content-card h2 {
+    margin: 0 0 15px;
+
+    color: var(--color-light);
+
+    font-size: 1.8rem;
+}
+
+.content-card p {
+    margin: 0;
+
+    color: #d8d0ce;
+
+    font-size: 1rem;
+}
+
+
+/* =========================================================
+   عن قافية — شبكة الرؤية والرسالة
+========================================================= */
+
+.about-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+.about-feature-card {
+    min-height: 280px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.about-feature-icon {
+    width: 62px;
+    height: 62px;
+
+    margin-bottom: 20px;
+
+    border: 1px solid rgba(255, 232, 214, 0.16);
+    border-radius: 17px;
+
+    background-color: rgba(255, 232, 214, 0.07);
+    color: var(--color-accent-dark);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-feature-icon svg {
+    width: 30px;
+    height: 30px;
+}
+
+.about-feature-card h2 {
+    margin: 0 0 10px;
+
+    font-size: 1.5rem;
+}
+
+.about-feature-card p {
+    margin-top: auto;
+}
+
+
+/* =========================================================
+   عن قافية — الخدمات
+========================================================= */
+
+.about-section-heading {
+    margin-bottom: 28px;
+}
+
+.about-section-heading .section-label {
+    margin-bottom: 5px;
+}
+
+.about-section-heading h2 {
+    margin: 0 0 8px;
+}
+
+.about-section-heading p {
+    margin: 0;
+
+    color: #bdb2af;
+}
+
+.about-services {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 15px;
+}
+
+.about-service {
+    min-height: 155px;
+
+    padding: 20px;
+
+    border: 1px solid rgba(255, 232, 214, 0.13);
+    border-radius: 15px;
+
+    background-color: rgba(255, 232, 214, 0.035);
+
+    color: inherit;
+
+    text-decoration: none;
+
+    display: flex;
+    flex-direction: column;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.about-service:hover {
+    transform: translateY(-4px);
+
+    border-color: var(--color-accent-dark);
+
+    background-color: rgba(255, 232, 214, 0.07);
+}
+
+.about-service-icon {
+    width: 48px;
+    height: 48px;
+
+    margin-bottom: 14px;
+
+    border-radius: 13px;
+
+    background-color: rgba(255, 232, 214, 0.08);
+    color: var(--color-accent-dark);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-service-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.about-service h3 {
+    margin: 0 0 5px;
+
+    color: var(--color-light);
+
+    font-size: 1.05rem;
+}
+
+.about-service p {
+    margin: 0;
+
+    color: #bdb2af;
+
+    font-size: 0.84rem;
+}
+
+
+/* =========================================================
+   عن قافية — بطاقة الحفظ والتوثيق
+========================================================= */
+
+.about-mission-card {
+    min-height: 240px;
+
+    display: grid;
+
+    grid-template-columns: 110px minmax(0, 1fr);
+
+    gap: 25px;
+
+    align-items: center;
+}
+
+.about-mission-icon {
+    width: 100px;
+    height: 100px;
+
+    border: 1px solid rgba(255, 232, 214, 0.15);
+    border-radius: 25px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(203, 153, 126, 0.15),
+            rgba(255, 232, 214, 0.025)
+        );
+
+    color: var(--color-accent-dark);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-mission-icon svg {
+    width: 48px;
+    height: 48px;
+}
+
+.about-mission-card h2 {
+    margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   عن قافية — النهاية
+========================================================= */
+
+.about-final {
+    width: 100%;
+
+    padding: 80px 20px 100px;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(203, 153, 126, 0.15),
+            transparent 52%
+        ),
+        var(--color-background);
+}
+
+.about-final-content {
+    max-width: 700px;
+
+    margin: 0 auto;
+}
+
+.about-final-mark {
+    width: 82px;
+    height: 82px;
+
+    margin: 0 auto 22px;
+
+    border: 1px solid rgba(255, 232, 214, 0.22);
+    border-radius: 24px;
+
+    background-color: var(--color-card);
+    color: var(--color-accent);
+
+    font-size: 1.6rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+.about-final h2 {
+    margin: 0 0 10px;
+
+    color: var(--color-light);
+
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.about-final p {
+    margin: 0 auto 25px;
+
+    max-width: 560px;
+
+    color: var(--color-accent);
+
+    font-size: 1rem;
+}
+
+
+/* =========================================================
    نافذة تسجيل الدخول
-========================= */
+========================================================= */
 
 .login-modal {
     position: fixed;
@@ -1054,6 +2213,8 @@ button {
     transition:
         opacity 0.25s ease,
         visibility 0.25s ease;
+
+    overflow-y: auto;
 }
 
 .login-modal.open {
@@ -1065,6 +2226,7 @@ button {
     position: relative;
 
     width: min(450px, 100%);
+    max-height: calc(100vh - 40px);
 
     padding: 35px 28px;
 
@@ -1073,8 +2235,9 @@ button {
     background-color: var(--color-light);
     color: var(--color-primary);
 
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-large);
+
+    overflow-y: auto;
 }
 
 .login-box h2 {
@@ -1098,14 +2261,21 @@ button {
     width: 40px;
     height: 40px;
 
-    border: none;
+    padding: 0;
+
     border-radius: 8px;
 
     background: transparent;
+    color: var(--color-primary);
 
     font-size: 27px;
+    line-height: 1;
 
     cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .close-login-button:hover {
@@ -1113,9 +2283,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    طرق تسجيل الدخول
-========================= */
+========================================================= */
 
 .login-method,
 .login-submit {
@@ -1135,7 +2305,9 @@ button {
 
     transition:
         background-color 0.2s ease,
-        transform 0.2s ease;
+        color 0.2s ease,
+        transform 0.2s ease,
+        opacity 0.2s ease;
 }
 
 .login-method {
@@ -1149,6 +2321,8 @@ button {
 
 .login-method:hover {
     opacity: 0.9;
+
+    transform: translateY(-1px);
 }
 
 .login-divider {
@@ -1182,33 +2356,49 @@ button {
 
     margin-bottom: 7px;
 
+    color: var(--color-primary);
+
     font-size: 14px;
 }
 
-.login-box input {
+.login-box input,
+.login-box select {
     width: 100%;
 
     min-height: 48px;
+
+    margin-bottom: 12px;
 
     padding: 10px 14px;
 
     border: 1px solid #ccc;
     border-radius: 10px;
 
-    background-color: white;
+    background-color: #ffffff;
+    color: var(--color-primary);
 
     font-family: inherit;
     font-size: 15px;
 
     outline: none;
+
+    text-align: right;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.login-box input:focus {
+.login-box input:focus,
+.login-box select:focus {
     border-color: var(--color-primary);
+
+    box-shadow:
+        0 0 0 3px rgba(62, 39, 35, 0.08);
 }
 
 .login-submit {
-    border: none;
+    border: 1px solid var(--color-primary);
 
     background-color: var(--color-primary);
     color: var(--color-light);
@@ -1216,46 +2406,61 @@ button {
 
 .login-submit:hover {
     transform: translateY(-1px);
+
+    background-color: #4a2d28;
+}
+
+.login-submit:disabled {
+    opacity: 0.6;
+
+    cursor: wait;
+
+    transform: none;
+}
+
+.login-register {
+    width: 100%;
+
+    margin-top: 16px;
+
+    padding: 5px;
+
+    border: none;
+
+    background: transparent;
+    color: var(--color-gray);
+
+    font-family: inherit;
+    font-size: 13px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease;
+}
+
+.login-register:hover {
+    color: var(--color-primary);
+
+    text-decoration: underline;
 }
 
 .login-note {
     margin-top: 15px !important;
+
+    color: var(--color-gray);
 
     font-size: 12px;
 
     text-align: center;
 }
 
-.login-register {
-    margin-top: 18px;
 
-    color: var(--color-gray);
-
-    font-size: 13px;
-
-    text-align: center;
-}
-
-.login-register button {
-    border: none;
-
-    padding: 0;
-
-    background: transparent;
-    color: var(--color-primary);
-
-    font-family: inherit;
-    font-size: inherit;
-
-    cursor: pointer;
-
-    text-decoration: underline;
-}
-
-
-/* =========================
+/* =========================================================
    تاريخ الميلاد
-========================= */
+========================================================= */
 
 .birth-date-fields {
     display: grid;
@@ -1266,10 +2471,14 @@ button {
     gap: 8px;
 }
 
+.birth-date-fields select {
+    margin-bottom: 0 !important;
+}
 
-/* =========================
-   نموذج تسجيل الدخول في الملف
-========================= */
+
+/* =========================================================
+   نموذج تسجيل الدخول القديم في الملف
+========================================================= */
 
 .profile-login-form {
     width: 100%;
@@ -1348,9 +2557,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    صفحة الملف الشخصي
-========================= */
+========================================================= */
 
 .profile-page {
     width: 100%;
@@ -1402,9 +2611,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    بطاقة الملف
-========================= */
+========================================================= */
 
 .profile-card {
     width: 100%;
@@ -1421,9 +2630,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    صورة الملف الشخصي القديمة
-========================= */
+========================================================= */
 
 .profile-avatar-section {
     margin-bottom: 35px;
@@ -1512,9 +2721,9 @@ button {
 }
 
 
-/* =========================
-   الصورة الشخصية الجديدة
-========================= */
+/* =========================================================
+   الصورة الشخصية الحالية
+========================================================= */
 
 .profile-photo-section {
     width: 100%;
@@ -1607,7 +2816,7 @@ button {
     border: 1px solid rgba(179, 38, 30, 0.65);
 
     background-color: transparent;
-    color: #b3261e;
+    color: var(--color-danger);
 }
 
 .profile-upload-button:hover,
@@ -1630,9 +2839,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    نموذج الملف الشخصي
-========================= */
+========================================================= */
 
 .profile-form {
     width: 100%;
@@ -1715,9 +2924,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    أزرار الملف الشخصي
-========================= */
+========================================================= */
 
 .profile-actions {
     grid-column: 1 / -1;
@@ -1773,12 +2982,20 @@ button {
     border: 1px solid rgba(179, 38, 30, 0.65);
 
     background-color: transparent;
-    color: #b3261e;
+    color: var(--color-danger);
 }
 
 .profile-save-button:hover,
 .profile-logout-button:hover {
     transform: translateY(-1px);
+}
+
+.profile-save-button:hover {
+    background-color: #f5d8c2;
+}
+
+.profile-logout-button:hover {
+    background-color: rgba(179, 38, 30, 0.08);
 }
 
 .profile-save-button:disabled {
@@ -1790,9 +3007,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================================
    رسائل الملف الشخصي
-========================= */
+========================================================= */
 
 .profile-message {
     grid-column: 1 / -1;
@@ -1809,27 +3026,16 @@ button {
 }
 
 .profile-message.error {
-    color: #ff8d85;
+    color: var(--color-danger-light);
 }
 
 
-/* =========================
-   الصور والفيديو
-========================= */
-
-img,
-video {
-    max-width: 100%;
-    height: auto;
-}
-
-
-/* =========================
-   التذييل
-========================= */
+/* =========================================================
+   التذييل الرئيسي
+========================================================= */
 
 .site-footer {
-    padding: 25px 20px;
+    margin-top: 0;
 
     background-color: var(--color-light);
     color: var(--color-primary);
@@ -1839,14 +3045,227 @@ video {
     font-size: 0.9rem;
 }
 
-.site-footer p {
+.footer-container {
+    width: min(1180px, calc(100% - 40px));
+
+    margin: 0 auto;
+
+    padding: 55px 0 45px;
+
+    display: grid;
+
+    grid-template-columns:
+        1.4fr
+        0.8fr
+        0.8fr
+        1fr;
+
+    gap: 40px;
+
+    text-align: right;
+}
+
+.footer-brand,
+.footer-links,
+.footer-contact {
+    min-width: 0;
+}
+
+.footer-logo {
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    color: var(--color-primary);
+
+    font-size: 2rem;
+    font-weight: 700;
+
+    line-height: 1;
+
+    text-decoration: none;
+}
+
+.footer-brand p {
+    max-width: 360px;
+
+    margin: 0;
+
+    color: var(--color-gray);
+
+    font-size: 0.9rem;
+}
+
+.footer-links h3,
+.footer-contact h3 {
+    margin: 0 0 14px;
+
+    color: var(--color-primary);
+
+    font-size: 1rem;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-links a,
+.footer-email {
+    width: fit-content;
+
+    margin-bottom: 8px;
+
+    color: var(--color-gray);
+
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease;
+}
+
+.footer-links a:hover,
+.footer-email:hover {
+    color: var(--color-primary);
+}
+
+.footer-socials {
+    margin-top: 15px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+}
+
+.footer-socials a {
+    width: 37px;
+    height: 37px;
+
+    border-radius: 9px;
+
+    color: var(--color-primary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.footer-socials a:hover {
+    background-color: var(--color-accent);
+
+    transform: translateY(-2px);
+}
+
+.footer-socials svg {
+    width: 18px;
+    height: 18px;
+
+    fill: currentColor;
+}
+
+.footer-bottom {
+    width: min(1180px, calc(100% - 40px));
+
+    margin: 0 auto;
+
+    padding: 18px 0 22px;
+
+    border-top: 1px solid rgba(62, 39, 35, 0.12);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    color: var(--color-gray);
+
+    font-size: 12px;
+
+    text-align: right;
+}
+
+.footer-bottom p {
     margin: 0;
 }
 
+.footer-bottom span {
+    display: block;
+}
 
-/* =========================
+
+/* =========================================================
+   تحسينات عامة للأزرار والحقول
+========================================================= */
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+input::placeholder,
+textarea::placeholder {
+    opacity: 1;
+}
+
+
+/* =========================================================
    الجوال
-========================= */
+========================================================= */
+
+@media (max-width: 1024px) {
+
+    .poets-container {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+    .footer-container {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+@media (max-width: 900px) {
+
+    .articles-container {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .poets-container {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .about-services {
+        grid-template-columns:
+            1fr;
+    }
+
+    .about-mission-card {
+        grid-template-columns:
+            85px minmax(0, 1fr);
+    }
+
+    .about-mission-icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    .about-mission-icon svg {
+        width: 40px;
+        height: 40px;
+    }
+}
+
 
 @media (max-width: 768px) {
 
@@ -1897,6 +3316,12 @@ video {
         padding: 60px 18px;
     }
 
+    .page-hero {
+        min-height: 320px;
+
+        padding: 65px 18px;
+    }
+
     .section-cards {
         grid-template-columns: 1fr;
 
@@ -1907,16 +3332,79 @@ video {
         width: min(340px, 90vw);
     }
 
+    .notification-panel {
+        top: 80px;
+    }
+
+    .articles-toolbar,
+    .poets-toolbar {
+        width: min(100% - 30px, 700px);
+
+        grid-template-columns: 1fr;
+
+        padding: 25px 0;
+    }
+
+    .articles-list,
+    .poets-list {
+        width: min(100% - 30px, 700px);
+
+        padding-bottom: 60px;
+    }
+
+    .articles-container {
+        grid-template-columns: 1fr;
+    }
+
+    .poets-container {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 14px;
+    }
+
+    .article-card-image {
+        height: 220px;
+    }
+
+    .content-section {
+        width: min(100% - 30px, 700px);
+
+        padding: 40px 0;
+    }
+
+    .content-card {
+        padding: 25px 20px;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-mission-card {
+        grid-template-columns: 1fr;
+
+        text-align: center;
+    }
+
+    .about-mission-icon {
+        margin: 0 auto;
+    }
+
+    .about-mission-card .section-label {
+        margin-top: 5px;
+    }
+
+    .about-mission-card h2 {
+        font-size: 1.45rem;
+    }
+
     .profile-page {
         padding: 40px 15px 60px;
     }
 
     .profile-card {
         padding: 25px 18px;
-    }
-
-    .profile-form {
-        grid-template-columns: 1fr;
     }
 
     .profile-fields {
@@ -1943,48 +3431,133 @@ video {
     .profile-logout-button {
         flex: 1;
     }
+
+    .footer-container {
+        width: min(100% - 30px, 700px);
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 30px;
+    }
+
+    .footer-bottom {
+        width: min(100% - 30px, 700px);
+
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 
 
-/* =========================
-   الشاشات الصغيرة جدًا
-========================= */
+/* =========================================================
+   الشاشات الصغيرة
+========================================================= */
 
-@media (max-width: 430px) {
+@media (max-width: 520px) {
+
+    .site-logo {
+        font-size: 1.8rem;
+    }
 
     .header-container {
         gap: 5px;
     }
 
-    .site-logo {
-        font-size: 1.7rem;
+    .notification-button,
+    .menu-button {
+        width: 41px;
+        height: 41px;
     }
 
-    .login-button {
-        display: none;
+    .notification-icon {
+        width: 21px;
+        height: 21px;
     }
 
-    .hero-actions {
-        flex-direction: column;
+    .page-hero {
+        min-height: 290px;
+
+        padding: 55px 15px;
     }
 
-    .primary-button,
-    .secondary-button {
-        width: min(280px, 100%);
+    .page-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .page-hero p {
+        font-size: 0.92rem;
+    }
+
+    .articles-search input,
+    .articles-filter select {
+        min-height: 50px;
+    }
+
+    .articles-container {
+        gap: 15px;
+    }
+
+    .poets-container {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+    .poet-card {
+        padding: 25px 20px;
+    }
+
+    .article-card-image {
+        height: 200px;
+    }
+
+    .articles-empty,
+    .articles-loading,
+    .poets-empty,
+    .poets-loading {
+        padding: 55px 15px;
+    }
+
+    .about-final {
+        padding: 65px 18px 80px;
+    }
+
+    .about-final-mark {
+        width: 72px;
+        height: 72px;
+
+        font-size: 1.4rem;
+    }
+
+    .content-card {
+        padding: 22px 17px;
+    }
+
+    .about-feature-card {
+        min-height: 0;
+    }
+
+    .about-services {
+        gap: 10px;
+    }
+
+    .about-service {
+        min-height: 135px;
+
+        padding: 17px;
     }
 
     .login-box {
         padding: 30px 20px;
     }
 
-    .account-dropdown {
-        left: -8px;
-
-        width: 175px;
+    .profile-card {
+        padding: 22px 15px;
     }
 
-    .qafiyah-account-dropdown {
-        min-width: 175px;
+    .profile-photo {
+        width: 110px;
+        height: 110px;
     }
 
     .profile-avatar {
@@ -2000,11 +3573,6 @@ video {
 
     .profile-avatar-actions button {
         width: 100%;
-    }
-
-    .profile-photo {
-        width: 110px;
-        height: 110px;
     }
 
     .profile-photo-actions {
@@ -2037,5 +3605,108 @@ video {
 
     .profile-login-form .birth-date-fields {
         grid-template-columns: 1fr;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+
+        text-align: center;
+    }
+
+    .footer-brand p {
+        max-width: 100%;
+    }
+
+    .footer-links a,
+    .footer-email {
+        width: auto;
+    }
+
+    .footer-socials {
+        justify-content: center;
+    }
+
+    .footer-bottom {
+        align-items: center;
+
+        text-align: center;
+    }
+}
+
+
+/* =========================================================
+   الشاشات الصغيرة جدًا
+========================================================= */
+
+@media (max-width: 430px) {
+
+    .header-container {
+        gap: 3px;
+    }
+
+    .site-logo {
+        font-size: 1.65rem;
+    }
+
+    .login-button {
+        display: none;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+    }
+
+    .primary-button,
+    .secondary-button {
+        width: min(280px, 100%);
+    }
+
+    .account-dropdown {
+        left: -8px;
+
+        width: 175px;
+    }
+
+    .qafiyah-account-dropdown {
+        min-width: 175px;
+    }
+
+    .notification-panel {
+        left: 10px;
+
+        width: calc(100vw - 20px);
+    }
+
+    .side-menu {
+        width: min(320px, 92vw);
+    }
+
+    .poet-card-image {
+        width: 95px;
+        height: 95px;
+    }
+
+    .about-mission-card {
+        padding: 25px 18px;
+    }
+}
+
+
+/* =========================================================
+   تقليل الحركة لمن يفضل ذلك
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
     }
 }

@@ -34,16 +34,20 @@
                 class="menu-button"
                 id="menuButton"
                 type="button"
-                aria-label="القائمة">
+                aria-label="القائمة"
+                title="القائمة">
 
-                ☰
+                <span></span>
+                <span></span>
+                <span></span>
 
             </button>
 
 
             <a
                 href="index.html"
-                class="site-logo">
+                class="site-logo"
+                aria-label="قافية">
 
                 قافية
 
@@ -53,11 +57,16 @@
             <div class="header-actions">
 
 
+                <!-- =================================================
+                     الإشعارات
+                ================================================== -->
+
                 <button
                     class="notification-button"
                     id="notificationButton"
                     type="button"
-                    aria-label="الإشعارات">
+                    aria-label="الإشعارات"
+                    title="الإشعارات">
 
                     <svg
                         class="notification-icon"
@@ -92,6 +101,10 @@
                 </button>
 
 
+                <!-- =================================================
+                     تسجيل الدخول
+                ================================================== -->
+
                 <button
                     class="login-button"
                     id="loginButton"
@@ -109,8 +122,9 @@
     </header>
 
 
+
     <!-- =====================================================
-         القائمة الجانبية
+         طبقة القائمة
     ====================================================== -->
 
     <div
@@ -119,9 +133,16 @@
     </div>
 
 
+
+    <!-- =====================================================
+         القائمة الجانبية
+    ====================================================== -->
+
     <aside
         class="side-menu"
-        id="sideMenu">
+        id="sideMenu"
+        aria-hidden="true">
+
 
         <div class="side-menu-header">
 
@@ -129,10 +150,12 @@
                 القائمة
             </h2>
 
+
             <button
                 class="close-menu-button"
                 id="closeMenuButton"
-                type="button">
+                type="button"
+                aria-label="إغلاق القائمة">
 
                 ×
 
@@ -141,9 +164,15 @@
         </div>
 
 
+
+        <!-- =================================================
+             المستخدم
+        ================================================== -->
+
         <div
             class="user-section"
             id="userSection">
+
 
             <div class="user-avatar">
 
@@ -154,7 +183,8 @@
                     stroke="currentColor"
                     stroke-width="1.8"
                     stroke-linecap="round"
-                    stroke-linejoin="round">
+                    stroke-linejoin="round"
+                    aria-hidden="true">
 
                     <circle
                         cx="12"
@@ -174,15 +204,11 @@
             <div class="user-info">
 
                 <strong id="menuUserName">
-
                     مرحبًا بك
-
                 </strong>
 
                 <span id="menuUserEmail">
-
                     سجّل الدخول للمتابعة
-
                 </span>
 
             </div>
@@ -190,14 +216,24 @@
         </div>
 
 
-        <nav class="side-navigation">
+
+        <!-- =================================================
+             التنقل
+        ================================================== -->
+
+        <nav
+            class="side-navigation"
+            aria-label="التنقل الرئيسي">
 
 
             <a
                 href="profile.html"
-                id="profileLink">
+                id="profileLink"
+                class="active">
 
-                <span>◉</span>
+                <span aria-hidden="true">
+                    ◉
+                </span>
 
                 <span>
                     الملف الشخصي
@@ -210,7 +246,9 @@
                 href="#"
                 id="favoritesLink">
 
-                <span>♡</span>
+                <span aria-hidden="true">
+                    ♡
+                </span>
 
                 <span>
                     المفضلة
@@ -223,7 +261,9 @@
                 href="#"
                 id="settingsLink">
 
-                <span>⚙</span>
+                <span aria-hidden="true">
+                    ⚙
+                </span>
 
                 <span>
                     الإعدادات
@@ -237,25 +277,28 @@
     </aside>
 
 
+
     <!-- =====================================================
          الإشعارات
     ====================================================== -->
 
     <aside
         class="notification-panel"
-        id="notificationPanel">
+        id="notificationPanel"
+        aria-hidden="true">
+
 
         <div class="notification-header">
 
             <h3>
-
                 الإشعارات
-
             </h3>
+
 
             <button
                 id="closeNotificationButton"
-                type="button">
+                type="button"
+                aria-label="إغلاق الإشعارات">
 
                 ×
 
@@ -264,8 +307,7 @@
         </div>
 
 
-        <div
-            class="notification-content">
+        <div class="notification-content">
 
             لا توجد إشعارات جديدة.
 
@@ -274,42 +316,54 @@
     </aside>
 
 
+
     <!-- =====================================================
          صفحة الملف الشخصي
     ====================================================== -->
 
     <main class="profile-page">
 
+
         <section class="profile-container">
+
+
+            <!-- =================================================
+                 العنوان
+            ================================================== -->
 
             <div class="profile-heading">
 
                 <h1>
-
                     الملف الشخصي
-
                 </h1>
 
                 <p>
-
                     إدارة معلومات حسابك الشخصي
-
                 </p>
 
             </div>
 
 
+
+            <!-- =================================================
+                 البطاقة الرئيسية
+            ================================================== -->
+
             <div class="profile-card">
 
 
-                <!-- الصورة -->
+                <!-- =================================================
+                     الصورة الشخصية
+                ================================================== -->
 
                 <div class="profile-photo-section">
 
 
                     <div
                         class="profile-photo"
-                        id="profileAvatar">
+                        id="profileAvatar"
+                        aria-label="الصورة الشخصية">
+
 
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -318,7 +372,8 @@
                             stroke="currentColor"
                             stroke-width="1.8"
                             stroke-linecap="round"
-                            stroke-linejoin="round">
+                            stroke-linejoin="round"
+                            aria-hidden="true">
 
                             <circle
                                 cx="12"
@@ -332,8 +387,14 @@
 
                         </svg>
 
+
                     </div>
 
+
+
+                    <!-- =================================================
+                         أزرار الصورة
+                    ================================================== -->
 
                     <div class="profile-photo-actions">
 
@@ -377,7 +438,10 @@
                 </div>
 
 
-                <!-- البيانات -->
+
+                <!-- =================================================
+                     بيانات الحساب
+                ================================================== -->
 
                 <form
                     id="profileForm"
@@ -386,6 +450,8 @@
 
                     <div class="profile-fields">
 
+
+                        <!-- الاسم الأول -->
 
                         <div class="profile-field">
 
@@ -399,10 +465,14 @@
                             <input
                                 type="text"
                                 id="profileFirstName"
+                                autocomplete="given-name"
                                 required>
 
                         </div>
 
+
+
+                        <!-- اسم العائلة -->
 
                         <div class="profile-field">
 
@@ -415,10 +485,14 @@
 
                             <input
                                 type="text"
-                                id="profileLastName">
+                                id="profileLastName"
+                                autocomplete="family-name">
 
                         </div>
 
+
+
+                        <!-- البريد -->
 
                         <div class="profile-field">
 
@@ -432,10 +506,14 @@
                             <input
                                 type="email"
                                 id="profileEmailDetails"
+                                autocomplete="email"
                                 readonly>
 
                         </div>
 
+
+
+                        <!-- الجوال -->
 
                         <div class="profile-field">
 
@@ -450,10 +528,14 @@
                                 type="tel"
                                 id="profilePhone"
                                 inputmode="tel"
+                                autocomplete="tel"
                                 placeholder="+9665XXXXXXXX">
 
                         </div>
 
+
+
+                        <!-- يوم الميلاد -->
 
                         <div class="profile-field">
 
@@ -469,15 +551,16 @@
                                 required>
 
                                 <option value="">
-
                                     اليوم
-
                                 </option>
 
                             </select>
 
                         </div>
 
+
+
+                        <!-- شهر الميلاد -->
 
                         <div class="profile-field">
 
@@ -493,28 +576,64 @@
                                 required>
 
                                 <option value="">
-
                                     الشهر
-
                                 </option>
 
-                                <option value="1">يناير</option>
-                                <option value="2">فبراير</option>
-                                <option value="3">مارس</option>
-                                <option value="4">أبريل</option>
-                                <option value="5">مايو</option>
-                                <option value="6">يونيو</option>
-                                <option value="7">يوليو</option>
-                                <option value="8">أغسطس</option>
-                                <option value="9">سبتمبر</option>
-                                <option value="10">أكتوبر</option>
-                                <option value="11">نوفمبر</option>
-                                <option value="12">ديسمبر</option>
+                                <option value="1">
+                                    يناير
+                                </option>
+
+                                <option value="2">
+                                    فبراير
+                                </option>
+
+                                <option value="3">
+                                    مارس
+                                </option>
+
+                                <option value="4">
+                                    أبريل
+                                </option>
+
+                                <option value="5">
+                                    مايو
+                                </option>
+
+                                <option value="6">
+                                    يونيو
+                                </option>
+
+                                <option value="7">
+                                    يوليو
+                                </option>
+
+                                <option value="8">
+                                    أغسطس
+                                </option>
+
+                                <option value="9">
+                                    سبتمبر
+                                </option>
+
+                                <option value="10">
+                                    أكتوبر
+                                </option>
+
+                                <option value="11">
+                                    نوفمبر
+                                </option>
+
+                                <option value="12">
+                                    ديسمبر
+                                </option>
 
                             </select>
 
                         </div>
 
+
+
+                        <!-- سنة الميلاد -->
 
                         <div class="profile-field">
 
@@ -530,15 +649,16 @@
                                 required>
 
                                 <option value="">
-
                                     السنة
-
                                 </option>
 
                             </select>
 
                         </div>
 
+
+
+                        <!-- الجنس -->
 
                         <div class="profile-field">
 
@@ -554,21 +674,15 @@
                                 required>
 
                                 <option value="">
-
                                     اختر
-
                                 </option>
 
                                 <option value="male">
-
                                     ذكر
-
                                 </option>
 
                                 <option value="female">
-
                                     أنثى
-
                                 </option>
 
                             </select>
@@ -578,6 +692,11 @@
 
                     </div>
 
+
+
+                    <!-- =================================================
+                         أزرار الحساب
+                    ================================================== -->
 
                     <div class="profile-save-area">
 
@@ -605,9 +724,15 @@
                     </div>
 
 
+
+                    <!-- =================================================
+                         رسائل النظام
+                    ================================================== -->
+
                     <p
                         id="profileMessage"
-                        class="profile-message">
+                        class="profile-message"
+                        aria-live="polite">
                     </p>
 
 
@@ -621,13 +746,15 @@
     </main>
 
 
+
     <!-- =====================================================
          نافذة تسجيل الدخول
     ====================================================== -->
 
     <div
         class="login-modal"
-        id="loginModal">
+        id="loginModal"
+        aria-hidden="true">
 
 
         <div class="login-box">
@@ -636,32 +763,38 @@
             <button
                 class="close-login-button"
                 id="closeLoginButton"
-                type="button">
+                type="button"
+                aria-label="إغلاق">
 
                 ×
 
             </button>
 
 
+
+            <!-- =================================================
+                 تسجيل الدخول
+            ================================================== -->
+
             <div id="loginForm">
 
 
                 <h2>
-
                     تسجيل الدخول
-
                 </h2>
 
 
                 <input
                     type="email"
                     id="emailLogin"
+                    autocomplete="email"
                     placeholder="البريد الإلكتروني">
 
 
                 <input
                     type="password"
                     id="passwordLogin"
+                    autocomplete="current-password"
                     placeholder="كلمة المرور">
 
 
@@ -689,7 +822,6 @@
 
                     ليس لديك حساب؟
 
-
                     <button
                         type="button"
                         id="showRegisterButton">
@@ -704,28 +836,34 @@
             </div>
 
 
+
+            <!-- =================================================
+                 إنشاء الحساب
+            ================================================== -->
+
             <div
                 id="registerForm"
-                style="display:none;">
+                style="display: none;">
 
 
                 <h2>
-
                     إنشاء حساب
-
                 </h2>
 
 
                 <input
                     type="text"
                     id="firstName"
+                    autocomplete="given-name"
                     placeholder="الاسم الأول">
 
 
                 <input
                     type="text"
                     id="lastName"
+                    autocomplete="family-name"
                     placeholder="اسم العائلة">
+
 
 
                 <div class="birth-date-fields">
@@ -734,9 +872,7 @@
                     <select id="birthDay">
 
                         <option value="">
-
                             اليوم
-
                         </option>
 
                     </select>
@@ -745,23 +881,56 @@
                     <select id="birthMonth">
 
                         <option value="">
-
                             الشهر
-
                         </option>
 
-                        <option value="1">يناير</option>
-                        <option value="2">فبراير</option>
-                        <option value="3">مارس</option>
-                        <option value="4">أبريل</option>
-                        <option value="5">مايو</option>
-                        <option value="6">يونيو</option>
-                        <option value="7">يوليو</option>
-                        <option value="8">أغسطس</option>
-                        <option value="9">سبتمبر</option>
-                        <option value="10">أكتوبر</option>
-                        <option value="11">نوفمبر</option>
-                        <option value="12">ديسمبر</option>
+                        <option value="1">
+                            يناير
+                        </option>
+
+                        <option value="2">
+                            فبراير
+                        </option>
+
+                        <option value="3">
+                            مارس
+                        </option>
+
+                        <option value="4">
+                            أبريل
+                        </option>
+
+                        <option value="5">
+                            مايو
+                        </option>
+
+                        <option value="6">
+                            يونيو
+                        </option>
+
+                        <option value="7">
+                            يوليو
+                        </option>
+
+                        <option value="8">
+                            أغسطس
+                        </option>
+
+                        <option value="9">
+                            سبتمبر
+                        </option>
+
+                        <option value="10">
+                            أكتوبر
+                        </option>
+
+                        <option value="11">
+                            نوفمبر
+                        </option>
+
+                        <option value="12">
+                            ديسمبر
+                        </option>
 
                     </select>
 
@@ -769,9 +938,7 @@
                     <select id="birthYear">
 
                         <option value="">
-
                             السنة
-
                         </option>
 
                     </select>
@@ -780,44 +947,43 @@
                 </div>
 
 
+
                 <select id="gender">
 
                     <option value="">
-
                         الجنس
-
                     </option>
 
                     <option value="male">
-
                         ذكر
-
                     </option>
 
                     <option value="female">
-
                         أنثى
-
                     </option>
 
                 </select>
 
 
+
                 <input
                     type="email"
                     id="emailRegister"
+                    autocomplete="email"
                     placeholder="البريد الإلكتروني">
 
 
                 <input
                     type="password"
                     id="passwordRegister"
+                    autocomplete="new-password"
                     placeholder="كلمة المرور">
 
 
                 <input
                     type="password"
                     id="confirmPasswordRegister"
+                    autocomplete="new-password"
                     placeholder="تأكيد كلمة المرور">
 
 
@@ -831,10 +997,10 @@
                 </button>
 
 
+
                 <div class="login-register">
 
                     لديك حساب بالفعل؟
-
 
                     <button
                         type="button"
@@ -855,17 +1021,20 @@
     </div>
 
 
+
     <!-- =====================================================
-         المكتبات
+         Supabase
     ====================================================== -->
 
     <script
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
 
+
     <script
         src="supabase.js">
     </script>
+
 
     <script
         src="script.js">

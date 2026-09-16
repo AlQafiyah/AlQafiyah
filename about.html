@@ -1,168 +1,934 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <title>نبذة عن الموقع - قافية</title>
 
-    <link rel="stylesheet" href="style.css">
-    
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js" defer></script>
-<script src="script.js" defer></script>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta
+        name="theme-color"
+        content="#3E2723">
+
+    <meta
+        name="description"
+        content="نبذة عن قافية - موسوعة الشعر والأدب العربي">
+
+    <title>عن قافية | قافية</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+
+    <script
+        src="supabase.js"
+        defer>
+    </script>
+
+    <script
+        src="script.js"
+        defer>
+    </script>
+
 </head>
 
 <body>
 
-    <!-- الهيدر -->
+    <!-- ========================================================= -->
+    <!-- الرأس -->
+    <!-- ========================================================= -->
+
     <header class="site-header">
+
         <div class="header-container">
 
-            <button class="icon-button menu-button" id="menuButton" type="button" aria-label="فتح القائمة">
-                ☰
+            <button
+                class="menu-button"
+                id="menuButton"
+                type="button"
+                aria-label="فتح القائمة"
+                aria-expanded="false"
+                aria-controls="sideMenu">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
             </button>
 
-            <a href="index.html" class="site-logo">قافية</a>
+            <a
+                href="index.html"
+                class="site-logo"
+                aria-label="قافية - الصفحة الرئيسية">
+
+                قافية
+
+            </a>
 
             <div class="header-actions">
 
                 <button
-                    class="icon-button notification-button"
+                    class="notification-button"
                     id="notificationButton"
                     type="button"
-                    aria-label="الإشعارات"
-                >
-                    🔔
-                    <span id="notificationCount" class="notification-count">0</span>
+                    aria-label="الإشعارات">
+
+                    <svg
+                        class="notification-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path
+                            d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9">
+                        </path>
+
+                        <path
+                            d="M10 21h4">
+                        </path>
+
+                    </svg>
+
+                    <span
+                        class="notification-count"
+                        id="notificationCount">
+
+                        0
+
+                    </span>
+
                 </button>
 
                 <button
                     class="login-button"
                     id="loginButton"
-                    type="button"
-                >
+                    type="button">
+
                     تسجيل الدخول
+
                 </button>
 
             </div>
+
         </div>
+
     </header>
 
 
+    <!-- ========================================================= -->
+    <!-- طبقة القائمة -->
+    <!-- ========================================================= -->
+
+    <div
+        class="menu-overlay"
+        id="menuOverlay">
+    </div>
+
+
+    <!-- ========================================================= -->
     <!-- القائمة الجانبية -->
-    <aside class="side-menu" id="sideMenu">
+    <!-- ========================================================= -->
+
+    <aside
+        class="side-menu"
+        id="sideMenu"
+        aria-hidden="true">
 
         <div class="side-menu-header">
-            <h2>قافية</h2>
+
+            <h2>
+                قافية
+            </h2>
 
             <button
-                class="close-menu"
+                class="close-menu-button"
                 id="closeMenuButton"
                 type="button"
-                aria-label="إغلاق القائمة"
-            >
+                aria-label="إغلاق القائمة">
+
                 ×
+
             </button>
+
         </div>
 
-        <div class="side-menu-user">
-            <div class="user-avatar">👤</div>
 
-            <div>
-                <strong id="menuUserName">زائر</strong>
-                <span id="menuUserStatus">لم تسجل الدخول</span>
+        <div class="user-section">
+
+            <div class="user-avatar">
+                👤
             </div>
+
+            <div class="user-info">
+
+                <strong id="menuUserName">
+                    مرحبًا بك
+                </strong>
+
+                <span id="menuUserEmail">
+                    سجّل الدخول للوصول إلى حسابك
+                </span>
+
+            </div>
+
         </div>
 
-        <nav class="side-navigation">
+
+        <nav
+            class="side-navigation"
+            aria-label="القائمة الرئيسية">
 
             <a href="index.html">
+
                 <span>⌂</span>
-                الرئيسية
+
+                <span>
+                    الرئيسية
+                </span>
+
             </a>
+
 
             <a href="Poems.html">
+
                 <span>📜</span>
-                القصائد
+
+                <span>
+                    القصائد
+                </span>
+
             </a>
+
+
+            <a href="poets.html">
+
+                <span>✒</span>
+
+                <span>
+                    الشعراء
+                </span>
+
+            </a>
+
 
             <a href="articles.html">
+
                 <span>📝</span>
-                المقالات
+
+                <span>
+                    المقالات
+                </span>
+
             </a>
 
-            <a href="#" id="profileLink">
+
+            <a
+                href="profile.html"
+                id="profileLink">
+
                 <span>👤</span>
-                الملف الشخصي
+
+                <span>
+                    الملف الشخصي
+                </span>
+
             </a>
 
-            <a href="#" id="favoritesLink">
+
+            <a
+                href="#"
+                id="favoritesLink">
+
                 <span>⭐</span>
-                المفضلة
+
+                <span>
+                    المفضلة
+                </span>
+
             </a>
 
-            <a href="#" id="settingsLink">
+
+            <a
+                href="#"
+                id="settingsLink">
+
                 <span>⚙️</span>
-                الإعدادات
+
+                <span>
+                    الإعدادات
+                </span>
+
             </a>
 
-            <a href="about.html">
-                <span>ℹ️</span>
-                نبذة عن الموقع
+
+            <a
+                href="about.html"
+                class="active">
+
+                <span>ℹ</span>
+
+                <span>
+                    نبذة عن قافية
+                </span>
+
             </a>
 
         </nav>
 
+
+        <!-- ===================================================== -->
+        <!-- تذييل القائمة -->
+        <!-- ===================================================== -->
+
+        <div class="side-menu-footer">
+
+            <div class="side-menu-socials">
+
+                <a
+                    href="#"
+                    aria-label="X"
+                    title="X">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true">
+
+                        <path
+                            d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.38L6.49 22H3.38l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.52h1.73L8.29 4.34H6.43L17.8 19.52Z">
+                        </path>
+
+                    </svg>
+
+                </a>
+
+
+                <a
+                    href="#"
+                    aria-label="Instagram"
+                    title="Instagram">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        aria-hidden="true">
+
+                        <rect
+                            x="3"
+                            y="3"
+                            width="18"
+                            height="18"
+                            rx="5">
+                        </rect>
+
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="4">
+                        </circle>
+
+                        <circle
+                            cx="17.5"
+                            cy="6.5"
+                            r="1">
+                        </circle>
+
+                    </svg>
+
+                </a>
+
+
+                <a
+                    href="#"
+                    aria-label="YouTube"
+                    title="YouTube">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path
+                            d="M21 7.2a2.8 2.8 0 0 0-2-2C17.2 4.7 12 4.7 12 4.7s-5.2 0-7 .5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2.5 12 29 29 0 0 0 3 16.8a2.8 2.8 0 0 0 2 2c1.8.5 7 .5 7 .5s5.2 0 7-.5a2.8 2.8 0 0 0 2-2 29 29 0 0 0 .5-4.8A29 29 0 0 0 21 7.2Z">
+                        </path>
+
+                        <path
+                            d="m10 15.5 5-3.5-5-3.5v7Z"
+                            fill="currentColor"
+                            stroke="none">
+                        </path>
+
+                    </svg>
+
+                </a>
+
+
+                <a
+                    href="mailto:"
+                    aria-label="البريد الإلكتروني"
+                    title="البريد الإلكتروني">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <rect
+                            x="3"
+                            y="5"
+                            width="18"
+                            height="14"
+                            rx="2">
+                        </rect>
+
+                        <path
+                            d="m3 7 9 6 9-6">
+                        </path>
+
+                    </svg>
+
+                </a>
+
+            </div>
+
+
+            <p>
+                © قافية
+            </p>
+
+        </div>
+
     </aside>
 
 
-    <!-- خلفية القائمة -->
-    <div class="menu-overlay" id="menuOverlay"></div>
-
-
+    <!-- ========================================================= -->
     <!-- لوحة الإشعارات -->
-    <div class="notification-panel" id="notificationPanel">
+    <!-- ========================================================= -->
 
-        <div class="notification-panel-header">
-            <h3>الإشعارات</h3>
+    <div
+        class="notification-panel"
+        id="notificationPanel"
+        aria-hidden="true">
+
+        <div class="notification-header">
+
+            <h3>
+                الإشعارات
+            </h3>
+
+            <button
+                id="closeNotificationButton"
+                type="button"
+                aria-label="إغلاق الإشعارات">
+
+                ×
+
+            </button>
+
         </div>
 
-        <div class="notification-empty" id="notificationEmpty">
-            لا توجد إشعارات جديدة.
+
+        <div
+            class="notification-content"
+            id="notificationContent">
+
+            <p>
+                لا توجد إشعارات جديدة.
+            </p>
+
         </div>
 
     </div>
 
 
-    <!-- المحتوى -->
+    <!-- ========================================================= -->
+    <!-- المحتوى الرئيسي -->
+    <!-- ========================================================= -->
+
     <main>
 
+        <!-- ===================================================== -->
+        <!-- الواجهة الرئيسية -->
+        <!-- ===================================================== -->
+
         <section class="page-hero">
+
             <div class="hero-content">
 
-                <span class="section-label">عن قافية</span>
+                <span class="section-label">
+                    قافية | عن المنصة
+                </span>
 
-                <h1>نبذة عن الموقع</h1>
+                <h1>
+                    عن قافية
+                </h1>
 
                 <p>
-                    موسوعة تهدف الى الحفاظ على الشعر و الأدب العربي العريق
-                    وتسهيل الوصول اليه وتوثيقه
+                    موسوعة عربية تُعنى بالشعر والأدب،
+                    وتسعى إلى حفظ الموروث الأدبي العربي
+                    وتيسير الوصول إليه وتوثيقه.
                 </p>
 
             </div>
+
         </section>
 
+
+        <!-- ===================================================== -->
+        <!-- التعريف -->
+        <!-- ===================================================== -->
 
         <section class="content-section">
 
             <div class="content-card">
 
-                <h2>نبذة عن الموقع</h2>
+                <div class="about-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path
+                            d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20">
+                        </path>
+
+                        <path
+                            d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z">
+                        </path>
+
+                        <path
+                            d="M8 6h8">
+                        </path>
+
+                        <path
+                            d="M8 10h8">
+                        </path>
+
+                        <path
+                            d="M8 14h5">
+                        </path>
+
+                    </svg>
+
+                </div>
+
+                <span class="section-label">
+                    التعريف
+                </span>
+
+                <h2>
+                    ما هي قافية؟
+                </h2>
 
                 <p>
-                    موسوعة تهدف الى الحفاظ على الشعر و الأدب العربي العريق
-                    وتسهيل الوصول اليه وتوثيقه
+                    قافية موسوعة رقمية متخصصة في الشعر والأدب العربي،
+                    تجمع القصائد والشعراء والمقالات والمحتوى الأدبي
+                    في منصة واحدة، بهدف تسهيل الوصول إلى هذا الإرث
+                    الثقافي والمعرفي وحفظه بصورة منظمة.
                 </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================================== -->
+        <!-- الرسالة والرؤية -->
+        <!-- ===================================================== -->
+
+        <section class="content-section about-grid">
+
+            <div class="content-card about-feature-card">
+
+                <div class="about-feature-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="9">
+                        </circle>
+
+                        <path
+                            d="M3 12h18">
+                        </path>
+
+                        <path
+                            d="M12 3c2.4 2.6 3.6 5.6 3.6 9s-1.2 6.4-3.6 9c-2.4-2.6-3.6-5.6-3.6-9S9.6 5.6 12 3Z">
+                        </path>
+
+                    </svg>
+
+                </div>
+
+                <h2>
+                    الرؤية
+                </h2>
+
+                <p>
+                    أن تكون قافية مساحة رقمية موثوقة تجمع
+                    الشعر والأدب العربي وتجعله أكثر سهولة
+                    في الوصول والاكتشاف والقراءة.
+                </p>
+
+            </div>
+
+
+            <div class="content-card about-feature-card">
+
+                <div class="about-feature-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path
+                            d="M12 3 20 7.5 12 12 4 7.5 12 3Z">
+                        </path>
+
+                        <path
+                            d="m4 12 8 4.5 8-4.5">
+                        </path>
+
+                        <path
+                            d="m4 16.5 8 4.5 8-4.5">
+                        </path>
+
+                    </svg>
+
+                </div>
+
+                <h2>
+                    الرسالة
+                </h2>
+
+                <p>
+                    تنظيم المحتوى الشعري والأدبي العربي
+                    وتقديمه بصورة واضحة تساعد القارئ والباحث
+                    ومحبي الأدب على الوصول إلى ما يبحثون عنه.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================================== -->
+        <!-- ماذا تقدم قافية -->
+        <!-- ===================================================== -->
+
+        <section class="content-section">
+
+            <div class="content-card">
+
+                <div class="about-section-heading">
+
+                    <span class="section-label">
+                        المنصة
+                    </span>
+
+                    <h2>
+                        ماذا تقدم قافية؟
+                    </h2>
+
+                    <p>
+                        منظومة متكاملة لاكتشاف المحتوى الأدبي العربي
+                        والعودة إليه بسهولة.
+                    </p>
+
+                </div>
+
+
+                <div class="about-services">
+
+                    <a
+                        href="Poems.html"
+                        class="about-service">
+
+                        <div class="about-service-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true">
+
+                                <path
+                                    d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20">
+                                </path>
+
+                                <path
+                                    d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z">
+                                </path>
+
+                                <path
+                                    d="M8 7h8">
+                                </path>
+
+                                <path
+                                    d="M8 11h8">
+                                </path>
+
+                                <path
+                                    d="M8 15h5">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                القصائد
+                            </h3>
+
+                            <p>
+                                الوصول إلى القصائد واستكشافها
+                                والعودة إليها بسهولة.
+                            </p>
+
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        href="poets.html"
+                        class="about-service">
+
+                        <div class="about-service-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true">
+
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="3">
+                                </circle>
+
+                                <path
+                                    d="M5 20a7 7 0 0 1 14 0">
+                                </path>
+
+                                <path
+                                    d="M18 5.5a3 3 0 0 1 0 5">
+                                </path>
+
+                                <path
+                                    d="M20 19a5 5 0 0 0-2.8-4.5">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                الشعراء
+                            </h3>
+
+                            <p>
+                                التعرف على الشعراء وسيرهم
+                                وأعمالهم عبر العصور.
+                            </p>
+
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        href="articles.html"
+                        class="about-service">
+
+                        <div class="about-service-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true">
+
+                                <path
+                                    d="M4 4h16v16H4z">
+                                </path>
+
+                                <path
+                                    d="M8 8h8">
+                                </path>
+
+                                <path
+                                    d="M8 12h8">
+                                </path>
+
+                                <path
+                                    d="M8 16h5">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                المقالات
+                            </h3>
+
+                            <p>
+                                مقالات في الشعر والأدب والتاريخ
+                                والثقافة العربية.
+                            </p>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================================== -->
+        <!-- الحفظ والتوثيق -->
+        <!-- ===================================================== -->
+
+        <section class="content-section">
+
+            <div class="content-card about-mission-card">
+
+                <div class="about-mission-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path
+                            d="M12 3 20 6v5c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6l8-3Z">
+                        </path>
+
+                        <path
+                            d="m8.5 12 2.2 2.2 4.8-5">
+                        </path>
+
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <span class="section-label">
+                        حفظ الموروث
+                    </span>
+
+                    <h2>
+                        الشعر والأدب ذاكرةٌ تستحق الحفظ
+                    </h2>
+
+                    <p>
+                        يمثل الشعر العربي جزءًا أصيلًا من الذاكرة
+                        الثقافية العربية. وتسعى قافية إلى تقديم
+                        هذا الموروث في صورة رقمية منظمة، تساعد على
+                        اكتشافه وقراءته والرجوع إليه، مع إتاحة
+                        المحتوى ضمن منظومة قابلة للتوسع والتطوير.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================================== -->
+        <!-- خاتمة -->
+        <!-- ===================================================== -->
+
+        <section class="about-final">
+
+            <div class="about-final-content">
+
+                <div class="about-final-mark">
+                    قافية
+                </div>
+
+                <h2>
+                    من الشعر وإلى الشعر
+                </h2>
+
+                <p>
+                    مساحة تجمع الكلمة، والشاعر، والقصيدة،
+                    والمعرفة في مكان واحد.
+                </p>
+
+                <a
+                    href="index.html"
+                    class="primary-button">
+
+                    استكشف قافية
+
+                </a>
 
             </div>
 
@@ -171,72 +937,502 @@
     </main>
 
 
+    <!-- ========================================================= -->
     <!-- نافذة تسجيل الدخول -->
-    <div class="modal-overlay" id="loginModal">
+    <!-- ========================================================= -->
 
-        <div class="login-modal">
+    <div
+        class="login-modal"
+        id="loginModal"
+        aria-hidden="true">
+
+        <div class="login-box">
 
             <button
-                class="modal-close"
-                id="closeLoginModal"
+                class="close-login-button"
+                id="closeLoginButton"
                 type="button"
-                aria-label="إغلاق"
-            >
+                aria-label="إغلاق">
+
                 ×
+
             </button>
 
-            <h2>تسجيل الدخول</h2>
 
-            <p class="modal-description">
-                سجّل دخولك إلى قافية للوصول إلى حسابك ومزايا الموقع.
-            </p>
+            <div id="loginForm">
 
-            <button
-                class="apple-login-button"
-                id="appleLoginButton"
-                type="button"
-            >
-                 تسجيل الدخول باستخدام Apple
-            </button>
+                <h2>
+                    تسجيل الدخول
+                </h2>
 
-            <div class="login-divider">
-                <span>أو</span>
+                <p>
+                    سجّل دخولك إلى حسابك في قافية
+                </p>
+
+                <button
+                    class="login-method"
+                    id="appleLoginButton"
+                    type="button">
+
+                     تسجيل الدخول باستخدام Apple
+
+                </button>
+
+
+                <div class="login-divider">
+
+                    <span>
+                        أو
+                    </span>
+
+                </div>
+
+
+                <label for="emailLogin">
+                    البريد الإلكتروني
+                </label>
+
+                <input
+                    type="email"
+                    id="emailLogin"
+                    placeholder="أدخل بريدك الإلكتروني"
+                    autocomplete="email">
+
+
+                <label for="passwordLogin">
+                    كلمة المرور
+                </label>
+
+                <input
+                    type="password"
+                    id="passwordLogin"
+                    placeholder="أدخل كلمة المرور"
+                    autocomplete="current-password">
+
+
+                <button
+                    class="login-submit"
+                    id="emailLoginButton"
+                    type="button">
+
+                    تسجيل الدخول
+
+                </button>
+
+
+                <button
+                    class="login-register"
+                    id="showRegisterButton"
+                    type="button">
+
+                    إنشاء حساب جديد
+
+                </button>
+
             </div>
 
-            <label for="emailLogin">البريد الإلكتروني</label>
 
-            <input
-                type="email"
-                id="emailLogin"
-                placeholder="أدخل بريدك الإلكتروني"
-                autocomplete="email"
-            >
+            <div
+                id="registerForm"
+                style="display: none;">
 
-            <button
-                class="email-login-button"
-                id="emailLoginButton"
-                type="button"
-            >
-                تسجيل الدخول
-            </button>
+                <h2>
+                    إنشاء حساب
+                </h2>
 
-            <p class="login-note">
-                تسجيل الدخول برقم الجوال والتحقق عبر رمز OTP سيتم تفعيله لاحقًا.
-            </p>
+                <p>
+                    أنشئ حسابك في قافية
+                </p>
+
+
+                <label for="firstName">
+                    الاسم الأول
+                </label>
+
+                <input
+                    type="text"
+                    id="firstName"
+                    placeholder="الاسم الأول"
+                    autocomplete="given-name">
+
+
+                <label for="lastName">
+
+                    الاسم الأخير
+
+                    <span>
+                        (اختياري)
+                    </span>
+
+                </label>
+
+                <input
+                    type="text"
+                    id="lastName"
+                    placeholder="الاسم الأخير"
+                    autocomplete="family-name">
+
+
+                <label>
+                    تاريخ الميلاد
+                </label>
+
+                <div class="birth-date-fields">
+
+                    <select id="birthDay">
+
+                        <option value="">
+                            اليوم
+                        </option>
+
+                    </select>
+
+
+                    <select id="birthMonth">
+
+                        <option value="">
+                            الشهر
+                        </option>
+
+                        <option value="1">يناير</option>
+                        <option value="2">فبراير</option>
+                        <option value="3">مارس</option>
+                        <option value="4">أبريل</option>
+                        <option value="5">مايو</option>
+                        <option value="6">يونيو</option>
+                        <option value="7">يوليو</option>
+                        <option value="8">أغسطس</option>
+                        <option value="9">سبتمبر</option>
+                        <option value="10">أكتوبر</option>
+                        <option value="11">نوفمبر</option>
+                        <option value="12">ديسمبر</option>
+
+                    </select>
+
+
+                    <select id="birthYear">
+
+                        <option value="">
+                            السنة
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <label for="gender">
+                    الجنس
+                </label>
+
+                <select id="gender">
+
+                    <option value="">
+                        اختر الجنس
+                    </option>
+
+                    <option value="male">
+                        ذكر
+                    </option>
+
+                    <option value="female">
+                        أنثى
+                    </option>
+
+                </select>
+
+
+                <label for="emailRegister">
+                    البريد الإلكتروني
+                </label>
+
+                <input
+                    type="email"
+                    id="emailRegister"
+                    placeholder="أدخل بريدك الإلكتروني"
+                    autocomplete="email">
+
+
+                <label for="passwordRegister">
+                    كلمة المرور
+                </label>
+
+                <input
+                    type="password"
+                    id="passwordRegister"
+                    placeholder="6 أحرف على الأقل"
+                    autocomplete="new-password">
+
+
+                <label for="confirmPasswordRegister">
+                    تأكيد كلمة المرور
+                </label>
+
+                <input
+                    type="password"
+                    id="confirmPasswordRegister"
+                    placeholder="أعد كتابة كلمة المرور"
+                    autocomplete="new-password">
+
+
+                <button
+                    class="login-submit"
+                    id="registerSubmitButton"
+                    type="button">
+
+                    إنشاء الحساب
+
+                </button>
+
+
+                <button
+                    class="login-register"
+                    id="showLoginButton"
+                    type="button">
+
+                    لدي حساب بالفعل
+
+                </button>
+
+            </div>
 
         </div>
 
     </div>
 
 
+    <!-- ========================================================= -->
     <!-- التذييل -->
+    <!-- ========================================================= -->
+
     <footer class="site-footer">
 
-        <p>
-            © قافية - موسوعة الشعر والأدب العربي
-        </p>
+        <div class="footer-container">
+
+            <div class="footer-brand">
+
+                <a
+                    href="index.html"
+                    class="footer-logo">
+
+                    قافية
+
+                </a>
+
+                <p>
+                    موسوعة عربية مختصة في الشعر والأدب العربي،
+                    تجمع القصائد والشعراء والمقالات في مكان واحد.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <h3>
+                    استكشف
+                </h3>
+
+                <a href="Poems.html">
+                    القصائد
+                </a>
+
+                <a href="poets.html">
+                    الشعراء
+                </a>
+
+                <a href="articles.html">
+                    المقالات
+                </a>
+
+                <a href="about.html">
+                    نبذة عن قافية
+                </a>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <h3>
+                    الحساب
+                </h3>
+
+                <a href="profile.html">
+                    الملف الشخصي
+                </a>
+
+                <a
+                    href="#"
+                    id="footerFavoritesLink">
+
+                    المفضلة
+
+                </a>
+
+                <a
+                    href="#"
+                    id="footerSettingsLink">
+
+                    الإعدادات
+
+                </a>
+
+            </div>
+
+
+            <div class="footer-contact">
+
+                <h3>
+                    تواصل معنا
+                </h3>
+
+                <a
+                    href="mailto:"
+                    class="footer-email">
+
+                    البريد الإلكتروني
+
+                </a>
+
+
+                <div class="footer-socials">
+
+                    <a
+                        href="#"
+                        aria-label="X"
+                        title="X">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true">
+
+                            <path
+                                d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.38L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.52h1.73L8.29 4.34H6.43L17.8 19.52Z">
+                            </path>
+
+                        </svg>
+
+                    </a>
+
+
+                    <a
+                        href="#"
+                        aria-label="Instagram"
+                        title="Instagram">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            aria-hidden="true">
+
+                            <rect
+                                x="3"
+                                y="3"
+                                width="18"
+                                height="18"
+                                rx="5">
+                            </rect>
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="4">
+                            </circle>
+
+                            <circle
+                                cx="17.5"
+                                cy="6.5"
+                                r="1">
+                            </circle>
+
+                        </svg>
+
+                    </a>
+
+
+                    <a
+                        href="#"
+                        aria-label="YouTube"
+                        title="YouTube">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linejoin="round"
+                            aria-hidden="true">
+
+                            <path
+                                d="M21 7.2a2.8 2.8 0 0 0-2-2C17.2 4.7 12 4.7 12 4.7s-5.2 0-7 .5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2.5 12 29 29 0 0 0 3 16.8a2.8 2.8 0 0 0 2 2c1.8.5 7 .5 7 .5s5.2 0 7-.5a2.8 2.8 0 0 0 2-2 29 29 0 0 0 .5-4.8A29 29 0 0 0 21 7.2Z">
+                            </path>
+
+                            <path
+                                d="m10 15.5 5-3.5-5-3.5v7Z"
+                                fill="currentColor"
+                                stroke="none">
+                            </path>
+
+                        </svg>
+
+                    </a>
+
+
+                    <a
+                        href="mailto:"
+                        aria-label="البريد الإلكتروني"
+                        title="البريد الإلكتروني">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true">
+
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="14"
+                                rx="2">
+                            </rect>
+
+                            <path
+                                d="m3 7 9 6 9-6">
+                            </path>
+
+                        </svg>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 قافية — جميع الحقوق محفوظة
+            </p>
+
+            <span>
+                موسوعة الشعر والأدب العربي
+            </span>
+
+        </div>
 
     </footer>
 
 </body>
+
 </html>
+```
