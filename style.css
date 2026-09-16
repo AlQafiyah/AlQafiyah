@@ -53,11 +53,6 @@ body {
     line-height: 1.7;
 }
 
-
-/* =========================
-   الروابط والأزرار
-========================= */
-
 a {
     color: inherit;
 }
@@ -178,6 +173,10 @@ button {
 
     cursor: pointer;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     transition:
         background-color 0.25s ease,
         transform 0.25s ease;
@@ -186,6 +185,12 @@ button {
 .notification-button:hover {
     background-color: var(--color-accent);
     transform: scale(1.05);
+}
+
+.notification-icon {
+    width: 22px;
+    height: 22px;
+    display: block;
 }
 
 .notification-count {
@@ -241,6 +246,145 @@ button {
 .login-button:hover {
     background-color: transparent;
     color: var(--color-primary);
+}
+
+
+/* =========================
+   منطقة الحساب
+========================= */
+
+.account-area {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+}
+
+.account-avatar-button {
+    width: 44px;
+    height: 44px;
+
+    padding: 0;
+
+    border: 1px solid rgba(62, 39, 35, 0.15);
+    border-radius: 50%;
+
+    background-color: var(--color-primary);
+    color: var(--color-light);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.account-avatar-button:hover {
+    transform: scale(1.04);
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.account-avatar-image {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.account-avatar-default {
+    width: 23px;
+    height: 23px;
+
+    display: block;
+}
+
+
+/* =========================
+   قائمة الحساب الصغيرة
+========================= */
+
+.account-dropdown {
+    position: absolute;
+
+    top: calc(100% + 10px);
+    left: 0;
+
+    width: 190px;
+
+    padding: 8px;
+
+    border: 1px solid rgba(62, 39, 35, 0.10);
+    border-radius: 14px;
+
+    background-color: var(--color-light);
+    color: var(--color-primary);
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.16);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-6px);
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease,
+        transform 0.2s ease;
+
+    z-index: 2500;
+}
+
+.account-dropdown.open {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+.account-dropdown a,
+.account-dropdown button {
+    width: 100%;
+
+    min-height: 44px;
+
+    padding: 9px 12px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: transparent;
+    color: var(--color-primary);
+
+    text-decoration: none;
+
+    display: flex;
+    align-items: center;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    text-align: right;
+
+    transition:
+        background-color 0.2s ease;
+}
+
+.account-dropdown a:hover,
+.account-dropdown button:hover {
+    background-color: var(--color-accent);
 }
 
 
@@ -363,6 +507,8 @@ button {
     display: flex;
     align-items: center;
     gap: 12px;
+
+    cursor: pointer;
 }
 
 .user-avatar {
@@ -381,6 +527,15 @@ button {
     font-size: 22px;
 
     flex-shrink: 0;
+
+    overflow: hidden;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
 }
 
 .user-info {
@@ -400,6 +555,10 @@ button {
     font-size: 12px;
 
     line-height: 1.5;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 
@@ -914,6 +1073,282 @@ button {
 
 
 /* =========================
+   تاريخ الميلاد
+========================= */
+
+.birth-date-fields {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 8px;
+}
+
+
+/* =========================
+   صفحة الملف الشخصي
+========================= */
+
+.profile-page {
+    min-height: calc(100vh - 82px);
+
+    padding: 50px 20px;
+
+    background-color: var(--color-background);
+}
+
+.profile-container {
+    width: 100%;
+    max-width: 850px;
+
+    margin: 0 auto;
+}
+
+.profile-card {
+    padding: 35px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+
+    background-color: var(--color-card);
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.profile-title {
+    margin: 0 0 30px;
+
+    color: var(--color-light);
+
+    text-align: center;
+
+    font-size: 2rem;
+}
+
+
+/* =========================
+   صورة الملف الشخصي
+========================= */
+
+.profile-avatar-section {
+    margin-bottom: 35px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-avatar {
+    width: 130px;
+    height: 130px;
+
+    margin-bottom: 18px;
+
+    border-radius: 50%;
+
+    background-color: var(--color-primary);
+    color: var(--color-light);
+
+    border: 3px solid var(--color-accent-dark);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.profile-avatar-default {
+    width: 58px;
+    height: 58px;
+}
+
+.profile-avatar-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+.profile-avatar-actions button {
+    min-height: 42px;
+
+    padding: 8px 16px;
+
+    border: 1px solid var(--color-accent);
+    border-radius: 9px;
+
+    background-color: transparent;
+    color: var(--color-accent);
+
+    font-family: inherit;
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.profile-avatar-actions button:hover {
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+}
+
+.profile-avatar-actions input[type="file"] {
+    display: none;
+}
+
+
+/* =========================
+   نموذج الملف الشخصي
+========================= */
+
+.profile-form {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+.profile-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-field.full-width {
+    grid-column: 1 / -1;
+}
+
+.profile-field label {
+    margin-bottom: 7px;
+
+    color: var(--color-accent);
+
+    font-size: 14px;
+}
+
+.profile-field input,
+.profile-field select {
+    width: 100%;
+
+    min-height: 48px;
+
+    padding: 10px 14px;
+
+    border: 1px solid rgba(255, 232, 214, 0.25);
+    border-radius: 10px;
+
+    background-color: var(--color-light);
+    color: var(--color-primary);
+
+    font-family: inherit;
+    font-size: 15px;
+
+    outline: none;
+}
+
+.profile-field input:focus,
+.profile-field select:focus {
+    border-color: var(--color-accent-dark);
+}
+
+.profile-field input[readonly] {
+    opacity: 0.75;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================
+   أزرار الملف الشخصي
+========================= */
+
+.profile-actions {
+    grid-column: 1 / -1;
+
+    margin-top: 10px;
+
+    display: flex;
+    justify-content: flex-start;
+
+    gap: 10px;
+}
+
+.profile-save-button {
+    min-height: 48px;
+
+    padding: 10px 25px;
+
+    border: none;
+    border-radius: 10px;
+
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+
+    font-family: inherit;
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.profile-save-button:hover {
+    transform: translateY(-1px);
+}
+
+.profile-save-button:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =========================
+   رسائل الملف الشخصي
+========================= */
+
+.profile-message {
+    grid-column: 1 / -1;
+
+    min-height: 24px;
+
+    margin-top: 5px;
+
+    color: var(--color-accent);
+
+    font-size: 13px;
+
+    text-align: right;
+}
+
+
+/* =========================
    التذييل
 ========================= */
 
@@ -976,6 +1411,11 @@ video {
         height: 43px;
     }
 
+    .account-avatar-button {
+        width: 41px;
+        height: 41px;
+    }
+
     .hero-section {
         min-height: 450px;
 
@@ -990,6 +1430,30 @@ video {
 
     .side-menu {
         width: min(340px, 90vw);
+    }
+
+    .profile-page {
+        padding: 35px 15px;
+    }
+
+    .profile-card {
+        padding: 25px 18px;
+    }
+
+    .profile-form {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-field.full-width {
+        grid-column: auto;
+    }
+
+    .profile-actions {
+        grid-column: auto;
+    }
+
+    .profile-message {
+        grid-column: auto;
     }
 }
 
@@ -1024,10 +1488,37 @@ video {
     .login-box {
         padding: 30px 20px;
     }
-}
 
-.notification-icon {
-    width: 22px;
-    height: 22px;
-    display: block;
+    .account-dropdown {
+        left: -8px;
+
+        width: 175px;
+    }
+
+    .profile-avatar {
+        width: 115px;
+        height: 115px;
+    }
+
+    .profile-avatar-actions {
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+    .profile-avatar-actions button {
+        width: 100%;
+    }
+
+    .profile-actions {
+        flex-direction: column;
+    }
+
+    .profile-save-button {
+        width: 100%;
+    }
+
+    .birth-date-fields {
+        grid-template-columns: 1fr;
+    }
 }

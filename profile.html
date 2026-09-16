@@ -15,40 +15,24 @@
         rel="stylesheet"
         href="style.css">
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
-
-    <script
-        src="supabase.js"
-        defer>
-    </script>
-
-    <script
-        src="script.js"
-        defer>
-    </script>
-
 </head>
 
 
 <body>
 
-
-    <!-- ================================ -->
-    <!-- الهيدر -->
-    <!-- ================================ -->
+    <!-- =====================================================
+         الهيدر
+    ====================================================== -->
 
     <header class="site-header">
 
-        <div class="header-right">
+        <div class="header-container">
 
             <button
                 class="menu-button"
                 id="menuButton"
                 type="button"
-                aria-label="فتح القائمة"
-                aria-expanded="false">
+                aria-label="القائمة">
 
                 ☰
 
@@ -57,35 +41,71 @@
 
             <a
                 href="index.html"
-                class="logo">
+                class="site-logo">
 
                 قافية
 
             </a>
 
-        </div>
+
+            <div class="header-actions">
+
+                <button
+                    class="notification-button"
+                    id="notificationButton"
+                    type="button"
+                    aria-label="الإشعارات">
+
+                    <svg
+                        class="notification-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path
+                            d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9">
+                        </path>
+
+                        <path d="M10 21h4"></path>
+
+                    </svg>
 
 
-        <div class="header-left">
+                    <span
+                        class="notification-count"
+                        id="notificationCount">
 
-            <button
-                class="notification-button"
-                id="notificationButton"
-                type="button"
-                aria-label="الإشعارات">
+                        0
 
-                🔔
+                    </span>
 
-            </button>
+                </button>
+
+
+                <button
+                    class="login-button"
+                    id="loginButton"
+                    type="button">
+
+                    تسجيل الدخول
+
+                </button>
+
+            </div>
 
         </div>
 
     </header>
 
 
-    <!-- ================================ -->
-    <!-- خلفية القائمة -->
-    <!-- ================================ -->
+    <!-- =====================================================
+         القائمة الجانبية
+    ====================================================== -->
 
     <div
         class="menu-overlay"
@@ -93,115 +113,16 @@
     </div>
 
 
-    <!-- ================================ -->
-    <!-- القائمة الجانبية -->
-    <!-- ================================ -->
-
     <aside
         class="side-menu"
-        id="sideMenu"
-        aria-hidden="true">
+        id="sideMenu">
 
-
-        <button
-            class="close-menu-button"
-            id="closeMenuButton"
-            type="button"
-            aria-label="إغلاق القائمة">
-
-            ×
-
-        </button>
-
-
-        <div class="menu-user">
-
-            <div
-                class="menu-user-avatar"
-                id="menuUserAvatar">
-
-                👤
-
-            </div>
-
-
-            <div class="menu-user-info">
-
-                <div id="menuUserName">
-                    المستخدم
-                </div>
-
-                <div id="menuUserEmail">
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <nav class="menu-navigation">
-
-
-            <a href="profile.html">
-
-                الملف الشخصي
-
-            </a>
-
-
-            <a href="index.html">
-
-                الرئيسية
-
-            </a>
-
-
-            <a href="Poems.html">
-
-                القصائد
-
-            </a>
-
-
-            <a href="articles.html">
-
-                المقالات
-
-            </a>
-
-
-            <a href="about.html">
-
-                عن قافية
-
-            </a>
-
-
-        </nav>
-
-    </aside>
-
-
-    <!-- ================================ -->
-    <!-- لوحة الإشعارات -->
-    <!-- ================================ -->
-
-    <section
-        class="notification-panel"
-        id="notificationPanel">
-
-
-        <div class="notification-header">
-
-            <h2>
-                الإشعارات
-            </h2>
-
+        <div class="side-menu-header">
 
             <button
-                id="closeNotificationButton"
-                type="button"
-                aria-label="إغلاق الإشعارات">
+                class="close-menu-button"
+                id="closeMenuButton"
+                type="button">
 
                 ×
 
@@ -211,158 +132,431 @@
 
 
         <div
-            class="notification-content"
-            id="notificationContent">
+            class="user-section"
+            id="userSection">
 
-            <p>
-                لا توجد إشعارات حاليًا.
-            </p>
+            <div
+                class="user-avatar">
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <circle
+                        cx="12"
+                        cy="8"
+                        r="4">
+                    </circle>
+
+                    <path
+                        d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
+                    </path>
+
+                </svg>
+
+            </div>
+
+
+            <div class="user-info">
+
+                <strong id="menuUserName">
+                    مرحبًا بك
+                </strong>
+
+                <span id="menuUserEmail">
+                    سجّل الدخول للمتابعة
+                </span>
+
+            </div>
 
         </div>
 
-    </section>
+
+        <nav class="side-navigation">
+
+            <a
+                href="profile.html"
+                id="profileLink">
+
+                الملف الشخصي
+
+            </a>
 
 
-    <!-- ================================ -->
-    <!-- الملف الشخصي -->
-    <!-- ================================ -->
+            <a
+                href="#"
+                id="favoritesLink">
+
+                المفضلة
+
+            </a>
+
+
+            <a
+                href="#"
+                id="settingsLink">
+
+                الإعدادات
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =====================================================
+         الإشعارات
+    ====================================================== -->
+
+    <aside
+        class="notification-panel"
+        id="notificationPanel">
+
+        <div class="notification-header">
+
+            <h3>
+                الإشعارات
+            </h3>
+
+            <button
+                id="closeNotificationButton"
+                type="button">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <div
+            class="notification-content">
+
+            لا توجد إشعارات جديدة.
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         صفحة الملف الشخصي
+    ====================================================== -->
 
     <main class="profile-page">
 
+        <section class="profile-container">
 
-        <section class="profile-section">
+            <div class="profile-heading">
+
+                <h1>
+                    الملف الشخصي
+                </h1>
+
+                <p>
+                    إدارة معلومات حسابك الشخصي
+                </p>
+
+            </div>
 
 
             <div class="profile-card">
 
 
-                <!-- الصورة الشخصية -->
+                <!-- الصورة -->
 
-                <div
-                    class="profile-avatar"
-                    id="profileAvatar">
+                <div class="profile-photo-section">
 
-                    👤
+                    <div
+                        class="profile-photo"
+                        id="profileAvatar">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+
+                            <circle
+                                cx="12"
+                                cy="8"
+                                r="4">
+                            </circle>
+
+                            <path
+                                d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
+                            </path>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div class="profile-photo-actions">
+
+                        <label
+                            for="avatarInput"
+                            class="profile-upload-button">
+
+                            تغيير الصورة
+
+                        </label>
+
+
+                        <input
+                            type="file"
+                            id="avatarInput"
+                            accept="image/jpeg,image/png,image/webp"
+                            hidden>
+
+
+                        <button
+                            type="button"
+                            id="deleteAvatarButton"
+                            class="profile-delete-button">
+
+                            حذف الصورة
+
+                        </button>
+
+                    </div>
+
+
+                    <small>
+                        JPG أو PNG أو WebP
+                    </small>
 
                 </div>
 
 
-                <!-- الاسم -->
+                <!-- البيانات -->
 
-                <h1 id="profileFullName">
-
-                    الملف الشخصي
-
-                </h1>
+                <form
+                    id="profileForm"
+                    class="profile-form">
 
 
-                <!-- البريد -->
-
-                <p id="profileEmail">
-
-                    -
-
-                </p>
+                    <div class="profile-fields">
 
 
-                <!-- ================================ -->
-                <!-- معلومات الحساب -->
-                <!-- ================================ -->
+                        <div class="profile-field">
 
-                <div class="profile-information">
+                            <label
+                                for="profileFirstName">
+
+                                الاسم الأول
+
+                            </label>
+
+                            <input
+                                type="text"
+                                id="profileFirstName"
+                                required>
+
+                        </div>
 
 
-                    <div class="profile-item">
+                        <div class="profile-field">
 
-                        <span>
-                            الاسم الأول
-                        </span>
+                            <label
+                                for="profileLastName">
 
-                        <strong id="profileFirstName">
+                                اسم العائلة
 
-                            -
+                            </label>
 
-                        </strong>
+                            <input
+                                type="text"
+                                id="profileLastName">
+
+                        </div>
+
+
+                        <div class="profile-field">
+
+                            <label
+                                for="profileEmailDetails">
+
+                                البريد الإلكتروني
+
+                            </label>
+
+                            <input
+                                type="email"
+                                id="profileEmailDetails"
+                                readonly>
+
+                        </div>
+
+
+                        <div class="profile-field">
+
+                            <label
+                                for="profilePhone">
+
+                                رقم الجوال
+
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="profilePhone"
+                                inputmode="tel"
+                                placeholder="+9665XXXXXXXX">
+
+                        </div>
+
+
+                        <div class="profile-field">
+
+                            <label
+                                for="profileBirthDay">
+
+                                يوم الميلاد
+
+                            </label>
+
+                            <select
+                                id="profileBirthDay"
+                                required>
+
+                                <option value="">
+                                    اليوم
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="profile-field">
+
+                            <label
+                                for="profileBirthMonth">
+
+                                شهر الميلاد
+
+                            </label>
+
+                            <select
+                                id="profileBirthMonth"
+                                required>
+
+                                <option value="">
+                                    الشهر
+                                </option>
+
+                                <option value="1">يناير</option>
+                                <option value="2">فبراير</option>
+                                <option value="3">مارس</option>
+                                <option value="4">أبريل</option>
+                                <option value="5">مايو</option>
+                                <option value="6">يونيو</option>
+                                <option value="7">يوليو</option>
+                                <option value="8">أغسطس</option>
+                                <option value="9">سبتمبر</option>
+                                <option value="10">أكتوبر</option>
+                                <option value="11">نوفمبر</option>
+                                <option value="12">ديسمبر</option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="profile-field">
+
+                            <label
+                                for="profileBirthYear">
+
+                                سنة الميلاد
+
+                            </label>
+
+                            <select
+                                id="profileBirthYear"
+                                required>
+
+                                <option value="">
+                                    السنة
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="profile-field">
+
+                            <label
+                                for="profileGender">
+
+                                الجنس
+
+                            </label>
+
+                            <select
+                                id="profileGender"
+                                required>
+
+                                <option value="">
+                                    اختر
+                                </option>
+
+                                <option value="male">
+                                    ذكر
+                                </option>
+
+                                <option value="female">
+                                    أنثى
+                                </option>
+
+                            </select>
+
+                        </div>
 
                     </div>
 
 
-                    <div class="profile-item">
+                    <div class="profile-save-area">
 
-                        <span>
-                            اسم العائلة
-                        </span>
+                        <button
+                            type="submit"
+                            id="saveProfileButton"
+                            class="profile-save-button">
 
-                        <strong id="profileLastName">
+                            حفظ التغييرات
 
-                            -
-
-                        </strong>
-
-                    </div>
+                        </button>
 
 
-                    <div class="profile-item">
+                        <button
+                            type="button"
+                            id="logoutButton"
+                            class="profile-logout-button">
 
-                        <span>
-                            البريد الإلكتروني
-                        </span>
+                            تسجيل الخروج
 
-                        <strong id="profileEmailDetails">
-
-                            -
-
-                        </strong>
+                        </button>
 
                     </div>
 
 
-                    <div class="profile-item">
+                    <p
+                        id="profileMessage"
+                        class="profile-message">
+                    </p>
 
-                        <span>
-                            تاريخ الميلاد
-                        </span>
-
-                        <strong id="profileBirthDate">
-
-                            -
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="profile-item">
-
-                        <span>
-                            الجنس
-                        </span>
-
-                        <strong id="profileGender">
-
-                            -
-
-                        </strong>
-
-                    </div>
-
-
-                </div>
-
-
-                <!-- ================================ -->
-                <!-- تسجيل الخروج -->
-                <!-- ================================ -->
-
-                <button
-                    type="button"
-                    id="logoutButton"
-                    class="profile-logout-button">
-
-                    تسجيل الخروج
-
-                </button>
-
+                </form>
 
             </div>
 
@@ -371,20 +565,958 @@
     </main>
 
 
-    <!-- ================================ -->
-    <!-- الفوتر -->
-    <!-- ================================ -->
+    <!-- =====================================================
+         نافذة تسجيل الدخول
+    ====================================================== -->
 
-    <footer class="site-footer">
+    <div
+        class="login-modal"
+        id="loginModal">
 
-        <p>
+        <div class="login-box">
 
-            © 2026 قافية - جميع الحقوق محفوظة
+            <button
+                class="close-login-button"
+                id="closeLoginButton"
+                type="button">
 
-        </p>
+                ×
 
-    </footer>
+            </button>
 
+
+            <form
+                id="loginForm"
+                class="login-method">
+
+                <h2>
+                    تسجيل الدخول
+                </h2>
+
+
+                <input
+                    type="email"
+                    id="emailLogin"
+                    placeholder="البريد الإلكتروني"
+                    required>
+
+
+                <input
+                    type="password"
+                    id="passwordLogin"
+                    placeholder="كلمة المرور"
+                    required>
+
+
+                <button
+                    type="submit"
+                    id="emailLoginButton"
+                    class="login-submit">
+
+                    تسجيل الدخول
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="appleLoginButton"
+                    class="login-submit">
+
+                    تسجيل الدخول باستخدام Apple
+
+                </button>
+
+
+                <div class="login-register">
+
+                    ليس لديك حساب؟
+
+                    <button
+                        type="button"
+                        id="showRegisterButton">
+
+                        إنشاء حساب
+
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <form
+                id="registerForm"
+                class="login-method"
+                style="display:none;">
+
+                <h2>
+                    إنشاء حساب
+                </h2>
+
+
+                <input
+                    type="text"
+                    id="firstName"
+                    placeholder="الاسم الأول"
+                    required>
+
+
+                <input
+                    type="text"
+                    id="lastName"
+                    placeholder="اسم العائلة">
+
+
+                <div class="birth-date-fields">
+
+                    <select
+                        id="birthDay"
+                        required>
+
+                        <option value="">
+                            اليوم
+                        </option>
+
+                    </select>
+
+
+                    <select
+                        id="birthMonth"
+                        required>
+
+                        <option value="">
+                            الشهر
+                        </option>
+
+                        <option value="1">يناير</option>
+                        <option value="2">فبراير</option>
+                        <option value="3">مارس</option>
+                        <option value="4">أبريل</option>
+                        <option value="5">مايو</option>
+                        <option value="6">يونيو</option>
+                        <option value="7">يوليو</option>
+                        <option value="8">أغسطس</option>
+                        <option value="9">سبتمبر</option>
+                        <option value="10">أكتوبر</option>
+                        <option value="11">نوفمبر</option>
+                        <option value="12">ديسمبر</option>
+
+                    </select>
+
+
+                    <select
+                        id="birthYear"
+                        required>
+
+                        <option value="">
+                            السنة
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <select
+                    id="gender"
+                    required>
+
+                    <option value="">
+                        الجنس
+                    </option>
+
+                    <option value="male">
+                        ذكر
+                    </option>
+
+                    <option value="female">
+                        أنثى
+                    </option>
+
+                </select>
+
+
+                <input
+                    type="email"
+                    id="emailRegister"
+                    placeholder="البريد الإلكتروني"
+                    required>
+
+
+                <input
+                    type="password"
+                    id="passwordRegister"
+                    placeholder="كلمة المرور"
+                    required>
+
+
+                <input
+                    type="password"
+                    id="confirmPasswordRegister"
+                    placeholder="تأكيد كلمة المرور"
+                    required>
+
+
+                <button
+                    type="submit"
+                    id="registerSubmitButton"
+                    class="login-submit">
+
+                    إنشاء الحساب
+
+                </button>
+
+
+                <div class="login-register">
+
+                    لديك حساب بالفعل؟
+
+                    <button
+                        type="button"
+                        id="showLoginButton">
+
+                        تسجيل الدخول
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         Supabase
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+
+
+    <script
+        src="supabase.js"
+        defer>
+    </script>
+
+
+    <script
+        src="script.js"
+        defer>
+    </script>
+
+
+    <!-- =====================================================
+         منطق صفحة الملف الشخصي
+    ====================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            async () => {
+
+                const profilePage =
+                    document.querySelector(
+                        ".profile-page"
+                    );
+
+                if (!profilePage) {
+                    return;
+                }
+
+
+                const profileAvatar =
+                    document.getElementById(
+                        "profileAvatar"
+                    );
+
+                const avatarInput =
+                    document.getElementById(
+                        "avatarInput"
+                    );
+
+                const deleteAvatarButton =
+                    document.getElementById(
+                        "deleteAvatarButton"
+                    );
+
+                const profileForm =
+                    document.getElementById(
+                        "profileForm"
+                    );
+
+                const firstName =
+                    document.getElementById(
+                        "profileFirstName"
+                    );
+
+                const lastName =
+                    document.getElementById(
+                        "profileLastName"
+                    );
+
+                const email =
+                    document.getElementById(
+                        "profileEmailDetails"
+                    );
+
+                const phone =
+                    document.getElementById(
+                        "profilePhone"
+                    );
+
+                const birthDay =
+                    document.getElementById(
+                        "profileBirthDay"
+                    );
+
+                const birthMonth =
+                    document.getElementById(
+                        "profileBirthMonth"
+                    );
+
+                const birthYear =
+                    document.getElementById(
+                        "profileBirthYear"
+                    );
+
+                const gender =
+                    document.getElementById(
+                        "profileGender"
+                    );
+
+                const saveButton =
+                    document.getElementById(
+                        "saveProfileButton"
+                    );
+
+                const logoutButton =
+                    document.getElementById(
+                        "logoutButton"
+                    );
+
+                const message =
+                    document.getElementById(
+                        "profileMessage"
+                    );
+
+
+                function showMessage(
+                    text,
+                    isError = false
+                ) {
+
+                    if (!message) {
+                        return;
+                    }
+
+                    message.textContent = text;
+
+                    message.classList.toggle(
+                        "error",
+                        isError
+                    );
+                }
+
+
+                function defaultIcon() {
+
+                    return `
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+
+                            <circle
+                                cx="12"
+                                cy="8"
+                                r="4">
+                            </circle>
+
+                            <path
+                                d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
+                            </path>
+
+                        </svg>
+                    `;
+                }
+
+
+                function setAvatar(url) {
+
+                    if (!profileAvatar) {
+                        return;
+                    }
+
+
+                    if (url) {
+
+                        profileAvatar.innerHTML = `
+                            <img
+                                src="${url}"
+                                alt="الصورة الشخصية">
+                        `;
+
+                    } else {
+
+                        profileAvatar.innerHTML =
+                            defaultIcon();
+                    }
+                }
+
+
+                // =================================================
+                // تعبئة السنوات
+                // =================================================
+
+                const currentYear =
+                    new Date().getFullYear();
+
+
+                for (
+                    let year = currentYear;
+                    year >= 1900;
+                    year--
+                ) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value = year;
+                    option.textContent = year;
+
+                    birthYear.appendChild(
+                        option
+                    );
+                }
+
+
+                // =================================================
+                // تعبئة الأيام
+                // =================================================
+
+                for (
+                    let day = 1;
+                    day <= 31;
+                    day++
+                ) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value = day;
+                    option.textContent = day;
+
+                    birthDay.appendChild(
+                        option
+                    );
+                }
+
+
+                // =================================================
+                // جلب المستخدم
+                // =================================================
+
+                const {
+                    data: userData,
+                    error: userError
+                } = await supabaseClient.auth.getUser();
+
+
+                if (
+                    userError ||
+                    !userData?.user
+                ) {
+
+                    window.location.href =
+                        "index.html";
+
+                    return;
+                }
+
+
+                const user =
+                    userData.user;
+
+
+                email.value =
+                    user.email || "";
+
+
+                // =================================================
+                // جلب profile
+                // =================================================
+
+                const {
+                    data: profile,
+                    error: profileError
+                } = await supabaseClient
+                    .from("profiles")
+                    .select("*")
+                    .eq("id", user.id)
+                    .maybeSingle();
+
+
+                if (profileError) {
+
+                    console.error(
+                        profileError
+                    );
+
+                    showMessage(
+                        "تعذر تحميل بيانات الحساب.",
+                        true
+                    );
+
+                    return;
+                }
+
+
+                if (!profile) {
+
+                    showMessage(
+                        "بيانات الملف الشخصي غير مكتملة.",
+                        true
+                    );
+
+                    return;
+                }
+
+
+                firstName.value =
+                    profile.first_name || "";
+
+
+                lastName.value =
+                    profile.last_name || "";
+
+
+                phone.value =
+                    profile.phone || "";
+
+
+                birthDay.value =
+                    profile.birth_day || "";
+
+
+                birthMonth.value =
+                    profile.birth_month || "";
+
+
+                birthYear.value =
+                    profile.birth_year || "";
+
+
+                gender.value =
+                    profile.gender || "";
+
+
+                setAvatar(
+                    profile.avatar_url
+                );
+
+
+                // =================================================
+                // حفظ البيانات
+                // =================================================
+
+                profileForm.addEventListener(
+                    "submit",
+                    async (event) => {
+
+                        event.preventDefault();
+
+
+                        saveButton.disabled =
+                            true;
+
+
+                        showMessage(
+                            "جارٍ حفظ التغييرات..."
+                        );
+
+
+                        try {
+
+                            const {
+                                error
+                            } = await supabaseClient
+                                .from("profiles")
+                                .update({
+                                    first_name:
+                                        firstName.value.trim(),
+
+                                    last_name:
+                                        lastName.value.trim() ||
+                                        null,
+
+                                    birth_day:
+                                        Number(
+                                            birthDay.value
+                                        ),
+
+                                    birth_month:
+                                        Number(
+                                            birthMonth.value
+                                        ),
+
+                                    birth_year:
+                                        Number(
+                                            birthYear.value
+                                        ),
+
+                                    gender:
+                                        gender.value,
+
+                                    phone:
+                                        phone.value.trim() ||
+                                        null
+                                })
+                                .eq(
+                                    "id",
+                                    user.id
+                                );
+
+
+                            if (error) {
+                                throw error;
+                            }
+
+
+                            showMessage(
+                                "تم حفظ التغييرات بنجاح."
+                            );
+
+                        } catch (error) {
+
+                            console.error(
+                                error
+                            );
+
+                            showMessage(
+                                error.message ||
+                                "تعذر حفظ التغييرات.",
+                                true
+                            );
+
+                        } finally {
+
+                            saveButton.disabled =
+                                false;
+                        }
+                    }
+                );
+
+
+                // =================================================
+                // رفع الصورة
+                // =================================================
+
+                avatarInput.addEventListener(
+                    "change",
+                    async () => {
+
+                        const file =
+                            avatarInput.files?.[0];
+
+
+                        if (!file) {
+                            return;
+                        }
+
+
+                        if (
+                            ![
+                                "image/jpeg",
+                                "image/png",
+                                "image/webp"
+                            ].includes(
+                                file.type
+                            )
+                        ) {
+
+                            alert(
+                                "يرجى اختيار صورة JPG أو PNG أو WebP."
+                            );
+
+                            avatarInput.value = "";
+
+                            return;
+                        }
+
+
+                        if (
+                            file.size >
+                            5 * 1024 * 1024
+                        ) {
+
+                            alert(
+                                "حجم الصورة يجب ألا يتجاوز 5MB."
+                            );
+
+                            avatarInput.value = "";
+
+                            return;
+                        }
+
+
+                        try {
+
+                            showMessage(
+                                "جارٍ رفع الصورة..."
+                            );
+
+
+                            /*
+                             * اسم ثابت لكل مستخدم.
+                             * عند الرفع الجديد يتم استبدال الصورة السابقة.
+                             */
+
+                            const filePath =
+                                `${user.id}/profile.jpg`;
+
+
+                            const {
+                                error:
+                                    uploadError
+                            } =
+                                await supabaseClient
+                                    .storage
+                                    .from("avatars")
+                                    .upload(
+                                        filePath,
+                                        file,
+                                        {
+                                            cacheControl:
+                                                "3600",
+
+                                            upsert:
+                                                true,
+
+                                            contentType:
+                                                file.type
+                                        }
+                                    );
+
+
+                            if (uploadError) {
+                                throw uploadError;
+                            }
+
+
+                            const {
+                                data:
+                                    publicData
+                            } =
+                                supabaseClient
+                                    .storage
+                                    .from("avatars")
+                                    .getPublicUrl(
+                                        filePath
+                                    );
+
+
+                            const publicUrl =
+                                `${publicData.publicUrl}?t=${Date.now()}`;
+
+
+                            const {
+                                error:
+                                    updateError
+                            } =
+                                await supabaseClient
+                                    .from("profiles")
+                                    .update({
+                                        avatar_url:
+                                            publicUrl
+                                    })
+                                    .eq(
+                                        "id",
+                                        user.id
+                                    );
+
+
+                            if (updateError) {
+                                throw updateError;
+                            }
+
+
+                            setAvatar(
+                                publicUrl
+                            );
+
+
+                            showMessage(
+                                "تم تحديث الصورة الشخصية."
+                            );
+
+
+                        } catch (error) {
+
+                            console.error(
+                                error
+                            );
+
+
+                            showMessage(
+                                error.message ||
+                                "تعذر رفع الصورة.",
+                                true
+                            );
+
+                        } finally {
+
+                            avatarInput.value =
+                                "";
+                        }
+                    }
+                );
+
+
+                // =================================================
+                // حذف الصورة
+                // =================================================
+
+                deleteAvatarButton.addEventListener(
+                    "click",
+                    async () => {
+
+                        if (
+                            !confirm(
+                                "هل تريد حذف الصورة الشخصية؟"
+                            )
+                        ) {
+                            return;
+                        }
+
+
+                        try {
+
+                            showMessage(
+                                "جارٍ حذف الصورة..."
+                            );
+
+
+                            const filePath =
+                                `${user.id}/profile.jpg`;
+
+
+                            const {
+                                error:
+                                    removeError
+                            } =
+                                await supabaseClient
+                                    .storage
+                                    .from("avatars")
+                                    .remove([
+                                        filePath
+                                    ]);
+
+
+                            if (
+                                removeError
+                            ) {
+                                throw removeError;
+                            }
+
+
+                            const {
+                                error:
+                                    updateError
+                            } =
+                                await supabaseClient
+                                    .from("profiles")
+                                    .update({
+                                        avatar_url:
+                                            null
+                                    })
+                                    .eq(
+                                        "id",
+                                        user.id
+                                    );
+
+
+                            if (
+                                updateError
+                            ) {
+                                throw updateError;
+                            }
+
+
+                            setAvatar(null);
+
+
+                            showMessage(
+                                "تم حذف الصورة الشخصية."
+                            );
+
+
+                        } catch (error) {
+
+                            console.error(
+                                error
+                            );
+
+
+                            showMessage(
+                                error.message ||
+                                "تعذر حذف الصورة.",
+                                true
+                            );
+                        }
+                    }
+                );
+
+
+                // =================================================
+                // تسجيل الخروج
+                // =================================================
+
+                logoutButton.addEventListener(
+                    "click",
+                    async () => {
+
+                        const {
+                            error
+                        } =
+                            await supabaseClient
+                                .auth
+                                .signOut();
+
+
+                        if (error) {
+
+                            alert(
+                                error.message ||
+                                "تعذر تسجيل الخروج."
+                            );
+
+                            return;
+                        }
+
+
+                        window.location.href =
+                            "index.html";
+                    }
+                );
+
+            }
+        );
+
+    </script>
 
 </body>
 
