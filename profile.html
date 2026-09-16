@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>الملف الشخصي - قافية</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+
+    <script
+        src="supabase.js"
+        defer>
+    </script>
+
+    <script
+        src="script.js"
+        defer>
+    </script>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================================ -->
+    <!-- الهيدر -->
+    <!-- ================================ -->
+
+    <header class="site-header">
+
+        <div class="header-right">
+
+            <button
+                class="menu-button"
+                id="menuButton"
+                type="button"
+                aria-label="فتح القائمة"
+                aria-expanded="false">
+
+                ☰
+
+            </button>
+
+
+            <a
+                href="index.html"
+                class="logo">
+
+                قافية
+
+            </a>
+
+        </div>
+
+
+        <div class="header-left">
+
+            <button
+                class="notification-button"
+                id="notificationButton"
+                type="button"
+                aria-label="الإشعارات">
+
+                🔔
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================================ -->
+    <!-- خلفية القائمة -->
+    <!-- ================================ -->
+
+    <div
+        class="menu-overlay"
+        id="menuOverlay">
+    </div>
+
+
+    <!-- ================================ -->
+    <!-- القائمة الجانبية -->
+    <!-- ================================ -->
+
+    <aside
+        class="side-menu"
+        id="sideMenu"
+        aria-hidden="true">
+
+
+        <button
+            class="close-menu-button"
+            id="closeMenuButton"
+            type="button"
+            aria-label="إغلاق القائمة">
+
+            ×
+
+        </button>
+
+
+        <div class="menu-user">
+
+            <div
+                class="menu-user-avatar"
+                id="menuUserAvatar">
+
+                👤
+
+            </div>
+
+
+            <div class="menu-user-info">
+
+                <div id="menuUserName">
+                    المستخدم
+                </div>
+
+                <div id="menuUserEmail">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <nav class="menu-navigation">
+
+
+            <a href="profile.html">
+
+                الملف الشخصي
+
+            </a>
+
+
+            <a href="index.html">
+
+                الرئيسية
+
+            </a>
+
+
+            <a href="Poems.html">
+
+                القصائد
+
+            </a>
+
+
+            <a href="articles.html">
+
+                المقالات
+
+            </a>
+
+
+            <a href="about.html">
+
+                عن قافية
+
+            </a>
+
+
+        </nav>
+
+    </aside>
+
+
+    <!-- ================================ -->
+    <!-- لوحة الإشعارات -->
+    <!-- ================================ -->
+
+    <section
+        class="notification-panel"
+        id="notificationPanel">
+
+
+        <div class="notification-header">
+
+            <h2>
+                الإشعارات
+            </h2>
+
+
+            <button
+                id="closeNotificationButton"
+                type="button"
+                aria-label="إغلاق الإشعارات">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <div
+            class="notification-content"
+            id="notificationContent">
+
+            <p>
+                لا توجد إشعارات حاليًا.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================ -->
+    <!-- الملف الشخصي -->
+    <!-- ================================ -->
+
+    <main class="profile-page">
+
+
+        <section class="profile-section">
+
+
+            <div class="profile-card">
+
+
+                <!-- الصورة الشخصية -->
+
+                <div
+                    class="profile-avatar"
+                    id="profileAvatar">
+
+                    👤
+
+                </div>
+
+
+                <!-- الاسم -->
+
+                <h1 id="profileFullName">
+
+                    الملف الشخصي
+
+                </h1>
+
+
+                <!-- البريد -->
+
+                <p id="profileEmail">
+
+                    -
+
+                </p>
+
+
+                <!-- ================================ -->
+                <!-- معلومات الحساب -->
+                <!-- ================================ -->
+
+                <div class="profile-information">
+
+
+                    <div class="profile-item">
+
+                        <span>
+                            الاسم الأول
+                        </span>
+
+                        <strong id="profileFirstName">
+
+                            -
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-item">
+
+                        <span>
+                            اسم العائلة
+                        </span>
+
+                        <strong id="profileLastName">
+
+                            -
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-item">
+
+                        <span>
+                            البريد الإلكتروني
+                        </span>
+
+                        <strong id="profileEmailDetails">
+
+                            -
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-item">
+
+                        <span>
+                            تاريخ الميلاد
+                        </span>
+
+                        <strong id="profileBirthDate">
+
+                            -
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-item">
+
+                        <span>
+                            الجنس
+                        </span>
+
+                        <strong id="profileGender">
+
+                            -
+
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ================================ -->
+                <!-- تسجيل الخروج -->
+                <!-- ================================ -->
+
+                <button
+                    type="button"
+                    id="logoutButton"
+                    class="profile-logout-button">
+
+                    تسجيل الخروج
+
+                </button>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================================ -->
+    <!-- الفوتر -->
+    <!-- ================================ -->
+
+    <footer class="site-footer">
+
+        <p>
+
+            © 2026 قافية - جميع الحقوق محفوظة
+
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

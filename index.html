@@ -2,28 +2,46 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>قافية</title>
 
-    <!-- الخط -->
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css">
 
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js" defer></script>
-<script src="script.js" defer></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+
+    <script
+        src="supabase.js"
+        defer>
+    </script>
+
+    <script
+        src="script.js"
+        defer>
+    </script>
+
 </head>
+
 
 <body>
 
+
     <!-- ==================== الرأس ==================== -->
+
     <header class="site-header">
 
         <div class="header-container">
 
-            <!-- زر القائمة -->
+
             <button
                 class="menu-button"
                 id="menuButton"
@@ -31,36 +49,70 @@
                 aria-label="فتح القائمة"
                 aria-expanded="false"
                 aria-controls="sideMenu">
+
                 ☰
+
             </button>
 
-            <!-- اسم الموقع -->
-            <a href="index.html" class="site-logo">
+
+            <a
+                href="index.html"
+                class="site-logo">
+
                 قافية
+
             </a>
 
-            <!-- أدوات المستخدم -->
+
             <div class="header-actions">
 
-                <!-- الإشعارات -->
-                <button
-                    class="notification-button"
-                    id="notificationButton"
-                    type="button"
-                    aria-label="الإشعارات">
-                    🔔
-                    <span class="notification-count" id="notificationCount">0</span>
-                </button>
 
-                <!-- تسجيل الدخول -->
+                <button
+    class="notification-button"
+    id="notificationButton"
+    type="button"
+    aria-label="الإشعارات">
+
+    <svg
+        class="notification-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true">
+
+        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+
+        <path d="M10 21h4"></path>
+
+    </svg>
+
+    <span
+        class="notification-count"
+        id="notificationCount">
+
+        0
+
+    </span>
+
+</button>
+
+
                 <button
                     class="login-button"
                     id="loginButton"
                     type="button">
+
                     تسجيل الدخول
+
                 </button>
 
+
             </div>
+
 
         </div>
 
@@ -69,113 +121,204 @@
 
     <!-- ==================== القائمة الجانبية ==================== -->
 
-    <div class="menu-overlay" id="menuOverlay"></div>
+    <div
+        class="menu-overlay"
+        id="menuOverlay">
+    </div>
+
 
     <aside
         class="side-menu"
         id="sideMenu"
         aria-hidden="true">
 
+
         <div class="side-menu-header">
 
-            <h2>قافية</h2>
+
+            <h2>
+                قافية
+            </h2>
+
 
             <button
                 class="close-menu-button"
                 id="closeMenuButton"
                 type="button"
                 aria-label="إغلاق القائمة">
+
                 ×
+
             </button>
+
 
         </div>
 
-
-        <!-- حساب المستخدم -->
 
         <div class="user-section">
 
+
             <div class="user-avatar">
+
                 👤
+
             </div>
 
+
             <div class="user-info">
-                <strong>مرحبًا بك</strong>
-                <span>سجّل الدخول للوصول إلى حسابك</span>
+
+
+                <strong id="menuUserName">
+
+                    مرحبًا بك
+
+                </strong>
+
+
+                <span id="menuUserEmail">
+
+                    سجّل الدخول للوصول إلى حسابك
+
+                </span>
+
+
             </div>
+
 
         </div>
 
 
-        <!-- روابط القائمة -->
-
         <nav class="side-navigation">
 
+
             <a href="index.html">
+
                 <span>⌂</span>
-                <span>الرئيسية</span>
+
+                <span>
+                    الرئيسية
+                </span>
+
             </a>
+
 
             <a href="Poems.html">
+
                 <span>📜</span>
-                <span>القصائد</span>
+
+                <span>
+                    القصائد
+                </span>
+
             </a>
+
 
             <a href="articles.html">
+
                 <span>📝</span>
-                <span>المقالات</span>
+
+                <span>
+                    المقالات
+                </span>
+
             </a>
 
-            <a href="#" id="profileLink">
+
+            <a
+                href="profile.html"
+                id="profileLink">
+
                 <span>👤</span>
-                <span>الملف الشخصي</span>
+
+                <span>
+                    الملف الشخصي
+                </span>
+
             </a>
 
-            <a href="#" id="favoritesLink">
+
+            <a
+                href="#"
+                id="favoritesLink">
+
                 <span>⭐</span>
-                <span>المفضلة</span>
+
+                <span>
+                    المفضلة
+                </span>
+
             </a>
 
-            <a href="#" id="settingsLink">
+
+            <a
+                href="#"
+                id="settingsLink">
+
                 <span>⚙️</span>
-                <span>الإعدادات</span>
+
+                <span>
+                    الإعدادات
+                </span>
+
             </a>
+
 
             <a href="about.html">
+
                 <span>ℹ️</span>
-                <span>نبذة عن الموقع</span>
+
+                <span>
+                    نبذة عن الموقع
+                </span>
+
             </a>
 
+
         </nav>
+
 
     </aside>
 
 
-    <!-- ==================== نافذة الإشعارات ==================== -->
+    <!-- ==================== الإشعارات ==================== -->
 
     <div
         class="notification-panel"
         id="notificationPanel"
         aria-hidden="true">
 
+
         <div class="notification-header">
 
-            <h3>الإشعارات</h3>
+
+            <h3>
+                الإشعارات
+            </h3>
+
 
             <button
                 id="closeNotificationButton"
                 type="button"
                 aria-label="إغلاق الإشعارات">
+
                 ×
+
             </button>
 
-        </div>
-
-        <div class="notification-content" id="notificationContent">
-
-            <p>لا توجد إشعارات جديدة.</p>
 
         </div>
+
+
+        <div
+            class="notification-content"
+            id="notificationContent">
+
+            <p>
+                لا توجد إشعارات جديدة.
+            </p>
+
+        </div>
+
 
     </div>
 
@@ -184,29 +327,51 @@
 
     <main>
 
-        <section id="intro" class="hero-section">
+
+        <section
+            id="intro"
+            class="hero-section">
+
 
             <div class="hero-content">
 
-                <h1>قافية</h1>
+
+                <h1>
+                    قافية
+                </h1>
+
 
                 <p>
                     موسوعة عربية مختصة في الشعر والأدب العربي
                 </p>
 
+
                 <div class="hero-actions">
 
-                    <a href="Poems.html" class="primary-button">
+
+                    <a
+                        href="Poems.html"
+                        class="primary-button">
+
                         استكشف القصائد
+
                     </a>
 
-                    <a href="articles.html" class="secondary-button">
+
+                    <a
+                        href="articles.html"
+                        class="secondary-button">
+
                         تصفح المقالات
+
                     </a>
+
 
                 </div>
 
+
             </div>
+
 
         </section>
 
@@ -215,150 +380,459 @@
 
         <section class="site-sections">
 
+
             <div class="section-title">
 
-                <h2>استكشف قافية</h2>
+
+                <h2>
+                    استكشف قافية
+                </h2>
+
 
                 <p>
                     اكتشف الشعر والأدب العربي في مكان واحد.
                 </p>
+
 
             </div>
 
 
             <div class="section-cards">
 
-                <a href="Poems.html" class="section-card">
 
-                    <span class="card-icon">📜</span>
+                <a
+                    href="Poems.html"
+                    class="section-card">
 
-                    <h3>القصائد</h3>
+
+                    <span class="card-icon">
+                        📜
+                    </span>
+
+
+                    <h3>
+                        القصائد
+                    </h3>
+
 
                     <p>
                         مجموعة من القصائد العربية والشعراء عبر العصور.
                     </p>
 
+
                 </a>
 
 
-                <a href="articles.html" class="section-card">
+                <a
+                    href="articles.html"
+                    class="section-card">
 
-                    <span class="card-icon">📝</span>
 
-                    <h3>المقالات</h3>
+                    <span class="card-icon">
+                        📝
+                    </span>
+
+
+                    <h3>
+                        المقالات
+                    </h3>
+
 
                     <p>
                         مقالات عن الشعر والأدب وتاريخهما.
                     </p>
 
+
                 </a>
 
 
-                <a href="about.html" class="section-card">
+                <a
+                    href="about.html"
+                    class="section-card">
 
-                    <span class="card-icon">ℹ️</span>
 
-                    <h3>عن قافية</h3>
+                    <span class="card-icon">
+                        ℹ️
+                    </span>
+
+
+                    <h3>
+                        عن قافية
+                    </h3>
+
 
                     <p>
                         تعرف على فكرة الموقع وأهدافه.
                     </p>
 
+
                 </a>
+
 
             </div>
 
+
         </section>
+
 
     </main>
 
 
-<!-- ==================== تسجيل الدخول ==================== -->
+    <!-- ==================== نظام الحساب ==================== -->
 
-<div
-    class="login-modal"
-    id="loginModal"
-    aria-hidden="true">
+    <div
+        class="login-modal"
+        id="loginModal"
+        aria-hidden="true">
 
-    <div class="login-box">
 
-        <button
-            class="close-login-button"
-            id="closeLoginButton"
-            type="button"
-            aria-label="إغلاق">
-            ×
-        </button>
+        <div class="login-box">
 
-        <h2>تسجيل الدخول</h2>
 
-        <p>
-            سجّل دخولك إلى حسابك في قافية
-        </p>
+            <button
+                class="close-login-button"
+                id="closeLoginButton"
+                type="button"
+                aria-label="إغلاق">
 
-        <button
-            class="login-method"
-            id="appleLoginButton"
-            type="button">
-             تسجيل الدخول باستخدام Apple
-        </button>
+                ×
 
-        <div class="login-divider">
-            <span>أو</span>
+            </button>
+
+
+            <!-- ==================== تسجيل الدخول ==================== -->
+
+            <div id="loginForm">
+
+
+                <h2>
+                    تسجيل الدخول
+                </h2>
+
+
+                <p>
+                    سجّل دخولك إلى حسابك في قافية
+                </p>
+
+
+                <button
+                    class="login-method"
+                    id="appleLoginButton"
+                    type="button">
+
+                     تسجيل الدخول باستخدام Apple
+
+                </button>
+
+
+                <div class="login-divider">
+
+                    <span>
+                        أو
+                    </span>
+
+                </div>
+
+
+                <label for="emailLogin">
+
+                    البريد الإلكتروني
+
+                </label>
+
+
+                <input
+                    type="email"
+                    id="emailLogin"
+                    placeholder="أدخل بريدك الإلكتروني"
+                    autocomplete="email">
+
+
+                <label for="passwordLogin">
+
+                    كلمة المرور
+
+                </label>
+
+
+                <input
+                    type="password"
+                    id="passwordLogin"
+                    placeholder="أدخل كلمة المرور"
+                    autocomplete="current-password">
+
+
+                <button
+                    class="login-submit"
+                    id="emailLoginButton"
+                    type="button">
+
+                    تسجيل الدخول
+
+                </button>
+
+
+                <button
+                    class="login-register"
+                    id="showRegisterButton"
+                    type="button">
+
+                    إنشاء حساب جديد
+
+                </button>
+
+
+            </div>
+
+
+            <!-- ==================== إنشاء حساب ==================== -->
+
+            <div
+                id="registerForm"
+                style="display: none;">
+
+
+                <h2>
+                    إنشاء حساب
+                </h2>
+
+
+                <p>
+                    أنشئ حسابك في قافية
+                </p>
+
+
+                <label for="firstName">
+
+                    الاسم الأول
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="firstName"
+                    placeholder="الاسم الأول"
+                    autocomplete="given-name">
+
+
+                <label for="lastName">
+
+                    الاسم الأخير
+
+                    <span>
+                        (اختياري)
+                    </span>
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="lastName"
+                    placeholder="الاسم الأخير"
+                    autocomplete="family-name">
+
+
+                <label>
+
+                    تاريخ الميلاد
+
+                </label>
+
+
+                <div class="birth-date-fields">
+
+
+                    <select id="birthDay">
+
+                        <option value="">
+                            اليوم
+                        </option>
+
+                    </select>
+
+
+                    <select id="birthMonth">
+
+                        <option value="">
+                            الشهر
+                        </option>
+
+                        <option value="1">
+                            يناير
+                        </option>
+
+                        <option value="2">
+                            فبراير
+                        </option>
+
+                        <option value="3">
+                            مارس
+                        </option>
+
+                        <option value="4">
+                            أبريل
+                        </option>
+
+                        <option value="5">
+                            مايو
+                        </option>
+
+                        <option value="6">
+                            يونيو
+                        </option>
+
+                        <option value="7">
+                            يوليو
+                        </option>
+
+                        <option value="8">
+                            أغسطس
+                        </option>
+
+                        <option value="9">
+                            سبتمبر
+                        </option>
+
+                        <option value="10">
+                            أكتوبر
+                        </option>
+
+                        <option value="11">
+                            نوفمبر
+                        </option>
+
+                        <option value="12">
+                            ديسمبر
+                        </option>
+
+                    </select>
+
+
+                    <select id="birthYear">
+
+                        <option value="">
+                            السنة
+                        </option>
+
+                    </select>
+
+
+                </div>
+
+
+                <label for="gender">
+
+                    الجنس
+
+                </label>
+
+
+                <select id="gender">
+
+
+                    <option value="">
+                        اختر الجنس
+                    </option>
+
+
+                    <option value="male">
+                        ذكر
+                    </option>
+
+
+                    <option value="female">
+                        أنثى
+                    </option>
+
+
+                </select>
+
+
+                <label for="emailRegister">
+
+                    البريد الإلكتروني
+
+                </label>
+
+
+                <input
+                    type="email"
+                    id="emailRegister"
+                    placeholder="أدخل بريدك الإلكتروني"
+                    autocomplete="email">
+
+
+                <label for="passwordRegister">
+
+                    كلمة المرور
+
+                </label>
+
+
+                <input
+                    type="password"
+                    id="passwordRegister"
+                    placeholder="6 أحرف على الأقل"
+                    autocomplete="new-password">
+
+
+                <label for="confirmPasswordRegister">
+
+                    تأكيد كلمة المرور
+
+                </label>
+
+
+                <input
+                    type="password"
+                    id="confirmPasswordRegister"
+                    placeholder="أعد كتابة كلمة المرور"
+                    autocomplete="new-password">
+
+
+                <button
+                    class="login-submit"
+                    id="registerSubmitButton"
+                    type="button">
+
+                    إنشاء الحساب
+
+                </button>
+
+
+                <button
+                    class="login-register"
+                    id="showLoginButton"
+                    type="button">
+
+                    لدي حساب بالفعل
+
+                </button>
+
+
+            </div>
+
+
         </div>
 
-        <label for="emailLogin">
-            البريد الإلكتروني
-        </label>
-
-        <input
-            type="email"
-            id="emailLogin"
-            placeholder="أدخل بريدك الإلكتروني"
-            autocomplete="email">
-
-        <label for="passwordLogin">
-            كلمة المرور
-        </label>
-
-        <input
-            type="password"
-            id="passwordLogin"
-            placeholder="أدخل كلمة المرور"
-            autocomplete="current-password">
-
-        <button
-            class="login-submit"
-            id="emailLoginButton"
-            type="button">
-            تسجيل الدخول
-        </button>
-
-        <button
-            class="login-register"
-            id="registerButton"
-            type="button">
-            إنشاء حساب جديد
-        </button>
-
-        <p class="login-note">
-            يمكنك لاحقًا تسجيل الدخول أيضًا باستخدام رقم الجوال.
-        </p>
 
     </div>
-
-</div>
 
 
     <!-- ==================== التذييل ==================== -->
 
     <footer class="site-footer">
 
+
         <p>
             © قافية — موسوعة عربية للشعر والأدب
         </p>
 
+
     </footer>
+
 
 </body>
 

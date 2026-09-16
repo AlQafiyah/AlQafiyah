@@ -1025,3 +1025,9 @@ video {
         padding: 30px 20px;
     }
 }
+
+.notification-icon {
+    width: 22px;
+    height: 22px;
+    display: block;
+}
