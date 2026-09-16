@@ -1861,6 +1861,1037 @@
             }
         }
 
+        // ============================================================
+// المحتوى العام | القصائد + الشعراء + المقالات
+// ============================================================
+
+
+// ============================================================
+// القصائد
+// ============================================================
+
+const publicPoemsSection =
+    document.getElementById("Poems");
+
+if (publicPoemsSection) {
+
+    try {
+
+        const {
+            data: poems,
+            error: poemsError
+        } =
+            await supabaseClient
+                .from("poems")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (poemsError) {
+            throw poemsError;
+        }
+
+
+        const poemItems =
+            poems || [];
+
+
+        if (!poemItems.length) {
+
+            publicPoemsSection.innerHTML = `
+                <article class="content-card poem-card">
+                    <h2>لا توجد قصائد حاليًا</h2>
+                    <p>
+                        ستظهر القصائد هنا عند إضافتها من لوحة الإدارة.
+                    </p>
+                </article>
+            `;
+
+        } else {
+
+            publicPoemsSection.innerHTML =
+                poemItems
+                    .map(
+                        function (poem) {
+
+                            const poemLines =
+                                String(
+                                    poem.content || ""
+                                )
+                                    .split(/\n+/)
+                                    .map(
+                                        function (line) {
+
+                                            const cleanLine =
+                                                line.trim();
+
+                                            if (!cleanLine) {
+                                                return "";
+                                            }
+
+                                            return `
+                                                <p>
+                                                    ${escapeHtml(cleanLine)}
+                                                </p>
+                                            `;
+                                        }
+                                    )
+                                    .join("");
+
+
+                            const imageHtml =
+                                poem.image_url
+                                    ? `
+                                        <div class="poem-image">
+                                            <img
+                                                src="${escapeHtml(poem.image_url)}"
+                                                alt="${escapeHtml(poem.title || "")}"
+                                                loading="lazy"
+                                                style="
+                                                    width:100%;
+                                                    max-height:520px;
+                                                    object-fit:cover;
+                                                    border-radius:18px;
+                                                    margin-bottom:22px;
+                                                "
+                                            >
+                                        </div>
+                                    `
+                                    : "";
+
+
+                            let videoHtml =
+                                "";
+
+
+                            if (poem.video_url) {
+
+                                const videoUrl =
+                                    String(
+                                        poem.video_url
+                                    );
+
+
+                                if (
+                                    videoUrl.includes(
+                                        "youtube.com"
+                                    ) ||
+                                    videoUrl.includes(
+                                        "youtu.be"
+                                    )
+                                ) {
+
+                                    let embedUrl =
+                                        videoUrl;
+
+
+                                    if (
+                                        videoUrl.includes(
+                                            "watch?v="
+                                        )
+                                    ) {
+
+                                        embedUrl =
+                                            videoUrl.replace(
+                                                "watch?v=",
+                                                "embed/"
+                                            );
+                                    }
+
+
+                                    if (
+                                        videoUrl.includes(
+                                            "youtu.be/"
+                                        )
+                                    ) {
+
+                                        embedUrl =
+                                            videoUrl.replace(
+                                                "youtu.be/",
+                                                "youtube.com/embed/"
+                                            );
+                                    }
+
+
+                                    videoHtml = `
+                                        <div
+                                            class="video-box"
+                                            style="margin-top:25px;"
+                                        >
+                                            <iframe
+                                                src="${escapeHtml(embedUrl)}"
+                                                title="${escapeHtml(poem.title || "فيديو القصيدة")}"
+                                                loading="lazy"
+                                                allowfullscreen
+                                                style="
+                                                    width:100%;
+                                                    aspect-ratio:16/9;
+                                                    border:0;
+                                                    border-radius:18px;
+                                                "
+                                            ></iframe>
+                                        </div>
+                                    `;
+
+                                } else {
+
+                                    videoHtml = `
+                                        <div class="video-box">
+                                            <video
+                                                controls
+                                                preload="metadata"
+                                                src="${escapeHtml(videoUrl)}"
+                                                style="
+                                                    width:100%;
+                                                    border-radius:18px;
+                                                "
+                                            >
+                                                متصفحك لا يدعم تشغيل الفيديو.
+                                            </video>
+                                        </div>
+                                    `;
+                                }
+                            }
+
+
+                            return `
+                                <article class="content-card poem-card">
+
+                                    ${imageHtml}
+
+                                    <div class="poem-card-header">
+
+                                        <div>
+
+                                            ${
+                                                poem.category
+                                                    ? `
+                                                        <span class="section-label">
+                                                            ${escapeHtml(poem.category)}
+                                                        </span>
+                                                    `
+                                                    : ""
+                                            }
+
+                                            <h2>
+                                                ${escapeHtml(poem.title || "بدون عنوان")}
+                                            </h2>
+
+                                            ${
+                                                poem.poet
+                                                    ? `
+                                                        <p class="poem-poet">
+                                                            ${escapeHtml(poem.poet)}
+                                                        </p>
+                                                    `
+                                                    : ""
+                                            }
+
+                                            ${
+                                                poem.era
+                                                    ? `
+                                                        <p>
+                                                            ${escapeHtml(poem.era)}
+                                                        </p>
+                                                    `
+                                                    : ""
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="poem-text">
+                                        ${poemLines}
+                                    </div>
+
+                                    ${videoHtml}
+
+                                </article>
+                            `;
+                        }
+                    )
+                    .join("");
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "قافية: خطأ في تحميل القصائد:",
+            error
+        );
+
+        publicPoemsSection.innerHTML = `
+            <article class="content-card poem-card">
+                <h2>تعذر تحميل القصائد</h2>
+            </article>
+        `;
+    }
+}
+
+
+
+// ============================================================
+// الشعراء
+// ============================================================
+
+const publicPoetsContainer =
+    document.getElementById(
+        "poetsContainer"
+    );
+
+
+if (publicPoetsContainer) {
+
+    const poetsLoading =
+        document.getElementById(
+            "poetsLoading"
+        );
+
+    const poetsEmpty =
+        document.getElementById(
+            "poetsEmpty"
+        );
+
+    const poetsNoResults =
+        document.getElementById(
+            "poetsNoResults"
+        );
+
+    const poetSearch =
+        document.getElementById(
+            "poetSearch"
+        );
+
+    const poetEra =
+        document.getElementById(
+            "poetEra"
+        );
+
+    const poetCategory =
+        document.getElementById(
+            "poetCategory"
+        );
+
+
+    let publicPoets =
+        [];
+
+
+    function fillPoetFilters() {
+
+        if (poetEra) {
+
+            const eras =
+                [
+                    ...new Set(
+                        publicPoets
+                            .map(
+                                function (poet) {
+                                    return poet.era;
+                                }
+                            )
+                            .filter(Boolean)
+                    )
+                ].sort();
+
+
+            eras.forEach(
+                function (era) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value =
+                        era;
+
+                    option.textContent =
+                        era;
+
+                    poetEra.appendChild(
+                        option
+                    );
+                }
+            );
+        }
+
+
+        if (poetCategory) {
+
+            const categories =
+                [
+                    ...new Set(
+                        publicPoets
+                            .flatMap(
+                                function (poet) {
+                                    return poet.categories;
+                                }
+                            )
+                            .filter(Boolean)
+                    )
+                ].sort();
+
+
+            categories.forEach(
+                function (category) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value =
+                        category;
+
+                    option.textContent =
+                        category;
+
+                    poetCategory.appendChild(
+                        option
+                    );
+                }
+            );
+        }
+    }
+
+
+    function renderPublicPoets() {
+
+        const searchValue =
+            String(
+                poetSearch?.value || ""
+            )
+                .trim()
+                .toLowerCase();
+
+
+        const eraValue =
+            String(
+                poetEra?.value || ""
+            );
+
+
+        const categoryValue =
+            String(
+                poetCategory?.value || ""
+            );
+
+
+        const filtered =
+            publicPoets.filter(
+                function (poet) {
+
+                    const searchMatch =
+                        !searchValue ||
+                        poet.name
+                            .toLowerCase()
+                            .includes(
+                                searchValue
+                            );
+
+
+                    const eraMatch =
+                        !eraValue ||
+                        poet.era ===
+                            eraValue;
+
+
+                    const categoryMatch =
+                        !categoryValue ||
+                        poet.categories.includes(
+                            categoryValue
+                        );
+
+
+                    return (
+                        searchMatch &&
+                        eraMatch &&
+                        categoryMatch
+                    );
+                }
+            );
+
+
+        if (poetsLoading) {
+            poetsLoading.hidden =
+                true;
+        }
+
+
+        if (!publicPoets.length) {
+
+            publicPoetsContainer.innerHTML =
+                "";
+
+            if (poetsEmpty) {
+                poetsEmpty.hidden =
+                    false;
+            }
+
+            if (poetsNoResults) {
+                poetsNoResults.hidden =
+                    true;
+            }
+
+            return;
+        }
+
+
+        if (!filtered.length) {
+
+            publicPoetsContainer.innerHTML =
+                "";
+
+            if (poetsEmpty) {
+                poetsEmpty.hidden =
+                    true;
+            }
+
+            if (poetsNoResults) {
+                poetsNoResults.hidden =
+                    false;
+            }
+
+            return;
+        }
+
+
+        if (poetsEmpty) {
+            poetsEmpty.hidden =
+                true;
+        }
+
+        if (poetsNoResults) {
+            poetsNoResults.hidden =
+                true;
+        }
+
+
+        publicPoetsContainer.innerHTML =
+            filtered
+                .map(
+                    function (poet) {
+
+                        return `
+                            <article class="content-card">
+
+                                <h2>
+                                    ${escapeHtml(poet.name)}
+                                </h2>
+
+                                ${
+                                    poet.era
+                                        ? `
+                                            <p>
+                                                ${escapeHtml(poet.era)}
+                                            </p>
+                                        `
+                                        : ""
+                                }
+
+                                ${
+                                    poet.categories.length
+                                        ? `
+                                            <p>
+                                                ${escapeHtml(
+                                                    poet.categories.join(
+                                                        "، "
+                                                    )
+                                                )}
+                                            </p>
+                                        `
+                                        : ""
+                                }
+
+                                <p>
+                                    عدد القصائد:
+                                    ${poet.count}
+                                </p>
+
+                            </article>
+                        `;
+                    }
+                )
+                .join("");
+    }
+
+
+    try {
+
+        const {
+            data: poetPoems,
+            error: poetError
+        } =
+            await supabaseClient
+                .from("poems")
+                .select(
+                    "poet,era,category"
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (poetError) {
+            throw poetError;
+        }
+
+
+        const poetMap =
+            new Map();
+
+
+        (
+            poetPoems || []
+        ).forEach(
+            function (poem) {
+
+                const name =
+                    String(
+                        poem.poet || ""
+                    ).trim();
+
+
+                if (!name) {
+                    return;
+                }
+
+
+                if (
+                    !poetMap.has(
+                        name
+                    )
+                ) {
+
+                    poetMap.set(
+                        name,
+                        {
+                            name:
+                                name,
+
+                            era:
+                                poem.era ||
+                                "",
+
+                            categories:
+                                [],
+
+                            count:
+                                0
+                        }
+                    );
+                }
+
+
+                const poet =
+                    poetMap.get(
+                        name
+                    );
+
+
+                poet.count +=
+                    1;
+
+
+                if (
+                    !poet.era &&
+                    poem.era
+                ) {
+
+                    poet.era =
+                        poem.era;
+                }
+
+
+                if (
+                    poem.category &&
+                    !poet.categories.includes(
+                        poem.category
+                    )
+                ) {
+
+                    poet.categories.push(
+                        poem.category
+                    );
+                }
+            }
+        );
+
+
+        publicPoets =
+            Array.from(
+                poetMap.values()
+            );
+
+
+        fillPoetFilters();
+
+        renderPublicPoets();
+
+
+        poetSearch?.addEventListener(
+            "input",
+            renderPublicPoets
+        );
+
+
+        poetEra?.addEventListener(
+            "change",
+            renderPublicPoets
+        );
+
+
+        poetCategory?.addEventListener(
+            "change",
+            renderPublicPoets
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "قافية: خطأ في تحميل الشعراء:",
+            error
+        );
+
+
+        if (poetsLoading) {
+
+            poetsLoading.textContent =
+                "تعذر تحميل الشعراء.";
+        }
+    }
+}
+
+
+
+// ============================================================
+// المقالات
+// ============================================================
+
+const articlesContainer =
+    document.getElementById(
+        "articlesContainer"
+    );
+
+
+if (articlesContainer) {
+
+    const articlesLoading =
+        document.getElementById(
+            "articlesLoading"
+        );
+
+    const articlesEmpty =
+        document.getElementById(
+            "articlesEmpty"
+        );
+
+    const articleSearch =
+        document.getElementById(
+            "articleSearch"
+        );
+
+    const articleCategory =
+        document.getElementById(
+            "articleCategory"
+        );
+
+
+    let publicArticles =
+        [];
+
+
+    function fillArticleCategories() {
+
+        if (!articleCategory) {
+            return;
+        }
+
+
+        const categories =
+            [
+                ...new Set(
+                    publicArticles
+                        .map(
+                            function (article) {
+
+                                return String(
+                                    article.category ||
+                                    ""
+                                ).trim();
+                            }
+                        )
+                        .filter(Boolean)
+                )
+            ].sort();
+
+
+        categories.forEach(
+            function (category) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    category;
+
+                option.textContent =
+                    category;
+
+                articleCategory.appendChild(
+                    option
+                );
+            }
+        );
+    }
+
+
+    function renderPublicArticles() {
+
+        const searchValue =
+            String(
+                articleSearch?.value ||
+                ""
+            )
+                .trim()
+                .toLowerCase();
+
+
+        const categoryValue =
+            String(
+                articleCategory?.value ||
+                ""
+            );
+
+
+        const filtered =
+            publicArticles.filter(
+                function (article) {
+
+                    const title =
+                        String(
+                            article.title ||
+                            ""
+                        ).toLowerCase();
+
+
+                    const author =
+                        String(
+                            article.author ||
+                            ""
+                        ).toLowerCase();
+
+
+                    const content =
+                        String(
+                            article.content ||
+                            ""
+                        ).toLowerCase();
+
+
+                    const category =
+                        String(
+                            article.category ||
+                            ""
+                        );
+
+
+                    const searchMatch =
+                        !searchValue ||
+                        title.includes(
+                            searchValue
+                        ) ||
+                        author.includes(
+                            searchValue
+                        ) ||
+                        content.includes(
+                            searchValue
+                        );
+
+
+                    const categoryMatch =
+                        !categoryValue ||
+                        category ===
+                            categoryValue;
+
+
+                    return (
+                        searchMatch &&
+                        categoryMatch
+                    );
+                }
+            );
+
+
+        if (articlesLoading) {
+            articlesLoading.hidden =
+                true;
+        }
+
+
+        if (!filtered.length) {
+
+            articlesContainer.innerHTML =
+                "";
+
+            if (articlesEmpty) {
+                articlesEmpty.hidden =
+                    false;
+            }
+
+            return;
+        }
+
+
+        if (articlesEmpty) {
+            articlesEmpty.hidden =
+                true;
+        }
+
+
+        articlesContainer.innerHTML =
+            filtered
+                .map(
+                    function (article) {
+
+                        return `
+                            <article class="content-card">
+
+                                ${
+                                    article.image_url
+                                        ? `
+                                            <img
+                                                src="${escapeHtml(article.image_url)}"
+                                                alt="${escapeHtml(article.title || "")}"
+                                                loading="lazy"
+                                                style="
+                                                    width:100%;
+                                                    max-height:420px;
+                                                    object-fit:cover;
+                                                    border-radius:18px;
+                                                    margin-bottom:20px;
+                                                "
+                                            >
+                                        `
+                                        : ""
+                                }
+
+                                ${
+                                    article.category
+                                        ? `
+                                            <span class="section-label">
+                                                ${escapeHtml(article.category)}
+                                            </span>
+                                        `
+                                        : ""
+                                }
+
+                                <h2>
+                                    ${escapeHtml(article.title || "بدون عنوان")}
+                                </h2>
+
+                                ${
+                                    article.author
+                                        ? `
+                                            <p>
+                                                بقلم
+                                                ${escapeHtml(article.author)}
+                                            </p>
+                                        `
+                                        : ""
+                                }
+
+                                <div>
+                                    ${escapeHtml(
+                                        article.content ||
+                                        ""
+                                    ).replace(
+                                        /\n/g,
+                                        "<br>"
+                                    )}
+                                </div>
+
+                            </article>
+                        `;
+                    }
+                )
+                .join("");
+    }
+
+
+    try {
+
+        const {
+            data: articles,
+            error: articlesError
+        } =
+            await supabaseClient
+                .from("articles")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending:
+                            false
+                    }
+                );
+
+
+        if (articlesError) {
+            throw articlesError;
+        }
+
+
+        publicArticles =
+            articles || [];
+
+
+        fillArticleCategories();
+
+        renderPublicArticles();
+
+
+        articleSearch?.addEventListener(
+            "input",
+            renderPublicArticles
+        );
+
+
+        articleCategory?.addEventListener(
+            "change",
+            renderPublicArticles
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "قافية: خطأ في تحميل المقالات:",
+            error
+        );
+
+
+        if (articlesLoading) {
+
+            articlesLoading.textContent =
+                "تعذر تحميل المقالات.";
+        }
+    }
+}
 
         // ============================================================
         // صفحة الملف الشخصي
