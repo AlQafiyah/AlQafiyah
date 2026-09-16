@@ -1,3 +1,4 @@
+
 /* =========================
    الألوان الأساسية
 ========================= */
@@ -68,6 +69,7 @@ button {
 
 .site-header {
     width: 100%;
+
     background-color: var(--color-light);
     color: var(--color-primary);
 
@@ -87,6 +89,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     gap: 20px;
 }
 
@@ -149,6 +152,7 @@ button {
 .header-actions {
     display: flex;
     align-items: center;
+
     gap: 10px;
 }
 
@@ -190,6 +194,7 @@ button {
 .notification-icon {
     width: 22px;
     height: 22px;
+
     display: block;
 }
 
@@ -389,6 +394,141 @@ button {
 
 
 /* =========================
+   منطقة الحساب الجديدة
+========================= */
+
+.qafiyah-account-area {
+    position: relative;
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qafiyah-header-avatar {
+    width: 44px;
+    height: 44px;
+
+    padding: 0;
+
+    border: 1px solid rgba(62, 39, 35, 0.18);
+    border-radius: 50%;
+
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.qafiyah-header-avatar:hover {
+    transform: scale(1.05);
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.15);
+}
+
+.qafiyah-header-avatar svg {
+    width: 22px;
+    height: 22px;
+}
+
+.qafiyah-header-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* =========================
+   قائمة الحساب الجديدة
+========================= */
+
+.qafiyah-account-dropdown {
+    position: fixed;
+
+    min-width: 190px;
+
+    padding: 7px;
+
+    border: 1px solid rgba(62, 39, 35, 0.12);
+    border-radius: 13px;
+
+    background-color: var(--color-light);
+    color: var(--color-primary);
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.18);
+
+    z-index: 5000;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-6px);
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
+}
+
+.qafiyah-account-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+
+    pointer-events: auto;
+}
+
+.qafiyah-account-dropdown button {
+    width: 100%;
+
+    min-height: 45px;
+
+    padding: 9px 13px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: transparent;
+    color: var(--color-primary);
+
+    font-family: inherit;
+    font-size: 14px;
+
+    text-align: right;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease;
+}
+
+.qafiyah-account-dropdown button:hover {
+    background-color: var(--color-accent);
+}
+
+
+/* =========================
    القائمة الجانبية
 ========================= */
 
@@ -410,7 +550,8 @@ button {
 
     transition: transform 0.3s ease;
 
-    box-shadow: -10px 0 35px rgba(0, 0, 0, 0.2);
+    box-shadow:
+        -10px 0 35px rgba(0, 0, 0, 0.2);
 
     overflow-y: auto;
 }
@@ -506,6 +647,7 @@ button {
 
     display: flex;
     align-items: center;
+
     gap: 12px;
 
     cursor: pointer;
@@ -536,6 +678,15 @@ button {
     height: 100%;
 
     object-fit: cover;
+
+    border-radius: 50%;
+
+    display: block;
+}
+
+.user-avatar svg {
+    width: 24px;
+    height: 24px;
 }
 
 .user-info {
@@ -625,7 +776,8 @@ button {
 
     z-index: 1400;
 
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.25);
 
     opacity: 0;
     visibility: hidden;
@@ -767,6 +919,7 @@ button {
 
 .secondary-button {
     border: 1px solid var(--color-accent);
+
     color: var(--color-accent);
 }
 
@@ -920,7 +1073,8 @@ button {
     background-color: var(--color-light);
     color: var(--color-primary);
 
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .login-box h2 {
@@ -1002,6 +1156,7 @@ button {
 
     display: flex;
     align-items: center;
+
     gap: 10px;
 
     color: var(--color-gray);
@@ -1071,6 +1226,32 @@ button {
     text-align: center;
 }
 
+.login-register {
+    margin-top: 18px;
+
+    color: var(--color-gray);
+
+    font-size: 13px;
+
+    text-align: center;
+}
+
+.login-register button {
+    border: none;
+
+    padding: 0;
+
+    background: transparent;
+    color: var(--color-primary);
+
+    font-family: inherit;
+    font-size: inherit;
+
+    cursor: pointer;
+
+    text-decoration: underline;
+}
+
 
 /* =========================
    تاريخ الميلاد
@@ -1087,34 +1268,127 @@ button {
 
 
 /* =========================
+   نموذج تسجيل الدخول في الملف
+========================= */
+
+.profile-login-form {
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+    color: var(--color-primary);
+}
+
+.profile-login-form h2 {
+    margin: 0 0 20px;
+
+    color: var(--color-primary);
+
+    font-size: 1.8rem;
+
+    text-align: right;
+}
+
+.profile-login-form input,
+.profile-login-form select {
+    width: 100%;
+
+    min-height: 48px;
+
+    margin-top: 12px;
+
+    padding: 10px 14px;
+
+    border: 1px solid #ccc;
+    border-radius: 10px;
+
+    background-color: white;
+    color: var(--color-primary);
+
+    font-family: inherit;
+    font-size: 15px;
+
+    outline: none;
+
+    text-align: right;
+}
+
+.profile-login-form input:focus,
+.profile-login-form select:focus {
+    border-color: var(--color-primary);
+}
+
+.profile-login-form .birth-date-fields {
+    width: 100%;
+
+    margin-top: 12px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 10px;
+}
+
+.profile-login-form .birth-date-fields select {
+    margin-top: 0;
+}
+
+.profile-login-form .login-submit {
+    width: 100%;
+
+    min-height: 48px;
+
+    margin-top: 12px;
+}
+
+
+/* =========================
    صفحة الملف الشخصي
 ========================= */
 
 .profile-page {
+    width: 100%;
+
     min-height: calc(100vh - 82px);
 
-    padding: 50px 20px;
+    padding: 60px 20px 80px;
 
     background-color: var(--color-background);
 }
 
 .profile-container {
     width: 100%;
-    max-width: 850px;
+    max-width: 950px;
 
     margin: 0 auto;
 }
 
-.profile-card {
-    padding: 35px;
+.profile-heading {
+    margin-bottom: 30px;
 
-    border: 1px solid var(--color-border);
-    border-radius: 20px;
+    text-align: right;
+}
 
-    background-color: var(--color-card);
+.profile-heading h1 {
+    margin: 0 0 8px;
 
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.15);
+    color: var(--color-light);
+
+    font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.profile-heading p {
+    margin: 0;
+
+    color: var(--color-accent);
+
+    font-size: 1rem;
 }
 
 .profile-title {
@@ -1129,7 +1403,26 @@ button {
 
 
 /* =========================
-   صورة الملف الشخصي
+   بطاقة الملف
+========================= */
+
+.profile-card {
+    width: 100%;
+
+    padding: 35px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+
+    background-color: var(--color-card);
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================
+   صورة الملف الشخصي القديمة
 ========================= */
 
 .profile-avatar-section {
@@ -1137,6 +1430,7 @@ button {
 
     display: flex;
     flex-direction: column;
+
     align-items: center;
 }
 
@@ -1219,19 +1513,147 @@ button {
 
 
 /* =========================
+   الصورة الشخصية الجديدة
+========================= */
+
+.profile-photo-section {
+    width: 100%;
+
+    margin-bottom: 35px;
+    padding-bottom: 30px;
+
+    border-bottom: 1px solid var(--color-border);
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+.profile-photo {
+    width: 125px;
+    height: 125px;
+
+    margin-bottom: 18px;
+
+    border: 2px solid var(--color-accent-dark);
+    border-radius: 50%;
+
+    background-color: var(--color-primary);
+    color: var(--color-light);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+.profile-photo svg {
+    width: 55px;
+    height: 55px;
+}
+
+.profile-photo img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.profile-photo-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+}
+
+.profile-upload-button,
+.profile-delete-button {
+    min-height: 44px;
+
+    padding: 9px 17px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.profile-upload-button {
+    border: 1px solid var(--color-primary);
+
+    background-color: var(--color-primary);
+    color: var(--color-light);
+}
+
+.profile-delete-button {
+    border: 1px solid rgba(179, 38, 30, 0.65);
+
+    background-color: transparent;
+    color: #b3261e;
+}
+
+.profile-upload-button:hover,
+.profile-delete-button:hover {
+    transform: translateY(-1px);
+}
+
+.profile-upload-button:hover {
+    background-color: var(--color-accent-dark);
+}
+
+.profile-delete-button:hover {
+    background-color: rgba(179, 38, 30, 0.08);
+}
+
+.profile-photo-section small {
+    color: #d8d0ce;
+
+    font-size: 12px;
+}
+
+
+/* =========================
    نموذج الملف الشخصي
 ========================= */
 
 .profile-form {
+    width: 100%;
+}
+
+.profile-fields {
+    width: 100%;
+
     display: grid;
 
     grid-template-columns:
         repeat(2, minmax(0, 1fr));
 
-    gap: 18px;
+    gap: 20px;
 }
 
 .profile-field {
+    width: 100%;
+
+    text-align: right;
+
     display: flex;
     flex-direction: column;
 }
@@ -1241,9 +1663,11 @@ button {
 }
 
 .profile-field label {
-    margin-bottom: 7px;
+    display: block;
 
-    color: var(--color-accent);
+    margin-bottom: 8px;
+
+    color: var(--color-light);
 
     font-size: 14px;
 }
@@ -1252,11 +1676,11 @@ button {
 .profile-field select {
     width: 100%;
 
-    min-height: 48px;
+    min-height: 50px;
 
     padding: 10px 14px;
 
-    border: 1px solid rgba(255, 232, 214, 0.25);
+    border: 1px solid rgba(255, 232, 214, 0.22);
     border-radius: 10px;
 
     background-color: var(--color-light);
@@ -1265,15 +1689,26 @@ button {
     font-family: inherit;
     font-size: 15px;
 
+    text-align: right;
+
     outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .profile-field input:focus,
 .profile-field select:focus {
     border-color: var(--color-accent-dark);
+
+    box-shadow:
+        0 0 0 3px rgba(203, 153, 126, 0.12);
 }
 
 .profile-field input[readonly] {
+    background-color: #e9e6e5;
+
     opacity: 0.75;
 
     cursor: not-allowed;
@@ -1290,21 +1725,31 @@ button {
     margin-top: 10px;
 
     display: flex;
+
     justify-content: flex-start;
 
     gap: 10px;
 }
 
-.profile-save-button {
+.profile-save-area {
+    margin-top: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+}
+
+.profile-save-button,
+.profile-logout-button {
     min-height: 48px;
 
-    padding: 10px 25px;
+    padding: 10px 22px;
 
-    border: none;
     border-radius: 10px;
-
-    background-color: var(--color-accent);
-    color: var(--color-primary);
 
     font-family: inherit;
     font-size: 15px;
@@ -1313,17 +1758,33 @@ button {
 
     transition:
         transform 0.2s ease,
+        background-color 0.2s ease,
         opacity 0.2s ease;
 }
 
-.profile-save-button:hover {
+.profile-save-button {
+    border: 1px solid var(--color-primary);
+
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+}
+
+.profile-logout-button {
+    border: 1px solid rgba(179, 38, 30, 0.65);
+
+    background-color: transparent;
+    color: #b3261e;
+}
+
+.profile-save-button:hover,
+.profile-logout-button:hover {
     transform: translateY(-1px);
 }
 
 .profile-save-button:disabled {
     opacity: 0.6;
 
-    cursor: not-allowed;
+    cursor: wait;
 
     transform: none;
 }
@@ -1336,15 +1797,30 @@ button {
 .profile-message {
     grid-column: 1 / -1;
 
-    min-height: 24px;
+    min-height: 25px;
 
-    margin-top: 5px;
+    margin: 15px 0 0;
 
     color: var(--color-accent);
 
-    font-size: 13px;
+    font-size: 14px;
 
     text-align: right;
+}
+
+.profile-message.error {
+    color: #ff8d85;
+}
+
+
+/* =========================
+   الصور والفيديو
+========================= */
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
 }
 
 
@@ -1365,17 +1841,6 @@ button {
 
 .site-footer p {
     margin: 0;
-}
-
-
-/* =========================
-   الصور والفيديو
-========================= */
-
-img,
-video {
-    max-width: 100%;
-    height: auto;
 }
 
 
@@ -1416,6 +1881,16 @@ video {
         height: 41px;
     }
 
+    .qafiyah-account-area {
+        width: 43px;
+        height: 43px;
+    }
+
+    .qafiyah-header-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
     .hero-section {
         min-height: 450px;
 
@@ -1433,7 +1908,7 @@ video {
     }
 
     .profile-page {
-        padding: 35px 15px;
+        padding: 40px 15px 60px;
     }
 
     .profile-card {
@@ -1441,6 +1916,10 @@ video {
     }
 
     .profile-form {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-fields {
         grid-template-columns: 1fr;
     }
 
@@ -1454,6 +1933,15 @@ video {
 
     .profile-message {
         grid-column: auto;
+    }
+
+    .profile-save-area {
+        justify-content: stretch;
+    }
+
+    .profile-save-button,
+    .profile-logout-button {
+        flex: 1;
     }
 }
 
@@ -1495,6 +1983,10 @@ video {
         width: 175px;
     }
 
+    .qafiyah-account-dropdown {
+        min-width: 175px;
+    }
+
     .profile-avatar {
         width: 115px;
         height: 115px;
@@ -1510,15 +2002,40 @@ video {
         width: 100%;
     }
 
+    .profile-photo {
+        width: 110px;
+        height: 110px;
+    }
+
+    .profile-photo-actions {
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+    .profile-upload-button,
+    .profile-delete-button {
+        width: 100%;
+    }
+
     .profile-actions {
         flex-direction: column;
     }
 
-    .profile-save-button {
+    .profile-save-area {
+        flex-direction: column;
+    }
+
+    .profile-save-button,
+    .profile-logout-button {
         width: 100%;
     }
 
     .birth-date-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-login-form .birth-date-fields {
         grid-template-columns: 1fr;
     }
 }

@@ -20,6 +20,7 @@
 
 <body>
 
+
     <!-- =====================================================
          الهيدر
     ====================================================== -->
@@ -27,6 +28,7 @@
     <header class="site-header">
 
         <div class="header-container">
+
 
             <button
                 class="menu-button"
@@ -50,6 +52,7 @@
 
             <div class="header-actions">
 
+
                 <button
                     class="notification-button"
                     id="notificationButton"
@@ -71,7 +74,9 @@
                             d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9">
                         </path>
 
-                        <path d="M10 21h4"></path>
+                        <path
+                            d="M10 21h4">
+                        </path>
 
                     </svg>
 
@@ -96,6 +101,7 @@
 
                 </button>
 
+
             </div>
 
         </div>
@@ -119,6 +125,10 @@
 
         <div class="side-menu-header">
 
+            <h2>
+                القائمة
+            </h2>
+
             <button
                 class="close-menu-button"
                 id="closeMenuButton"
@@ -135,8 +145,7 @@
             class="user-section"
             id="userSection">
 
-            <div
-                class="user-avatar">
+            <div class="user-avatar">
 
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -165,11 +174,15 @@
             <div class="user-info">
 
                 <strong id="menuUserName">
+
                     مرحبًا بك
+
                 </strong>
 
                 <span id="menuUserEmail">
+
                     سجّل الدخول للمتابعة
+
                 </span>
 
             </div>
@@ -179,11 +192,16 @@
 
         <nav class="side-navigation">
 
+
             <a
                 href="profile.html"
                 id="profileLink">
 
-                الملف الشخصي
+                <span>◉</span>
+
+                <span>
+                    الملف الشخصي
+                </span>
 
             </a>
 
@@ -192,7 +210,11 @@
                 href="#"
                 id="favoritesLink">
 
-                المفضلة
+                <span>♡</span>
+
+                <span>
+                    المفضلة
+                </span>
 
             </a>
 
@@ -201,9 +223,14 @@
                 href="#"
                 id="settingsLink">
 
-                الإعدادات
+                <span>⚙</span>
+
+                <span>
+                    الإعدادات
+                </span>
 
             </a>
+
 
         </nav>
 
@@ -221,7 +248,9 @@
         <div class="notification-header">
 
             <h3>
+
                 الإشعارات
+
             </h3>
 
             <button
@@ -256,11 +285,15 @@
             <div class="profile-heading">
 
                 <h1>
+
                     الملف الشخصي
+
                 </h1>
 
                 <p>
+
                     إدارة معلومات حسابك الشخصي
+
                 </p>
 
             </div>
@@ -272,6 +305,7 @@
                 <!-- الصورة -->
 
                 <div class="profile-photo-section">
+
 
                     <div
                         class="profile-photo"
@@ -303,11 +337,12 @@
 
                     <div class="profile-photo-actions">
 
+
                         <label
                             for="avatarInput"
                             class="profile-upload-button">
 
-                            تغيير الصورة
+                            إضافة / تغيير الصورة
 
                         </label>
 
@@ -328,12 +363,16 @@
 
                         </button>
 
+
                     </div>
 
 
                     <small>
-                        JPG أو PNG أو WebP
+
+                        JPG أو PNG أو WebP — بحد أقصى 5MB
+
                     </small>
+
 
                 </div>
 
@@ -430,7 +469,9 @@
                                 required>
 
                                 <option value="">
+
                                     اليوم
+
                                 </option>
 
                             </select>
@@ -452,7 +493,9 @@
                                 required>
 
                                 <option value="">
+
                                     الشهر
+
                                 </option>
 
                                 <option value="1">يناير</option>
@@ -487,7 +530,9 @@
                                 required>
 
                                 <option value="">
+
                                     السنة
+
                                 </option>
 
                             </select>
@@ -509,25 +554,33 @@
                                 required>
 
                                 <option value="">
+
                                     اختر
+
                                 </option>
 
                                 <option value="male">
+
                                     ذكر
+
                                 </option>
 
                                 <option value="female">
+
                                     أنثى
+
                                 </option>
 
                             </select>
 
                         </div>
 
+
                     </div>
 
 
                     <div class="profile-save-area">
+
 
                         <button
                             type="submit"
@@ -548,6 +601,7 @@
 
                         </button>
 
+
                     </div>
 
 
@@ -556,7 +610,9 @@
                         class="profile-message">
                     </p>
 
+
                 </form>
+
 
             </div>
 
@@ -573,7 +629,9 @@
         class="login-modal"
         id="loginModal">
 
+
         <div class="login-box">
+
 
             <button
                 class="close-login-button"
@@ -585,31 +643,30 @@
             </button>
 
 
-            <form
-                id="loginForm"
-                class="login-method">
+            <div id="loginForm">
+
 
                 <h2>
+
                     تسجيل الدخول
+
                 </h2>
 
 
                 <input
                     type="email"
                     id="emailLogin"
-                    placeholder="البريد الإلكتروني"
-                    required>
+                    placeholder="البريد الإلكتروني">
 
 
                 <input
                     type="password"
                     id="passwordLogin"
-                    placeholder="كلمة المرور"
-                    required>
+                    placeholder="كلمة المرور">
 
 
                 <button
-                    type="submit"
+                    type="button"
                     id="emailLoginButton"
                     class="login-submit">
 
@@ -632,6 +689,7 @@
 
                     ليس لديك حساب؟
 
+
                     <button
                         type="button"
                         id="showRegisterButton">
@@ -642,24 +700,26 @@
 
                 </div>
 
-            </form>
+
+            </div>
 
 
-            <form
+            <div
                 id="registerForm"
-                class="login-method"
                 style="display:none;">
 
+
                 <h2>
+
                     إنشاء حساب
+
                 </h2>
 
 
                 <input
                     type="text"
                     id="firstName"
-                    placeholder="الاسم الأول"
-                    required>
+                    placeholder="الاسم الأول">
 
 
                 <input
@@ -670,23 +730,24 @@
 
                 <div class="birth-date-fields">
 
-                    <select
-                        id="birthDay"
-                        required>
+
+                    <select id="birthDay">
 
                         <option value="">
+
                             اليوم
+
                         </option>
 
                     </select>
 
 
-                    <select
-                        id="birthMonth"
-                        required>
+                    <select id="birthMonth">
 
                         <option value="">
+
                             الشهر
+
                         </option>
 
                         <option value="1">يناير</option>
@@ -705,33 +766,38 @@
                     </select>
 
 
-                    <select
-                        id="birthYear"
-                        required>
+                    <select id="birthYear">
 
                         <option value="">
+
                             السنة
+
                         </option>
 
                     </select>
 
+
                 </div>
 
 
-                <select
-                    id="gender"
-                    required>
+                <select id="gender">
 
                     <option value="">
+
                         الجنس
+
                     </option>
 
                     <option value="male">
+
                         ذكر
+
                     </option>
 
                     <option value="female">
+
                         أنثى
+
                     </option>
 
                 </select>
@@ -740,26 +806,23 @@
                 <input
                     type="email"
                     id="emailRegister"
-                    placeholder="البريد الإلكتروني"
-                    required>
+                    placeholder="البريد الإلكتروني">
 
 
                 <input
                     type="password"
                     id="passwordRegister"
-                    placeholder="كلمة المرور"
-                    required>
+                    placeholder="كلمة المرور">
 
 
                 <input
                     type="password"
                     id="confirmPasswordRegister"
-                    placeholder="تأكيد كلمة المرور"
-                    required>
+                    placeholder="تأكيد كلمة المرور">
 
 
                 <button
-                    type="submit"
+                    type="button"
                     id="registerSubmitButton"
                     class="login-submit">
 
@@ -772,6 +835,7 @@
 
                     لديك حساب بالفعل؟
 
+
                     <button
                         type="button"
                         id="showLoginButton">
@@ -782,7 +846,9 @@
 
                 </div>
 
-            </form>
+
+            </div>
+
 
         </div>
 
@@ -790,733 +856,21 @@
 
 
     <!-- =====================================================
-         Supabase
+         المكتبات
     ====================================================== -->
 
     <script
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
 
+    <script
+        src="supabase.js">
+    </script>
 
     <script
-        src="supabase.js"
-        defer>
+        src="script.js">
     </script>
 
-
-    <script
-        src="script.js"
-        defer>
-    </script>
-
-
-    <!-- =====================================================
-         منطق صفحة الملف الشخصي
-    ====================================================== -->
-
-    <script>
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            async () => {
-
-                const profilePage =
-                    document.querySelector(
-                        ".profile-page"
-                    );
-
-                if (!profilePage) {
-                    return;
-                }
-
-
-                const profileAvatar =
-                    document.getElementById(
-                        "profileAvatar"
-                    );
-
-                const avatarInput =
-                    document.getElementById(
-                        "avatarInput"
-                    );
-
-                const deleteAvatarButton =
-                    document.getElementById(
-                        "deleteAvatarButton"
-                    );
-
-                const profileForm =
-                    document.getElementById(
-                        "profileForm"
-                    );
-
-                const firstName =
-                    document.getElementById(
-                        "profileFirstName"
-                    );
-
-                const lastName =
-                    document.getElementById(
-                        "profileLastName"
-                    );
-
-                const email =
-                    document.getElementById(
-                        "profileEmailDetails"
-                    );
-
-                const phone =
-                    document.getElementById(
-                        "profilePhone"
-                    );
-
-                const birthDay =
-                    document.getElementById(
-                        "profileBirthDay"
-                    );
-
-                const birthMonth =
-                    document.getElementById(
-                        "profileBirthMonth"
-                    );
-
-                const birthYear =
-                    document.getElementById(
-                        "profileBirthYear"
-                    );
-
-                const gender =
-                    document.getElementById(
-                        "profileGender"
-                    );
-
-                const saveButton =
-                    document.getElementById(
-                        "saveProfileButton"
-                    );
-
-                const logoutButton =
-                    document.getElementById(
-                        "logoutButton"
-                    );
-
-                const message =
-                    document.getElementById(
-                        "profileMessage"
-                    );
-
-
-                function showMessage(
-                    text,
-                    isError = false
-                ) {
-
-                    if (!message) {
-                        return;
-                    }
-
-                    message.textContent = text;
-
-                    message.classList.toggle(
-                        "error",
-                        isError
-                    );
-                }
-
-
-                function defaultIcon() {
-
-                    return `
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round">
-
-                            <circle
-                                cx="12"
-                                cy="8"
-                                r="4">
-                            </circle>
-
-                            <path
-                                d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
-                            </path>
-
-                        </svg>
-                    `;
-                }
-
-
-                function setAvatar(url) {
-
-                    if (!profileAvatar) {
-                        return;
-                    }
-
-
-                    if (url) {
-
-                        profileAvatar.innerHTML = `
-                            <img
-                                src="${url}"
-                                alt="الصورة الشخصية">
-                        `;
-
-                    } else {
-
-                        profileAvatar.innerHTML =
-                            defaultIcon();
-                    }
-                }
-
-
-                // =================================================
-                // تعبئة السنوات
-                // =================================================
-
-                const currentYear =
-                    new Date().getFullYear();
-
-
-                for (
-                    let year = currentYear;
-                    year >= 1900;
-                    year--
-                ) {
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-                    option.value = year;
-                    option.textContent = year;
-
-                    birthYear.appendChild(
-                        option
-                    );
-                }
-
-
-                // =================================================
-                // تعبئة الأيام
-                // =================================================
-
-                for (
-                    let day = 1;
-                    day <= 31;
-                    day++
-                ) {
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-                    option.value = day;
-                    option.textContent = day;
-
-                    birthDay.appendChild(
-                        option
-                    );
-                }
-
-
-                // =================================================
-                // جلب المستخدم
-                // =================================================
-
-                const {
-                    data: userData,
-                    error: userError
-                } = await supabaseClient.auth.getUser();
-
-
-                if (
-                    userError ||
-                    !userData?.user
-                ) {
-
-                    window.location.href =
-                        "index.html";
-
-                    return;
-                }
-
-
-                const user =
-                    userData.user;
-
-
-                email.value =
-                    user.email || "";
-
-
-                // =================================================
-                // جلب profile
-                // =================================================
-
-                const {
-                    data: profile,
-                    error: profileError
-                } = await supabaseClient
-                    .from("profiles")
-                    .select("*")
-                    .eq("id", user.id)
-                    .maybeSingle();
-
-
-                if (profileError) {
-
-                    console.error(
-                        profileError
-                    );
-
-                    showMessage(
-                        "تعذر تحميل بيانات الحساب.",
-                        true
-                    );
-
-                    return;
-                }
-
-
-                if (!profile) {
-
-                    showMessage(
-                        "بيانات الملف الشخصي غير مكتملة.",
-                        true
-                    );
-
-                    return;
-                }
-
-
-                firstName.value =
-                    profile.first_name || "";
-
-
-                lastName.value =
-                    profile.last_name || "";
-
-
-                phone.value =
-                    profile.phone || "";
-
-
-                birthDay.value =
-                    profile.birth_day || "";
-
-
-                birthMonth.value =
-                    profile.birth_month || "";
-
-
-                birthYear.value =
-                    profile.birth_year || "";
-
-
-                gender.value =
-                    profile.gender || "";
-
-
-                setAvatar(
-                    profile.avatar_url
-                );
-
-
-                // =================================================
-                // حفظ البيانات
-                // =================================================
-
-                profileForm.addEventListener(
-                    "submit",
-                    async (event) => {
-
-                        event.preventDefault();
-
-
-                        saveButton.disabled =
-                            true;
-
-
-                        showMessage(
-                            "جارٍ حفظ التغييرات..."
-                        );
-
-
-                        try {
-
-                            const {
-                                error
-                            } = await supabaseClient
-                                .from("profiles")
-                                .update({
-                                    first_name:
-                                        firstName.value.trim(),
-
-                                    last_name:
-                                        lastName.value.trim() ||
-                                        null,
-
-                                    birth_day:
-                                        Number(
-                                            birthDay.value
-                                        ),
-
-                                    birth_month:
-                                        Number(
-                                            birthMonth.value
-                                        ),
-
-                                    birth_year:
-                                        Number(
-                                            birthYear.value
-                                        ),
-
-                                    gender:
-                                        gender.value,
-
-                                    phone:
-                                        phone.value.trim() ||
-                                        null
-                                })
-                                .eq(
-                                    "id",
-                                    user.id
-                                );
-
-
-                            if (error) {
-                                throw error;
-                            }
-
-
-                            showMessage(
-                                "تم حفظ التغييرات بنجاح."
-                            );
-
-                        } catch (error) {
-
-                            console.error(
-                                error
-                            );
-
-                            showMessage(
-                                error.message ||
-                                "تعذر حفظ التغييرات.",
-                                true
-                            );
-
-                        } finally {
-
-                            saveButton.disabled =
-                                false;
-                        }
-                    }
-                );
-
-
-                // =================================================
-                // رفع الصورة
-                // =================================================
-
-                avatarInput.addEventListener(
-                    "change",
-                    async () => {
-
-                        const file =
-                            avatarInput.files?.[0];
-
-
-                        if (!file) {
-                            return;
-                        }
-
-
-                        if (
-                            ![
-                                "image/jpeg",
-                                "image/png",
-                                "image/webp"
-                            ].includes(
-                                file.type
-                            )
-                        ) {
-
-                            alert(
-                                "يرجى اختيار صورة JPG أو PNG أو WebP."
-                            );
-
-                            avatarInput.value = "";
-
-                            return;
-                        }
-
-
-                        if (
-                            file.size >
-                            5 * 1024 * 1024
-                        ) {
-
-                            alert(
-                                "حجم الصورة يجب ألا يتجاوز 5MB."
-                            );
-
-                            avatarInput.value = "";
-
-                            return;
-                        }
-
-
-                        try {
-
-                            showMessage(
-                                "جارٍ رفع الصورة..."
-                            );
-
-
-                            /*
-                             * اسم ثابت لكل مستخدم.
-                             * عند الرفع الجديد يتم استبدال الصورة السابقة.
-                             */
-
-                            const filePath =
-                                `${user.id}/profile.jpg`;
-
-
-                            const {
-                                error:
-                                    uploadError
-                            } =
-                                await supabaseClient
-                                    .storage
-                                    .from("avatars")
-                                    .upload(
-                                        filePath,
-                                        file,
-                                        {
-                                            cacheControl:
-                                                "3600",
-
-                                            upsert:
-                                                true,
-
-                                            contentType:
-                                                file.type
-                                        }
-                                    );
-
-
-                            if (uploadError) {
-                                throw uploadError;
-                            }
-
-
-                            const {
-                                data:
-                                    publicData
-                            } =
-                                supabaseClient
-                                    .storage
-                                    .from("avatars")
-                                    .getPublicUrl(
-                                        filePath
-                                    );
-
-
-                            const publicUrl =
-                                `${publicData.publicUrl}?t=${Date.now()}`;
-
-
-                            const {
-                                error:
-                                    updateError
-                            } =
-                                await supabaseClient
-                                    .from("profiles")
-                                    .update({
-                                        avatar_url:
-                                            publicUrl
-                                    })
-                                    .eq(
-                                        "id",
-                                        user.id
-                                    );
-
-
-                            if (updateError) {
-                                throw updateError;
-                            }
-
-
-                            setAvatar(
-                                publicUrl
-                            );
-
-
-                            showMessage(
-                                "تم تحديث الصورة الشخصية."
-                            );
-
-
-                        } catch (error) {
-
-                            console.error(
-                                error
-                            );
-
-
-                            showMessage(
-                                error.message ||
-                                "تعذر رفع الصورة.",
-                                true
-                            );
-
-                        } finally {
-
-                            avatarInput.value =
-                                "";
-                        }
-                    }
-                );
-
-
-                // =================================================
-                // حذف الصورة
-                // =================================================
-
-                deleteAvatarButton.addEventListener(
-                    "click",
-                    async () => {
-
-                        if (
-                            !confirm(
-                                "هل تريد حذف الصورة الشخصية؟"
-                            )
-                        ) {
-                            return;
-                        }
-
-
-                        try {
-
-                            showMessage(
-                                "جارٍ حذف الصورة..."
-                            );
-
-
-                            const filePath =
-                                `${user.id}/profile.jpg`;
-
-
-                            const {
-                                error:
-                                    removeError
-                            } =
-                                await supabaseClient
-                                    .storage
-                                    .from("avatars")
-                                    .remove([
-                                        filePath
-                                    ]);
-
-
-                            if (
-                                removeError
-                            ) {
-                                throw removeError;
-                            }
-
-
-                            const {
-                                error:
-                                    updateError
-                            } =
-                                await supabaseClient
-                                    .from("profiles")
-                                    .update({
-                                        avatar_url:
-                                            null
-                                    })
-                                    .eq(
-                                        "id",
-                                        user.id
-                                    );
-
-
-                            if (
-                                updateError
-                            ) {
-                                throw updateError;
-                            }
-
-
-                            setAvatar(null);
-
-
-                            showMessage(
-                                "تم حذف الصورة الشخصية."
-                            );
-
-
-                        } catch (error) {
-
-                            console.error(
-                                error
-                            );
-
-
-                            showMessage(
-                                error.message ||
-                                "تعذر حذف الصورة.",
-                                true
-                            );
-                        }
-                    }
-                );
-
-
-                // =================================================
-                // تسجيل الخروج
-                // =================================================
-
-                logoutButton.addEventListener(
-                    "click",
-                    async () => {
-
-                        const {
-                            error
-                        } =
-                            await supabaseClient
-                                .auth
-                                .signOut();
-
-
-                        if (error) {
-
-                            alert(
-                                error.message ||
-                                "تعذر تسجيل الخروج."
-                            );
-
-                            return;
-                        }
-
-
-                        window.location.href =
-                            "index.html";
-                    }
-                );
-
-            }
-        );
-
-    </script>
 
 </body>
 
