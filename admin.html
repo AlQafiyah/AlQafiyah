@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 
     <meta charset="UTF-8">
@@ -15,144 +16,395 @@
 
     <script src="supabase.js"></script>
 
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #3E2723;
+        }
+
+        .screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .box {
+            width: 100%;
+            max-width: 520px;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        p {
+            line-height: 1.8;
+        }
+
+        .loading {
+            font-size: 20px;
+        }
+
+        .denied {
+            display: none;
+        }
+
+        .admin-panel {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            background: #3E2723;
+            color: #ffffff;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .admin-content {
+            padding: 40px;
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .admin-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        }
+
+        .admin-role {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: #FFE8D6;
+            color: #3E2723;
+            font-weight: bold;
+        }
+
+        button,
+        .back-button {
+            border: 0;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        .logout-button {
+            background: #ffffff;
+            color: #3E2723;
+        }
+
+        .back-button {
+            background: #3E2723;
+            color: #ffffff;
+            margin-top: 15px;
+        }
+
+    </style>
+
 </head>
 
 <body>
 
-    <div id="adminLoading">
-        جارٍ التحقق من الصلاحيات...
+    <!-- التحقق -->
+
+    <div
+        class="screen"
+        id="checkingScreen"
+    >
+
+        <div class="box">
+
+            <div class="loading">
+                جارٍ التحقق من صلاحيات الإدارة...
+            </div>
+
+        </div>
+
     </div>
 
-    <div id="adminDenied" style="display: none;">
-        <h1>غير مصرح</h1>
-        <p>ليس لديك صلاحية للوصول إلى لوحة الإدارة.</p>
-        <a href="index.html">العودة إلى الموقع</a>
+
+    <!-- ممنوع -->
+
+    <div
+        class="screen denied"
+        id="deniedScreen"
+    >
+
+        <div class="box">
+
+            <h1>غير مصرح</h1>
+
+            <p>
+                هذا الحساب لا يملك صلاحية الوصول إلى لوحة الإدارة.
+            </p>
+
+            <a
+                class="back-button"
+                href="index.html"
+            >
+                العودة إلى الموقع
+            </a>
+
+        </div>
+
     </div>
 
-    <main id="adminPanel" style="display: none;">
 
-        <h1>لوحة إدارة قافية</h1>
+    <!-- لوحة الإدارة -->
 
-        <p id="adminWelcome"></p>
+    <div
+        class="admin-panel"
+        id="adminPanel"
+    >
 
-        <button id="logoutAdminButton" type="button">
-            تسجيل الخروج
-        </button>
+        <header class="admin-header">
 
-    </main>
+            <h1>
+                لوحة إدارة قافية
+            </h1>
+
+            <button
+                class="logout-button"
+                id="adminLogoutButton"
+                type="button"
+            >
+                تسجيل الخروج
+            </button>
+
+        </header>
+
+
+        <main class="admin-content">
+
+            <div class="admin-card">
+
+                <h2>
+                    مرحبًا بك في لوحة الإدارة
+                </h2>
+
+                <p id="adminEmail">
+                    البريد الإلكتروني:
+                </p>
+
+                <div
+                    class="admin-role"
+                    id="adminRole"
+                >
+                    الصلاحية
+                </div>
+
+                <p>
+                    تم التحقق من صلاحيات حسابك بنجاح.
+                </p>
+
+            </div>
+
+        </main>
+
+    </div>
+
 
     <script>
 
-        (async function () {
+        "use strict";
 
-            "use strict";
 
-            const loading =
-                document.getElementById("adminLoading");
+        async function checkAdminAccess() {
 
-            const denied =
-                document.getElementById("adminDenied");
+            const checkingScreen =
+                document.getElementById("checkingScreen");
 
-            const panel =
+            const deniedScreen =
+                document.getElementById("deniedScreen");
+
+            const adminPanel =
                 document.getElementById("adminPanel");
 
-            const welcome =
-                document.getElementById("adminWelcome");
+            const adminEmail =
+                document.getElementById("adminEmail");
 
-            const logoutButton =
-                document.getElementById("logoutAdminButton");
-
-
-            function showDenied() {
-
-                loading.style.display = "none";
-                panel.style.display = "none";
-                denied.style.display = "block";
-
-            }
+            const adminRole =
+                document.getElementById("adminRole");
 
 
             try {
 
+                /*
+                 * الحصول على جلسة المستخدم الحالية
+                 */
+
                 const {
-                    data: {
-                        session
-                    }
-                } = await supabaseClient.auth.getSession();
-
-
-                if (!session || !session.user) {
-
-                    showDenied();
-                    return;
-
-                }
-
-
-const {
-    data: adminUser,
-    error
-} = await supabaseClient
-    .from("admin_users")
-    .select("role, is_active")
-    .eq("user_id", session.user.id)
-    .maybeSingle();
-
-console.log("ADMIN DEBUG");
-console.log("Session User ID:", session.user.id);
-console.log("Admin User:", adminUser);
-console.log("Admin Error:", error);
+                    data: sessionData,
+                    error: sessionError
+                } =
+                    await supabaseClient.auth.getSession();
 
 
                 if (
-                    error ||
-                    !adminUser ||
-                    adminUser.is_active !== true
+                    sessionError ||
+                    !sessionData ||
+                    !sessionData.session ||
+                    !sessionData.session.user
                 ) {
 
-                    showDenied();
-                    return;
+                    checkingScreen.style.display = "none";
+                    deniedScreen.style.display = "flex";
 
+                    return;
                 }
 
 
-                loading.style.display = "none";
-                denied.style.display = "none";
-                panel.style.display = "block";
+                const user =
+                    sessionData.session.user;
 
 
-                welcome.textContent =
-                    "مرحبًا بك، صلاحيتك: " +
-                    adminUser.role;
+                /*
+                 * التحقق من صلاحية الإدارة
+                 * من خلال دالة آمنة في Supabase
+                 */
+
+                const {
+                    data: adminData,
+                    error: adminError
+                } =
+                    await supabaseClient.rpc(
+                        "get_my_admin_role"
+                    );
 
 
-                logoutButton.addEventListener(
-                    "click",
-                    async function () {
-
-                        await supabaseClient.auth.signOut();
-
-                        window.location.href =
-                            "index.html";
-
-                    }
+                console.log(
+                    "Qafiyah Admin:",
+                    adminData
                 );
+
+                console.log(
+                    "Qafiyah Admin Error:",
+                    adminError
+                );
+
+
+                if (
+                    adminError ||
+                    !adminData ||
+                    adminData.length === 0
+                ) {
+
+                    checkingScreen.style.display = "none";
+                    deniedScreen.style.display = "flex";
+
+                    return;
+                }
+
+
+                const admin =
+                    adminData[0];
+
+
+                /*
+                 * الحساب غير مفعل
+                 */
+
+                if (admin.is_active !== true) {
+
+                    checkingScreen.style.display = "none";
+                    deniedScreen.style.display = "flex";
+
+                    return;
+                }
+
+
+                /*
+                 * السماح بالدخول
+                 */
+
+                checkingScreen.style.display = "none";
+                deniedScreen.style.display = "none";
+                adminPanel.style.display = "block";
+
+
+                adminEmail.textContent =
+                    "البريد الإلكتروني: " +
+                    (user.email || "غير متوفر");
+
+
+                adminRole.textContent =
+                    "الصلاحية: " +
+                    admin.role;
 
 
             } catch (error) {
 
                 console.error(
-                    "Admin authentication error:",
+                    "Qafiyah Admin Error:",
                     error
                 );
 
-                showDenied();
+                checkingScreen.style.display = "none";
+                deniedScreen.style.display = "flex";
 
             }
 
-        })();
+        }
+
+
+        /*
+         * تسجيل الخروج
+         */
+
+        document
+            .getElementById("adminLogoutButton")
+            .addEventListener(
+                "click",
+                async function () {
+
+                    await supabaseClient.auth.signOut();
+
+                    window.location.href =
+                        "index.html";
+
+                }
+            );
+
+
+        /*
+         * تشغيل التحقق
+         */
+
+        checkAdminAccess();
 
     </script>
 
 </body>
+
 </html>
