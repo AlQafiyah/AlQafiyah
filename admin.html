@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>لوحة الإدارة | قافية</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase.js"></script>
+
+</head>
+
+<body>
+
+    <div id="adminLoading">
+        جارٍ التحقق من الصلاحيات...
+    </div>
+
+    <div id="adminDenied" style="display: none;">
+        <h1>غير مصرح</h1>
+        <p>ليس لديك صلاحية للوصول إلى لوحة الإدارة.</p>
+        <a href="index.html">العودة إلى الموقع</a>
+    </div>
+
+    <main id="adminPanel" style="display: none;">
+
+        <h1>لوحة إدارة قافية</h1>
+
+        <p id="adminWelcome"></p>
+
+        <button id="logoutAdminButton" type="button">
+            تسجيل الخروج
+        </button>
+
+    </main>
+
+    <script>
+
+        (async function () {
+
+            "use strict";
+
+            const loading =
+                document.getElementById("adminLoading");
+
+            const denied =
+                document.getElementById("adminDenied");
+
+            const panel =
+                document.getElementById("adminPanel");
+
+            const welcome =
+                document.getElementById("adminWelcome");
+
+            const logoutButton =
+                document.getElementById("logoutAdminButton");
+
+
+            function showDenied() {
+
+                loading.style.display = "none";
+                panel.style.display = "none";
+                denied.style.display = "block";
+
+            }
+
+
+            try {
+
+                const {
+                    data: {
+                        session
+                    }
+                } = await supabaseClient.auth.getSession();
+
+
+                if (!session || !session.user) {
+
+                    showDenied();
+                    return;
+
+                }
+
+
+const {
+    data: adminUser,
+    error
+} = await supabaseClient
+    .from("admin_users")
+    .select("role, is_active")
+    .eq("user_id", session.user.id)
+    .maybeSingle();
+
+console.log("ADMIN DEBUG");
+console.log("Session User ID:", session.user.id);
+console.log("Admin User:", adminUser);
+console.log("Admin Error:", error);
+
+
+                if (
+                    error ||
+                    !adminUser ||
+                    adminUser.is_active !== true
+                ) {
+
+                    showDenied();
+                    return;
+
+                }
+
+
+                loading.style.display = "none";
+                denied.style.display = "none";
+                panel.style.display = "block";
+
+
+                welcome.textContent =
+                    "مرحبًا بك، صلاحيتك: " +
+                    adminUser.role;
+
+
+                logoutButton.addEventListener(
+                    "click",
+                    async function () {
+
+                        await supabaseClient.auth.signOut();
+
+                        window.location.href =
+                            "index.html";
+
+                    }
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Admin authentication error:",
+                    error
+                );
+
+                showDenied();
+
+            }
+
+        })();
+
+    </script>
+
+</body>
+</html>
