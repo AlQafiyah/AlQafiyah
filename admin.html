@@ -2298,7 +2298,13 @@ await supabaseClient
 
 if (
 adminError ||
-!adminData?.length
+!adminData?.length ||
+![
+"admin",
+"super_admin"
+].includes(
+adminData[0]?.role
+)
 ) {
 
 console.error(

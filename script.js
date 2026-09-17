@@ -69,6 +69,11 @@
             <path d="M10 17l5-5-5-5"></path>
             <path d="M15 12H3"></path>
             <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
+        `,
+
+        shield: `
+            <path d="M12 3 20 6v5c0 5.1-3.4 8.5-8 10-4.6-1.5-8-4.9-8-10V6Z"></path>
+            <path d="m9 12 2 2 4-4"></path>
         `
     };
 
@@ -559,6 +564,14 @@
                 ) {
                     name =
                         "info";
+
+                } else if (
+                    text.includes(
+                        "وحدة الإدارة"
+                    )
+                ) {
+                    name =
+                        "shield";
 
                 } else if (
                     text.includes(
@@ -1715,6 +1728,10 @@
                     false
                 );
 
+                await updateAdminMenu(
+                    null
+                );
+
                 if (
                     currentPage() ===
                     "profile.html"
@@ -2030,16 +2047,143 @@
         $("profileLink")
             ?.remove();
 
+        const navigation =
+            sideMenu
+                ?.querySelector(
+                    ".side-navigation"
+                );
+
+        let adminMenuLink =
+            $("adminMenuLink");
+
+        if (
+            !adminMenuLink &&
+            navigation
+        ) {
+            adminMenuLink =
+                document.createElement(
+                    "a"
+                );
+
+            adminMenuLink.href =
+                "admin.html";
+
+            adminMenuLink.id =
+                "adminMenuLink";
+
+            adminMenuLink.style.display =
+                "none";
+
+            adminMenuLink.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+            adminMenuLink.innerHTML = `
+                <span aria-hidden="true">
+                    ${icon("shield")}
+                </span>
+
+                <span>
+                    وحدة الإدارة
+                </span>
+            `;
+
+            const settingsLink =
+                $("settingsLink");
+
+            const aboutLink =
+                navigation.querySelector(
+                    'a[href="about.html"]'
+                );
+
+            navigation.insertBefore(
+                adminMenuLink,
+                settingsLink ||
+                aboutLink ||
+                null
+            );
+        }
+
+        let adminMenuCheck = 0;
+
+        async function updateAdminMenu(
+            user
+        ) {
+            const check =
+                ++adminMenuCheck;
+
+            if (adminMenuLink) {
+                adminMenuLink.style.display =
+                    "none";
+
+                adminMenuLink.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+            }
+
+            if (
+                !user ||
+                !adminMenuLink
+            ) {
+                return;
+            }
+
+            try {
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .rpc(
+                            "get_my_admin_role"
+                        );
+
+                if (
+                    check !==
+                    adminMenuCheck
+                ) {
+                    return;
+                }
+
+                const admin =
+                    Array.isArray(data)
+                        ? data[0]
+                        : null;
+
+                const allowed =
+                    !error &&
+                    admin?.is_active === true &&
+                    [
+                        "admin",
+                        "super_admin"
+                    ].includes(
+                        admin?.role
+                    );
+
+                if (allowed) {
+                    adminMenuLink.style.display =
+                        "";
+
+                    adminMenuLink.setAttribute(
+                        "aria-hidden",
+                        "false"
+                    );
+                }
+
+            } catch (error) {
+                console.warn(
+                    "القافية: تعذر التحقق من صلاحية الإدارة:",
+                    error
+                );
+            }
+        }
+
         let sideLogout =
             $("sideLogoutButton");
 
         if (!sideLogout) {
-            const navigation =
-                sideMenu
-                    ?.querySelector(
-                        ".side-navigation"
-                    );
-
             if (navigation) {
                 sideLogout =
                     document.createElement(
@@ -2917,6 +3061,10 @@
                     )
                 );
 
+                await updateAdminMenu(
+                    user
+                );
+
                 applyClassicMenuIcons();
                 normalizeBrand();
 
@@ -2946,6 +3094,10 @@
 
                 updateSideLogout(
                     false
+                );
+
+                await updateAdminMenu(
+                    null
                 );
 
                 return {
