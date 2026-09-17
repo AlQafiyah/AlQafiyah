@@ -1,6 +1,6 @@
 // ============================================================
-// القافية - نظام المحتوى العام
-// الشعراء + القصائد + المقالات + صفحات التفاصيل
+// القافية - نظام المحتوى العام النهائي
+// القصائد + الشعراء + المقالات + صفحات التفاصيل
 // ============================================================
 
 (function () {
@@ -24,7 +24,6 @@
     // ============================================================
 
     const ERAS = [
-
         "قبل الإسلام",
         "صدر الإسلام",
         "الأموي",
@@ -34,19 +33,14 @@
         "العثماني",
         "الحديث",
         "المعاصر"
-
     ];
 
 
     // ============================================================
     // بدء النظام
-    // يعمل سواء تم تحميل الملف قبل أو بعد DOMContentLoaded
     // ============================================================
 
-    if (
-        document.readyState ===
-        "loading"
-    ) {
+    if (document.readyState === "loading") {
 
         document.addEventListener(
             "DOMContentLoaded",
@@ -64,19 +58,22 @@
 
 
     // ============================================================
-    // البداية
+    // البداية الرئيسية
     // ============================================================
 
     async function initContent() {
 
-        if (
-            typeof supabaseClient ===
-            "undefined"
-        ) {
+        const db =
+            window.supabaseClient;
+
+
+        if (!db) {
 
             console.error(
-                "القافية: supabaseClient غير موجود في content.js"
+                "القافية: تعذر العثور على Supabase."
             );
+
+            showStartupError();
 
             return;
         }
@@ -93,9 +90,9 @@
             [];
 
 
-        // --------------------------------------------------------
-        // المقالات
-        // --------------------------------------------------------
+        // ========================================================
+        // صفحات القوائم
+        // ========================================================
 
         if (
             document.getElementById(
@@ -110,10 +107,6 @@
         }
 
 
-        // --------------------------------------------------------
-        // الشعراء
-        // --------------------------------------------------------
-
         if (
             document.getElementById(
                 "poetsContainer"
@@ -127,15 +120,13 @@
         }
 
 
-        // --------------------------------------------------------
-        // القصائد
-        // --------------------------------------------------------
-
         if (
             document.getElementById(
                 "Poems"
             ) &&
-            page !== "poem.html"
+            !document.getElementById(
+                "poemDetail"
+            )
         ) {
 
             jobs.push(
@@ -145,13 +136,27 @@
         }
 
 
-        // --------------------------------------------------------
-        // صفحة المقال
-        // --------------------------------------------------------
+        // ========================================================
+        // صفحات التفاصيل
+        //
+        // لا نعتمد فقط على اسم الرابط.
+        // هذا مهم لأن Cloudflare قد يحول:
+        //
+        // poem.html
+        //
+        // إلى:
+        //
+        // /poem
+        // أو
+        // /poem/
+        //
+        // ========================================================
 
         if (
-            page ===
-            "article.html"
+            document.getElementById(
+                "articleDetail"
+            ) ||
+            page === "article.html"
         ) {
 
             jobs.push(
@@ -161,13 +166,11 @@
         }
 
 
-        // --------------------------------------------------------
-        // صفحة الشاعر
-        // --------------------------------------------------------
-
         if (
-            page ===
-            "poet.html"
+            document.getElementById(
+                "poetDetail"
+            ) ||
+            page === "poet.html"
         ) {
 
             jobs.push(
@@ -177,13 +180,11 @@
         }
 
 
-        // --------------------------------------------------------
-        // صفحة القصيدة
-        // --------------------------------------------------------
-
         if (
-            page ===
-            "poem.html"
+            document.getElementById(
+                "poemDetail"
+            ) ||
+            page === "poem.html"
         ) {
 
             jobs.push(
@@ -221,21 +222,205 @@
 
 
     // ============================================================
-    // اسم الصفحة الحالية
+    // إظهار خطأ عند عدم تحميل Supabase
+    // بدل بقاء جاري التحميل للأبد
+    // ============================================================
+
+    function showStartupError() {
+
+        const detail =
+            document.getElementById(
+                "poemDetail"
+            )
+            ||
+            document.getElementById(
+                "poetDetail"
+            )
+            ||
+            document.getElementById(
+                "articleDetail"
+            );
+
+
+        if (!detail) {
+            return;
+        }
+
+
+        detail.innerHTML = `
+            <section class="qafiyah-detail-shell">
+
+                <article
+                    class="
+                        content-card
+                        qafiyah-detail-card
+                        qafiyah-error-card
+                    ">
+
+                    <h1>
+                        تعذر تحميل المحتوى
+                    </h1>
+
+                    <p>
+                        حدث خطأ أثناء الاتصال بقاعدة البيانات.
+                    </p>
+
+                </article>
+
+            </section>
+        `;
+
+    }
+
+
+    // ============================================================
+    // معرفة الصفحة الحالية
+    //
+    // تدعم:
+    //
+    // /poem.html
+    // /poem
+    // /poem/
+    //
     // ============================================================
 
     function getCurrentPage() {
 
-        const page =
-            window.location.pathname
+        let pathname =
+            String(
+                window.location.pathname ||
+                ""
+            );
+
+
+        try {
+
+            pathname =
+                decodeURIComponent(
+                    pathname
+                );
+
+        } catch {
+            // لا شيء
+        }
+
+
+        pathname =
+            pathname.replace(
+                /\/+$/,
+                ""
+            );
+
+
+        let page =
+            pathname
                 .split("/")
                 .pop()
                 .toLowerCase();
 
 
+        if (!page) {
+
+            return "index.html";
+
+        }
+
+
+        const aliases = {
+
+            poem:
+                "poem.html",
+
+            poet:
+                "poet.html",
+
+            article:
+                "article.html",
+
+            poems:
+                "poems.html",
+
+            poets:
+                "poets.html",
+
+            articles:
+                "articles.html"
+
+        };
+
+
+        if (
+            aliases[page]
+        ) {
+
+            page =
+                aliases[page];
+
+        }
+
+
+        return page;
+
+    }
+
+
+    // ============================================================
+    // ID من الرابط
+    // ============================================================
+
+    function getIdFromUrl() {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const raw =
+            params.get(
+                "id"
+            );
+
+
+        if (
+            raw === null ||
+            raw === ""
+        ) {
+
+            return null;
+
+        }
+
+
+        const numericId =
+            Number(
+                raw
+            );
+
+
+        if (
+            Number.isInteger(
+                numericId
+            ) &&
+            numericId > 0
+        ) {
+
+            return numericId;
+
+        }
+
+
+        // دعم UUID أو ID نصي مستقبلًا
+        const stringId =
+            String(
+                raw
+            )
+                .trim();
+
+
         return (
-            page ||
-            "index.html"
+            stringId ||
+            null
         );
 
     }
@@ -265,7 +450,7 @@
 
 
     // ============================================================
-    // تطبيع العربية للبحث
+    // تطبيع العربية
     // ============================================================
 
     function normalizeArabic(
@@ -273,8 +458,10 @@
     ) {
 
         return String(
-            value || ""
+            value ||
+            ""
         )
+
             .normalize(
                 "NFKD"
             )
@@ -337,8 +524,10 @@
 
         const text =
             String(
-                value || ""
+                value ||
+                ""
             )
+
                 .replace(
                     /\s+/g,
                     " "
@@ -372,45 +561,7 @@
 
 
     // ============================================================
-    // ID من الرابط
-    // ============================================================
-
-    function getIdFromUrl() {
-
-        const raw =
-            new URLSearchParams(
-                window.location.search
-            )
-                .get(
-                    "id"
-                );
-
-
-        const id =
-            Number(
-                raw
-            );
-
-
-        if (
-            !Number.isInteger(
-                id
-            ) ||
-            id <= 0
-        ) {
-
-            return null;
-
-        }
-
-
-        return id;
-
-    }
-
-
-    // ============================================================
-    // التحقق من الروابط
+    // الرابط الآمن
     // ============================================================
 
     function safeUrl(
@@ -458,7 +609,7 @@
 
 
     // ============================================================
-    // تنسيق المقال والسيرة
+    // تنسيق النصوص الطويلة
     // ============================================================
 
     function formatLongText(
@@ -467,7 +618,8 @@
 
         const text =
             String(
-                value || ""
+                value ||
+                ""
             )
                 .trim();
 
@@ -513,7 +665,7 @@
 
 
     // ============================================================
-    // تنسيق أبيات القصيدة
+    // تنسيق القصيدة
     // ============================================================
 
     function formatPoemLines(
@@ -521,7 +673,8 @@
     ) {
 
         return String(
-            value || ""
+            value ||
+            ""
         )
 
             .split(
@@ -576,9 +729,7 @@
     ) {
 
         if (!title) {
-
             return;
-
         }
 
 
@@ -589,7 +740,7 @@
 
 
     // ============================================================
-    // إزالة التكرار وترتيب القيم
+    // ترتيب القيم
     // ============================================================
 
     function uniqueSorted(
@@ -652,18 +803,14 @@
                     if (
                         ai === -1
                     ) {
-
                         return 1;
-
                     }
 
 
                     if (
                         bi === -1
                     ) {
-
                         return -1;
-
                     }
 
 
@@ -687,7 +834,7 @@
 
 
     // ============================================================
-    // تعبئة Select
+    // تعبئة القائمة المنسدلة
     // ============================================================
 
     function fillSelect(
@@ -697,9 +844,7 @@
     ) {
 
         if (!select) {
-
             return;
-
         }
 
 
@@ -754,7 +899,6 @@
                     )
 
                     .join("")
-
             }
 
         `;
@@ -775,7 +919,7 @@
 
 
     // ============================================================
-    // إظهار عنصر
+    // إظهار وإخفاء
     // ============================================================
 
     function showElement(
@@ -792,10 +936,6 @@
     }
 
 
-    // ============================================================
-    // إخفاء عنصر
-    // ============================================================
-
     function hideElement(
         element
     ) {
@@ -811,7 +951,7 @@
 
 
     // ============================================================
-    // مكان عرض صفحة التفاصيل
+    // مكان صفحة التفاصيل
     // ============================================================
 
     function getDetailHost(
@@ -887,12 +1027,13 @@
 
 
     // ============================================================
-    // جاري التحميل
+    // التحميل
     // ============================================================
 
     function renderLoading(
         host,
-        text = "جاري التحميل..."
+        text =
+            "جاري التحميل..."
     ) {
 
         host.innerHTML = `
@@ -919,7 +1060,7 @@
 
 
     // ============================================================
-    // عرض الخطأ
+    // الخطأ
     // ============================================================
 
     function renderError(
@@ -943,26 +1084,20 @@
                     ">
 
                     <h1>
-
                         ${
                             escapeHtml(
                                 title
                             )
                         }
-
                     </h1>
 
-
                     <p>
-
                         ${
                             escapeHtml(
                                 message
                             )
                         }
-
                     </p>
-
 
                     <a
                         class="qafiyah-back-link"
@@ -990,7 +1125,7 @@
 
 
     // ============================================================
-    // الصور
+    // الصورة
     // ============================================================
 
     function renderImage(
@@ -1045,7 +1180,7 @@
 
 
     // ============================================================
-    // رابط يوتيوب Embed
+    // YouTube
     // ============================================================
 
     function getYoutubeEmbed(
@@ -1092,9 +1227,7 @@
 
                 id =
                     url.pathname
-
                         .split("/")
-
                         .filter(
                             Boolean
                         )[0]
@@ -1126,9 +1259,7 @@
 
                     const parts =
                         url.pathname
-
                             .split("/")
-
                             .filter(
                                 Boolean
                             );
@@ -1146,8 +1277,7 @@
                     ) {
 
                         id =
-                            parts[1]
-                            ||
+                            parts[1] ||
                             "";
 
                     }
@@ -1158,8 +1288,7 @@
 
 
             if (
-                !id
-                ||
+                !id ||
                 !/^[A-Za-z0-9_-]{6,}$/
                     .test(
                         id
@@ -1189,7 +1318,7 @@
 
 
     // ============================================================
-    // عرض الفيديو
+    // الفيديو
     // ============================================================
 
     function renderVideo(
@@ -1288,6 +1417,7 @@
                     <video
                         controls
                         preload="metadata"
+
                         src="${
                             escapeHtml(
                                 safe
@@ -1332,10 +1462,14 @@
 
 
     // ============================================================
-    // قائمة المقالات
+    // المقالات - القائمة
     // ============================================================
 
     async function initArticlesList() {
+
+        const db =
+            window.supabaseClient;
+
 
         const container =
             document.getElementById(
@@ -1374,17 +1508,13 @@
         }
 
 
-        let articles =
-            [];
-
-
         try {
 
             const {
                 data,
                 error
             } =
-                await supabaseClient
+                await db
 
                     .from(
                         "articles"
@@ -1418,7 +1548,7 @@
             }
 
 
-            articles =
+            const articles =
                 data ||
                 [];
 
@@ -1611,7 +1741,6 @@
                                             )
                                         }
 
-
                                         <div
                                             class="qafiyah-card-body">
 
@@ -1635,7 +1764,6 @@
                                                     ""
                                             }
 
-
                                             <h2
                                                 class="qafiyah-card-title">
 
@@ -1656,7 +1784,6 @@
                                                 </a>
 
                                             </h2>
-
 
                                             ${
                                                 article.author
@@ -1679,7 +1806,6 @@
                                                     ""
                                             }
 
-
                                             <p
                                                 class="qafiyah-card-summary">
 
@@ -1690,7 +1816,6 @@
                                                 }
 
                                             </p>
-
 
                                             <a
                                                 class="qafiyah-read-more"
@@ -1768,10 +1893,14 @@
 
 
     // ============================================================
-    // قائمة الشعراء
+    // الشعراء - القائمة
     // ============================================================
 
     async function initPoetsList() {
+
+        const db =
+            window.supabaseClient;
+
 
         const container =
             document.getElementById(
@@ -1855,16 +1984,13 @@
             ] =
                 await Promise.all([
 
-                    supabaseClient
-
+                    db
                         .from(
                             "poets"
                         )
-
                         .select(
                             "*"
                         )
-
                         .order(
                             "is_featured",
                             {
@@ -1872,7 +1998,6 @@
                                     false
                             }
                         )
-
                         .order(
                             "name",
                             {
@@ -1881,13 +2006,10 @@
                             }
                         ),
 
-
-                    supabaseClient
-
+                    db
                         .from(
                             "poems"
                         )
-
                         .select(
                             "poet_id"
                         )
@@ -2171,16 +2293,6 @@
                                 poet
                             ) {
 
-                                const displayName =
-
-                                    poet.nickname
-
-                                        ? `${poet.name} — ${poet.nickname}`
-
-                                        :
-                                        poet.name;
-
-
                                 return `
 
                                     <article
@@ -2193,11 +2305,10 @@
                                         ${
                                             renderImage(
                                                 poet.image_url,
-                                                displayName,
+                                                poet.name,
                                                 "qafiyah-poet-image"
                                             )
                                         }
-
 
                                         <div
                                             class="qafiyah-card-body">
@@ -2222,7 +2333,6 @@
                                                     ""
                                             }
 
-
                                             <h2
                                                 class="qafiyah-card-title">
 
@@ -2244,7 +2354,6 @@
 
                                             </h2>
 
-
                                             ${
                                                 poet.nickname
 
@@ -2264,7 +2373,6 @@
                                                     :
                                                     ""
                                             }
-
 
                                             ${
                                                 poet.bio
@@ -2289,7 +2397,6 @@
                                                     ""
                                             }
 
-
                                             <p
                                                 class="qafiyah-card-meta">
 
@@ -2308,7 +2415,6 @@
                                                 }
 
                                             </p>
-
 
                                             <a
                                                 class="qafiyah-read-more"
@@ -2386,10 +2492,14 @@
 
 
     // ============================================================
-    // قائمة القصائد
+    // القصائد - القائمة
     // ============================================================
 
     async function initPoemsList() {
+
+        const db =
+            window.supabaseClient;
+
 
         const section =
             document.getElementById(
@@ -2409,17 +2519,14 @@
             <div
                 class="qafiyah-poems-index">
 
-
                 <section
                     class="
                         articles-toolbar
                         qafiyah-poems-toolbar
                     ">
 
-
                     <div
                         class="articles-search">
-
 
                         <label
                             for="poemSearch"
@@ -2429,125 +2536,54 @@
 
                         </label>
 
-
                         <div
                             class="search-input-wrapper">
 
-
-                            <svg
-                                class="search-icon"
-
-                                xmlns="http://www.w3.org/2000/svg"
-
-                                viewBox="0 0 24 24"
-
-                                fill="none"
-
-                                stroke="currentColor"
-
-                                stroke-width="1.8"
-
-                                stroke-linecap="round"
-
-                                stroke-linejoin="round"
-
-                                aria-hidden="true">
-
-                                <circle
-                                    cx="11"
-                                    cy="11"
-                                    r="7">
-                                </circle>
-
-                                <path
-                                    d="m20 20-4-4">
-                                </path>
-
-                            </svg>
-
-
                             <input
                                 type="search"
-
                                 id="poemSearch"
-
                                 placeholder="ابحث باسم القصيدة أو الشاعر أو جزء من الأبيات..."
-
                                 autocomplete="off"
                             >
-
 
                         </div>
 
                     </div>
 
-
                     <div
                         class="articles-filter">
-
-
-                        <label
-                            for="poemEra"
-                            class="sr-only">
-
-                            عصر القصيدة
-
-                        </label>
-
 
                         <select
                             id="poemEra">
 
-                            <option
-                                value="">
-
+                            <option value="">
                                 جميع العصور
-
                             </option>
 
                         </select>
 
-
                     </div>
-
 
                     <div
                         class="articles-filter">
 
-
-                        <label
-                            for="poemTopic"
-                            class="sr-only">
-
-                            موضوع القصيدة
-
-                        </label>
-
-
                         <select
                             id="poemTopic">
 
-                            <option
-                                value="">
-
+                            <option value="">
                                 جميع الموضوعات
-
                             </option>
 
                         </select>
 
-
                     </div>
 
-
                 </section>
-
 
                 <div
                     id="poemsPublicContainer"
                     class="qafiyah-list-grid">
                 </div>
-
 
                 <div
                     id="poemsPublicStatus"
@@ -2556,7 +2592,6 @@
                     جاري تحميل القصائد...
 
                 </div>
-
 
             </div>
 
@@ -2599,7 +2634,7 @@
                 data,
                 error
             } =
-                await supabaseClient
+                await db
 
                     .from(
                         "poems"
@@ -2849,10 +2884,8 @@
                                             )
                                         }
 
-
                                         <div
                                             class="qafiyah-card-body">
-
 
                                             ${
                                                 poem.category
@@ -2874,7 +2907,6 @@
                                                     ""
                                             }
 
-
                                             <h2
                                                 class="qafiyah-card-title">
 
@@ -2895,7 +2927,6 @@
                                                 </a>
 
                                             </h2>
-
 
                                             ${
                                                 poem.poet
@@ -2920,50 +2951,6 @@
                                                     ""
                                             }
 
-
-                                            <div
-                                                class="qafiyah-meta-row">
-
-
-                                                ${
-                                                    poem.era
-
-                                                        ? `
-                                                            <span>
-                                                                ${
-                                                                    escapeHtml(
-                                                                        poem.era
-                                                                    )
-                                                                }
-                                                            </span>
-                                                        `
-
-                                                        :
-                                                        ""
-                                                }
-
-
-                                                ${
-                                                    poem.category
-
-                                                        ? `
-                                                            <span>
-                                                                ${
-                                                                    escapeHtml(
-                                                                        poem.category
-                                                                    )
-                                                                }
-                                                            </span>
-                                                        `
-
-                                                        :
-                                                        ""
-                                                }
-
-
-                                            </div>
-
-
                                             <p
                                                 class="qafiyah-card-summary">
 
@@ -2978,7 +2965,6 @@
 
                                             </p>
 
-
                                             <a
                                                 class="qafiyah-read-more"
 
@@ -2991,7 +2977,6 @@
                                                 قراءة القصيدة
 
                                             </a>
-
 
                                         </div>
 
@@ -3059,10 +3044,14 @@
 
 
     // ============================================================
-    // صفحة المقال
+    // المقال - التفاصيل
     // ============================================================
 
     async function initArticleDetail() {
+
+        const db =
+            window.supabaseClient;
+
 
         const host =
             getDetailHost(
@@ -3102,7 +3091,7 @@
                 data: article,
                 error
             } =
-                await supabaseClient
+                await db
 
                     .from(
                         "articles"
@@ -3153,7 +3142,6 @@
                 <section
                     class="qafiyah-detail-shell">
 
-
                     <a
                         class="qafiyah-back-link"
                         href="articles.html">
@@ -3162,13 +3150,11 @@
 
                     </a>
 
-
                     <article
                         class="
                             content-card
                             qafiyah-detail-card
                         ">
-
 
                         ${
                             renderImage(
@@ -3177,10 +3163,8 @@
                             )
                         }
 
-
                         <header
                             class="qafiyah-detail-header">
-
 
                             ${
                                 article.category
@@ -3202,18 +3186,14 @@
                                     ""
                             }
 
-
                             <h1>
-
                                 ${
                                     escapeHtml(
                                         article.title ||
                                         "بدون عنوان"
                                     )
                                 }
-
                             </h1>
-
 
                             ${
                                 article.author
@@ -3236,7 +3216,6 @@
                                     ""
                             }
 
-
                             ${
                                 article.summary
 
@@ -3257,9 +3236,7 @@
                                     ""
                             }
 
-
                         </header>
-
 
                         <div
                             class="qafiyah-article-body">
@@ -3272,9 +3249,7 @@
 
                         </div>
 
-
                     </article>
-
 
                 </section>
 
@@ -3304,10 +3279,14 @@
 
 
     // ============================================================
-    // صفحة الشاعر
+    // الشاعر - التفاصيل
     // ============================================================
 
     async function initPoetDetail() {
+
+        const db =
+            window.supabaseClient;
+
 
         const host =
             getDetailHost(
@@ -3347,7 +3326,7 @@
                 data: poet,
                 error: poetError
             } =
-                await supabaseClient
+                await db
 
                     .from(
                         "poets"
@@ -3400,7 +3379,7 @@
                 data: linkedPoems,
                 error: poemsError
             } =
-                await supabaseClient
+                await db
 
                     .from(
                         "poems"
@@ -3428,25 +3407,22 @@
                 poemsError
             ) {
 
-                throw (
+                console.warn(
+                    "القافية: تعذر جلب القصائد المرتبطة بالـ poet_id:",
                     poemsError
                 );
+
+            } else {
+
+                poems =
+                    linkedPoems ||
+                    [];
 
             }
 
 
-            poems =
-                linkedPoems ||
-                [];
-
-
-            // --------------------------------------------------------
-            // دعم القصائد القديمة المرتبطة باسم الشاعر
-            // --------------------------------------------------------
-
             if (
-                !poems.length
-                &&
+                !poems.length &&
                 poet.name
             ) {
 
@@ -3454,7 +3430,7 @@
                     data: legacyPoems,
                     error: legacyError
                 } =
-                    await supabaseClient
+                    await db
 
                         .from(
                             "poems"
@@ -3502,7 +3478,6 @@
                 <section
                     class="qafiyah-detail-shell">
 
-
                     <a
                         class="qafiyah-back-link"
                         href="poets.html">
@@ -3511,7 +3486,6 @@
 
                     </a>
 
-
                     <article
                         class="
                             content-card
@@ -3519,10 +3493,8 @@
                             qafiyah-poet-detail-card
                         ">
 
-
                         <div
                             class="qafiyah-poet-profile">
-
 
                             ${
                                 renderImage(
@@ -3532,10 +3504,8 @@
                                 )
                             }
 
-
                             <div
                                 class="qafiyah-poet-profile-text">
-
 
                                 ${
                                     poet.era
@@ -3557,18 +3527,14 @@
                                         ""
                                 }
 
-
                                 <h1>
-
                                     ${
                                         escapeHtml(
                                             poet.name ||
                                             "بدون اسم"
                                         )
                                     }
-
                                 </h1>
-
 
                                 ${
                                     poet.nickname
@@ -3590,7 +3556,6 @@
                                         ""
                                 }
 
-
                                 <p
                                     class="qafiyah-detail-meta">
 
@@ -3599,7 +3564,8 @@
                                     }
 
                                     ${
-                                        poems.length === 1
+                                        poems.length ===
+                                        1
 
                                             ? "قصيدة"
 
@@ -3609,12 +3575,9 @@
 
                                 </p>
 
-
                             </div>
 
-
                         </div>
-
 
                         ${
                             poet.bio
@@ -3624,11 +3587,9 @@
                                     <section
                                         class="qafiyah-biography">
 
-
                                         <h2>
                                             سيرة الشاعر
                                         </h2>
-
 
                                         <div
                                             class="qafiyah-article-body">
@@ -3641,7 +3602,6 @@
 
                                         </div>
 
-
                                     </section>
 
                                 `
@@ -3650,13 +3610,10 @@
                                 ""
                         }
 
-
                     </article>
-
 
                     <section
                         class="qafiyah-related-section">
-
 
                         <div
                             class="qafiyah-related-heading">
@@ -3673,7 +3630,6 @@
 
                         </div>
 
-
                         ${
                             poems.length
 
@@ -3681,7 +3637,6 @@
 
                                     <div
                                         class="qafiyah-list-grid">
-
 
                                         ${
                                             poems
@@ -3699,10 +3654,8 @@
                                                                     qafiyah-content-card
                                                                 ">
 
-
                                                                 <div
                                                                     class="qafiyah-card-body">
-
 
                                                                     ${
                                                                         poem.category
@@ -3723,7 +3676,6 @@
                                                                             :
                                                                             ""
                                                                     }
-
 
                                                                     <h3
                                                                         class="qafiyah-card-title">
@@ -3746,7 +3698,6 @@
 
                                                                     </h3>
 
-
                                                                     <p
                                                                         class="qafiyah-card-summary">
 
@@ -3761,7 +3712,6 @@
 
                                                                     </p>
 
-
                                                                     <a
                                                                         class="qafiyah-read-more"
 
@@ -3775,9 +3725,7 @@
 
                                                                     </a>
 
-
                                                                 </div>
-
 
                                                             </article>
 
@@ -3788,7 +3736,6 @@
 
                                                 .join("")
                                         }
-
 
                                     </div>
 
@@ -3806,9 +3753,7 @@
                                 `
                         }
 
-
                     </section>
-
 
                 </section>
 
@@ -3838,10 +3783,14 @@
 
 
     // ============================================================
-    // صفحة القصيدة
+    // القصيدة - التفاصيل
     // ============================================================
 
     async function initPoemDetail() {
+
+        const db =
+            window.supabaseClient;
+
 
         const host =
             getDetailHost(
@@ -3881,7 +3830,7 @@
                 data: poem,
                 error: poemError
             } =
-                await supabaseClient
+                await db
 
                     .from(
                         "poems"
@@ -3938,7 +3887,7 @@
                     data: poetData,
                     error: poetError
                 } =
-                    await supabaseClient
+                    await db
 
                         .from(
                             "poets"
@@ -4001,7 +3950,6 @@
                 <section
                     class="qafiyah-detail-shell">
 
-
                     <a
                         class="qafiyah-back-link"
                         href="Poems.html">
@@ -4009,7 +3957,6 @@
                         ← العودة إلى القصائد
 
                     </a>
-
 
                     <article
                         class="
@@ -4019,7 +3966,6 @@
                             qafiyah-poem-detail-card
                         ">
 
-
                         ${
                             renderImage(
                                 poem.image_url,
@@ -4027,16 +3973,13 @@
                             )
                         }
 
-
                         <header
                             class="
                                 poem-card-header
                                 qafiyah-detail-header
                             ">
 
-
                             <div>
-
 
                                 ${
                                     poem.category
@@ -4058,18 +4001,14 @@
                                         ""
                                 }
 
-
                                 <h1>
-
                                     ${
                                         escapeHtml(
                                             poem.title ||
                                             "بدون عنوان"
                                         )
                                     }
-
                                 </h1>
-
 
                                 ${
                                     poetName
@@ -4081,7 +4020,6 @@
                                                     poem-poet
                                                     qafiyah-detail-poet
                                                 ">
-
 
                                                 ${
                                                     poetHref
@@ -4109,7 +4047,6 @@
                                                         )
                                                 }
 
-
                                                 ${
                                                     poet?.nickname
 
@@ -4128,7 +4065,6 @@
                                                         ""
                                                 }
 
-
                                             </p>
 
                                         `
@@ -4137,10 +4073,8 @@
                                         ""
                                 }
 
-
                                 <div
                                     class="qafiyah-meta-row">
-
 
                                     ${
                                         poem.era
@@ -4159,7 +4093,6 @@
                                             ""
                                     }
 
-
                                     ${
                                         poem.category
 
@@ -4177,15 +4110,11 @@
                                             ""
                                     }
 
-
                                 </div>
-
 
                             </div>
 
-
                         </header>
-
 
                         <div
                             class="
@@ -4201,7 +4130,6 @@
 
                         </div>
 
-
                         ${
                             renderVideo(
                                 poem.video_url,
@@ -4209,9 +4137,7 @@
                             )
                         }
 
-
                     </article>
-
 
                 </section>
 
@@ -4241,7 +4167,7 @@
 
 
     // ============================================================
-    // التنسيقات
+    // التنسيقات الإضافية
     // ============================================================
 
     function injectContentStyles() {
@@ -4270,766 +4196,282 @@
         style.textContent = `
 
             .qafiyah-list-grid {
-
                 display: grid;
-
-                grid-template-columns:
-                    repeat(
-                        2,
-                        minmax(
-                            0,
-                            1fr
-                        )
-                    );
-
+                grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 24px;
-
             }
-
 
             .qafiyah-content-card {
-
                 overflow: hidden;
-
-                transition:
-                    transform .2s ease,
-                    box-shadow .2s ease;
-
+                transition: transform .2s ease, box-shadow .2s ease;
             }
-
 
             .qafiyah-content-card:hover {
-
-                transform:
-                    translateY(
-                        -2px
-                    );
-
+                transform: translateY(-2px);
             }
-
 
             .qafiyah-card-image {
-
                 display: block;
-
                 width: 100%;
-
-                aspect-ratio:
-                    16 / 8;
-
-                object-fit:
-                    cover;
-
+                aspect-ratio: 16 / 8;
+                object-fit: cover;
             }
-
 
             .qafiyah-card-body {
-
-                padding:
-                    24px;
-
+                padding: 24px;
             }
-
 
             .qafiyah-card-title {
-
-                margin:
-                    12px
-                    0
-                    8px;
-
-                line-height:
-                    1.7;
-
+                margin: 12px 0 8px;
+                line-height: 1.7;
             }
-
 
             .qafiyah-card-title a {
-
-                color:
-                    inherit;
-
-                text-decoration:
-                    none;
-
+                color: inherit;
+                text-decoration: none;
             }
-
 
             .qafiyah-card-title a:hover {
-
-                text-decoration:
-                    underline;
-
-                text-underline-offset:
-                    5px;
-
+                text-decoration: underline;
+                text-underline-offset: 5px;
             }
-
 
             .qafiyah-card-meta,
             .qafiyah-detail-meta,
             .qafiyah-meta-row,
             .qafiyah-poet-nickname,
             .qafiyah-detail-nickname {
-
-                opacity:
-                    .72;
-
+                opacity: .72;
             }
-
 
             .qafiyah-card-summary {
-
-                line-height:
-                    2;
-
-                margin:
-                    14px
-                    0
-                    18px;
-
+                line-height: 2;
+                margin: 14px 0 18px;
             }
-
 
             .qafiyah-read-more,
             .qafiyah-back-link {
-
-                display:
-                    inline-flex;
-
-                align-items:
-                    center;
-
-                gap:
-                    6px;
-
-                font-weight:
-                    700;
-
-                color:
-                    inherit;
-
-                text-decoration:
-                    none;
-
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-weight: 700;
+                color: inherit;
+                text-decoration: none;
             }
-
 
             .qafiyah-read-more:hover,
             .qafiyah-back-link:hover {
-
-                text-decoration:
-                    underline;
-
-                text-underline-offset:
-                    5px;
-
+                text-decoration: underline;
+                text-underline-offset: 5px;
             }
-
 
             .qafiyah-poet-card {
-
-                display:
-                    grid;
-
-                grid-template-columns:
-                    150px 1fr;
-
-                align-items:
-                    stretch;
-
+                display: grid;
+                grid-template-columns: 150px 1fr;
+                align-items: stretch;
             }
-
 
             .qafiyah-poet-image {
-
-                width:
-                    100%;
-
-                height:
-                    100%;
-
-                min-height:
-                    220px;
-
-                object-fit:
-                    cover;
-
+                width: 100%;
+                height: 100%;
+                min-height: 220px;
+                object-fit: cover;
             }
-
-
-            .qafiyah-poems-index {
-
-                width:
-                    100%;
-
-            }
-
-
-            .qafiyah-poems-toolbar {
-
-                margin-bottom:
-                    28px;
-
-            }
-
 
             .qafiyah-content-status {
-
-                padding:
-                    34px
-                    20px;
-
-                text-align:
-                    center;
-
-                line-height:
-                    1.9;
-
-                opacity:
-                    .7;
-
+                padding: 34px 20px;
+                text-align: center;
+                line-height: 1.9;
+                opacity: .7;
             }
-
 
             .qafiyah-content-error {
-
-                opacity:
-                    1;
-
+                opacity: 1;
             }
-
 
             .qafiyah-detail-main {
-
-                min-height:
-                    60vh;
-
+                min-height: 60vh;
             }
-
 
             .qafiyah-detail-shell {
-
-                width:
-                    min(
-                        1000px,
-                        calc(
-                            100% - 32px
-                        )
-                    );
-
-                margin:
-                    0 auto;
-
-                padding:
-                    46px
-                    0
-                    70px;
-
+                width: min(1000px, calc(100% - 32px));
+                margin: 0 auto;
+                padding: 46px 0 70px;
             }
 
-
-            .qafiyah-detail-shell
-            >
-            .qafiyah-back-link {
-
-                margin-bottom:
-                    18px;
-
+            .qafiyah-detail-shell > .qafiyah-back-link {
+                margin-bottom: 18px;
             }
-
 
             .qafiyah-detail-card {
-
-                overflow:
-                    hidden;
-
+                overflow: hidden;
             }
-
 
             .qafiyah-detail-image {
-
-                width:
-                    100%;
-
-                max-height:
-                    560px;
-
-                object-fit:
-                    cover;
-
-                display:
-                    block;
-
+                width: 100%;
+                max-height: 560px;
+                object-fit: cover;
+                display: block;
             }
-
 
             .qafiyah-detail-header {
-
-                padding:
-                    34px
-                    36px
-                    12px;
-
+                padding: 34px 36px 12px;
             }
-
 
             .qafiyah-detail-header h1 {
-
-                margin:
-                    12px
-                    0
-                    8px;
-
-                font-size:
-                    clamp(
-                        30px,
-                        5vw,
-                        50px
-                    );
-
-                line-height:
-                    1.45;
-
+                margin: 12px 0 8px;
+                font-size: clamp(30px, 5vw, 50px);
+                line-height: 1.45;
             }
-
 
             .qafiyah-detail-summary {
-
-                margin:
-                    22px
-                    0
-                    0;
-
-                line-height:
-                    2;
-
-                font-size:
-                    1.08rem;
-
-                opacity:
-                    .78;
-
+                margin: 22px 0 0;
+                line-height: 2;
+                font-size: 1.08rem;
+                opacity: .78;
             }
-
 
             .qafiyah-article-body {
-
-                padding:
-                    16px
-                    36px
-                    40px;
-
-                line-height:
-                    2.2;
-
-                font-size:
-                    1.05rem;
-
+                padding: 16px 36px 40px;
+                line-height: 2.2;
+                font-size: 1.05rem;
             }
-
 
             .qafiyah-article-body p {
-
-                margin:
-                    0
-                    0
-                    20px;
-
+                margin: 0 0 20px;
             }
-
 
             .qafiyah-meta-row {
-
-                display:
-                    flex;
-
-                flex-wrap:
-                    wrap;
-
-                gap:
-                    8px
-                    14px;
-
-                margin-top:
-                    10px;
-
-                font-size:
-                    .92rem;
-
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px 14px;
+                margin-top: 10px;
+                font-size: .92rem;
             }
-
-
-            .qafiyah-meta-row
-            span:not(:last-child)::after {
-
-                content:
-                    "•";
-
-                margin-right:
-                    14px;
-
-                opacity:
-                    .45;
-
-            }
-
 
             .qafiyah-poet-profile {
-
-                display:
-                    grid;
-
-                grid-template-columns:
-                    minmax(
-                        220px,
-                        320px
-                    )
-                    1fr;
-
-                gap:
-                    34px;
-
-                align-items:
-                    center;
-
-                padding:
-                    34px;
-
+                display: grid;
+                grid-template-columns: minmax(220px, 320px) 1fr;
+                gap: 34px;
+                align-items: center;
+                padding: 34px;
             }
-
 
             .qafiyah-poet-detail-image {
-
-                width:
-                    100%;
-
-                aspect-ratio:
-                    4 / 5;
-
-                object-fit:
-                    cover;
-
-                border-radius:
-                    18px;
-
+                width: 100%;
+                aspect-ratio: 4 / 5;
+                object-fit: cover;
+                border-radius: 18px;
             }
-
 
             .qafiyah-poet-profile h1 {
-
-                font-size:
-                    clamp(
-                        32px,
-                        5vw,
-                        52px
-                    );
-
-                line-height:
-                    1.4;
-
-                margin:
-                    12px
-                    0
-                    8px;
-
+                font-size: clamp(32px, 5vw, 52px);
+                line-height: 1.4;
+                margin: 12px 0 8px;
             }
-
-
-            .qafiyah-detail-nickname {
-
-                font-size:
-                    1.2rem;
-
-                margin:
-                    0
-                    0
-                    10px;
-
-            }
-
 
             .qafiyah-biography {
-
-                border-top:
-                    1px solid
-                    rgba(
-                        0,
-                        0,
-                        0,
-                        .08
-                    );
-
-                padding-top:
-                    26px;
-
+                border-top: 1px solid rgba(0, 0, 0, .08);
+                padding-top: 26px;
             }
 
-
-            .qafiyah-biography
-            >
-            h2 {
-
-                padding:
-                    0
-                    36px;
-
-                margin:
-                    0;
-
+            .qafiyah-biography > h2 {
+                padding: 0 36px;
             }
-
 
             .qafiyah-related-section {
-
-                margin-top:
-                    38px;
-
+                margin-top: 38px;
             }
-
 
             .qafiyah-related-heading {
-
-                display:
-                    flex;
-
-                align-items:
-                    center;
-
-                justify-content:
-                    space-between;
-
-                gap:
-                    15px;
-
-                margin-bottom:
-                    18px;
-
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 15px;
+                margin-bottom: 18px;
             }
-
-
-            .qafiyah-related-heading h2 {
-
-                margin:
-                    0;
-
-            }
-
-
-            .qafiyah-related-heading span {
-
-                opacity:
-                    .6;
-
-            }
-
-
-            .qafiyah-poem-detail-card
-            .qafiyah-detail-header {
-
-                padding-bottom:
-                    25px;
-
-            }
-
-
-            .qafiyah-detail-poet a {
-
-                color:
-                    inherit;
-
-                text-decoration:
-                    underline;
-
-                text-underline-offset:
-                    5px;
-
-            }
-
 
             .qafiyah-poem-lines {
-
-                padding:
-                    22px
-                    36px
-                    40px;
-
+                padding: 22px 36px 40px;
             }
-
 
             .qafiyah-poem-lines p {
-
-                margin:
-                    0;
-
-                padding:
-                    11px
-                    0;
-
-                line-height:
-                    2.2;
-
+                margin: 0;
+                padding: 11px 0;
+                line-height: 2.2;
             }
-
 
             .qafiyah-poem-gap {
-
-                height:
-                    18px;
-
+                height: 18px;
             }
-
 
             .qafiyah-video-box {
-
-                margin:
-                    0
-                    36px
-                    38px;
-
+                margin: 0 36px 38px;
             }
-
 
             .qafiyah-video-box iframe,
             .qafiyah-video-box video {
-
-                width:
-                    100%;
-
-                aspect-ratio:
-                    16 / 9;
-
-                border:
-                    0;
-
-                border-radius:
-                    16px;
-
-                display:
-                    block;
-
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                border: 0;
+                border-radius: 16px;
+                display: block;
             }
-
 
             .qafiyah-external-media {
-
-                margin:
-                    0
-                    36px
-                    38px;
-
+                margin: 0 36px 38px;
             }
-
 
             .qafiyah-error-card {
-
-                padding:
-                    36px;
-
-                text-align:
-                    center;
-
+                padding: 36px;
+                text-align: center;
             }
-
 
             .qafiyah-error-card p {
-
-                line-height:
-                    2;
-
-                opacity:
-                    .72;
-
+                line-height: 2;
+                opacity: .72;
             }
 
-
-            @media (
-                max-width:
-                780px
-            ) {
-
+            @media (max-width: 780px) {
 
                 .qafiyah-list-grid {
-
-                    grid-template-columns:
-                        1fr;
-
+                    grid-template-columns: 1fr;
                 }
-
 
                 .qafiyah-poet-card {
-
-                    grid-template-columns:
-                        1fr;
-
+                    grid-template-columns: 1fr;
                 }
-
 
                 .qafiyah-poet-image {
-
-                    max-height:
-                        320px;
-
+                    max-height: 320px;
                 }
-
 
                 .qafiyah-poet-profile {
-
-                    grid-template-columns:
-                        1fr;
-
-                    padding:
-                        24px;
-
+                    grid-template-columns: 1fr;
+                    padding: 24px;
                 }
-
 
                 .qafiyah-poet-detail-image {
-
-                    max-width:
-                        360px;
-
-                    margin:
-                        0 auto;
-
+                    max-width: 360px;
+                    margin: 0 auto;
                 }
-
 
                 .qafiyah-detail-header,
                 .qafiyah-article-body,
                 .qafiyah-poem-lines {
-
-                    padding-left:
-                        22px;
-
-                    padding-right:
-                        22px;
-
+                    padding-left: 22px;
+                    padding-right: 22px;
                 }
 
-
-                .qafiyah-biography
-                >
-                h2 {
-
-                    padding:
-                        0
-                        22px;
-
+                .qafiyah-biography > h2 {
+                    padding: 0 22px;
                 }
-
 
                 .qafiyah-video-box,
                 .qafiyah-external-media {
-
-                    margin-left:
-                        22px;
-
-                    margin-right:
-                        22px;
-
+                    margin-left: 22px;
+                    margin-right: 22px;
                 }
-
 
             }
 
