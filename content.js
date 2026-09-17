@@ -1462,6 +1462,185 @@
 
 
     // ============================================================
+    // التسجيل الصوتي للقصيدة
+    // ============================================================
+
+    function renderAudio(
+        value,
+        title
+    ) {
+
+        const safe =
+            safeUrl(
+                value
+            );
+
+
+        if (!safe) {
+
+            return "";
+
+        }
+
+
+        return `
+
+            <div class="qafiyah-audio-player">
+
+                <button
+                    class="qafiyah-audio-toggle"
+                    type="button"
+                    aria-pressed="false"
+                    aria-label="تشغيل التسجيل الصوتي لقصيدة ${
+                        escapeHtml(
+                            title || ""
+                        )
+                    }">
+
+                    <span
+                        class="qafiyah-audio-icon"
+                        aria-hidden="true">▶</span>
+
+                    <span class="qafiyah-audio-label">
+                        استمع إلى القصيدة
+                    </span>
+
+                </button>
+
+                <audio
+                    class="qafiyah-poem-audio"
+                    preload="metadata"
+                    src="${escapeHtml(safe)}">
+                </audio>
+
+            </div>
+
+        `;
+
+    }
+
+
+    function bindAudioPlayers(
+        root
+    ) {
+
+        root
+            ?.querySelectorAll(
+                ".qafiyah-audio-player"
+            )
+            .forEach(
+                player => {
+
+                    const button =
+                        player.querySelector(
+                            ".qafiyah-audio-toggle"
+                        );
+
+                    const audio =
+                        player.querySelector(
+                            ".qafiyah-poem-audio"
+                        );
+
+                    const icon =
+                        player.querySelector(
+                            ".qafiyah-audio-icon"
+                        );
+
+                    const label =
+                        player.querySelector(
+                            ".qafiyah-audio-label"
+                        );
+
+
+                    if (!button || !audio) return;
+
+
+                    const setPlaying =
+                        playing => {
+
+                            button.setAttribute(
+                                "aria-pressed",
+                                String(playing)
+                            );
+
+                            button.classList.toggle(
+                                "is-playing",
+                                playing
+                            );
+
+                            if (icon) {
+                                icon.textContent =
+                                    playing ? "❚❚" : "▶";
+                            }
+
+                            if (label) {
+                                label.textContent =
+                                    playing
+                                        ? "إيقاف مؤقت"
+                                        : "استمع إلى القصيدة";
+                            }
+
+                        };
+
+
+                    button.addEventListener(
+                        "click",
+                        async () => {
+
+                            if (!audio.paused) {
+                                audio.pause();
+                                return;
+                            }
+
+
+                            document
+                                .querySelectorAll(
+                                    ".qafiyah-poem-audio"
+                                )
+                                .forEach(
+                                    other => {
+                                        if (other !== audio) {
+                                            other.pause();
+                                        }
+                                    }
+                                );
+
+
+                            try {
+                                await audio.play();
+                            } catch (error) {
+                                console.error(
+                                    "القافية: تعذر تشغيل الصوت:",
+                                    error
+                                );
+                            }
+
+                        }
+                    );
+
+
+                    audio.addEventListener(
+                        "play",
+                        () => setPlaying(true)
+                    );
+
+                    audio.addEventListener(
+                        "pause",
+                        () => setPlaying(false)
+                    );
+
+                    audio.addEventListener(
+                        "ended",
+                        () => setPlaying(false)
+                    );
+
+                }
+            );
+
+    }
+
+
+    // ============================================================
     // المقالات - القائمة
     // ============================================================
 
@@ -3254,7 +3433,6 @@
                 </section>
 
             `;
-
         } catch (
             error
         ) {
@@ -4116,6 +4294,13 @@
 
                         </header>
 
+                        ${
+                            renderAudio(
+                                poem.audio_url,
+                                poem.title
+                            )
+                        }
+
                         <div
                             class="
                                 poem-text
@@ -4142,6 +4327,11 @@
                 </section>
 
             `;
+
+
+            bindAudioPlayers(
+                host
+            );
 
         } catch (
             error
@@ -4405,6 +4595,47 @@
                 height: 18px;
             }
 
+            .qafiyah-audio-player {
+                margin: 0 36px 22px;
+            }
+
+            .qafiyah-audio-toggle {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                border: 1px solid rgba(128, 74, 45, .24);
+                border-radius: 999px;
+                padding: 9px 15px;
+                color: var(--primary-color, #7b4229);
+                background: rgba(128, 74, 45, .07);
+                font: inherit;
+                font-weight: 700;
+                cursor: pointer;
+                transition: background .2s ease, transform .2s ease;
+            }
+
+            .qafiyah-audio-toggle:hover {
+                background: rgba(128, 74, 45, .13);
+                transform: translateY(-1px);
+            }
+
+            .qafiyah-audio-toggle.is-playing {
+                background: var(--primary-color, #7b4229);
+                color: #fff;
+            }
+
+            .qafiyah-audio-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 14px;
+                font-size: .82em;
+            }
+
+            .qafiyah-poem-audio {
+                display: none;
+            }
+
             .qafiyah-video-box {
                 margin: 0 36px 38px;
             }
@@ -4467,6 +4698,7 @@
                     padding: 0 22px;
                 }
 
+                .qafiyah-audio-player,
                 .qafiyah-video-box,
                 .qafiyah-external-media {
                     margin-left: 22px;

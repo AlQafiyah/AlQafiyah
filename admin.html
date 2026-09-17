@@ -746,6 +746,9 @@ border-radius: 12px;
 border: 1px solid var(--border);
 background: #eee;
 }
+.media-preview audio {
+width: min(520px,100%);
+}
 .media-existing {
 display: flex;
 flex-direction: column;
@@ -1286,6 +1289,7 @@ onclick="window.location.href='index.html'"
 const MEDIA_BUCKET = "qafiyah-media";
 const LARGE_UPLOAD_THRESHOLD = 6 * 1024 * 1024;
 const IMAGE_MAX_BYTES = 20 * 1024 * 1024;
+const AUDIO_MAX_BYTES = 50 * 1024 * 1024;
 
 const ERAS = [
 "قبل الإسلام",
@@ -1528,6 +1532,12 @@ if (file.type === "video/webm") return "webm";
 if (file.type === "video/quicktime") return "mov";
 if (file.type === "video/x-m4v") return "m4v";
 
+if (file.type === "audio/mpeg") return "mp3";
+if (file.type === "audio/mp4") return "m4a";
+if (file.type === "audio/aac") return "aac";
+if (file.type === "audio/wav" || file.type === "audio/x-wav") return "wav";
+if (file.type === "audio/ogg") return "ogg";
+
 return "mp4";
 }
 
@@ -1681,6 +1691,31 @@ const allowed = [
 if (!allowed.includes(file.type)) {
 throw new Error(
 "صيغة الفيديو غير مدعومة. استخدم MP4 أو WebM أو MOV أو M4V."
+);
+}
+}
+
+if (kind === "audio") {
+const allowedTypes = [
+"audio/mpeg",
+"audio/mp4",
+"audio/x-m4a",
+"audio/aac",
+"audio/wav",
+"audio/x-wav",
+"audio/ogg"
+];
+const allowedExtension = /\.(mp3|m4a|aac|wav|ogg)$/i.test(file.name || "");
+
+if (!allowedTypes.includes(file.type) && !allowedExtension) {
+throw new Error(
+"صيغة الصوت غير مدعومة. استخدم MP3 أو M4A أو AAC أو WAV أو OGG."
+);
+}
+
+if (file.size > AUDIO_MAX_BYTES) {
+throw new Error(
+"حجم الملف الصوتي كبير جدًا. الحد في لوحة الإدارة 50MB."
 );
 }
 }
@@ -1944,6 +1979,18 @@ src="${safe}"
 `;
 }
 
+if (kind === "audio") {
+return `
+<div class="media-existing">
+<audio
+controls
+preload="metadata"
+src="${safe}"
+></audio>
+</div>
+`;
+}
+
 return `
 <div class="media-existing">
 <img
@@ -1964,6 +2011,8 @@ folder
 const accept =
 kind === "video"
 ? "video/mp4,video/webm,video/quicktime,video/x-m4v,.mp4,.webm,.mov,.m4v"
+: kind === "audio"
+? "audio/mpeg,audio/mp4,audio/x-m4a,audio/aac,audio/wav,audio/x-wav,audio/ogg,.mp3,.m4a,.aac,.wav,.ogg"
 : "image/jpeg,image/png,image/webp,image/avif,image/gif";
 
 return `
@@ -2100,6 +2149,14 @@ preload="metadata"
 src="${localUrl}"
 ></video>
 `
+: kind === "audio"
+? `
+<audio
+controls
+preload="metadata"
+src="${localUrl}"
+></audio>
+`
 : `
 <img
 src="${localUrl}"
@@ -2142,6 +2199,11 @@ kind: "image"
 field: "video_url",
 folder: "poems/videos",
 kind: "video"
+},
+{
+field: "audio_url",
+folder: "poems/audio",
+kind: "audio"
 }
 ],
 
@@ -4982,6 +5044,14 @@ item.video_url,
 "poems/videos"
 )}
 
+${mediaPicker(
+"audio_url",
+"التسجيل الصوتي للقصيدة (اختياري)",
+item.audio_url,
+"audio",
+"poems/audio"
+)}
+
 <div class="form-group full">
 
 <label class="checkbox-row">
@@ -6477,7 +6547,8 @@ item,
 
 [
 "image_url",
-"video_url"
+"video_url",
+"audio_url"
 ]
 
 );
