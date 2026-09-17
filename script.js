@@ -1,5 +1,5 @@
 // ============================================================
-// القافيه - النظام الرئيسي
+// القافية - النظام الرئيسي
 // Supabase Auth + Profiles + Account UI + Menu + Notifications
 // Profile + Avatar Management
 // ============================================================
@@ -7,21 +7,23 @@
 (function () {
     "use strict";
 
-    // ============================================================
-    // منع تشغيل السكربت أكثر من مرة
-    // ============================================================
-
-    if (window.__ALQAFIYAH_SCRIPT_STARTED__) {
-        return;
-    }
-
+    if (window.__ALQAFIYAH_SCRIPT_STARTED__) return;
     window.__ALQAFIYAH_SCRIPT_STARTED__ = true;
+
+    const $ = (id) => document.getElementById(id);
+    const q = (selector, root = document) =>
+        root.querySelector(selector);
+
+    const qa = (selector, root = document) =>
+        Array.from(
+            root.querySelectorAll(selector)
+        );
 
     // ============================================================
     // أدوات عامة
     // ============================================================
 
-    function getCurrentPage() {
+    function currentPage() {
         return window.location.pathname
             .split("/")
             .pop()
@@ -29,17 +31,22 @@
     }
 
     function escapeHtml(value) {
-        const div = document.createElement("div");
+        const div =
+            document.createElement("div");
 
-        div.textContent = value ?? "";
+        div.textContent =
+            value ?? "";
 
         return div.innerHTML;
     }
 
-    function defaultUserIcon() {
+    // ============================================================
+    // أيقونة المستخدم
+    // ============================================================
+
+    function userIcon() {
         return `
             <svg
-                xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -63,7 +70,7 @@
     }
 
     // ============================================================
-    // هوية القافيه + أدوات تسجيل الدخول
+    // شعار Google
     // ============================================================
 
     function googleIcon() {
@@ -97,6 +104,10 @@
         `;
     }
 
+    // ============================================================
+    // شعار Apple
+    // ============================================================
+
     function appleIcon() {
         return `
             <svg
@@ -112,6 +123,10 @@
             </svg>
         `;
     }
+
+    // ============================================================
+    // أيقونة الهاتف
+    // ============================================================
 
     function phoneIcon() {
         return `
@@ -133,92 +148,136 @@
         `;
     }
 
-    function getOAuthRedirectUrl() {
-        const url = new URL(
-            window.location.href
-        );
+    // ============================================================
+    // الأيقونات الكلاسيكية
+    // ============================================================
 
-        url.hash = "";
+    function icon(name) {
 
-        [
-            "code",
-            "state",
-            "error",
-            "error_code",
-            "error_description"
-        ].forEach(
-            function (key) {
-                url.searchParams.delete(
-                    key
-                );
-            }
-        );
+        const paths = {
 
-        return url.toString();
+            home: `
+                <path
+                    d="M3 11.5 12 4l9 7.5">
+                </path>
+
+                <path
+                    d="M5 10.5V20h5v-6h4v6h5v-9.5">
+                </path>
+            `,
+
+            poems: `
+                <path
+                    d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z">
+                </path>
+
+                <path d="M8 7h8"></path>
+                <path d="M8 11h8"></path>
+                <path d="M8 15h5"></path>
+            `,
+
+            poets: `
+                <path d="M4 20h6"></path>
+
+                <path
+                    d="M14.5 4.5a2.12 2.12 0 0 1 3 3L9 16l-4 1 1-4Z">
+                </path>
+            `,
+
+            articles: `
+                <path
+                    d="M6 3h9l3 3v15H6Z">
+                </path>
+
+                <path d="M14 3v4h4"></path>
+                <path d="M9 11h6"></path>
+                <path d="M9 15h6"></path>
+            `,
+
+            star: `
+                <path
+                    d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2 7.5 14 3 9.6l6.2-.9Z">
+                </path>
+            `,
+
+            settings: `
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="3">
+                </circle>
+
+                <path
+                    d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z">
+                </path>
+            `,
+
+            info: `
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="9">
+                </circle>
+
+                <path d="M12 10v6"></path>
+                <path d="M12 7h.01"></path>
+            `,
+
+            user: `
+                <circle
+                    cx="12"
+                    cy="8"
+                    r="4">
+                </circle>
+
+                <path
+                    d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
+                </path>
+            `,
+
+            logout: `
+                <path
+                    d="M10 17l5-5-5-5">
+                </path>
+
+                <path
+                    d="M15 12H3">
+                </path>
+
+                <path
+                    d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5">
+                </path>
+            `
+        };
+
+        return `
+            <svg
+                class="alqafiyah-ui-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true">
+
+                ${
+                    paths[name] ||
+                    paths.info
+                }
+
+            </svg>
+        `;
     }
 
-    function normalizePhoneNumber(
-        value
-    ) {
-        let phone = String(
-            value || ""
-        )
-            .trim()
-            .replace(
-                /[\s()-]/g,
-                ""
-            );
+    // ============================================================
+    // التنسيقات
+    // ============================================================
 
-        if (!phone) {
-            return "";
-        }
+    function injectStyles() {
 
         if (
-            phone.startsWith(
-                "00"
-            )
-        ) {
-            phone =
-                `+${phone.slice(2)}`;
-        }
-
-        if (
-            phone.startsWith("05") &&
-            phone.length === 10
-        ) {
-            phone =
-                `+966${phone.slice(1)}`;
-        } else if (
-            phone.startsWith("5") &&
-            phone.length === 9
-        ) {
-            phone =
-                `+966${phone}`;
-        }
-
-        if (
-            !phone.startsWith("+")
-        ) {
-            return "";
-        }
-
-        if (
-            !/^\+\d{8,15}$/.test(
-                phone
-            )
-        ) {
-            return "";
-        }
-
-        return phone;
-    }
-
-    function injectAuthStyles() {
-
-        if (
-            document.getElementById(
-                "alqafiyahAuthStyles"
-            )
+            $("alqafiyahRuntimeStyles")
         ) {
             return;
         }
@@ -229,9 +288,25 @@
             );
 
         style.id =
-            "alqafiyahAuthStyles";
+            "alqafiyahRuntimeStyles";
 
         style.textContent = `
+
+            html,
+            body {
+                background: #ffffff !important;
+            }
+
+            body {
+                min-height: 100vh;
+            }
+
+            .site-footer {
+                flex: 0 0 auto !important;
+                height: auto !important;
+                min-height: 0 !important;
+            }
+
             .alqafiyah-auth-method {
                 display: flex !important;
                 align-items: center;
@@ -241,26 +316,36 @@
                 min-height: 46px;
             }
 
-            .alqafiyah-auth-icon {
+            .alqafiyah-auth-icon,
+            .alqafiyah-ui-icon {
                 width: 20px;
                 height: 20px;
                 flex: 0 0 20px;
+                display: block;
+            }
+
+            .side-navigation a > span:first-child {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 24px;
+                min-width: 24px;
             }
 
             #googleLoginButton {
-                background: #fff;
+                background: #ffffff;
                 color: #202124;
                 border: 1px solid #dadce0;
             }
 
             #appleLoginButton {
-                background: #000;
-                color: #fff;
-                border: 1px solid #000;
+                background: #000000;
+                color: #ffffff;
+                border: 1px solid #000000;
             }
 
             #phoneLoginButton {
-                background: #fff;
+                background: #ffffff;
                 color: #3E2723;
                 border: 1px solid rgba(62,39,35,.28);
             }
@@ -308,12 +393,93 @@
                 color: #a61b1b;
             }
 
+            .qafiyah-account-area {
+                position: relative;
+            }
+
+            .qafiyah-account-dropdown {
+                position: fixed !important;
+                display: none;
+                min-width: 205px;
+                padding: 7px;
+                background: #ffffff;
+                border: 1px solid rgba(62,39,35,.12);
+                border-radius: 14px;
+                box-shadow: 0 12px 34px rgba(0,0,0,.15);
+                z-index: 1000000;
+                direction: rtl;
+            }
+
+            .qafiyah-account-dropdown.open {
+                display: block !important;
+            }
+
+            .qafiyah-account-dropdown button {
+                width: 100%;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 12px;
+                border: 0;
+                border-radius: 9px;
+                background: transparent;
+                color: #3E2723;
+                font: inherit;
+                text-align: right;
+                cursor: pointer;
+            }
+
+            .qafiyah-account-dropdown button:hover,
+            .qafiyah-account-dropdown button:focus-visible {
+                background: #f5f5f5;
+                outline: none;
+            }
+
+            .account-dropdown-divider {
+                height: 1px;
+                background: rgba(62,39,35,.10);
+                margin: 4px 3px;
+            }
+
+            .alqafiyah-home-about {
+                max-width: 900px !important;
+                margin: 54px auto 82px !important;
+                padding: 22px 24px !important;
+                text-align: center !important;
+            }
+
+            .alqafiyah-home-about > * {
+                margin-inline-left: auto;
+                margin-inline-right: auto;
+            }
+
+            .alqafiyah-home-about a[href$="about.html"] {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 14px;
+            }
+
             .alqafiyah-side-logout {
                 cursor: pointer;
             }
 
             .alqafiyah-profile-logout {
                 margin-inline-start: 10px;
+            }
+
+            @media (max-width: 640px) {
+
+                .qafiyah-account-dropdown {
+                    min-width: 185px;
+                }
+
+                .alqafiyah-home-about {
+                    margin-top: 38px !important;
+                    margin-bottom: 64px !important;
+                    padding-inline: 18px !important;
+                }
             }
         `;
 
@@ -322,197 +488,662 @@
         );
     }
 
-    function renameVisibleBrand() {
+    // ============================================================
+    // توحيد اسم القافية
+    // ============================================================
+
+    function normalizeBrandText(
+        text
+    ) {
+
+        const marker =
+            "__ALQAFIYAH_BRAND__";
+
+        return String(
+            text || ""
+        )
+            .replace(
+                /القافيه/g,
+                marker
+            )
+            .replace(
+                /القافية/g,
+                marker
+            )
+            .replace(
+                /قافية/g,
+                marker
+            )
+            .replaceAll(
+                marker,
+                "القافية"
+            );
+    }
+
+    function normalizeBrand(
+        root = document.body
+    ) {
 
         if (document.title) {
+
             document.title =
-                document.title.replace(
-                    /قافية/g,
-                    "القافيه"
+                normalizeBrandText(
+                    document.title
                 );
         }
 
-        const selectors = [
-            ".side-menu-header h2",
-            ".footer-logo",
-            ".site-logo",
-            ".logo",
-            ".header-logo",
-            "#loginForm > p",
-            "#registerForm > p",
-            ".side-navigation a[href='about.html'] span:last-child",
-            ".footer-links a[href='about.html']"
+        qa(
+            'meta[name="description"],' +
+            'meta[property="og:title"],' +
+            'meta[property="og:description"],' +
+            'meta[name="twitter:title"],' +
+            'meta[name="twitter:description"]'
+        ).forEach(
+            function (meta) {
+
+                const content =
+                    meta.getAttribute(
+                        "content"
+                    );
+
+                if (content) {
+
+                    meta.setAttribute(
+                        "content",
+                        normalizeBrandText(
+                            content
+                        )
+                    );
+                }
+            }
+        );
+
+        function normalizeNode(
+            node
+        ) {
+
+            if (!node) {
+                return;
+            }
+
+            if (
+                node.nodeType ===
+                Node.TEXT_NODE
+            ) {
+
+                const parent =
+                    node.parentElement;
+
+                if (
+                    !parent ||
+                    parent.closest(
+                        "script," +
+                        "style," +
+                        "textarea," +
+                        "input," +
+                        "select," +
+                        "option"
+                    )
+                ) {
+                    return;
+                }
+
+                const next =
+                    normalizeBrandText(
+                        node.nodeValue
+                    );
+
+                if (
+                    next !==
+                    node.nodeValue
+                ) {
+
+                    node.nodeValue =
+                        next;
+                }
+
+                return;
+            }
+
+            const walker =
+                document.createTreeWalker(
+                    node,
+                    NodeFilter.SHOW_TEXT
+                );
+
+            let textNode;
+
+            while (
+                (
+                    textNode =
+                        walker.nextNode()
+                )
+            ) {
+
+                normalizeNode(
+                    textNode
+                );
+            }
+        }
+
+        normalizeNode(
+            root
+        );
+
+        if (
+            !window
+                .__ALQAFIYAH_BRAND_OBSERVER__
+        ) {
+
+            const observer =
+                new MutationObserver(
+                    function (
+                        mutations
+                    ) {
+
+                        mutations.forEach(
+                            function (
+                                mutation
+                            ) {
+
+                                if (
+                                    mutation.type ===
+                                    "characterData"
+                                ) {
+
+                                    normalizeNode(
+                                        mutation.target
+                                    );
+                                }
+
+                                mutation
+                                    .addedNodes
+                                    ?.forEach(
+                                        normalizeNode
+                                    );
+                            }
+                        );
+                    }
+                );
+
+            observer.observe(
+                document.body,
+                {
+                    childList: true,
+                    subtree: true,
+                    characterData: true
+                }
+            );
+
+            window
+                .__ALQAFIYAH_BRAND_OBSERVER__ =
+                observer;
+        }
+    }
+
+    // ============================================================
+    // استبدال إيموجيات القائمة بأيقونات كلاسيكية
+    // ============================================================
+
+    function applyClassicMenuIcons() {
+
+        const mappings = [
+
+            [
+                '.side-navigation a[href="index.html"]',
+                "home"
+            ],
+
+            [
+                '.side-navigation a[href="Poems.html"]',
+                "poems"
+            ],
+
+            [
+                '.side-navigation a[href="poets.html"]',
+                "poets"
+            ],
+
+            [
+                '.side-navigation a[href="articles.html"]',
+                "articles"
+            ],
+
+            [
+                "#favoritesLink",
+                "star"
+            ],
+
+            [
+                "#settingsLink",
+                "settings"
+            ],
+
+            [
+                '.side-navigation a[href="about.html"]',
+                "info"
+            ],
+
+            [
+                "#sideLogoutButton",
+                "logout"
+            ]
         ];
 
-        document
-            .querySelectorAll(
-                selectors.join(",")
-            )
-            .forEach(
+        mappings.forEach(
+            function (
+                [
+                    selector,
+                    name
+                ]
+            ) {
+
+                qa(
+                    selector
+                ).forEach(
+                    function (
+                        link
+                    ) {
+
+                        const holder =
+                            q(
+                                "span:first-child",
+                                link
+                            );
+
+                        if (holder) {
+
+                            holder.innerHTML =
+                                icon(
+                                    name
+                                );
+                        }
+                    }
+                );
+            }
+        );
+
+        qa(
+            ".side-menu .user-avatar"
+        ).forEach(
+            function (
+                avatar
+            ) {
+
+                if (
+                    !q(
+                        "img",
+                        avatar
+                    )
+                ) {
+
+                    avatar.innerHTML =
+                        userIcon();
+                }
+            }
+        );
+    }
+
+    // ============================================================
+    // جزء "تعرف على القافية" في الرئيسية
+    // ============================================================
+
+    function styleHomeAboutSection() {
+
+        const path =
+            window
+                .location
+                .pathname
+                .toLowerCase();
+
+        const isHome =
+            path === "/" ||
+            path.endsWith(
+                "/index.html"
+            ) ||
+            path.endsWith(
+                "index.html"
+            );
+
+        if (!isHome) {
+            return;
+        }
+
+        const link =
+            qa(
+                'a[href$="about.html"]'
+            ).find(
                 function (
                     element
                 ) {
 
-                    if (
-                        element
-                            .textContent
-                            ?.includes(
-                                "قافية"
-                            )
-                    ) {
-                        element.textContent =
+                    const text =
+                        String(
                             element
-                                .textContent
-                                .replace(
-                                    /قافية/g,
-                                    "القافيه"
-                                );
-                    }
+                                .textContent ||
+                            ""
+                        )
+                            .replace(
+                                /\s+/g,
+                                " "
+                            )
+                            .trim();
+
+                    return (
+                        text.includes(
+                            "تعرف"
+                        ) ||
+                        text.includes(
+                            "تعرّف"
+                        )
+                    );
                 }
             );
+
+        let section =
+            link?.closest(
+                "section," +
+                ".home-about," +
+                ".about-preview," +
+                ".intro-section," +
+                ".site-intro," +
+                "div"
+            ) ||
+            null;
+
+        if (!section) {
+
+            const heading =
+                qa(
+                    "h1,h2,h3,p"
+                ).find(
+                    function (
+                        element
+                    ) {
+
+                        const text =
+                            String(
+                                element
+                                    .textContent ||
+                                ""
+                            );
+
+                        return (
+                            text.includes(
+                                "يلتقي"
+                            ) &&
+                            text.includes(
+                                "الشعر"
+                            ) &&
+                            text.includes(
+                                "التاريخ"
+                            )
+                        );
+                    }
+                );
+
+            section =
+                heading?.closest(
+                    "section," +
+                    ".home-about," +
+                    ".about-preview," +
+                    ".intro-section," +
+                    ".site-intro," +
+                    "div"
+                ) ||
+                null;
+        }
+
+        if (section) {
+
+            section.classList.add(
+                "alqafiyah-home-about"
+            );
+        }
     }
 
-    function ensureSocialAuthUI() {
+    // ============================================================
+    // OAuth Redirect
+    // ============================================================
+
+    function oauthRedirectUrl() {
+
+        const url =
+            new URL(
+                window.location.href
+            );
+
+        url.hash =
+            "";
+
+        [
+            "code",
+            "state",
+            "error",
+            "error_code",
+            "error_description"
+        ].forEach(
+            function (
+                key
+            ) {
+
+                url
+                    .searchParams
+                    .delete(
+                        key
+                    );
+            }
+        );
+
+        return url.toString();
+    }
+
+    // ============================================================
+    // رقم الهاتف
+    // ============================================================
+
+    function normalizePhone(
+        value
+    ) {
+
+        let phone =
+            String(
+                value || ""
+            )
+                .trim()
+                .replace(
+                    /[\s()-]/g,
+                    ""
+                );
+
+        if (!phone) {
+            return "";
+        }
+
+        if (
+            phone.startsWith(
+                "00"
+            )
+        ) {
+
+            phone =
+                `+${phone.slice(2)}`;
+        }
+
+        if (
+            phone.startsWith(
+                "05"
+            ) &&
+            phone.length === 10
+        ) {
+
+            phone =
+                `+966${phone.slice(1)}`;
+
+        } else if (
+            phone.startsWith(
+                "5"
+            ) &&
+            phone.length === 9
+        ) {
+
+            phone =
+                `+966${phone}`;
+        }
+
+        if (
+            /^\+\d{8,15}$/.test(
+                phone
+            )
+        ) {
+
+            return phone;
+        }
+
+        return "";
+    }
+
+    // ============================================================
+    // إنشاء أزرار طرق الدخول
+    // ============================================================
+
+    function ensureAuthMethods() {
 
         const loginForm =
-            document.getElementById(
-                "loginForm"
-            );
+            $("loginForm");
 
         if (!loginForm) {
             return;
         }
 
-        injectAuthStyles();
-
-        let appleButton =
-            document.getElementById(
-                "appleLoginButton"
-            );
+        let apple =
+            $("appleLoginButton");
 
         const divider =
-            loginForm.querySelector(
-                ".login-divider"
+            q(
+                ".login-divider",
+                loginForm
             );
 
-        if (!appleButton) {
+        if (!apple) {
 
-            appleButton =
+            apple =
                 document.createElement(
                     "button"
                 );
 
-            appleButton.type =
+            apple.type =
                 "button";
 
-            appleButton.id =
+            apple.id =
                 "appleLoginButton";
 
-            appleButton.className =
+            apple.className =
                 "login-method";
 
             if (divider) {
+
                 loginForm.insertBefore(
-                    appleButton,
+                    apple,
                     divider
                 );
+
             } else {
+
                 loginForm.appendChild(
-                    appleButton
+                    apple
                 );
             }
         }
 
-        appleButton.classList.add(
+        apple.classList.add(
             "alqafiyah-auth-method"
         );
 
-        appleButton.innerHTML =
+        apple.innerHTML =
             `${appleIcon()}<span>تسجيل الدخول باستخدام Apple</span>`;
 
-        let googleButton =
-            document.getElementById(
-                "googleLoginButton"
-            );
+        let google =
+            $("googleLoginButton");
 
-        if (!googleButton) {
+        if (!google) {
 
-            googleButton =
+            google =
                 document.createElement(
                     "button"
                 );
 
-            googleButton.type =
+            google.type =
                 "button";
 
-            googleButton.id =
+            google.id =
                 "googleLoginButton";
 
-            googleButton.className =
+            google.className =
                 "login-method alqafiyah-auth-method";
 
-            appleButton
+            apple
                 .parentNode
                 .insertBefore(
-                    googleButton,
-                    appleButton
+                    google,
+                    apple
                 );
         }
 
-        googleButton.innerHTML =
+        google.innerHTML =
             `${googleIcon()}<span>تسجيل الدخول باستخدام Google</span>`;
 
-        let phoneButton =
-            document.getElementById(
-                "phoneLoginButton"
-            );
+        let phone =
+            $("phoneLoginButton");
 
-        if (!phoneButton) {
+        if (!phone) {
 
-            phoneButton =
+            phone =
                 document.createElement(
                     "button"
                 );
 
-            phoneButton.type =
+            phone.type =
                 "button";
 
-            phoneButton.id =
+            phone.id =
                 "phoneLoginButton";
 
-            phoneButton.className =
+            phone.className =
                 "login-method alqafiyah-auth-method";
 
-            appleButton.insertAdjacentElement(
-                "afterend",
-                phoneButton
-            );
+            apple
+                .insertAdjacentElement(
+                    "afterend",
+                    phone
+                );
         }
 
-        phoneButton.innerHTML =
+        phone.innerHTML =
             `${phoneIcon()}<span>تسجيل الدخول برقم الجوال</span>`;
 
-        let phonePanel =
-            document.getElementById(
-                "phoneAuthPanel"
-            );
+        if (
+            !$("phoneAuthPanel")
+        ) {
 
-        if (!phonePanel) {
-
-            phonePanel =
+            const panel =
                 document.createElement(
                     "div"
                 );
 
-            phonePanel.id =
+            panel.id =
                 "phoneAuthPanel";
 
-            phonePanel.className =
+            panel.className =
                 "alqafiyah-phone-panel";
 
-            phonePanel.innerHTML = `
-                <label for="phoneAuthNumber">
+            panel.innerHTML = `
+
+                <label
+                    for="phoneAuthNumber">
+
                     رقم الجوال
+
                 </label>
 
                 <input
@@ -523,7 +1154,8 @@
                     autocomplete="tel"
                     placeholder="05XXXXXXXX">
 
-                <div class="alqafiyah-phone-actions">
+                <div
+                    class="alqafiyah-phone-actions">
 
                     <button
                         type="button"
@@ -557,7 +1189,8 @@
                         maxlength="8"
                         placeholder="أدخل الرمز">
 
-                    <div class="alqafiyah-phone-actions">
+                    <div
+                        class="alqafiyah-phone-actions">
 
                         <button
                             type="button"
@@ -579,66 +1212,65 @@
                 </p>
             `;
 
-            phoneButton.insertAdjacentElement(
-                "afterend",
-                phonePanel
-            );
+            phone
+                .insertAdjacentElement(
+                    "afterend",
+                    panel
+                );
         }
     }
 
-    function setPhoneAuthStatus(
-        message,
-        isError = false
+    function phoneStatus(
+        text = "",
+        error = false
     ) {
 
-        const status =
-            document.getElementById(
-                "phoneAuthStatus"
-            );
+        const element =
+            $("phoneAuthStatus");
 
-        if (!status) {
+        if (!element) {
             return;
         }
 
-        status.textContent =
-            message || "";
+        element.textContent =
+            text;
 
-        status.classList.toggle(
-            "error",
-            Boolean(isError)
-        );
+        element
+            .classList
+            .toggle(
+                "error",
+                error
+            );
     }
 
-    function resetPhoneAuthUI() {
+    function resetPhoneUI() {
 
-        document
-            .getElementById(
-                "phoneAuthPanel"
-            )
-            ?.classList.remove(
+        $("phoneAuthPanel")
+            ?.classList
+            .remove(
                 "open"
             );
 
-        const codeFields =
-            document.getElementById(
-                "phoneOtpFields"
-            );
+        if (
+            $("phoneOtpFields")
+        ) {
 
-        if (codeFields) {
-            codeFields.style.display =
+            $("phoneOtpFields")
+                .style
+                .display =
                 "none";
         }
 
-        const code =
-            document.getElementById(
-                "phoneOtpCode"
-            );
+        if (
+            $("phoneOtpCode")
+        ) {
 
-        if (code) {
-            code.value = "";
+            $("phoneOtpCode")
+                .value =
+                "";
         }
 
-        setPhoneAuthStatus("");
+        phoneStatus();
     }
 
     // ============================================================
@@ -647,22 +1279,10 @@
 
     document.addEventListener(
         "DOMContentLoaded",
-        initAlQafiyah
+        init
     );
 
-    // ============================================================
-    // النظام الرئيسي
-    // ============================================================
-
-    async function initAlQafiyah() {
-
-        console.log(
-            "القافيه: بدء تشغيل النظام..."
-        );
-
-        // ========================================================
-        // التأكد من Supabase
-        // ========================================================
+    async function init() {
 
         if (
             typeof supabaseClient ===
@@ -670,157 +1290,152 @@
         ) {
 
             console.error(
-                "القافيه: supabaseClient غير موجود."
+                "القافية: supabaseClient غير موجود."
             );
 
             return;
         }
 
+        injectStyles();
+        normalizeBrand();
+        ensureAuthMethods();
+        styleHomeAboutSection();
+
         // ========================================================
-        // عناصر الواجهة
+        // عناصر الصفحة
         // ========================================================
 
         const menuButton =
-            document.getElementById(
-                "menuButton"
-            );
+            $("menuButton");
 
         const sideMenu =
-            document.getElementById(
-                "sideMenu"
-            );
+            $("sideMenu");
 
         const closeMenuButton =
-            document.getElementById(
-                "closeMenuButton"
-            ) ||
-            document.getElementById(
-                "closeMenu"
-            );
+            $("closeMenuButton") ||
+            $("closeMenu");
 
         const menuOverlay =
-            document.getElementById(
-                "menuOverlay"
-            );
+            $("menuOverlay");
 
         const notificationButton =
-            document.getElementById(
-                "notificationButton"
-            );
+            $("notificationButton");
 
         const notificationPanel =
-            document.getElementById(
-                "notificationPanel"
-            );
+            $("notificationPanel");
 
         const closeNotificationButton =
-            document.getElementById(
-                "closeNotificationButton"
-            );
+            $("closeNotificationButton");
 
         const notificationCount =
-            document.getElementById(
-                "notificationCount"
-            );
+            $("notificationCount");
 
         const loginButton =
-            document.getElementById(
-                "loginButton"
-            );
+            $("loginButton");
 
         const loginModal =
-            document.getElementById(
-                "loginModal"
-            );
+            $("loginModal");
 
         const closeLoginButton =
-            document.getElementById(
-                "closeLoginButton"
-            ) ||
-            document.getElementById(
-                "closeLoginModal"
-            );
+            $("closeLoginButton") ||
+            $("closeLoginModal");
 
         const showRegisterButton =
-            document.getElementById(
-                "showRegisterButton"
-            );
+            $("showRegisterButton");
 
         const showLoginButton =
-            document.getElementById(
-                "showLoginButton"
-            );
+            $("showLoginButton");
 
-        const profileLink =
-            document.getElementById(
-                "profileLink"
-            );
-
-        let currentAuthUser =
+        let currentUser =
             null;
 
-        // ============================================================
+        let accountArea =
+            $("accountArea");
+
+        let accountDropdown =
+            $("accountDropdown");
+
+        // ========================================================
         // القائمة الجانبية
-        // ============================================================
+        // ========================================================
 
         function openSideMenu() {
 
-            sideMenu?.classList.add(
-                "open"
-            );
+            sideMenu
+                ?.classList
+                .add(
+                    "open"
+                );
 
-            menuOverlay?.classList.add(
-                "active"
-            );
+            menuOverlay
+                ?.classList
+                .add(
+                    "active"
+                );
 
-            sideMenu?.setAttribute(
-                "aria-hidden",
-                "false"
-            );
+            sideMenu
+                ?.setAttribute(
+                    "aria-hidden",
+                    "false"
+                );
 
-            document.body.classList.add(
-                "menu-open"
-            );
+            document
+                .body
+                .classList
+                .add(
+                    "menu-open"
+                );
         }
 
         function closeSideMenu() {
 
-            sideMenu?.classList.remove(
-                "open"
-            );
+            sideMenu
+                ?.classList
+                .remove(
+                    "open"
+                );
 
-            menuOverlay?.classList.remove(
-                "active"
-            );
+            menuOverlay
+                ?.classList
+                .remove(
+                    "active"
+                );
 
-            sideMenu?.setAttribute(
-                "aria-hidden",
-                "true"
-            );
+            sideMenu
+                ?.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
 
-            document.body.classList.remove(
-                "menu-open"
-            );
+            document
+                .body
+                .classList
+                .remove(
+                    "menu-open"
+                );
         }
 
-        menuButton?.addEventListener(
-            "click",
-            openSideMenu
-        );
+        menuButton
+            ?.addEventListener(
+                "click",
+                openSideMenu
+            );
 
-        closeMenuButton?.addEventListener(
-            "click",
-            closeSideMenu
-        );
+        closeMenuButton
+            ?.addEventListener(
+                "click",
+                closeSideMenu
+            );
 
-        menuOverlay?.addEventListener(
-            "click",
-            closeSideMenu
-        );
+        menuOverlay
+            ?.addEventListener(
+                "click",
+                closeSideMenu
+            );
 
-        // ============================================================
+        // ========================================================
         // الإشعارات
-        // ============================================================
+        // ========================================================
 
         function openNotifications() {
 
@@ -828,14 +1443,17 @@
                 return;
             }
 
-            notificationPanel.classList.add(
-                "open"
-            );
+            notificationPanel
+                .classList
+                .add(
+                    "open"
+                );
 
-            notificationPanel.setAttribute(
-                "aria-hidden",
-                "false"
-            );
+            notificationPanel
+                .setAttribute(
+                    "aria-hidden",
+                    "false"
+                );
         }
 
         function closeNotifications() {
@@ -844,72 +1462,77 @@
                 return;
             }
 
-            notificationPanel.classList.remove(
-                "open"
-            );
+            notificationPanel
+                .classList
+                .remove(
+                    "open"
+                );
 
-            notificationPanel.setAttribute(
-                "aria-hidden",
-                "true"
-            );
+            notificationPanel
+                .setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
         }
 
-        notificationButton?.addEventListener(
-            "click",
-            openNotifications
-        );
+        notificationButton
+            ?.addEventListener(
+                "click",
+                openNotifications
+            );
 
-        closeNotificationButton?.addEventListener(
-            "click",
-            closeNotifications
-        );
+        closeNotificationButton
+            ?.addEventListener(
+                "click",
+                closeNotifications
+            );
 
-        // ============================================================
+        // ========================================================
         // نافذة تسجيل الدخول
-        // ============================================================
+        // ========================================================
 
         function showLogin() {
 
-            const login =
-                document.getElementById(
-                    "loginForm"
-                );
+            if (
+                $("loginForm")
+            ) {
 
-            const register =
-                document.getElementById(
-                    "registerForm"
-                );
-
-            if (login) {
-                login.style.display =
+                $("loginForm")
+                    .style
+                    .display =
                     "block";
             }
 
-            if (register) {
-                register.style.display =
+            if (
+                $("registerForm")
+            ) {
+
+                $("registerForm")
+                    .style
+                    .display =
                     "none";
             }
         }
 
         function showRegister() {
 
-            const login =
-                document.getElementById(
-                    "loginForm"
-                );
+            if (
+                $("loginForm")
+            ) {
 
-            const register =
-                document.getElementById(
-                    "registerForm"
-                );
-
-            if (login) {
-                login.style.display =
+                $("loginForm")
+                    .style
+                    .display =
                     "none";
             }
 
-            if (register) {
-                register.style.display =
+            if (
+                $("registerForm")
+            ) {
+
+                $("registerForm")
+                    .style
+                    .display =
                     "block";
             }
         }
@@ -923,14 +1546,17 @@
             loginModal.style.display =
                 "flex";
 
-            loginModal.classList.add(
-                "open"
-            );
+            loginModal
+                .classList
+                .add(
+                    "open"
+                );
 
-            loginModal.setAttribute(
-                "aria-hidden",
-                "false"
-            );
+            loginModal
+                .setAttribute(
+                    "aria-hidden",
+                    "false"
+                );
 
             showLogin();
         }
@@ -941,75 +1567,82 @@
                 return;
             }
 
-            loginModal.classList.remove(
-                "open"
-            );
+            loginModal
+                .classList
+                .remove(
+                    "open"
+                );
 
-            loginModal.setAttribute(
-                "aria-hidden",
-                "true"
-            );
+            loginModal
+                .setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
 
             loginModal.style.display =
                 "none";
 
-            resetPhoneAuthUI();
+            resetPhoneUI();
         }
 
-        loginButton?.addEventListener(
-            "click",
-            openLoginModal
-        );
-
-        closeLoginButton?.addEventListener(
-            "click",
-            closeLoginModal
-        );
-
-        loginModal?.addEventListener(
-            "click",
-            function (event) {
-
-                if (
-                    event.target ===
-                    loginModal
-                ) {
-                    closeLoginModal();
-                }
-            }
-        );
-
-        showRegisterButton?.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-
-                showRegister();
-            }
-        );
-
-        showLoginButton?.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-
-                showLogin();
-            }
-        );
-
-        renameVisibleBrand();
-        ensureSocialAuthUI();
-
-        // ============================================================
-        // حساب الهيدر
-        // ============================================================
-
-        let accountArea =
-            document.getElementById(
-                "accountArea"
+        loginButton
+            ?.addEventListener(
+                "click",
+                openLoginModal
             );
+
+        closeLoginButton
+            ?.addEventListener(
+                "click",
+                closeLoginModal
+            );
+
+        loginModal
+            ?.addEventListener(
+                "click",
+                function (
+                    event
+                ) {
+
+                    if (
+                        event.target ===
+                        loginModal
+                    ) {
+
+                        closeLoginModal();
+                    }
+                }
+            );
+
+        showRegisterButton
+            ?.addEventListener(
+                "click",
+                function (
+                    event
+                ) {
+
+                    event.preventDefault();
+
+                    showRegister();
+                }
+            );
+
+        showLoginButton
+            ?.addEventListener(
+                "click",
+                function (
+                    event
+                ) {
+
+                    event.preventDefault();
+
+                    showLogin();
+                }
+            );
+
+        // ========================================================
+        // منطقة الحساب في الهيدر
+        // ========================================================
 
         if (
             !accountArea &&
@@ -1027,23 +1660,20 @@
             accountArea.className =
                 "qafiyah-account-area";
 
-            loginButton.parentNode.insertBefore(
-                accountArea,
-                loginButton
-            );
-
             accountArea.style.display =
                 "none";
+
+            loginButton
+                .parentNode
+                .insertBefore(
+                    accountArea,
+                    loginButton
+                );
         }
 
-        let accountDropdown =
-            document.getElementById(
-                "accountDropdown"
-            );
-
-        // ============================================================
-        // جلب بيانات Profile
-        // ============================================================
+        // ========================================================
+        // Profiles
+        // ========================================================
 
         async function getProfile(
             userId
@@ -1058,8 +1688,12 @@
                 error
             } =
                 await supabaseClient
-                    .from("profiles")
-                    .select("*")
+                    .from(
+                        "profiles"
+                    )
+                    .select(
+                        "*"
+                    )
                     .eq(
                         "id",
                         userId
@@ -1069,7 +1703,7 @@
             if (error) {
 
                 console.error(
-                    "القافيه: خطأ في جلب profiles:",
+                    "القافية: خطأ في جلب الملف الشخصي:",
                     error
                 );
 
@@ -1079,497 +1713,7 @@
             return data;
         }
 
-        // ============================================================
-        // تسجيل الخروج
-        // ============================================================
-
-        async function logoutUser() {
-
-            try {
-
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .auth
-                        .signOut();
-
-                if (error) {
-                    throw error;
-                }
-
-                accountDropdown?.classList.remove(
-                    "open"
-                );
-
-                currentAuthUser =
-                    null;
-
-                updateAccountUI(
-                    null,
-                    null
-                );
-
-                updateSideMenuUser(
-                    null,
-                    null
-                );
-
-                updateSideLogoutVisibility(
-                    false
-                );
-
-                if (
-                    getCurrentPage() ===
-                    "profile.html"
-                ) {
-
-                    window.location.replace(
-                        "index.html"
-                    );
-
-                    return;
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "القافيه: خطأ في تسجيل الخروج:",
-                    error
-                );
-
-                alert(
-                    error?.message ||
-                    "تعذر تسجيل الخروج."
-                );
-            }
-        }
-
-        // ============================================================
-        // إنشاء قائمة الحساب
-        // ============================================================
-
-        function createAccountDropdown() {
-
-            if (accountDropdown) {
-                return;
-            }
-
-            accountDropdown =
-                document.createElement(
-                    "div"
-                );
-
-            accountDropdown.id =
-                "accountDropdown";
-
-            accountDropdown.className =
-                "qafiyah-account-dropdown";
-
-            accountDropdown.innerHTML = `
-                <button
-                    type="button"
-                    id="accountProfileButton">
-
-                    الملف الشخصي
-
-                </button>
-
-                <button
-                    type="button"
-                    id="accountLogoutButton">
-
-                    تسجيل الخروج
-
-                </button>
-            `;
-
-            document.body.appendChild(
-                accountDropdown
-            );
-
-            document
-                .getElementById(
-                    "accountProfileButton"
-                )
-                ?.addEventListener(
-                    "click",
-                    function () {
-
-                        window.location.href =
-                            "profile.html";
-                    }
-                );
-
-            document
-                .getElementById(
-                    "accountLogoutButton"
-                )
-                ?.addEventListener(
-                    "click",
-                    logoutUser
-                );
-        }
-
-        createAccountDropdown();
-
-        function getUserAvatar(
-            user,
-            profile
-        ) {
-
-            return (
-                profile?.avatar_url ||
-                user?.user_metadata?.avatar_url ||
-                user?.user_metadata?.picture ||
-                null
-            );
-        }
-
-        // ============================================================
-        // تحديث حساب الهيدر
-        // ============================================================
-
-        function updateAccountUI(
-            user,
-            profile
-        ) {
-
-            if (
-                !accountArea ||
-                !loginButton
-            ) {
-                return;
-            }
-
-            // --------------------------------------------------------
-            // لا يوجد مستخدم
-            // --------------------------------------------------------
-
-            if (!user) {
-
-                accountArea.style.display =
-                    "none";
-
-                loginButton.style.display =
-                    "";
-
-                accountDropdown?.classList.remove(
-                    "open"
-                );
-
-                return;
-            }
-
-            // --------------------------------------------------------
-            // يوجد مستخدم
-            // --------------------------------------------------------
-
-            loginButton.style.display =
-                "none";
-
-            accountArea.style.display =
-                "";
-
-            accountArea.innerHTML = `
-                <button
-                    type="button"
-                    id="headerAccountAvatar"
-                    class="qafiyah-header-avatar"
-                    aria-label="الحساب"
-                    title="الحساب">
-
-                    ${
-                        getUserAvatar(
-                            user,
-                            profile
-                        )
-                        ? `
-                            <img
-                                src="${escapeHtml(
-                                    getUserAvatar(
-                                        user,
-                                        profile
-                                    )
-                                )}"
-                                alt="الصورة الشخصية"
-                                loading="eager">
-                        `
-                        :
-                        defaultUserIcon()
-                    }
-
-                </button>
-            `;
-
-            const avatar =
-                document.getElementById(
-                    "headerAccountAvatar"
-                );
-
-            avatar?.addEventListener(
-                "click",
-                function (event) {
-
-                    event.stopPropagation();
-
-                    if (!accountDropdown) {
-                        return;
-                    }
-
-                    const isOpen =
-                        accountDropdown.classList.contains(
-                            "open"
-                        );
-
-                    if (isOpen) {
-
-                        accountDropdown.classList.remove(
-                            "open"
-                        );
-
-                        return;
-                    }
-
-                    const rect =
-                        avatar.getBoundingClientRect();
-
-                    accountDropdown.style.top =
-                        `${rect.bottom + 10}px`;
-
-                    accountDropdown.style.right =
-                        `${Math.max(
-                            10,
-                            window.innerWidth -
-                            rect.right
-                        )}px`;
-
-                    accountDropdown.classList.add(
-                        "open"
-                    );
-                }
-            );
-        }
-
-        // ============================================================
-        // إغلاق قائمة الحساب عند الضغط خارجها
-        // ============================================================
-
-        document.addEventListener(
-            "click",
-            function (event) {
-
-                if (!accountDropdown) {
-                    return;
-                }
-
-                const avatar =
-                    document.getElementById(
-                        "headerAccountAvatar"
-                    );
-
-                if (
-                    avatar &&
-                    avatar.contains(
-                        event.target
-                    )
-                ) {
-                    return;
-                }
-
-                if (
-                    accountDropdown.contains(
-                        event.target
-                    )
-                ) {
-                    return;
-                }
-
-                accountDropdown.classList.remove(
-                    "open"
-                );
-            }
-        );
-
-        // ============================================================
-        // مستخدم القائمة الجانبية
-        // ============================================================
-
-        function updateSideMenuUser(
-            user,
-            profile
-        ) {
-
-            const name =
-                document.getElementById(
-                    "menuUserName"
-                );
-
-            const email =
-                document.getElementById(
-                    "menuUserEmail"
-                );
-
-            const avatar =
-                document.querySelector(
-                    ".side-menu .user-avatar"
-                );
-
-            // --------------------------------------------------------
-            // زائر
-            // --------------------------------------------------------
-
-            if (!user) {
-
-                if (name) {
-                    name.textContent =
-                        "مرحبًا بك";
-                }
-
-                if (email) {
-                    email.textContent =
-                        "سجّل الدخول للوصول إلى حسابك";
-                }
-
-                if (avatar) {
-                    avatar.innerHTML =
-                        defaultUserIcon();
-                }
-
-                return;
-            }
-
-            // --------------------------------------------------------
-            // اسم المستخدم
-            // --------------------------------------------------------
-
-            const fullName =
-                [
-                    profile?.first_name,
-                    profile?.last_name
-                ]
-                    .filter(Boolean)
-                    .join(" ")
-                    .trim();
-
-            if (name) {
-
-                name.textContent =
-                    fullName ||
-                    user.email ||
-                    user.phone ||
-                    "المستخدم";
-            }
-
-            if (email) {
-
-                email.textContent =
-                    user.email ||
-                    user.phone ||
-                    "";
-            }
-
-            // --------------------------------------------------------
-            // صورة المستخدم
-            // --------------------------------------------------------
-
-            if (avatar) {
-
-                avatar.innerHTML =
-                    getUserAvatar(
-                        user,
-                        profile
-                    )
-                    ? `
-                        <img
-                            src="${escapeHtml(
-                                getUserAvatar(
-                                    user,
-                                    profile
-                                )
-                            )}"
-                            alt="الصورة الشخصية"
-                            loading="eager">
-                    `
-                    :
-                    defaultUserIcon();
-            }
-        }
-
-        // ============================================================
-        // إنشاء Profile
-        // ============================================================
-
-        async function createProfile(
-            user,
-            profileData
-        ) {
-
-            if (!user?.id) {
-
-                throw new Error(
-                    "تعذر تحديد حساب المستخدم."
-                );
-            }
-
-            const {
-                error
-            } =
-                await supabaseClient
-                    .from("profiles")
-                    .insert({
-
-                        id:
-                            user.id,
-
-                        first_name:
-                            profileData.firstName,
-
-                        last_name:
-                            profileData.lastName ||
-                            null,
-
-                        birth_day:
-                            Number(
-                                profileData.birthDay
-                            ),
-
-                        birth_month:
-                            Number(
-                                profileData.birthMonth
-                            ),
-
-                        birth_year:
-                            Number(
-                                profileData.birthYear
-                            ),
-
-                        gender:
-                            profileData.gender,
-
-                        avatar_url:
-                            null,
-
-                        phone:
-                            null
-                    });
-
-            if (error) {
-
-                console.error(
-                    "القافيه: فشل إنشاء profiles:",
-                    error
-                );
-
-                throw error;
-            }
-
-            console.log(
-                "القافيه: تم إنشاء profiles بنجاح."
-            );
-        }
-
-        async function ensureUserProfile(
+        async function ensureProfile(
             user
         ) {
 
@@ -1595,25 +1739,28 @@
                     metadata.full_name ||
                     metadata.name ||
                     ""
-                ).trim();
+                )
+                    .trim();
 
-            const nameParts =
+            const parts =
                 rawName
-                ? rawName.split(/\s+/)
+                ? rawName.split(
+                    /\s+/
+                )
                 : [];
 
             const firstName =
                 metadata.first_name ||
                 metadata.given_name ||
-                nameParts.shift() ||
+                parts.shift() ||
                 null;
 
             const lastName =
                 metadata.last_name ||
                 metadata.family_name ||
                 (
-                    nameParts.length
-                    ? nameParts.join(" ")
+                    parts.length
+                    ? parts.join(" ")
                     : null
                 );
 
@@ -1628,7 +1775,9 @@
                     error
                 } =
                     await supabaseClient
-                        .from("profiles")
+                        .from(
+                            "profiles"
+                        )
                         .upsert(
                             {
                                 id:
@@ -1665,7 +1814,7 @@
             } catch (error) {
 
                 console.warn(
-                    "القافيه: تعذر إنشاء ملف شخصي تلقائي لمستخدم OAuth/Phone:",
+                    "القافية: تعذر إنشاء ملف شخصي تلقائي:",
                     error
                 );
             }
@@ -1673,458 +1822,1155 @@
             return profile;
         }
 
-        // ============================================================
-        // تسجيل حساب جديد
-        // ============================================================
+        function avatarUrl(
+            user,
+            profile
+        ) {
 
-        const registerButton =
-            document.getElementById(
-                "registerSubmitButton"
+            return (
+                profile?.avatar_url ||
+                user
+                    ?.user_metadata
+                    ?.avatar_url ||
+                user
+                    ?.user_metadata
+                    ?.picture ||
+                null
+            );
+        }
+
+        // ========================================================
+        // قائمة الحساب الصغيرة
+        // ========================================================
+
+        function closeAccountDropdown() {
+
+            if (!accountDropdown) {
+                return;
+            }
+
+            accountDropdown
+                .classList
+                .remove(
+                    "open"
+                );
+
+            accountDropdown
+                .style
+                .visibility =
+                "";
+
+            accountDropdown
+                .setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+            $("headerAccountAvatar")
+                ?.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+        }
+
+        function openAccountDropdown(
+            avatar
+        ) {
+
+            if (
+                !accountDropdown ||
+                !avatar
+            ) {
+                return;
+            }
+
+            const rect =
+                avatar
+                    .getBoundingClientRect();
+
+            accountDropdown
+                .classList
+                .add(
+                    "open"
+                );
+
+            accountDropdown
+                .style
+                .visibility =
+                "hidden";
+
+            const width =
+                accountDropdown
+                    .offsetWidth;
+
+            let left =
+                rect.right -
+                width;
+
+            if (left < 10) {
+                left = 10;
+            }
+
+            if (
+                left +
+                width >
+                window.innerWidth -
+                10
+            ) {
+
+                left =
+                    window.innerWidth -
+                    width -
+                    10;
+            }
+
+            accountDropdown
+                .style
+                .left =
+                `${left}px`;
+
+            accountDropdown
+                .style
+                .right =
+                "auto";
+
+            accountDropdown
+                .style
+                .top =
+                `${rect.bottom + 8}px`;
+
+            accountDropdown
+                .style
+                .visibility =
+                "visible";
+
+            accountDropdown
+                .setAttribute(
+                    "aria-hidden",
+                    "false"
+                );
+
+            avatar
+                .setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+        }
+
+        function toggleAccountDropdown(
+            avatar
+        ) {
+
+            if (
+                accountDropdown
+                    ?.classList
+                    .contains(
+                        "open"
+                    )
+            ) {
+
+                closeAccountDropdown();
+
+            } else {
+
+                openAccountDropdown(
+                    avatar
+                );
+            }
+        }
+
+        // ========================================================
+        // تسجيل الخروج
+        // ========================================================
+
+        async function logout() {
+
+            try {
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .auth
+                        .signOut();
+
+                if (error) {
+                    throw error;
+                }
+
+                closeAccountDropdown();
+
+                currentUser =
+                    null;
+
+                updateHeader(
+                    null,
+                    null
+                );
+
+                updateSideUser(
+                    null,
+                    null
+                );
+
+                updateSideLogout(
+                    false
+                );
+
+                if (
+                    currentPage() ===
+                    "profile.html"
+                ) {
+
+                    window.location.replace(
+                        "index.html"
+                    );
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "القافية: خطأ في تسجيل الخروج:",
+                    error
+                );
+
+                alert(
+                    error?.message ||
+                    "تعذر تسجيل الخروج."
+                );
+            }
+        }
+
+        function createAccountDropdown() {
+
+            if (accountDropdown) {
+                return;
+            }
+
+            accountDropdown =
+                document.createElement(
+                    "div"
+                );
+
+            accountDropdown.id =
+                "accountDropdown";
+
+            accountDropdown.className =
+                "qafiyah-account-dropdown";
+
+            accountDropdown
+                .setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+            accountDropdown.innerHTML = `
+
+                <button
+                    type="button"
+                    id="accountProfileButton">
+
+                    ${icon("user")}
+
+                    <span>
+                        الملف الشخصي
+                    </span>
+
+                </button>
+
+                <div
+                    class="account-dropdown-divider"
+                    aria-hidden="true">
+                </div>
+
+                <button
+                    type="button"
+                    id="accountLogoutButton">
+
+                    ${icon("logout")}
+
+                    <span>
+                        تسجيل الخروج
+                    </span>
+
+                </button>
+            `;
+
+            document.body.appendChild(
+                accountDropdown
             );
 
-        registerButton?.addEventListener(
-            "click",
-            async function () {
+            $("accountProfileButton")
+                ?.addEventListener(
+                    "click",
+                    function () {
 
-                const firstName =
-                    document
-                        .getElementById(
-                            "firstName"
-                        )
-                        ?.value
-                        .trim();
+                        closeAccountDropdown();
 
-                const lastName =
-                    document
-                        .getElementById(
-                            "lastName"
-                        )
-                        ?.value
-                        .trim();
+                        window.location.href =
+                            "profile.html";
+                    }
+                );
 
-                const birthDay =
-                    document.getElementById(
-                        "birthDay"
-                    )?.value;
+            $("accountLogoutButton")
+                ?.addEventListener(
+                    "click",
+                    logout
+                );
+        }
 
-                const birthMonth =
-                    document.getElementById(
-                        "birthMonth"
-                    )?.value;
+        createAccountDropdown();
 
-                const birthYear =
-                    document.getElementById(
-                        "birthYear"
-                    )?.value;
+        // ========================================================
+        // تحديث دائرة الحساب
+        // ========================================================
 
-                const gender =
-                    document.getElementById(
-                        "gender"
-                    )?.value;
+        function updateHeader(
+            user,
+            profile
+        ) {
 
-                const email =
-                    document
-                        .getElementById(
-                            "emailRegister"
-                        )
-                        ?.value
-                        .trim();
+            if (
+                !accountArea ||
+                !loginButton
+            ) {
+                return;
+            }
 
-                const password =
-                    document.getElementById(
-                        "passwordRegister"
-                    )?.value;
+            if (!user) {
 
-                const confirmPassword =
-                    document.getElementById(
-                        "confirmPasswordRegister"
-                    )?.value;
+                accountArea.innerHTML =
+                    "";
 
-                // ----------------------------------------------------
-                // التحقق من البيانات
-                // ----------------------------------------------------
+                accountArea.style.display =
+                    "none";
 
-                if (
-                    !firstName ||
-                    !birthDay ||
-                    !birthMonth ||
-                    !birthYear ||
-                    !gender ||
-                    !email ||
-                    !password ||
-                    !confirmPassword
-                ) {
+                loginButton.style.display =
+                    "";
 
-                    alert(
-                        "يرجى تعبئة جميع البيانات المطلوبة."
-                    );
+                closeAccountDropdown();
 
-                    return;
-                }
+                return;
+            }
 
-                if (
-                    password !==
-                    confirmPassword
-                ) {
+            loginButton.style.display =
+                "none";
 
-                    alert(
-                        "كلمتا المرور غير متطابقتين."
-                    );
+            accountArea.style.display =
+                "";
 
-                    return;
-                }
+            const url =
+                avatarUrl(
+                    user,
+                    profile
+                );
 
-                if (
-                    password.length < 6
-                ) {
+            accountArea.innerHTML = `
 
-                    alert(
-                        "كلمة المرور يجب أن تكون 6 أحرف على الأقل."
-                    );
+                <button
+                    type="button"
+                    id="headerAccountAvatar"
+                    class="qafiyah-header-avatar"
+                    aria-label="فتح قائمة الحساب"
+                    aria-haspopup="menu"
+                    aria-expanded="false"
+                    title="الحساب">
 
-                    return;
-                }
-
-                registerButton.disabled =
-                    true;
-
-                try {
-
-                    // ------------------------------------------------
-                    // إنشاء الحساب في Auth
-                    // ------------------------------------------------
-
-                    const {
-                        data,
-                        error
-                    } =
-                        await supabaseClient
-                            .auth
-                            .signUp({
-                                email,
-                                password
-                            });
-
-                    if (error) {
-                        throw error;
+                    ${
+                        url
+                        ? `
+                            <img
+                                src="${escapeHtml(url)}"
+                                alt="الصورة الشخصية"
+                                loading="eager">
+                        `
+                        :
+                        userIcon()
                     }
 
-                    if (!data?.user) {
+                </button>
+            `;
 
-                        throw new Error(
-                            "لم يتم إنشاء المستخدم في Supabase."
+            $("headerAccountAvatar")
+                ?.addEventListener(
+                    "click",
+                    function (
+                        event
+                    ) {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        toggleAccountDropdown(
+                            event.currentTarget
                         );
                     }
+                );
+        }
 
-                    // ------------------------------------------------
-                    // الحصول على Session
-                    // ------------------------------------------------
+        // ========================================================
+        // معلومات المستخدم في القائمة
+        // ========================================================
 
-                    let session =
-                        data.session ||
-                        null;
+        function updateSideUser(
+            user,
+            profile
+        ) {
 
-                    if (!session) {
+            const name =
+                $("menuUserName");
+
+            const contact =
+                $("menuUserEmail");
+
+            const avatar =
+                q(
+                    ".side-menu .user-avatar"
+                );
+
+            if (!user) {
+
+                if (name) {
+
+                    name.textContent =
+                        "مرحبًا بك";
+                }
+
+                if (contact) {
+
+                    contact.textContent =
+                        "سجّل الدخول للوصول إلى حسابك";
+                }
+
+                if (avatar) {
+
+                    avatar.innerHTML =
+                        userIcon();
+                }
+
+                return;
+            }
+
+            const fullName =
+                [
+                    profile?.first_name,
+                    profile?.last_name
+                ]
+                    .filter(
+                        Boolean
+                    )
+                    .join(
+                        " "
+                    )
+                    .trim();
+
+            if (name) {
+
+                name.textContent =
+                    fullName ||
+                    user.email ||
+                    user.phone ||
+                    "المستخدم";
+            }
+
+            if (contact) {
+
+                contact.textContent =
+                    user.email ||
+                    user.phone ||
+                    "";
+            }
+
+            if (avatar) {
+
+                const url =
+                    avatarUrl(
+                        user,
+                        profile
+                    );
+
+                avatar.innerHTML =
+                    url
+                    ? `
+                        <img
+                            src="${escapeHtml(url)}"
+                            alt="الصورة الشخصية"
+                            loading="eager">
+                    `
+                    :
+                    userIcon();
+            }
+        }
+
+        // ========================================================
+        // إغلاق قائمة الحساب خارجها
+        // ========================================================
+
+        document.addEventListener(
+            "click",
+            function (
+                event
+            ) {
+
+                const avatar =
+                    $("headerAccountAvatar");
+
+                if (
+                    avatar?.contains(
+                        event.target
+                    ) ||
+                    accountDropdown
+                        ?.contains(
+                            event.target
+                        )
+                ) {
+                    return;
+                }
+
+                closeAccountDropdown();
+            }
+        );
+
+        window.addEventListener(
+            "resize",
+            closeAccountDropdown
+        );
+
+        window.addEventListener(
+            "scroll",
+            closeAccountDropdown,
+            true
+        );
+
+        // ========================================================
+        // حذف رابط الملف الشخصي المنفصل
+        // ========================================================
+
+        $("profileLink")
+            ?.remove();
+
+        // ========================================================
+        // تسجيل الخروج بالقائمة الجانبية
+        // ========================================================
+
+        let sideLogout =
+            $("sideLogoutButton");
+
+        if (!sideLogout) {
+
+            const navigation =
+                sideMenu
+                    ?.querySelector(
+                        ".side-navigation"
+                    );
+
+            if (navigation) {
+
+                sideLogout =
+                    document.createElement(
+                        "a"
+                    );
+
+                sideLogout.href =
+                    "#";
+
+                sideLogout.id =
+                    "sideLogoutButton";
+
+                sideLogout.className =
+                    "alqafiyah-side-logout";
+
+                sideLogout.innerHTML = `
+
+                    <span
+                        aria-hidden="true">
+
+                        ${icon("logout")}
+
+                    </span>
+
+                    <span>
+                        تسجيل الخروج
+                    </span>
+                `;
+
+                navigation.appendChild(
+                    sideLogout
+                );
+            }
+        }
+
+        function updateSideLogout(
+            loggedIn
+        ) {
+
+            if (sideLogout) {
+
+                sideLogout
+                    .style
+                    .display =
+                    loggedIn
+                    ? ""
+                    : "none";
+            }
+        }
+
+        sideLogout
+            ?.addEventListener(
+                "click",
+                async function (
+                    event
+                ) {
+
+                    event.preventDefault();
+
+                    closeSideMenu();
+
+                    await logout();
+                }
+            );
+
+        // ========================================================
+        // اللوح الكبير في القائمة
+        // ========================================================
+
+        async function sideUserClick(
+            event
+        ) {
+
+            event?.preventDefault();
+            event?.stopPropagation();
+
+            closeSideMenu();
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .auth
+                        .getSession();
+
+                if (error) {
+                    throw error;
+                }
+
+                const user =
+                    data
+                        ?.session
+                        ?.user ||
+                    null;
+
+                currentUser =
+                    user;
+
+                if (user) {
+
+                    window.location.href =
+                        "profile.html";
+
+                    return;
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "القافية: تعذر التحقق من جلسة المستخدم:",
+                    error
+                );
+            }
+
+            openLoginModal();
+        }
+
+        [
+            ...new Set(
+                [
+                    q(
+                        ".user-section"
+                    ),
+
+                    q(
+                        ".side-menu-user"
+                    )
+                ]
+                    .filter(
+                        Boolean
+                    )
+            )
+        ].forEach(
+            function (
+                element
+            ) {
+
+                element.style.cursor =
+                    "pointer";
+
+                element.setAttribute(
+                    "role",
+                    "button"
+                );
+
+                element.setAttribute(
+                    "tabindex",
+                    "0"
+                );
+
+                element.addEventListener(
+                    "click",
+                    sideUserClick
+                );
+
+                element.addEventListener(
+                    "keydown",
+                    function (
+                        event
+                    ) {
+
+                        if (
+                            event.key ===
+                            "Enter" ||
+                            event.key ===
+                            " "
+                        ) {
+
+                            event.preventDefault();
+
+                            sideUserClick(
+                                event
+                            );
+                        }
+                    }
+                );
+            }
+        );
+
+        applyClassicMenuIcons();
+
+        // ========================================================
+        // إنشاء Profile لحساب البريد
+        // ========================================================
+
+        async function createEmailProfile(
+            user,
+            values
+        ) {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from(
+                        "profiles"
+                    )
+                    .insert(
+                        {
+                            id:
+                                user.id,
+
+                            first_name:
+                                values.firstName,
+
+                            last_name:
+                                values.lastName ||
+                                null,
+
+                            birth_day:
+                                Number(
+                                    values.birthDay
+                                ),
+
+                            birth_month:
+                                Number(
+                                    values.birthMonth
+                                ),
+
+                            birth_year:
+                                Number(
+                                    values.birthYear
+                                ),
+
+                            gender:
+                                values.gender,
+
+                            avatar_url:
+                                null,
+
+                            phone:
+                                null
+                        }
+                    );
+
+            if (error) {
+                throw error;
+            }
+        }
+
+        // ========================================================
+        // إنشاء حساب جديد
+        // ========================================================
+
+        $("registerSubmitButton")
+            ?.addEventListener(
+                "click",
+                async function () {
+
+                    const button =
+                        this;
+
+                    const values = {
+
+                        firstName:
+                            $("firstName")
+                                ?.value
+                                .trim(),
+
+                        lastName:
+                            $("lastName")
+                                ?.value
+                                .trim(),
+
+                        birthDay:
+                            $("birthDay")
+                                ?.value,
+
+                        birthMonth:
+                            $("birthMonth")
+                                ?.value,
+
+                        birthYear:
+                            $("birthYear")
+                                ?.value,
+
+                        gender:
+                            $("gender")
+                                ?.value,
+
+                        email:
+                            $("emailRegister")
+                                ?.value
+                                .trim(),
+
+                        password:
+                            $("passwordRegister")
+                                ?.value,
+
+                        confirmPassword:
+                            $("confirmPasswordRegister")
+                                ?.value
+                    };
+
+                    if (
+                        !values.firstName ||
+                        !values.birthDay ||
+                        !values.birthMonth ||
+                        !values.birthYear ||
+                        !values.gender ||
+                        !values.email ||
+                        !values.password ||
+                        !values.confirmPassword
+                    ) {
+
+                        alert(
+                            "يرجى تعبئة جميع البيانات المطلوبة."
+                        );
+
+                        return;
+                    }
+
+                    if (
+                        values.password !==
+                        values.confirmPassword
+                    ) {
+
+                        alert(
+                            "كلمتا المرور غير متطابقتين."
+                        );
+
+                        return;
+                    }
+
+                    if (
+                        values
+                            .password
+                            .length <
+                        6
+                    ) {
+
+                        alert(
+                            "كلمة المرور يجب أن تكون 6 أحرف على الأقل."
+                        );
+
+                        return;
+                    }
+
+                    button.disabled =
+                        true;
+
+                    try {
 
                         const {
-                            data:
-                                sessionData,
-                            error:
-                                sessionError
+                            data,
+                            error
                         } =
                             await supabaseClient
                                 .auth
-                                .getSession();
+                                .signUp(
+                                    {
+                                        email:
+                                            values.email,
 
-                        if (sessionError) {
-                            throw sessionError;
+                                        password:
+                                            values.password
+                                    }
+                                );
+
+                        if (error) {
+                            throw error;
                         }
 
-                        session =
-                            sessionData?.session ||
-                            null;
-                    }
+                        if (
+                            !data?.user
+                        ) {
 
-                    // ------------------------------------------------
-                    // Confirm Email
-                    // ------------------------------------------------
-
-                    if (!session) {
-
-                        throw new Error(
-                            "تم إنشاء الحساب، لكن لم يتم تسجيل الدخول تلقائيًا. تأكد من أن Confirm email مغلق في Supabase."
-                        );
-                    }
-
-                    const user =
-                        session.user;
-
-                    // ------------------------------------------------
-                    // البحث عن Profile
-                    // ------------------------------------------------
-
-                    let profile =
-                        await getProfile(
-                            user.id
-                        );
-
-                    // ------------------------------------------------
-                    // إنشاء Profile
-                    // ------------------------------------------------
-
-                    if (!profile) {
-
-                        await createProfile(
-                            user,
-                            {
-                                firstName,
-                                lastName,
-                                birthDay,
-                                birthMonth,
-                                birthYear,
-                                gender
-                            }
-                        );
-
-                        profile =
-                            await getProfile(
-                                user.id
+                            throw new Error(
+                                "لم يتم إنشاء المستخدم في Supabase."
                             );
-                    }
+                        }
 
-                    // ------------------------------------------------
-                    // تحديث الواجهة
-                    // ------------------------------------------------
+                        let session =
+                            data.session ||
+                            null;
 
-                    currentAuthUser =
-                        user;
+                        if (!session) {
 
-                    updateAccountUI(
-                        user,
-                        profile
-                    );
+                            const result =
+                                await supabaseClient
+                                    .auth
+                                    .getSession();
 
-                    updateSideMenuUser(
-                        user,
-                        profile
-                    );
+                            session =
+                                result
+                                    .data
+                                    ?.session ||
+                                null;
+                        }
 
-                    updateSideLogoutVisibility(
-                        true
-                    );
+                        if (!session) {
 
-                    closeLoginModal();
+                            throw new Error(
+                                "تم إنشاء الحساب، لكن لم يتم تسجيل الدخول تلقائيًا. تأكد من أن Confirm email مغلق في Supabase."
+                            );
+                        }
 
-                    alert(
-                        "تم إنشاء حسابك وتسجيل الدخول بنجاح."
-                    );
+                        let profile =
+                            await getProfile(
+                                session
+                                    .user
+                                    .id
+                            );
 
-                } catch (error) {
+                        if (!profile) {
 
-                    console.error(
-                        "القافيه: خطأ في إنشاء الحساب:",
-                        error
-                    );
+                            await createEmailProfile(
+                                session.user,
+                                values
+                            );
 
-                    const message =
-                        String(
-                            error?.message ||
-                            ""
+                            profile =
+                                await getProfile(
+                                    session
+                                        .user
+                                        .id
+                                );
+                        }
+
+                        currentUser =
+                            session.user;
+
+                        updateHeader(
+                            session.user,
+                            profile
                         );
 
-                    const lowerMessage =
-                        message.toLowerCase();
+                        updateSideUser(
+                            session.user,
+                            profile
+                        );
+
+                        updateSideLogout(
+                            true
+                        );
+
+                        closeLoginModal();
+
+                        alert(
+                            "تم إنشاء حسابك وتسجيل الدخول بنجاح."
+                        );
+
+                    } catch (error) {
+
+                        console.error(
+                            "القافية: خطأ في إنشاء الحساب:",
+                            error
+                        );
+
+                        const message =
+                            String(
+                                error?.message ||
+                                ""
+                            );
+
+                        if (
+                            message
+                                .toLowerCase()
+                                .includes(
+                                    "user already registered"
+                                )
+                        ) {
+
+                            alert(
+                                "هذا البريد الإلكتروني مسجل مسبقًا."
+                            );
+
+                        } else {
+
+                            alert(
+                                message ||
+                                "حدث خطأ أثناء إنشاء الحساب."
+                            );
+                        }
+
+                    } finally {
+
+                        button.disabled =
+                            false;
+                    }
+                }
+            );
+
+        // ========================================================
+        // تسجيل الدخول بالبريد
+        // ========================================================
+
+        $("emailLoginButton")
+            ?.addEventListener(
+                "click",
+                async function () {
+
+                    const button =
+                        this;
+
+                    const email =
+                        $("emailLogin")
+                            ?.value
+                            .trim();
+
+                    const password =
+                        $("passwordLogin")
+                            ?.value;
 
                     if (
-                        lowerMessage.includes(
-                            "user already registered"
-                        )
+                        !email ||
+                        !password
                     ) {
 
                         alert(
-                            "هذا البريد الإلكتروني مسجل مسبقًا."
+                            "أدخل البريد الإلكتروني وكلمة المرور."
                         );
 
-                    } else if (
-                        lowerMessage.includes(
-                            "row-level security"
-                        )
-                    ) {
-
-                        alert(
-                            "تم إنشاء الحساب، لكن صلاحيات جدول profiles تمنع حفظ بياناته."
-                        );
-
-                    } else {
-
-                        alert(
-                            message ||
-                            "حدث خطأ أثناء إنشاء الحساب."
-                        );
+                        return;
                     }
 
-                } finally {
+                    button.disabled =
+                        true;
 
-                    registerButton.disabled =
-                        false;
+                    try {
+
+                        const {
+                            data,
+                            error
+                        } =
+                            await supabaseClient
+                                .auth
+                                .signInWithPassword(
+                                    {
+                                        email,
+                                        password
+                                    }
+                                );
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        const profile =
+                            await ensureProfile(
+                                data.user
+                            );
+
+                        currentUser =
+                            data.user;
+
+                        updateHeader(
+                            data.user,
+                            profile
+                        );
+
+                        updateSideUser(
+                            data.user,
+                            profile
+                        );
+
+                        updateSideLogout(
+                            true
+                        );
+
+                        closeLoginModal();
+
+                    } catch (error) {
+
+                        const message =
+                            String(
+                                error?.message ||
+                                ""
+                            );
+
+                        if (
+                            message
+                                .toLowerCase()
+                                .includes(
+                                    "invalid login credentials"
+                                )
+                        ) {
+
+                            alert(
+                                "البريد الإلكتروني أو كلمة المرور غير صحيحة."
+                            );
+
+                        } else {
+
+                            alert(
+                                message ||
+                                "تعذر تسجيل الدخول."
+                            );
+                        }
+
+                    } finally {
+
+                        button.disabled =
+                            false;
+                    }
                 }
-            }
-        );
-
-        // ============================================================
-        // تسجيل الدخول بالبريد وكلمة المرور
-        // ============================================================
-
-        const emailLoginButton =
-            document.getElementById(
-                "emailLoginButton"
             );
 
-        emailLoginButton?.addEventListener(
-            "click",
-            async function () {
+        // ========================================================
+        // Google + Apple OAuth
+        // ========================================================
 
-                const email =
-                    document
-                        .getElementById(
-                            "emailLogin"
-                        )
-                        ?.value
-                        .trim();
-
-                const password =
-                    document.getElementById(
-                        "passwordLogin"
-                    )?.value;
-
-                if (
-                    !email ||
-                    !password
-                ) {
-
-                    alert(
-                        "أدخل البريد الإلكتروني وكلمة المرور."
-                    );
-
-                    return;
-                }
-
-                emailLoginButton.disabled =
-                    true;
-
-                try {
-
-                    const {
-                        data,
-                        error
-                    } =
-                        await supabaseClient
-                            .auth
-                            .signInWithPassword({
-                                email,
-                                password
-                            });
-
-                    if (error) {
-                        throw error;
-                    }
-
-                    if (!data?.user) {
-
-                        throw new Error(
-                            "تعذر تسجيل الدخول."
-                        );
-                    }
-
-                    const profile =
-                        await ensureUserProfile(
-                            data.user
-                        );
-
-                    currentAuthUser =
-                        data.user;
-
-                    updateAccountUI(
-                        data.user,
-                        profile
-                    );
-
-                    updateSideMenuUser(
-                        data.user,
-                        profile
-                    );
-
-                    updateSideLogoutVisibility(
-                        true
-                    );
-
-                    closeLoginModal();
-
-                    console.log(
-                        "القافيه: تم تسجيل الدخول بنجاح."
-                    );
-
-                } catch (error) {
-
-                    console.error(
-                        "القافيه: خطأ في تسجيل الدخول:",
-                        error
-                    );
-
-                    const message =
-                        String(
-                            error?.message ||
-                            ""
-                        );
-
-                    if (
-                        message
-                            .toLowerCase()
-                            .includes(
-                                "invalid login credentials"
-                            )
-                    ) {
-
-                        alert(
-                            "البريد الإلكتروني أو كلمة المرور غير صحيحة."
-                        );
-
-                    } else {
-
-                        alert(
-                            message ||
-                            "تعذر تسجيل الدخول."
-                        );
-                    }
-
-                } finally {
-
-                    emailLoginButton.disabled =
-                        false;
-                }
-            }
-        );
-
-        // ============================================================
-        // تسجيل الدخول بواسطة Google / Apple / Phone OTP
-        // ============================================================
-
-        const googleLoginButton =
-            document.getElementById(
-                "googleLoginButton"
-            );
-
-        const appleLoginButton =
-            document.getElementById(
-                "appleLoginButton"
-            );
-
-        const phoneLoginButton =
-            document.getElementById(
-                "phoneLoginButton"
-            );
-
-        async function signInWithProvider(
+        async function oauth(
             provider,
             button
         ) {
@@ -2143,15 +2989,16 @@
                 } =
                     await supabaseClient
                         .auth
-                        .signInWithOAuth({
+                        .signInWithOAuth(
+                            {
+                                provider,
 
-                            provider,
-
-                            options: {
-                                redirectTo:
-                                    getOAuthRedirectUrl()
+                                options: {
+                                    redirectTo:
+                                        oauthRedirectUrl()
+                                }
                             }
-                        });
+                        );
 
                 if (error) {
                     throw error;
@@ -2159,15 +3006,11 @@
 
             } catch (error) {
 
-                console.error(
-                    `القافيه: خطأ ${provider}:`,
-                    error
-                );
-
                 alert(
                     error?.message ||
                     `تعذر تسجيل الدخول باستخدام ${
-                        provider === "google"
+                        provider ===
+                        "google"
                         ? "Google"
                         : "Apple"
                     }.`
@@ -2178,438 +3021,343 @@
             }
         }
 
-        googleLoginButton?.addEventListener(
-            "click",
-            function () {
+        $("googleLoginButton")
+            ?.addEventListener(
+                "click",
+                function () {
 
-                signInWithProvider(
-                    "google",
-                    googleLoginButton
-                );
-            }
-        );
-
-        appleLoginButton?.addEventListener(
-            "click",
-            function () {
-
-                signInWithProvider(
-                    "apple",
-                    appleLoginButton
-                );
-            }
-        );
-
-        phoneLoginButton?.addEventListener(
-            "click",
-            function () {
-
-                const panel =
-                    document.getElementById(
-                        "phoneAuthPanel"
+                    oauth(
+                        "google",
+                        $("googleLoginButton")
                     );
-
-                if (!panel) {
-                    return;
                 }
-
-                panel.classList.toggle(
-                    "open"
-                );
-
-                if (
-                    panel.classList.contains(
-                        "open"
-                    )
-                ) {
-
-                    document
-                        .getElementById(
-                            "phoneAuthNumber"
-                        )
-                        ?.focus();
-                }
-            }
-        );
-
-        const sendPhoneOtpButton =
-            document.getElementById(
-                "sendPhoneOtpButton"
             );
 
-        sendPhoneOtpButton?.addEventListener(
-            "click",
-            async function () {
+        $("appleLoginButton")
+            ?.addEventListener(
+                "click",
+                function () {
 
-                const phone =
-                    normalizePhoneNumber(
-                        document
-                            .getElementById(
-                                "phoneAuthNumber"
-                            )
-                            ?.value
+                    oauth(
+                        "apple",
+                        $("appleLoginButton")
                     );
-
-                if (!phone) {
-
-                    setPhoneAuthStatus(
-                        "أدخل رقم جوال صحيحًا بصيغة 05XXXXXXXX أو بصيغة دولية تبدأ بـ +.",
-                        true
-                    );
-
-                    return;
                 }
-
-                sendPhoneOtpButton.disabled =
-                    true;
-
-                setPhoneAuthStatus(
-                    "جارٍ إرسال رمز التحقق..."
-                );
-
-                try {
-
-                    const {
-                        error
-                    } =
-                        await supabaseClient
-                            .auth
-                            .signInWithOtp({
-
-                                phone,
-
-                                options: {
-                                    shouldCreateUser:
-                                        true
-                                }
-                            });
-
-                    if (error) {
-                        throw error;
-                    }
-
-                    const otpFields =
-                        document.getElementById(
-                            "phoneOtpFields"
-                        );
-
-                    if (otpFields) {
-                        otpFields.style.display =
-                            "block";
-                    }
-
-                    setPhoneAuthStatus(
-                        "تم إرسال رمز التحقق إلى رقم الجوال."
-                    );
-
-                    document
-                        .getElementById(
-                            "phoneOtpCode"
-                        )
-                        ?.focus();
-
-                } catch (error) {
-
-                    console.error(
-                        "القافيه: خطأ في إرسال OTP:",
-                        error
-                    );
-
-                    setPhoneAuthStatus(
-                        error?.message ||
-                        "تعذر إرسال رمز التحقق. تأكد من تفعيل مزود الرسائل في Supabase.",
-                        true
-                    );
-
-                } finally {
-
-                    sendPhoneOtpButton.disabled =
-                        false;
-                }
-            }
-        );
-
-        const verifyPhoneOtpButton =
-            document.getElementById(
-                "verifyPhoneOtpButton"
             );
 
-        verifyPhoneOtpButton?.addEventListener(
-            "click",
-            async function () {
+        // ========================================================
+        // إظهار تسجيل الدخول بالرقم
+        // ========================================================
 
-                const phone =
-                    normalizePhoneNumber(
-                        document
-                            .getElementById(
-                                "phoneAuthNumber"
-                            )
-                            ?.value
-                    );
+        $("phoneLoginButton")
+            ?.addEventListener(
+                "click",
+                function () {
 
-                const token =
-                    String(
-                        document
-                            .getElementById(
-                                "phoneOtpCode"
-                            )
-                            ?.value ||
-                        ""
-                    ).trim();
-
-                if (!phone) {
-
-                    setPhoneAuthStatus(
-                        "رقم الجوال غير صحيح.",
-                        true
-                    );
-
-                    return;
-                }
-
-                if (
-                    !/^\d{4,8}$/.test(
-                        token
-                    )
-                ) {
-
-                    setPhoneAuthStatus(
-                        "أدخل رمز التحقق المرسل إلى جوالك.",
-                        true
-                    );
-
-                    return;
-                }
-
-                verifyPhoneOtpButton.disabled =
-                    true;
-
-                setPhoneAuthStatus(
-                    "جارٍ التحقق من الرمز..."
-                );
-
-                try {
-
-                    const {
-                        data,
-                        error
-                    } =
-                        await supabaseClient
-                            .auth
-                            .verifyOtp({
-
-                                phone,
-
-                                token,
-
-                                type:
-                                    "sms"
-                            });
-
-                    if (error) {
-                        throw error;
-                    }
-
-                    if (!data?.user) {
-
-                        throw new Error(
-                            "تم التحقق من الرمز لكن تعذر تحميل الحساب."
-                        );
-                    }
-
-                    const profile =
-                        await ensureUserProfile(
-                            data.user
+                    $("phoneAuthPanel")
+                        ?.classList
+                        .toggle(
+                            "open"
                         );
 
-                    currentAuthUser =
-                        data.user;
+                    if (
+                        $("phoneAuthPanel")
+                            ?.classList
+                            .contains(
+                                "open"
+                            )
+                    ) {
 
-                    updateAccountUI(
-                        data.user,
-                        profile
-                    );
-
-                    updateSideMenuUser(
-                        data.user,
-                        profile
-                    );
-
-                    updateSideLogoutVisibility(
-                        true
-                    );
-
-                    closeLoginModal();
-
-                } catch (error) {
-
-                    console.error(
-                        "القافيه: خطأ في التحقق من OTP:",
-                        error
-                    );
-
-                    setPhoneAuthStatus(
-                        error?.message ||
-                        "رمز التحقق غير صحيح أو انتهت صلاحيته.",
-                        true
-                    );
-
-                } finally {
-
-                    verifyPhoneOtpButton.disabled =
-                        false;
+                        $("phoneAuthNumber")
+                            ?.focus();
+                    }
                 }
-            }
-        );
-
-        // ============================================================
-        // الملف الشخصي والقائمة الجانبية
-        // ============================================================
-
-        profileLink?.remove();
-
-        let sideLogoutButton =
-            document.getElementById(
-                "sideLogoutButton"
             );
 
-        if (!sideLogoutButton) {
+        // ========================================================
+        // إرسال OTP
+        // ========================================================
 
-            const sideNavigation =
-                sideMenu?.querySelector(
-                    ".side-navigation"
-                );
+        $("sendPhoneOtpButton")
+            ?.addEventListener(
+                "click",
+                async function () {
 
-            if (sideNavigation) {
+                    const phone =
+                        normalizePhone(
+                            $("phoneAuthNumber")
+                                ?.value
+                        );
 
-                sideLogoutButton =
-                    document.createElement(
-                        "a"
+                    if (!phone) {
+
+                        phoneStatus(
+                            "أدخل رقم جوال صحيحًا بصيغة 05XXXXXXXX أو بصيغة دولية تبدأ بـ +.",
+                            true
+                        );
+
+                        return;
+                    }
+
+                    this.disabled =
+                        true;
+
+                    phoneStatus(
+                        "جارٍ إرسال رمز التحقق..."
                     );
 
-                sideLogoutButton.href =
-                    "#";
+                    try {
 
-                sideLogoutButton.id =
-                    "sideLogoutButton";
+                        const {
+                            error
+                        } =
+                            await supabaseClient
+                                .auth
+                                .signInWithOtp(
+                                    {
+                                        phone,
 
-                sideLogoutButton.className =
-                    "alqafiyah-side-logout";
+                                        options: {
+                                            shouldCreateUser:
+                                                true
+                                        }
+                                    }
+                                );
 
-                sideLogoutButton.innerHTML = `
-                    <span aria-hidden="true">
-                        ↪
-                    </span>
-
-                    <span>
-                        تسجيل الخروج
-                    </span>
-                `;
-
-                sideNavigation.appendChild(
-                    sideLogoutButton
-                );
-            }
-        }
-
-        function updateSideLogoutVisibility(
-            isLoggedIn
-        ) {
-
-            if (!sideLogoutButton) {
-                return;
-            }
-
-            sideLogoutButton.style.display =
-                isLoggedIn
-                ? ""
-                : "none";
-        }
-
-        sideLogoutButton?.addEventListener(
-            "click",
-            async function (event) {
-
-                event.preventDefault();
-
-                closeSideMenu();
-
-                await logoutUser();
-            }
-        );
-
-        function handleSideUserClick() {
-
-            closeSideMenu();
-
-            if (currentAuthUser) {
-
-                window.location.href =
-                    "profile.html";
-
-                return;
-            }
-
-            openLoginModal();
-        }
-
-        const sideUserAreas = [
-            document.querySelector(
-                ".user-section"
-            ),
-            document.querySelector(
-                ".side-menu-user"
-            )
-        ].filter(Boolean);
-
-        [
-            ...new Set(
-                sideUserAreas
-            )
-        ].forEach(
-            function (element) {
-
-                element.style.cursor =
-                    "pointer";
-
-                element.setAttribute(
-                    "role",
-                    "button"
-                );
-
-                element.setAttribute(
-                    "tabindex",
-                    "0"
-                );
-
-                element.addEventListener(
-                    "click",
-                    handleSideUserClick
-                );
-
-                element.addEventListener(
-                    "keydown",
-                    function (event) {
+                        if (error) {
+                            throw error;
+                        }
 
                         if (
-                            event.key ===
-                            "Enter" ||
-                            event.key ===
-                            " "
+                            $("phoneOtpFields")
                         ) {
 
-                            event.preventDefault();
-
-                            handleSideUserClick();
+                            $("phoneOtpFields")
+                                .style
+                                .display =
+                                "block";
                         }
+
+                        phoneStatus(
+                            "تم إرسال رمز التحقق إلى رقم الجوال."
+                        );
+
+                        $("phoneOtpCode")
+                            ?.focus();
+
+                    } catch (error) {
+
+                        phoneStatus(
+                            error?.message ||
+                            "تعذر إرسال رمز التحقق. تأكد من تفعيل مزود الرسائل في Supabase.",
+                            true
+                        );
+
+                    } finally {
+
+                        this.disabled =
+                            false;
                     }
-                );
+                }
+            );
+
+        // ========================================================
+        // تأكيد OTP
+        // ========================================================
+
+        $("verifyPhoneOtpButton")
+            ?.addEventListener(
+                "click",
+                async function () {
+
+                    const phone =
+                        normalizePhone(
+                            $("phoneAuthNumber")
+                                ?.value
+                        );
+
+                    const token =
+                        String(
+                            $("phoneOtpCode")
+                                ?.value ||
+                            ""
+                        )
+                            .trim();
+
+                    if (!phone) {
+
+                        phoneStatus(
+                            "رقم الجوال غير صحيح.",
+                            true
+                        );
+
+                        return;
+                    }
+
+                    if (
+                        !/^\d{4,8}$/.test(
+                            token
+                        )
+                    ) {
+
+                        phoneStatus(
+                            "أدخل رمز التحقق المرسل إلى جوالك.",
+                            true
+                        );
+
+                        return;
+                    }
+
+                    this.disabled =
+                        true;
+
+                    phoneStatus(
+                        "جارٍ التحقق من الرمز..."
+                    );
+
+                    try {
+
+                        const {
+                            data,
+                            error
+                        } =
+                            await supabaseClient
+                                .auth
+                                .verifyOtp(
+                                    {
+                                        phone,
+                                        token,
+                                        type:
+                                            "sms"
+                                    }
+                                );
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        if (
+                            !data?.user
+                        ) {
+
+                            throw new Error(
+                                "تم التحقق من الرمز لكن تعذر تحميل الحساب."
+                            );
+                        }
+
+                        const profile =
+                            await ensureProfile(
+                                data.user
+                            );
+
+                        currentUser =
+                            data.user;
+
+                        updateHeader(
+                            data.user,
+                            profile
+                        );
+
+                        updateSideUser(
+                            data.user,
+                            profile
+                        );
+
+                        updateSideLogout(
+                            true
+                        );
+
+                        closeLoginModal();
+
+                    } catch (error) {
+
+                        phoneStatus(
+                            error?.message ||
+                            "رمز التحقق غير صحيح أو انتهت صلاحيته.",
+                            true
+                        );
+
+                    } finally {
+
+                        this.disabled =
+                            false;
+                    }
+                }
+            );
+
+        // ========================================================
+        // قوائم تاريخ الميلاد
+        // ========================================================
+
+        function populateBirth(
+            selectId,
+            start,
+            end,
+            descending = false
+        ) {
+
+            const select =
+                $(selectId);
+
+            if (
+                !select ||
+                select.options.length !==
+                1
+            ) {
+                return;
             }
+
+            if (descending) {
+
+                for (
+                    let value = start;
+                    value >= end;
+                    value--
+                ) {
+
+                    select.add(
+                        new Option(
+                            value,
+                            value
+                        )
+                    );
+                }
+
+            } else {
+
+                for (
+                    let value = start;
+                    value <= end;
+                    value++
+                ) {
+
+                    select.add(
+                        new Option(
+                            value,
+                            value
+                        )
+                    );
+                }
+            }
+        }
+
+        populateBirth(
+            "birthDay",
+            1,
+            31
         );
 
-        // ============================================================
-        // تحديث الحساب
-        // ============================================================
+        populateBirth(
+            "birthYear",
+            new Date()
+                .getFullYear(),
+            1900,
+            true
+        );
+
+        // ========================================================
+        // تحديث الحساب الحالي
+        // ========================================================
 
         async function refreshAccount() {
 
@@ -2628,36 +3376,39 @@
                 }
 
                 const user =
-                    data?.session?.user ||
+                    data
+                        ?.session
+                        ?.user ||
                     null;
 
-                let profile =
-                    null;
+                const profile =
+                    user
+                    ? await ensureProfile(
+                        user
+                    )
+                    : null;
 
-                if (user) {
-
-                    profile =
-                        await ensureUserProfile(
-                            user
-                        );
-                }
-
-                currentAuthUser =
+                currentUser =
                     user;
 
-                updateAccountUI(
+                updateHeader(
                     user,
                     profile
                 );
 
-                updateSideMenuUser(
+                updateSideUser(
                     user,
                     profile
                 );
 
-                updateSideLogoutVisibility(
-                    Boolean(user)
+                updateSideLogout(
+                    Boolean(
+                        user
+                    )
                 );
+
+                applyClassicMenuIcons();
+                normalizeBrand();
 
                 return {
                     user,
@@ -2667,63 +3418,54 @@
             } catch (error) {
 
                 console.error(
-                    "القافيه: خطأ في تحميل الحساب:",
+                    "القافية: خطأ في تحميل الحساب:",
                     error
                 );
 
-                currentAuthUser =
+                currentUser =
                     null;
 
-                updateAccountUI(
+                updateHeader(
                     null,
                     null
                 );
 
-                updateSideMenuUser(
+                updateSideUser(
                     null,
                     null
                 );
 
-                updateSideLogoutVisibility(
+                updateSideLogout(
                     false
                 );
 
                 return {
-                    user:
-                        null,
-
-                    profile:
-                        null
+                    user: null,
+                    profile: null
                 };
             }
         }
 
-        // ============================================================
-        // مراقبة تغييرات Auth
-        // ============================================================
+        // ========================================================
+        // مراقبة Auth
+        // ========================================================
 
         supabaseClient
             .auth
             .onAuthStateChange(
-                function (event) {
-
-                    console.log(
-                        "القافيه - Auth Event:",
-                        event
-                    );
+                function (
+                    event
+                ) {
 
                     if (
-                        event ===
-                        "SIGNED_IN" ||
-
-                        event ===
-                        "SIGNED_OUT" ||
-
-                        event ===
-                        "INITIAL_SESSION" ||
-
-                        event ===
-                        "USER_UPDATED"
+                        [
+                            "SIGNED_IN",
+                            "SIGNED_OUT",
+                            "INITIAL_SESSION",
+                            "USER_UPDATED"
+                        ].includes(
+                            event
+                        )
                     ) {
 
                         setTimeout(
@@ -2734,9 +3476,9 @@
                 }
             );
 
-        // ============================================================
-        // الإشعارات
-        // ============================================================
+        // ========================================================
+        // الإشعارات الحالية
+        // ========================================================
 
         if (notificationCount) {
 
@@ -2747,232 +3489,117 @@
                 "none";
         }
 
-        // ============================================================
-        // أيام الميلاد - التسجيل
-        // ============================================================
+        // ========================================================
+        // Escape
+        // ========================================================
 
-        const birthDay =
-            document.getElementById(
-                "birthDay"
-            );
-
-        if (
-            birthDay &&
-            birthDay.options.length === 1
-        ) {
-
-            for (
-                let day = 1;
-                day <= 31;
-                day++
+        document.addEventListener(
+            "keydown",
+            function (
+                event
             ) {
 
-                const option =
-                    document.createElement(
-                        "option"
-                    );
+                if (
+                    event.key !==
+                    "Escape"
+                ) {
+                    return;
+                }
 
-                option.value =
-                    day;
-
-                option.textContent =
-                    day;
-
-                birthDay.appendChild(
-                    option
-                );
+                closeSideMenu();
+                closeNotifications();
+                closeLoginModal();
+                closeAccountDropdown();
             }
-        }
+        );
 
-        // ============================================================
-        // سنوات الميلاد - التسجيل
-        // ============================================================
-
-        const birthYear =
-            document.getElementById(
-                "birthYear"
-            );
-
-        if (
-            birthYear &&
-            birthYear.options.length === 1
-        ) {
-
-            const currentYear =
-                new Date()
-                    .getFullYear();
-
-            for (
-                let year =
-                    currentYear;
-                year >= 1900;
-                year--
-            ) {
-
-                const option =
-                    document.createElement(
-                        "option"
-                    );
-
-                option.value =
-                    year;
-
-                option.textContent =
-                    year;
-
-                birthYear.appendChild(
-                    option
-                );
-            }
-        }
-
-        // ============================================================
+        // ========================================================
         // صفحة الملف الشخصي
-        // ============================================================
+        // ========================================================
 
         if (
-            document.querySelector(
+            q(
                 ".profile-page"
             )
         ) {
 
-            try {
-
-                await initializeProfilePage(
-                    logoutUser
-                );
-
-            } catch (error) {
-
-                console.error(
-                    "القافيه: خطأ في صفحة الملف الشخصي:",
-                    error
-                );
-            }
+            await initProfilePage(
+                logout
+            );
         }
 
-        // ============================================================
-        // زر Escape
-        // ============================================================
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (
-                    event.key ===
-                    "Escape"
-                ) {
-
-                    closeSideMenu();
-
-                    closeNotifications();
-
-                    closeLoginModal();
-
-                    accountDropdown?.classList.remove(
-                        "open"
-                    );
-                }
-            }
-        );
-
-        // ============================================================
+        // ========================================================
         // التشغيل الأول
-        // ============================================================
+        // ========================================================
 
         await refreshAccount();
 
-        console.log(
-            "القافيه - الواجهة ونظام الحساب جاهزان للعمل."
-        );
+        normalizeBrand();
+        applyClassicMenuIcons();
+        styleHomeAboutSection();
     }
 
     // ============================================================
     // صفحة الملف الشخصي
     // ============================================================
 
-    async function initializeProfilePage(
-        logoutUser
+    async function initProfilePage(
+        logout
     ) {
 
-        // ============================================================
-        // عناصر الصفحة
-        // ============================================================
-
         const profileAvatar =
-            document.getElementById(
-                "profileAvatar"
-            );
+            $("profileAvatar");
 
         const avatarInput =
-            document.getElementById(
-                "avatarInput"
-            );
+            $("avatarInput");
 
         const deleteAvatarButton =
-            document.getElementById(
-                "deleteAvatarButton"
-            );
+            $("deleteAvatarButton");
 
         const profileForm =
-            document.getElementById(
-                "profileForm"
-            );
+            $("profileForm");
 
         const firstName =
-            document.getElementById(
-                "profileFirstName"
-            );
+            $("profileFirstName");
 
         const lastName =
-            document.getElementById(
-                "profileLastName"
-            );
+            $("profileLastName");
 
         const email =
-            document.getElementById(
-                "profileEmailDetails"
-            );
+            $("profileEmailDetails");
 
         const phone =
-            document.getElementById(
-                "profilePhone"
-            );
+            $("profilePhone");
 
         const birthDay =
-            document.getElementById(
-                "profileBirthDay"
-            );
+            $("profileBirthDay");
 
         const birthMonth =
-            document.getElementById(
-                "profileBirthMonth"
-            );
+            $("profileBirthMonth");
 
         const birthYear =
-            document.getElementById(
-                "profileBirthYear"
-            );
+            $("profileBirthYear");
 
         const gender =
-            document.getElementById(
-                "profileGender"
-            );
+            $("profileGender");
 
         const saveButton =
-            document.getElementById(
-                "saveProfileButton"
-            );
+            $("saveProfileButton");
+
+        const message =
+            $("profileMessage");
 
         let logoutButton =
-            document.getElementById(
-                "logoutButton"
-            );
+            $("logoutButton");
+
+        // ========================================================
+        // إنشاء زر الخروج إن لم يكن موجودًا
+        // ========================================================
 
         if (
             !logoutButton &&
-            saveButton?.parentElement
+            saveButton
+                ?.parentElement
         ) {
 
             logoutButton =
@@ -2992,40 +3619,16 @@
             logoutButton.textContent =
                 "تسجيل الخروج";
 
-            saveButton.insertAdjacentElement(
-                "afterend",
-                logoutButton
-            );
+            saveButton
+                .insertAdjacentElement(
+                    "afterend",
+                    logoutButton
+                );
         }
-
-        const message =
-            document.getElementById(
-                "profileMessage"
-            );
-
-        // ============================================================
-        // التأكد من Supabase
-        // ============================================================
-
-        if (
-            typeof supabaseClient ===
-            "undefined"
-        ) {
-
-            console.error(
-                "القافيه: supabaseClient غير موجود في صفحة الملف الشخصي."
-            );
-
-            return;
-        }
-
-        // ============================================================
-        // رسائل الصفحة
-        // ============================================================
 
         function showMessage(
             text,
-            isError = false
+            error = false
         ) {
 
             if (!message) {
@@ -3035,45 +3638,13 @@
             message.textContent =
                 text;
 
-            message.classList.toggle(
-                "error",
-                isError
-            );
+            message
+                .classList
+                .toggle(
+                    "error",
+                    error
+                );
         }
-
-        // ============================================================
-        // الأيقونة الافتراضية
-        // ============================================================
-
-        function defaultIcon() {
-            return `
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true">
-
-                    <circle
-                        cx="12"
-                        cy="8"
-                        r="4">
-                    </circle>
-
-                    <path
-                        d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
-                    </path>
-
-                </svg>
-            `;
-        }
-
-        // ============================================================
-        // عرض الصورة الشخصية
-        // ============================================================
 
         function setAvatar(
             url
@@ -3083,53 +3654,54 @@
                 return;
             }
 
+            if (!url) {
+
+                profileAvatar.innerHTML =
+                    userIcon();
+
+                return;
+            }
+
             profileAvatar.innerHTML =
                 "";
 
-            if (url) {
-
-                const image =
-                    document.createElement(
-                        "img"
-                    );
-
-                image.src =
-                    url;
-
-                image.alt =
-                    "الصورة الشخصية";
-
-                image.loading =
-                    "eager";
-
-                image.decoding =
-                    "async";
-
-                image.onerror =
-                    function () {
-
-                        profileAvatar.innerHTML =
-                            defaultIcon();
-                    };
-
-                profileAvatar.appendChild(
-                    image
+            const image =
+                document.createElement(
+                    "img"
                 );
 
-            } else {
+            image.src =
+                url;
 
-                profileAvatar.innerHTML =
-                    defaultIcon();
-            }
+            image.alt =
+                "الصورة الشخصية";
+
+            image.loading =
+                "eager";
+
+            image.decoding =
+                "async";
+
+            image.onerror =
+                function () {
+
+                    profileAvatar.innerHTML =
+                        userIcon();
+                };
+
+            profileAvatar.appendChild(
+                image
+            );
         }
 
-        // ============================================================
-        // أيام الميلاد
-        // ============================================================
+        // ========================================================
+        // قوائم الميلاد
+        // ========================================================
 
         if (
             birthDay &&
-            birthDay.options.length === 1
+            birthDay.options.length ===
+            1
         ) {
 
             for (
@@ -3138,63 +3710,43 @@
                 day++
             ) {
 
-                const option =
-                    document.createElement(
-                        "option"
-                    );
-
-                option.value =
-                    day;
-
-                option.textContent =
-                    day;
-
-                birthDay.appendChild(
-                    option
+                birthDay.add(
+                    new Option(
+                        day,
+                        day
+                    )
                 );
             }
         }
-
-        // ============================================================
-        // سنوات الميلاد
-        // ============================================================
 
         if (
             birthYear &&
-            birthYear.options.length === 1
+            birthYear.options.length ===
+            1
         ) {
-
-            const currentYear =
-                new Date()
-                    .getFullYear();
 
             for (
                 let year =
-                    currentYear;
+                    new Date()
+                        .getFullYear();
+
                 year >= 1900;
+
                 year--
             ) {
 
-                const option =
-                    document.createElement(
-                        "option"
-                    );
-
-                option.value =
-                    year;
-
-                option.textContent =
-                    year;
-
-                birthYear.appendChild(
-                    option
+                birthYear.add(
+                    new Option(
+                        year,
+                        year
+                    )
                 );
             }
         }
 
-        // ============================================================
+        // ========================================================
         // المستخدم الحالي
-        // ============================================================
+        // ========================================================
 
         const {
             data,
@@ -3206,7 +3758,9 @@
 
         if (
             error ||
-            !data?.session?.user
+            !data
+                ?.session
+                ?.user
         ) {
 
             window.location.replace(
@@ -3219,32 +3773,33 @@
         const user =
             data.session.user;
 
-        // ============================================================
+        // ========================================================
         // تسجيل الخروج
-        // ============================================================
+        // ========================================================
 
-        logoutButton?.addEventListener(
-            "click",
-            async function () {
-
-                logoutButton.disabled =
-                    true;
-
-                try {
-
-                    await logoutUser();
-
-                } finally {
+        logoutButton
+            ?.addEventListener(
+                "click",
+                async function () {
 
                     logoutButton.disabled =
-                        false;
-                }
-            }
-        );
+                        true;
 
-        // ============================================================
-        // البريد الإلكتروني
-        // ============================================================
+                    try {
+
+                        await logout();
+
+                    } finally {
+
+                        logoutButton.disabled =
+                            false;
+                    }
+                }
+            );
+
+        // ========================================================
+        // البريد
+        // ========================================================
 
         if (email) {
 
@@ -3253,9 +3808,9 @@
                 "";
         }
 
-        // ============================================================
-        // تحميل بيانات Profile
-        // ============================================================
+        // ========================================================
+        // جلب Profile
+        // ========================================================
 
         const {
             data:
@@ -3264,8 +3819,12 @@
                 profileError
         } =
             await supabaseClient
-                .from("profiles")
-                .select("*")
+                .from(
+                    "profiles"
+                )
+                .select(
+                    "*"
+                )
                 .eq(
                     "id",
                     user.id
@@ -3273,11 +3832,6 @@
                 .maybeSingle();
 
         if (profileError) {
-
-            console.error(
-                "القافيه: خطأ في تحميل الملف:",
-                profileError
-            );
 
             showMessage(
                 "تعذر تحميل بيانات الحساب.",
@@ -3297,9 +3851,9 @@
             return;
         }
 
-        // ============================================================
+        // ========================================================
         // تعبئة البيانات
-        // ============================================================
+        // ========================================================
 
         if (firstName) {
 
@@ -3319,6 +3873,7 @@
 
             phone.value =
                 profile.phone ||
+                user.phone ||
                 "";
         }
 
@@ -3350,446 +3905,1381 @@
                 "";
         }
 
-        // ============================================================
-        // عرض الصورة
-        // ============================================================
-
         setAvatar(
-            profile.avatar_url
+            profile.avatar_url ||
+            user
+                .user_metadata
+                ?.avatar_url ||
+            user
+                .user_metadata
+                ?.picture ||
+            null
         );
 
-        // ============================================================
-        // حفظ الملف الشخصي
-        // ============================================================
+        // ========================================================
+        // حفظ البيانات
+        // ========================================================
 
-        profileForm?.addEventListener(
-            "submit",
-            async function (event) {
+        profileForm
+            ?.addEventListener(
+                "submit",
+                async function (
+                    event
+                ) {
 
-                event.preventDefault();
-
-                if (saveButton) {
-
-                    saveButton.disabled =
-                        true;
-                }
-
-                showMessage(
-                    "جارٍ حفظ التغييرات..."
-                );
-
-                try {
-
-                    // ------------------------------------------------
-                    // التحقق من الحقول
-                    // ------------------------------------------------
-
-                    if (
-                        !firstName
-                            ?.value
-                            .trim() ||
-
-                        !birthDay
-                            ?.value ||
-
-                        !birthMonth
-                            ?.value ||
-
-                        !birthYear
-                            ?.value ||
-
-                        !gender
-                            ?.value
-                    ) {
-
-                        throw new Error(
-                            "يرجى تعبئة جميع البيانات المطلوبة."
-                        );
-                    }
-
-                    // ------------------------------------------------
-                    // تحديث البيانات
-                    // ------------------------------------------------
-
-                    const {
-                        error
-                    } =
-                        await supabaseClient
-                            .from("profiles")
-                            .update({
-
-                                first_name:
-                                    firstName
-                                        .value
-                                        .trim(),
-
-                                last_name:
-                                    lastName
-                                        .value
-                                        .trim() ||
-                                    null,
-
-                                birth_day:
-                                    Number(
-                                        birthDay.value
-                                    ),
-
-                                birth_month:
-                                    Number(
-                                        birthMonth.value
-                                    ),
-
-                                birth_year:
-                                    Number(
-                                        birthYear.value
-                                    ),
-
-                                gender:
-                                    gender.value,
-
-                                phone:
-                                    phone
-                                        ?.value
-                                        .trim() ||
-                                    null
-                            })
-                            .eq(
-                                "id",
-                                user.id
-                            );
-
-                    if (error) {
-                        throw error;
-                    }
-
-                    showMessage(
-                        "تم حفظ التغييرات بنجاح."
-                    );
-
-                } catch (error) {
-
-                    console.error(
-                        "القافيه: خطأ في حفظ الملف:",
-                        error
-                    );
-
-                    showMessage(
-                        error?.message ||
-                        "تعذر حفظ التغييرات.",
-                        true
-                    );
-
-                } finally {
+                    event.preventDefault();
 
                     if (saveButton) {
 
                         saveButton.disabled =
+                            true;
+                    }
+
+                    showMessage(
+                        "جارٍ حفظ التغييرات..."
+                    );
+
+                    try {
+
+                        if (
+                            !firstName
+                                ?.value
+                                .trim() ||
+
+                            !birthDay
+                                ?.value ||
+
+                            !birthMonth
+                                ?.value ||
+
+                            !birthYear
+                                ?.value ||
+
+                            !gender
+                                ?.value
+                        ) {
+
+                            throw new Error(
+                                "يرجى تعبئة جميع البيانات المطلوبة."
+                            );
+                        }
+
+                        const {
+                            error
+                        } =
+                            await supabaseClient
+                                .from(
+                                    "profiles"
+                                )
+                                .update(
+                                    {
+                                        first_name:
+                                            firstName
+                                                .value
+                                                .trim(),
+
+                                        last_name:
+                                            lastName
+                                                ?.value
+                                                .trim() ||
+                                            null,
+
+                                        birth_day:
+                                            Number(
+                                                birthDay
+                                                    .value
+                                            ),
+
+                                        birth_month:
+                                            Number(
+                                                birthMonth
+                                                    .value
+                                            ),
+
+                                        birth_year:
+                                            Number(
+                                                birthYear
+                                                    .value
+                                            ),
+
+                                        gender:
+                                            gender
+                                                .value,
+
+                                        phone:
+                                            phone
+                                                ?.value
+                                                .trim() ||
+                                            null
+                                    }
+                                )
+                                .eq(
+                                    "id",
+                                    user.id
+                                );
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        showMessage(
+                            "تم حفظ التغييرات بنجاح."
+                        );
+
+                    } catch (error) {
+
+                        showMessage(
+                            error?.message ||
+                            "تعذر حفظ التغييرات.",
+                            true
+                        );
+
+                    } finally {
+
+                        if (saveButton) {
+
+                            saveButton.disabled =
+                                false;
+                        }
+                    }
+                }
+            );
+
+        // ========================================================
+        // رفع الصورة الشخصية
+        // ========================================================
+
+        avatarInput
+            ?.addEventListener(
+                "change",
+                async function () {
+
+                    const file =
+                        avatarInput
+                            .files
+                            ?.[0];
+
+                    if (!file) {
+                        return;
+                    }
+
+                    if (
+                        ![
+                            "image/jpeg",
+                            "image/png",
+                            "image/webp"
+                        ].includes(
+                            file.type
+                        )
+                    ) {
+
+                        alert(
+                            "يرجى اختيار صورة JPG أو PNG أو WebP."
+                        );
+
+                        avatarInput.value =
+                            "";
+
+                        return;
+                    }
+
+                    if (
+                        file.size >
+                        5 *
+                        1024 *
+                        1024
+                    ) {
+
+                        alert(
+                            "حجم الصورة يجب ألا يتجاوز 5MB."
+                        );
+
+                        avatarInput.value =
+                            "";
+
+                        return;
+                    }
+
+                    try {
+
+                        showMessage(
+                            "جارٍ رفع الصورة..."
+                        );
+
+                        const filePath =
+                            `${user.id}/profile.jpg`;
+
+                        const {
+                            error:
+                                uploadError
+                        } =
+                            await supabaseClient
+                                .storage
+                                .from(
+                                    "avatars"
+                                )
+                                .upload(
+                                    filePath,
+                                    file,
+                                    {
+                                        cacheControl:
+                                            "3600",
+
+                                        upsert:
+                                            true,
+
+                                        contentType:
+                                            file.type
+                                    }
+                                );
+
+                        if (
+                            uploadError
+                        ) {
+                            throw uploadError;
+                        }
+
+                        const {
+                            data:
+                                publicData
+                        } =
+                            supabaseClient
+                                .storage
+                                .from(
+                                    "avatars"
+                                )
+                                .getPublicUrl(
+                                    filePath
+                                );
+
+                        if (
+                            !publicData
+                                ?.publicUrl
+                        ) {
+
+                            throw new Error(
+                                "تعذر الحصول على رابط الصورة."
+                            );
+                        }
+
+                        const publicUrl =
+                            `${publicData.publicUrl}?t=${Date.now()}`;
+
+                        const {
+                            error:
+                                updateError
+                        } =
+                            await supabaseClient
+                                .from(
+                                    "profiles"
+                                )
+                                .update(
+                                    {
+                                        avatar_url:
+                                            publicUrl
+                                    }
+                                )
+                                .eq(
+                                    "id",
+                                    user.id
+                                );
+
+                        if (
+                            updateError
+                        ) {
+                            throw updateError;
+                        }
+
+                        setAvatar(
+                            publicUrl
+                        );
+
+                        showMessage(
+                            "تم تحديث الصورة الشخصية بنجاح."
+                        );
+
+                    } catch (error) {
+
+                        showMessage(
+                            error?.message ||
+                            "تعذر رفع الصورة.",
+                            true
+                        );
+
+                    } finally {
+
+                        avatarInput.value =
+                            "";
+                    }
+                }
+            );
+
+        // ========================================================
+        // حذف الصورة الشخصية
+        // ========================================================
+
+        deleteAvatarButton
+            ?.addEventListener(
+                "click",
+                async function () {
+
+                    if (
+                        !confirm(
+                            "هل تريد حذف الصورة الشخصية؟"
+                        )
+                    ) {
+                        return;
+                    }
+
+                    deleteAvatarButton.disabled =
+                        true;
+
+                    try {
+
+                        showMessage(
+                            "جارٍ حذف الصورة..."
+                        );
+
+                        const filePath =
+                            `${user.id}/profile.jpg`;
+
+                        const {
+                            error:
+                                removeError
+                        } =
+                            await supabaseClient
+                                .storage
+                                .from(
+                                    "avatars"
+                                )
+                                .remove(
+                                    [
+                                        filePath
+                                    ]
+                                );
+
+                        if (
+                            removeError
+                        ) {
+                            throw removeError;
+                        }
+
+                        const {
+                            error:
+                                updateError
+                        } =
+                            await supabaseClient
+                                .from(
+                                    "profiles"
+                                )
+                                .update(
+                                    {
+                                        avatar_url:
+                                            null
+                                    }
+                                )
+                                .eq(
+                                    "id",
+                                    user.id
+                                );
+
+                        if (
+                            updateError
+                        ) {
+                            throw updateError;
+                        }
+
+                        setAvatar(
+                            null
+                        );
+
+                        showMessage(
+                            "تم حذف الصورة الشخصية بنجاح."
+                        );
+
+                    } catch (error) {
+
+                        showMessage(
+                            error?.message ||
+                            "تعذر حذف الصورة.",
+                            true
+                        );
+
+                    } finally {
+
+                        deleteAvatarButton.disabled =
                             false;
                     }
                 }
-            }
-        );
+            );
+    }
 
-        // ============================================================
-        // رفع / تغيير الصورة الشخصية
-        // ============================================================
+})();
 
-        avatarInput?.addEventListener(
-            "change",
-            async function () {
+// ============================================================
+// القافية - الإصلاح النهائي للواجهة والحساب
+// Account Menu + Index Icons + Bottom Overscroll
+// ============================================================
 
-                const file =
-                    avatarInput
-                        .files?.[0];
+(function () {
+    "use strict";
 
-                if (!file) {
-                    return;
+    // ============================================================
+    // أيقونات كلاسيكية
+    // ============================================================
+
+    function finalIcon(name) {
+
+        const icons = {
+
+            menu: `
+                <path d="M4 7h16"></path>
+                <path d="M4 12h16"></path>
+                <path d="M4 17h16"></path>
+            `,
+
+            home: `
+                <path d="M3 11.5 12 4l9 7.5"></path>
+                <path d="M5 10.5V20h5v-6h4v6h5v-9.5"></path>
+            `,
+
+            poems: `
+                <path
+                    d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z">
+                </path>
+
+                <path d="M8 7h8"></path>
+                <path d="M8 11h8"></path>
+                <path d="M8 15h5"></path>
+            `,
+
+            poets: `
+                <path d="M4 20h6"></path>
+
+                <path
+                    d="M14.5 4.5a2.12 2.12 0 0 1 3 3L9 16l-4 1 1-4Z">
+                </path>
+            `,
+
+            articles: `
+                <path d="M6 3h9l3 3v15H6Z"></path>
+                <path d="M14 3v4h4"></path>
+                <path d="M9 11h6"></path>
+                <path d="M9 15h6"></path>
+            `,
+
+            star: `
+                <path
+                    d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2 7.5 14 3 9.6l6.2-.9Z">
+                </path>
+            `,
+
+            settings: `
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="3">
+                </circle>
+
+                <path
+                    d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z">
+                </path>
+            `,
+
+            info: `
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="9">
+                </circle>
+
+                <path d="M12 10v6"></path>
+                <path d="M12 7h.01"></path>
+            `,
+
+            logout: `
+                <path d="M10 17l5-5-5-5"></path>
+                <path d="M15 12H3"></path>
+
+                <path
+                    d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5">
+                </path>
+            `,
+
+            user: `
+                <circle
+                    cx="12"
+                    cy="8"
+                    r="4">
+                </circle>
+
+                <path
+                    d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
+                </path>
+            `
+        };
+
+        return `
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                style="
+                    width:20px;
+                    height:20px;
+                    display:block;
+                ">
+
+                ${
+                    icons[name] ||
+                    icons.info
                 }
 
-                // ----------------------------------------------------
-                // أنواع الصور المسموحة
-                // ----------------------------------------------------
+            </svg>
+        `;
+    }
 
-                const allowedTypes = [
-                    "image/jpeg",
-                    "image/png",
-                    "image/webp"
-                ];
+    // ============================================================
+    // إصلاح الخلفية
+    //
+    // مهم:
+    // لا نجعل BODY أبيض.
+    // نترك الصفحة بتصميمها الأصلي.
+    // الأبيض يكون فقط خلف الصفحة عند السحب الزائد.
+    // ============================================================
 
-                if (
-                    !allowedTypes.includes(
-                        file.type
-                    )
-                ) {
+    function fixOverscrollBackground() {
 
-                    alert(
-                        "يرجى اختيار صورة JPG أو PNG أو WebP."
-                    );
+        const runtimeStyle =
+            document.getElementById(
+                "alqafiyahRuntimeStyles"
+            );
 
-                    avatarInput.value =
-                        "";
+        if (runtimeStyle) {
 
-                    return;
-                }
+            runtimeStyle.textContent =
+                runtimeStyle.textContent.replace(
 
-                // ----------------------------------------------------
-                // الحد الأقصى 5MB
-                // ----------------------------------------------------
+                    /html\s*,\s*body\s*\{\s*background\s*:\s*#(?:ffffff|fff)\s*!important\s*;\s*\}/gi,
 
-                if (
-                    file.size >
-                    5 * 1024 * 1024
-                ) {
-
-                    alert(
-                        "حجم الصورة يجب ألا يتجاوز 5MB."
-                    );
-
-                    avatarInput.value =
-                        "";
-
-                    return;
-                }
-
-                try {
-
-                    showMessage(
-                        "جارٍ رفع الصورة..."
-                    );
-
-                    // ------------------------------------------------
-                    // مسار الصورة
-                    // ------------------------------------------------
-
-                    const filePath =
-                        `${user.id}/profile.jpg`;
-
-                    // ------------------------------------------------
-                    // رفع الصورة
-                    // ------------------------------------------------
-
-                    const {
-                        error:
-                            uploadError
-                    } =
-                        await supabaseClient
-                            .storage
-                            .from("avatars")
-                            .upload(
-                                filePath,
-                                file,
-                                {
-                                    cacheControl:
-                                        "3600",
-
-                                    upsert:
-                                        true,
-
-                                    contentType:
-                                        file.type
-                                }
-                            );
-
-                    if (uploadError) {
-                        throw uploadError;
+                    `
+                    html {
+                        background: #ffffff !important;
                     }
+                    `
+                );
+        }
 
-                    // ------------------------------------------------
-                    // الحصول على الرابط العام
-                    // ------------------------------------------------
+        let style =
+            document.getElementById(
+                "alqafiyahFinalOverscrollStyle"
+            );
 
-                    const {
-                        data:
-                            publicData
-                    } =
-                        supabaseClient
-                            .storage
-                            .from("avatars")
-                            .getPublicUrl(
-                                filePath
-                            );
+        if (!style) {
+
+            style =
+                document.createElement(
+                    "style"
+                );
+
+            style.id =
+                "alqafiyahFinalOverscrollStyle";
+
+            style.textContent = `
+                html {
+                    background-color:
+                        #ffffff !important;
+                }
+            `;
+
+            document.head.appendChild(
+                style
+            );
+        }
+    }
+
+    // ============================================================
+    // إصلاح الأيقونات في index.html
+    // يعتمد على اسم العنصر وليس رابط HTML
+    // لذلك يعمل حتى لو اختلف شكل الرابط في الرئيسية
+    // ============================================================
+
+    function fixMenuIcons() {
+
+        const menuButton =
+            document.getElementById(
+                "menuButton"
+            );
+
+        if (
+            menuButton &&
+            !menuButton.querySelector(
+                "svg"
+            )
+        ) {
+
+            menuButton.innerHTML =
+                finalIcon(
+                    "menu"
+                );
+        }
+
+        document
+            .querySelectorAll(
+                ".side-navigation a"
+            )
+            .forEach(
+                function (
+                    link
+                ) {
+
+                    const text =
+                        String(
+                            link.textContent ||
+                            ""
+                        )
+                            .replace(
+                                /\s+/g,
+                                " "
+                            )
+                            .trim();
+
+                    const iconHolder =
+                        link.querySelector(
+                            "span:first-child"
+                        );
 
                     if (
-                        !publicData
-                            ?.publicUrl
+                        !iconHolder
+                    ) {
+                        return;
+                    }
+
+                    let iconName =
+                        null;
+
+                    if (
+                        text.includes(
+                            "الرئيسية"
+                        )
                     ) {
 
-                        throw new Error(
-                            "تعذر الحصول على رابط الصورة."
+                        iconName =
+                            "home";
+
+                    } else if (
+                        text.includes(
+                            "القصائد"
+                        )
+                    ) {
+
+                        iconName =
+                            "poems";
+
+                    } else if (
+                        text.includes(
+                            "الشعراء"
+                        )
+                    ) {
+
+                        iconName =
+                            "poets";
+
+                    } else if (
+                        text.includes(
+                            "المقالات"
+                        )
+                    ) {
+
+                        iconName =
+                            "articles";
+
+                    } else if (
+                        text.includes(
+                            "المفضلة"
+                        )
+                    ) {
+
+                        iconName =
+                            "star";
+
+                    } else if (
+                        text.includes(
+                            "الإعدادات"
+                        )
+                    ) {
+
+                        iconName =
+                            "settings";
+
+                    } else if (
+                        text.includes(
+                            "نبذة"
+                        )
+                    ) {
+
+                        iconName =
+                            "info";
+
+                    } else if (
+                        text.includes(
+                            "تسجيل الخروج"
+                        )
+                    ) {
+
+                        iconName =
+                            "logout";
+                    }
+
+                    if (!iconName) {
+                        return;
+                    }
+
+                    iconHolder.innerHTML =
+                        finalIcon(
+                            iconName
                         );
-                    }
-
-                    // ------------------------------------------------
-                    // منع ظهور نسخة قديمة من Cache
-                    // ------------------------------------------------
-
-                    const publicUrl =
-                        `${publicData.publicUrl}?t=${Date.now()}`;
-
-                    // ------------------------------------------------
-                    // حفظ الرابط في Profile
-                    // ------------------------------------------------
-
-                    const {
-                        error:
-                            updateError
-                    } =
-                        await supabaseClient
-                            .from("profiles")
-                            .update({
-
-                                avatar_url:
-                                    publicUrl
-                            })
-                            .eq(
-                                "id",
-                                user.id
-                            );
-
-                    if (updateError) {
-                        throw updateError;
-                    }
-
-                    // ------------------------------------------------
-                    // عرض الصورة مباشرة
-                    // ------------------------------------------------
-
-                    setAvatar(
-                        publicUrl
-                    );
-
-                    showMessage(
-                        "تم تحديث الصورة الشخصية بنجاح."
-                    );
-
-                } catch (error) {
-
-                    console.error(
-                        "القافيه: خطأ في رفع/تغيير الصورة:",
-                        error
-                    );
-
-                    showMessage(
-                        error?.message ||
-                        "تعذر رفع الصورة.",
-                        true
-                    );
-
-                } finally {
-
-                    avatarInput.value =
-                        "";
                 }
+            );
+
+        // --------------------------------------------------------
+        // صورة المستخدم الافتراضية بدل 👤
+        // --------------------------------------------------------
+
+        const sideAvatar =
+            document.querySelector(
+                ".side-menu .user-avatar"
+            );
+
+        if (
+            sideAvatar &&
+            !sideAvatar.querySelector(
+                "img"
+            )
+        ) {
+
+            sideAvatar.innerHTML =
+                finalIcon(
+                    "user"
+                );
+        }
+    }
+
+    // ============================================================
+    // إخفاء قائمة الحساب القديمة
+    // ============================================================
+
+    function hideOldAccountMenu() {
+
+        const oldMenu =
+            document.getElementById(
+                "accountDropdown"
+            );
+
+        if (!oldMenu) {
+            return;
+        }
+
+        oldMenu.classList.remove(
+            "open"
+        );
+
+        oldMenu.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+    // ============================================================
+    // إنشاء القائمة النهائية للدائرة
+    // ============================================================
+
+    function createFinalAccountMenu() {
+
+        let menu =
+            document.getElementById(
+                "alqafiyahFinalAccountMenu"
+            );
+
+        if (menu) {
+            return menu;
+        }
+
+        menu =
+            document.createElement(
+                "div"
+            );
+
+        menu.id =
+            "alqafiyahFinalAccountMenu";
+
+        menu.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        menu.innerHTML = `
+
+            <button
+                type="button"
+                id="alqafiyahFinalProfileButton">
+
+                ${finalIcon("user")}
+
+                <span>
+                    الملف الشخصي
+                </span>
+
+            </button>
+
+            <div
+                class="alqafiyah-final-account-divider">
+            </div>
+
+            <button
+                type="button"
+                id="alqafiyahFinalLogoutButton">
+
+                ${finalIcon("logout")}
+
+                <span>
+                    تسجيل الخروج
+                </span>
+
+            </button>
+        `;
+
+        Object.assign(
+            menu.style,
+            {
+                position:
+                    "fixed",
+
+                display:
+                    "none",
+
+                minWidth:
+                    "205px",
+
+                padding:
+                    "7px",
+
+                background:
+                    "#ffffff",
+
+                border:
+                    "1px solid rgba(62,39,35,.12)",
+
+                borderRadius:
+                    "14px",
+
+                boxShadow:
+                    "0 12px 34px rgba(0,0,0,.15)",
+
+                zIndex:
+                    "2147483647",
+
+                direction:
+                    "rtl"
             }
         );
 
-        // ============================================================
-        // حذف الصورة الشخصية
-        // ============================================================
+        menu
+            .querySelectorAll(
+                "button"
+            )
+            .forEach(
+                function (
+                    button
+                ) {
 
-        deleteAvatarButton?.addEventListener(
+                    Object.assign(
+                        button.style,
+                        {
+                            width:
+                                "100%",
+
+                            minHeight:
+                                "44px",
+
+                            display:
+                                "flex",
+
+                            alignItems:
+                                "center",
+
+                            gap:
+                                "10px",
+
+                            padding:
+                                "10px 12px",
+
+                            border:
+                                "0",
+
+                            borderRadius:
+                                "9px",
+
+                            background:
+                                "transparent",
+
+                            color:
+                                "#3E2723",
+
+                            font:
+                                "inherit",
+
+                            textAlign:
+                                "right",
+
+                            cursor:
+                                "pointer"
+                        }
+                    );
+
+                    button.addEventListener(
+                        "mouseenter",
+                        function () {
+
+                            button.style.background =
+                                "#f5f5f5";
+                        }
+                    );
+
+                    button.addEventListener(
+                        "mouseleave",
+                        function () {
+
+                            button.style.background =
+                                "transparent";
+                        }
+                    );
+                }
+            );
+
+        const divider =
+            menu.querySelector(
+                ".alqafiyah-final-account-divider"
+            );
+
+        Object.assign(
+            divider.style,
+            {
+                height:
+                    "1px",
+
+                margin:
+                    "4px 3px",
+
+                background:
+                    "rgba(62,39,35,.10)"
+            }
+        );
+
+        document.body.appendChild(
+            menu
+        );
+
+        // --------------------------------------------------------
+        // الملف الشخصي
+        // --------------------------------------------------------
+
+        document
+            .getElementById(
+                "alqafiyahFinalProfileButton"
+            )
+            ?.addEventListener(
+                "click",
+                function () {
+
+                    closeFinalAccountMenu();
+
+                    window.location.href =
+                        "profile.html";
+                }
+            );
+
+        // --------------------------------------------------------
+        // تسجيل الخروج
+        // --------------------------------------------------------
+
+        document
+            .getElementById(
+                "alqafiyahFinalLogoutButton"
+            )
+            ?.addEventListener(
+                "click",
+                async function () {
+
+                    const button =
+                        this;
+
+                    button.disabled =
+                        true;
+
+                    try {
+
+                        const {
+                            error
+                        } =
+                            await supabaseClient
+                                .auth
+                                .signOut();
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        closeFinalAccountMenu();
+
+                        if (
+                            window
+                                .location
+                                .pathname
+                                .toLowerCase()
+                                .endsWith(
+                                    "profile.html"
+                                )
+                        ) {
+
+                            window.location.replace(
+                                "index.html"
+                            );
+
+                        } else {
+
+                            window.location.reload();
+                        }
+
+                    } catch (error) {
+
+                        button.disabled =
+                            false;
+
+                        alert(
+                            error?.message ||
+                            "تعذر تسجيل الخروج."
+                        );
+                    }
+                }
+            );
+
+        return menu;
+    }
+
+    // ============================================================
+    // إغلاق قائمة الدائرة
+    // ============================================================
+
+    function closeFinalAccountMenu() {
+
+        const menu =
+            document.getElementById(
+                "alqafiyahFinalAccountMenu"
+            );
+
+        if (!menu) {
+            return;
+        }
+
+        menu.style.display =
+            "none";
+
+        menu.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document
+            .getElementById(
+                "headerAccountAvatar"
+            )
+            ?.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+    }
+
+    // ============================================================
+    // فتح قائمة الدائرة أسفلها مباشرة
+    // ============================================================
+
+    function openFinalAccountMenu(
+        avatar
+    ) {
+
+        const menu =
+            createFinalAccountMenu();
+
+        const rect =
+            avatar.getBoundingClientRect();
+
+        menu.style.display =
+            "block";
+
+        menu.style.visibility =
+            "hidden";
+
+        const menuWidth =
+            menu.offsetWidth;
+
+        let left =
+            rect.right -
+            menuWidth;
+
+        left =
+            Math.max(
+                10,
+                Math.min(
+                    left,
+                    window.innerWidth -
+                    menuWidth -
+                    10
+                )
+            );
+
+        menu.style.left =
+            `${left}px`;
+
+        menu.style.right =
+            "auto";
+
+        menu.style.top =
+            `${rect.bottom + 8}px`;
+
+        menu.style.visibility =
+            "visible";
+
+        menu.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        avatar.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+    }
+
+    // ============================================================
+    // ربط دائرة الحساب
+    //
+    // نعمل Clone للدائرة حتى نحذف أي listener قديم
+    // وهذا يمنع التعارض مع المحاولة السابقة.
+    // ============================================================
+
+    function bindFinalAccountAvatar() {
+
+        const oldAvatar =
+            document.getElementById(
+                "headerAccountAvatar"
+            );
+
+        if (
+            !oldAvatar ||
+            oldAvatar.dataset
+                .finalAccountBound ===
+                "true"
+        ) {
+            return;
+        }
+
+        const avatar =
+            oldAvatar.cloneNode(
+                true
+            );
+
+        avatar.dataset
+            .finalAccountBound =
+            "true";
+
+        avatar.setAttribute(
+            "aria-haspopup",
+            "menu"
+        );
+
+        avatar.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+        oldAvatar.replaceWith(
+            avatar
+        );
+
+        avatar.addEventListener(
             "click",
-            async function () {
+            function (
+                event
+            ) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+                event.stopImmediatePropagation();
+
+                const menu =
+                    createFinalAccountMenu();
+
+                const isOpen =
+                    menu.style.display ===
+                    "block";
+
+                if (isOpen) {
+
+                    closeFinalAccountMenu();
+
+                } else {
+
+                    openFinalAccountMenu(
+                        avatar
+                    );
+                }
+            }
+        );
+    }
+
+    // ============================================================
+    // تشغيل الإصلاحات
+    // ============================================================
+
+    function runFinalFixes() {
+
+        fixOverscrollBackground();
+
+        hideOldAccountMenu();
+
+        fixMenuIcons();
+
+        bindFinalAccountAvatar();
+    }
+
+    // ============================================================
+    // بدء الإصلاح
+    // ============================================================
+
+    function startFinalFix() {
+
+        runFinalFixes();
+
+        // --------------------------------------------------------
+        // لأن نظام الحساب يعيد إنشاء الدائرة بعد تسجيل الدخول،
+        // نراقب فقط تغيرات العناصر ونعيد ربطها عند الحاجة.
+        // --------------------------------------------------------
+
+        const observer =
+            new MutationObserver(
+                function () {
+
+                    runFinalFixes();
+                }
+            );
+
+        observer.observe(
+            document.body,
+            {
+                childList:
+                    true,
+
+                subtree:
+                    true
+            }
+        );
+
+        // --------------------------------------------------------
+        // الضغط خارج القائمة
+        // --------------------------------------------------------
+
+        document.addEventListener(
+            "click",
+            function (
+                event
+            ) {
+
+                const menu =
+                    document.getElementById(
+                        "alqafiyahFinalAccountMenu"
+                    );
+
+                const avatar =
+                    document.getElementById(
+                        "headerAccountAvatar"
+                    );
 
                 if (
-                    !confirm(
-                        "هل تريد حذف الصورة الشخصية؟"
+                    menu?.contains(
+                        event.target
+                    ) ||
+                    avatar?.contains(
+                        event.target
                     )
                 ) {
                     return;
                 }
 
-                deleteAvatarButton.disabled =
-                    true;
+                closeFinalAccountMenu();
+            }
+        );
 
-                try {
+        // --------------------------------------------------------
+        // Escape
+        // --------------------------------------------------------
 
-                    showMessage(
-                        "جارٍ حذف الصورة..."
-                    );
+        document.addEventListener(
+            "keydown",
+            function (
+                event
+            ) {
 
-                    // ------------------------------------------------
-                    // مسار الصورة
-                    // ------------------------------------------------
+                if (
+                    event.key ===
+                    "Escape"
+                ) {
 
-                    const filePath =
-                        `${user.id}/profile.jpg`;
-
-                    // ------------------------------------------------
-                    // حذف الصورة من Storage
-                    // ------------------------------------------------
-
-                    const {
-                        error:
-                            removeError
-                    } =
-                        await supabaseClient
-                            .storage
-                            .from("avatars")
-                            .remove([
-                                filePath
-                            ]);
-
-                    if (removeError) {
-                        throw removeError;
-                    }
-
-                    // ------------------------------------------------
-                    // حذف الرابط من Profile
-                    // ------------------------------------------------
-
-                    const {
-                        error:
-                            updateError
-                    } =
-                        await supabaseClient
-                            .from("profiles")
-                            .update({
-
-                                avatar_url:
-                                    null
-                            })
-                            .eq(
-                                "id",
-                                user.id
-                            );
-
-                    if (updateError) {
-                        throw updateError;
-                    }
-
-                    // ------------------------------------------------
-                    // إعادة الأيقونة الافتراضية
-                    // ------------------------------------------------
-
-                    setAvatar(
-                        null
-                    );
-
-                    showMessage(
-                        "تم حذف الصورة الشخصية بنجاح."
-                    );
-
-                } catch (error) {
-
-                    console.error(
-                        "القافيه: خطأ في حذف الصورة:",
-                        error
-                    );
-
-                    showMessage(
-                        error?.message ||
-                        "تعذر حذف الصورة.",
-                        true
-                    );
-
-                } finally {
-
-                    deleteAvatarButton.disabled =
-                        false;
+                    closeFinalAccountMenu();
                 }
             }
         );
+
+        // --------------------------------------------------------
+        // تغيير حجم الشاشة أو التمرير
+        // --------------------------------------------------------
+
+        window.addEventListener(
+            "resize",
+            closeFinalAccountMenu
+        );
+
+        window.addEventListener(
+            "scroll",
+            closeFinalAccountMenu,
+            true
+        );
+    }
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            startFinalFix,
+            {
+                once:
+                    true
+            }
+        );
+
+    } else {
+
+        startFinalFix();
     }
 
 })();
