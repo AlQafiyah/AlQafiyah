@@ -2,56 +2,34 @@
 <html lang="ar" dir="rtl">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    >
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <meta
         name="theme-color"
-        content="#3E2723"
-    >
+        content="#3E2723">
 
     <meta
         name="description"
-        content="المقال - قافية، موسوعة الشعر والأدب العربي"
-    >
+        content="المقال - القافية، موسوعة الشعر والأدب العربي">
 
-    <title>المقال | قافية</title>
+    <title>المقال | القافية</title>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    <link rel="stylesheet" href="style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <script
-        src="supabase.js"
-        defer>
-    </script>
+    <script src="supabase.js" defer></script>
 
-    <script
-        src="script.js"
-        defer>
-    </script>
+    <script src="content.js" defer></script>
 
-    <script
-        src="content.js"
-        defer>
-    </script>
-
+    <script src="script.js" defer></script>
 </head>
 
-
 <body>
-
-    <!-- =========================================================
-         الرأس
-    ========================================================= -->
 
     <header class="site-header">
 
@@ -63,22 +41,18 @@
                 type="button"
                 aria-label="فتح القائمة"
                 aria-expanded="false"
-                aria-controls="sideMenu"
-            >
+                aria-controls="sideMenu">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
 
-
             <a
                 href="index.html"
                 class="site-logo"
-                aria-label="قافية - الصفحة الرئيسية"
-            >
-                قافية
+                aria-label="القافية - الصفحة الرئيسية">
+                القافية
             </a>
-
 
             <div class="header-actions">
 
@@ -86,42 +60,32 @@
                     class="notification-button"
                     id="notificationButton"
                     type="button"
-                    aria-label="الإشعارات"
-                >
+                    aria-label="الإشعارات">
 
                     <svg
                         class="notification-icon"
-                        xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
                         stroke-width="1.8"
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
-                        <path
-                            d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9">
-                        </path>
-
+                        aria-hidden="true">
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
                         <path d="M10 21h4"></path>
                     </svg>
 
                     <span
                         class="notification-count"
-                        id="notificationCount"
-                    >
+                        id="notificationCount">
                         0
                     </span>
-
                 </button>
-
 
                 <button
                     class="login-button"
                     id="loginButton"
-                    type="button"
-                >
+                    type="button">
                     تسجيل الدخول
                 </button>
 
@@ -131,53 +95,47 @@
 
     </header>
 
-
-    <!-- =========================================================
-         طبقة القائمة
-    ========================================================= -->
-
     <div
         class="menu-overlay"
-        id="menuOverlay"
-    ></div>
-
-
-    <!-- =========================================================
-         القائمة الجانبية
-    ========================================================= -->
+        id="menuOverlay">
+    </div>
 
     <aside
         class="side-menu"
         id="sideMenu"
-        aria-hidden="true"
-    >
+        aria-hidden="true">
 
         <div class="side-menu-header">
 
-            <h2>
-                قافية
-            </h2>
+            <h2>القافية</h2>
 
             <button
                 class="close-menu-button"
                 id="closeMenuButton"
                 type="button"
-                aria-label="إغلاق القائمة"
-            >
+                aria-label="إغلاق القائمة">
                 ×
             </button>
 
         </div>
 
-
         <div class="user-section">
 
             <div class="user-avatar">
-                👤
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7"></path>
+                </svg>
             </div>
 
             <div class="user-info">
-
                 <strong id="menuUserName">
                     مرحبًا بك
                 </strong>
@@ -185,240 +143,189 @@
                 <span id="menuUserEmail">
                     سجّل الدخول للوصول إلى حسابك
                 </span>
-
             </div>
 
         </div>
 
-
         <nav
             class="side-navigation"
-            aria-label="القائمة الرئيسية"
-        >
+            aria-label="القائمة الرئيسية">
 
             <a href="index.html">
-                <span>⌂</span>
+                <span class="menu-icon" aria-hidden="true">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M3 11.5 12 4l9 7.5"></path>
+                        <path d="M5 10.5V20h5v-6h4v6h5v-9.5"></path>
+                    </svg>
+                </span>
                 <span>الرئيسية</span>
             </a>
 
-
             <a href="Poems.html">
-                <span>📜</span>
+                <span class="menu-icon" aria-hidden="true">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"></path>
+                        <path d="M8 7h8"></path>
+                        <path d="M8 11h8"></path>
+                        <path d="M8 15h5"></path>
+                    </svg>
+                </span>
                 <span>القصائد</span>
             </a>
 
-
             <a href="poets.html">
-                <span>✒</span>
+                <span class="menu-icon" aria-hidden="true">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M4 20h6"></path>
+                        <path d="M14.5 4.5a2.12 2.12 0 0 1 3 3L9 16l-4 1 1-4Z"></path>
+                    </svg>
+                </span>
                 <span>الشعراء</span>
             </a>
 
-
             <a
                 href="articles.html"
-                class="active"
-            >
-                <span>📝</span>
+                class="active">
+
+                <span class="menu-icon" aria-hidden="true">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M6 3h9l3 3v15H6Z"></path>
+                        <path d="M14 3v4h4"></path>
+                        <path d="M9 11h6"></path>
+                        <path d="M9 15h6"></path>
+                    </svg>
+                </span>
+
                 <span>المقالات</span>
             </a>
 
-
-            <a
-                href="profile.html"
-                id="profileLink"
-            >
-                <span>👤</span>
+            <a href="profile.html" id="profileLink">
+                <span class="menu-icon" aria-hidden="true">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="4"></circle>
+                        <path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7"></path>
+                    </svg>
+                </span>
                 <span>الملف الشخصي</span>
             </a>
 
-
-            <a
-                href="#"
-                id="favoritesLink"
-            >
-                <span>⭐</span>
+            <a href="#" id="favoritesLink">
+                <span class="menu-icon" aria-hidden="true">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2 7.5 14 3 9.6l6.2-.9Z"></path>
+                    </svg>
+                </span>
                 <span>المفضلة</span>
             </a>
 
-
-            <a
-                href="#"
-                id="settingsLink"
-            >
-                <span>⚙️</span>
+            <a href="#" id="settingsLink">
+                <span class="menu-icon" aria-hidden="true">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"></path>
+                    </svg>
+                </span>
                 <span>الإعدادات</span>
             </a>
 
-
             <a href="about.html">
-                <span>ℹ️</span>
-                <span>نبذة عن قافية</span>
+                <span class="menu-icon" aria-hidden="true">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M12 10v6"></path>
+                        <path d="M12 7h.01"></path>
+                    </svg>
+                </span>
+                <span>نبذة عن القافية</span>
             </a>
 
         </nav>
 
-
         <div class="side-menu-footer">
-
-            <div class="side-menu-socials">
-
-                <a
-                    href="#"
-                    aria-label="X"
-                    title="X"
-                >
-                    <svg
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                    >
-                        <path
-                            d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.38L6.49 22H3.38l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.52h1.73L8.29 4.34H6.43L17.8 19.52Z">
-                        </path>
-                    </svg>
-                </a>
-
-
-                <a
-                    href="#"
-                    aria-label="Instagram"
-                    title="Instagram"
-                >
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        aria-hidden="true"
-                    >
-                        <rect
-                            x="3"
-                            y="3"
-                            width="18"
-                            height="18"
-                            rx="5">
-                        </rect>
-
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="4">
-                        </circle>
-
-                        <circle
-                            cx="17.5"
-                            cy="6.5"
-                            r="1">
-                        </circle>
-                    </svg>
-                </a>
-
-
-                <a
-                    href="#"
-                    aria-label="YouTube"
-                    title="YouTube"
-                >
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
-                        <path
-                            d="M21 7.2a2.8 2.8 0 0 0-2-2C17.2 4.7 12 4.7 12 4.7s-5.2 0-7 .5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2.5 12 29 29 0 0 0 3 16.8a2.8 2.8 0 0 0 2 2c1.8.5 7 .5 7 .5s5.2 0 7-.5a2.8 2.8 0 0 0 2-2 29 29 0 0 0 .5-4.8A29 29 0 0 0 21 7.2Z">
-                        </path>
-
-                        <path
-                            d="m10 15.5 5-3.5-5-3.5v7Z"
-                            fill="currentColor"
-                            stroke="none">
-                        </path>
-                    </svg>
-                </a>
-
-
-                <a
-                    href="mailto:"
-                    aria-label="البريد الإلكتروني"
-                    title="البريد الإلكتروني"
-                >
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
-                        <rect
-                            x="3"
-                            y="5"
-                            width="18"
-                            height="14"
-                            rx="2">
-                        </rect>
-
-                        <path d="m3 7 9 6 9-6"></path>
-                    </svg>
-                </a>
-
-            </div>
-
-            <p>
-                © قافية
-            </p>
-
+            <p>© القافية</p>
         </div>
 
     </aside>
 
-
-    <!-- =========================================================
-         الإشعارات
-    ========================================================= -->
-
     <div
         class="notification-panel"
         id="notificationPanel"
-        aria-hidden="true"
-    >
+        aria-hidden="true">
 
         <div class="notification-header">
 
-            <h3>
-                الإشعارات
-            </h3>
+            <h3>الإشعارات</h3>
 
             <button
                 id="closeNotificationButton"
                 type="button"
-                aria-label="إغلاق الإشعارات"
-            >
+                aria-label="إغلاق الإشعارات">
                 ×
             </button>
 
         </div>
 
-
         <div
             class="notification-content"
-            id="notificationContent"
-        >
+            id="notificationContent">
+
             <p>
                 لا توجد إشعارات جديدة.
             </p>
+
         </div>
 
     </div>
 
-
-    <!-- =========================================================
-         صفحة المقال
-         content.js يستبدل المحتوى تلقائيًا
-    ========================================================= -->
+    <!-- content.js يستبدل المحتوى -->
 
     <main id="articleDetail">
 
@@ -432,16 +339,10 @@
 
     </main>
 
-
-    <!-- =========================================================
-         تسجيل الدخول
-    ========================================================= -->
-
     <div
         class="login-modal"
         id="loginModal"
-        aria-hidden="true"
-    >
+        aria-hidden="true">
 
         <div class="login-box">
 
@@ -449,36 +350,45 @@
                 class="close-login-button"
                 id="closeLoginButton"
                 type="button"
-                aria-label="إغلاق"
-            >
+                aria-label="إغلاق">
                 ×
             </button>
 
-
             <div id="loginForm">
 
-                <h2>
-                    تسجيل الدخول
-                </h2>
+                <h2>تسجيل الدخول</h2>
 
                 <p>
-                    سجّل دخولك إلى حسابك في قافية
+                    سجّل دخولك إلى حسابك في القافية
                 </p>
-
 
                 <button
                     class="login-method"
                     id="appleLoginButton"
-                    type="button"
-                >
-                     تسجيل الدخول باستخدام Apple
-                </button>
+                    type="button">
 
+                    <svg
+                        viewBox="0 0 24 24"
+                        width="20"
+                        height="20"
+                        aria-hidden="true">
+
+                        <path
+                            fill="currentColor"
+                            d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.79 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.1v-.01ZM12.03 7.25C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25Z">
+                        </path>
+
+                    </svg>
+
+                    <span>
+                        تسجيل الدخول باستخدام Apple
+                    </span>
+
+                </button>
 
                 <div class="login-divider">
                     <span>أو</span>
                 </div>
-
 
                 <label for="emailLogin">
                     البريد الإلكتروني
@@ -488,9 +398,7 @@
                     type="email"
                     id="emailLogin"
                     placeholder="أدخل بريدك الإلكتروني"
-                    autocomplete="email"
-                >
-
+                    autocomplete="email">
 
                 <label for="passwordLogin">
                     كلمة المرور
@@ -500,43 +408,33 @@
                     type="password"
                     id="passwordLogin"
                     placeholder="أدخل كلمة المرور"
-                    autocomplete="current-password"
-                >
-
+                    autocomplete="current-password">
 
                 <button
                     class="login-submit"
                     id="emailLoginButton"
-                    type="button"
-                >
+                    type="button">
                     تسجيل الدخول
                 </button>
-
 
                 <button
                     class="login-register"
                     id="showRegisterButton"
-                    type="button"
-                >
+                    type="button">
                     إنشاء حساب جديد
                 </button>
 
             </div>
 
-
             <div
                 id="registerForm"
-                style="display:none;"
-            >
+                style="display:none;">
 
-                <h2>
-                    إنشاء حساب
-                </h2>
+                <h2>إنشاء حساب</h2>
 
                 <p>
-                    أنشئ حسابك في قافية
+                    أنشئ حسابك في القافية
                 </p>
-
 
                 <label for="firstName">
                     الاسم الأول
@@ -546,9 +444,7 @@
                     type="text"
                     id="firstName"
                     placeholder="الاسم الأول"
-                    autocomplete="given-name"
-                >
-
+                    autocomplete="given-name">
 
                 <label for="lastName">
                     الاسم الأخير
@@ -559,30 +455,20 @@
                     type="text"
                     id="lastName"
                     placeholder="الاسم الأخير"
-                    autocomplete="family-name"
-                >
-
+                    autocomplete="family-name">
 
                 <label>
                     تاريخ الميلاد
                 </label>
 
-
                 <div class="birth-date-fields">
 
                     <select id="birthDay">
-                        <option value="">
-                            اليوم
-                        </option>
+                        <option value="">اليوم</option>
                     </select>
 
-
                     <select id="birthMonth">
-
-                        <option value="">
-                            الشهر
-                        </option>
-
+                        <option value="">الشهر</option>
                         <option value="1">يناير</option>
                         <option value="2">فبراير</option>
                         <option value="3">مارس</option>
@@ -595,39 +481,23 @@
                         <option value="10">أكتوبر</option>
                         <option value="11">نوفمبر</option>
                         <option value="12">ديسمبر</option>
-
                     </select>
 
-
                     <select id="birthYear">
-                        <option value="">
-                            السنة
-                        </option>
+                        <option value="">السنة</option>
                     </select>
 
                 </div>
-
 
                 <label for="gender">
                     الجنس
                 </label>
 
                 <select id="gender">
-
-                    <option value="">
-                        اختر الجنس
-                    </option>
-
-                    <option value="male">
-                        ذكر
-                    </option>
-
-                    <option value="female">
-                        أنثى
-                    </option>
-
+                    <option value="">اختر الجنس</option>
+                    <option value="male">ذكر</option>
+                    <option value="female">أنثى</option>
                 </select>
-
 
                 <label for="emailRegister">
                     البريد الإلكتروني
@@ -637,9 +507,7 @@
                     type="email"
                     id="emailRegister"
                     placeholder="أدخل بريدك الإلكتروني"
-                    autocomplete="email"
-                >
-
+                    autocomplete="email">
 
                 <label for="passwordRegister">
                     كلمة المرور
@@ -649,9 +517,7 @@
                     type="password"
                     id="passwordRegister"
                     placeholder="6 أحرف على الأقل"
-                    autocomplete="new-password"
-                >
-
+                    autocomplete="new-password">
 
                 <label for="confirmPasswordRegister">
                     تأكيد كلمة المرور
@@ -661,24 +527,19 @@
                     type="password"
                     id="confirmPasswordRegister"
                     placeholder="أعد كتابة كلمة المرور"
-                    autocomplete="new-password"
-                >
-
+                    autocomplete="new-password">
 
                 <button
                     class="login-submit"
                     id="registerSubmitButton"
-                    type="button"
-                >
+                    type="button">
                     إنشاء الحساب
                 </button>
-
 
                 <button
                     class="login-register"
                     id="showLoginButton"
-                    type="button"
-                >
+                    type="button">
                     لدي حساب بالفعل
                 </button>
 
@@ -688,11 +549,6 @@
 
     </div>
 
-
-    <!-- =========================================================
-         التذييل
-    ========================================================= -->
-
     <footer class="site-footer">
 
         <div class="footer-container">
@@ -701,9 +557,8 @@
 
                 <a
                     href="index.html"
-                    class="footer-logo"
-                >
-                    قافية
+                    class="footer-logo">
+                    القافية
                 </a>
 
                 <p>
@@ -713,189 +568,41 @@
 
             </div>
 
-
             <div class="footer-links">
 
-                <h3>
-                    استكشف
-                </h3>
+                <h3>استكشف</h3>
 
-                <a href="Poems.html">
-                    القصائد
-                </a>
-
-                <a href="poets.html">
-                    الشعراء
-                </a>
-
-                <a href="articles.html">
-                    المقالات
-                </a>
-
-                <a href="about.html">
-                    نبذة عن قافية
-                </a>
+                <a href="Poems.html">القصائد</a>
+                <a href="poets.html">الشعراء</a>
+                <a href="articles.html">المقالات</a>
+                <a href="about.html">نبذة عن القافية</a>
 
             </div>
 
-
             <div class="footer-links">
 
-                <h3>
-                    الحساب
-                </h3>
+                <h3>الحساب</h3>
 
                 <a href="profile.html">
                     الملف الشخصي
                 </a>
 
-                <a
-                    href="#"
-                    id="footerFavoritesLink"
-                >
+                <a href="#" id="footerFavoritesLink">
                     المفضلة
                 </a>
 
-                <a
-                    href="#"
-                    id="footerSettingsLink"
-                >
+                <a href="#" id="footerSettingsLink">
                     الإعدادات
                 </a>
 
             </div>
 
-
-            <div class="footer-contact">
-
-                <h3>
-                    تواصل معنا
-                </h3>
-
-                <a
-                    href="mailto:"
-                    class="footer-email"
-                >
-                    البريد الإلكتروني
-                </a>
-
-
-                <div class="footer-socials">
-
-                    <a
-                        href="#"
-                        aria-label="X"
-                        title="X"
-                    >
-                        <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                        >
-                            <path
-                                d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.38L6.49 22H3.38l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.52h1.73L8.29 4.34H6.43L17.8 19.52Z">
-                            </path>
-                        </svg>
-                    </a>
-
-
-                    <a
-                        href="#"
-                        aria-label="Instagram"
-                        title="Instagram"
-                    >
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.7"
-                            aria-hidden="true"
-                        >
-                            <rect
-                                x="3"
-                                y="3"
-                                width="18"
-                                height="18"
-                                rx="5">
-                            </rect>
-
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="4">
-                            </circle>
-
-                            <circle
-                                cx="17.5"
-                                cy="6.5"
-                                r="1">
-                            </circle>
-                        </svg>
-                    </a>
-
-
-                    <a
-                        href="#"
-                        aria-label="YouTube"
-                        title="YouTube"
-                    >
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.7"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                        >
-                            <path
-                                d="M21 7.2a2.8 2.8 0 0 0-2-2C17.2 4.7 12 4.7 12 4.7s-5.2 0-7 .5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2.5 12 29 29 0 0 0 3 16.8a2.8 2.8 0 0 0 2 2c1.8.5 7 .5 7 .5s5.2 0 7-.5a2.8 2.8 0 0 0 2-2 29 29 0 0 0 .5-4.8A29 29 0 0 0 21 7.2Z">
-                            </path>
-
-                            <path
-                                d="m10 15.5 5-3.5-5-3.5v7Z"
-                                fill="currentColor"
-                                stroke="none">
-                            </path>
-                        </svg>
-                    </a>
-
-
-                    <a
-                        href="mailto:"
-                        aria-label="البريد الإلكتروني"
-                        title="البريد الإلكتروني"
-                    >
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.7"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                        >
-                            <rect
-                                x="3"
-                                y="5"
-                                width="18"
-                                height="14"
-                                rx="2">
-                            </rect>
-
-                            <path d="m3 7 9 6 9-6"></path>
-                        </svg>
-                    </a>
-
-                </div>
-
-            </div>
-
         </div>
-
 
         <div class="footer-bottom">
 
             <p>
-                © 2026 قافية — جميع الحقوق محفوظة
+                © 2026 القافية — جميع الحقوق محفوظة
             </p>
 
             <span>
@@ -907,5 +614,4 @@
     </footer>
 
 </body>
-
 </html>
