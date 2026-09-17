@@ -1,6 +1,7 @@
 {
   "name": "qafiyah",
   "compatibility_date": "2026-09-17",
+  "workers_dev": false,
   "assets": {
     "directory": "./"
   }
