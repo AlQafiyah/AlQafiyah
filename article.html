@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#3E2723"
+    >
+
+    <meta
+        name="description"
+        content="المقال - قافية، موسوعة الشعر والأدب العربي"
+    >
+
+    <title>المقال | قافية</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script
+        src="supabase.js"
+        defer>
+    </script>
+
+    <script
+        src="script.js"
+        defer>
+    </script>
+
+    <script
+        src="content.js"
+        defer>
+    </script>
+
+</head>
+
+
+<body>
+
+    <!-- =========================================================
+         الرأس
+    ========================================================= -->
+
+    <header class="site-header">
+
+        <div class="header-container">
+
+            <button
+                class="menu-button"
+                id="menuButton"
+                type="button"
+                aria-label="فتح القائمة"
+                aria-expanded="false"
+                aria-controls="sideMenu"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+
+            <a
+                href="index.html"
+                class="site-logo"
+                aria-label="قافية - الصفحة الرئيسية"
+            >
+                قافية
+            </a>
+
+
+            <div class="header-actions">
+
+                <button
+                    class="notification-button"
+                    id="notificationButton"
+                    type="button"
+                    aria-label="الإشعارات"
+                >
+
+                    <svg
+                        class="notification-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9">
+                        </path>
+
+                        <path d="M10 21h4"></path>
+                    </svg>
+
+                    <span
+                        class="notification-count"
+                        id="notificationCount"
+                    >
+                        0
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="login-button"
+                    id="loginButton"
+                    type="button"
+                >
+                    تسجيل الدخول
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         طبقة القائمة
+    ========================================================= -->
+
+    <div
+        class="menu-overlay"
+        id="menuOverlay"
+    ></div>
+
+
+    <!-- =========================================================
+         القائمة الجانبية
+    ========================================================= -->
+
+    <aside
+        class="side-menu"
+        id="sideMenu"
+        aria-hidden="true"
+    >
+
+        <div class="side-menu-header">
+
+            <h2>
+                قافية
+            </h2>
+
+            <button
+                class="close-menu-button"
+                id="closeMenuButton"
+                type="button"
+                aria-label="إغلاق القائمة"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="user-section">
+
+            <div class="user-avatar">
+                👤
+            </div>
+
+            <div class="user-info">
+
+                <strong id="menuUserName">
+                    مرحبًا بك
+                </strong>
+
+                <span id="menuUserEmail">
+                    سجّل الدخول للوصول إلى حسابك
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav
+            class="side-navigation"
+            aria-label="القائمة الرئيسية"
+        >
+
+            <a href="index.html">
+                <span>⌂</span>
+                <span>الرئيسية</span>
+            </a>
+
+
+            <a href="Poems.html">
+                <span>📜</span>
+                <span>القصائد</span>
+            </a>
+
+
+            <a href="poets.html">
+                <span>✒</span>
+                <span>الشعراء</span>
+            </a>
+
+
+            <a
+                href="articles.html"
+                class="active"
+            >
+                <span>📝</span>
+                <span>المقالات</span>
+            </a>
+
+
+            <a
+                href="profile.html"
+                id="profileLink"
+            >
+                <span>👤</span>
+                <span>الملف الشخصي</span>
+            </a>
+
+
+            <a
+                href="#"
+                id="favoritesLink"
+            >
+                <span>⭐</span>
+                <span>المفضلة</span>
+            </a>
+
+
+            <a
+                href="#"
+                id="settingsLink"
+            >
+                <span>⚙️</span>
+                <span>الإعدادات</span>
+            </a>
+
+
+            <a href="about.html">
+                <span>ℹ️</span>
+                <span>نبذة عن قافية</span>
+            </a>
+
+        </nav>
+
+
+        <div class="side-menu-footer">
+
+            <div class="side-menu-socials">
+
+                <a
+                    href="#"
+                    aria-label="X"
+                    title="X"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.38L6.49 22H3.38l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.52h1.73L8.29 4.34H6.43L17.8 19.52Z">
+                        </path>
+                    </svg>
+                </a>
+
+
+                <a
+                    href="#"
+                    aria-label="Instagram"
+                    title="Instagram"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        aria-hidden="true"
+                    >
+                        <rect
+                            x="3"
+                            y="3"
+                            width="18"
+                            height="18"
+                            rx="5">
+                        </rect>
+
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="4">
+                        </circle>
+
+                        <circle
+                            cx="17.5"
+                            cy="6.5"
+                            r="1">
+                        </circle>
+                    </svg>
+                </a>
+
+
+                <a
+                    href="#"
+                    aria-label="YouTube"
+                    title="YouTube"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M21 7.2a2.8 2.8 0 0 0-2-2C17.2 4.7 12 4.7 12 4.7s-5.2 0-7 .5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2.5 12 29 29 0 0 0 3 16.8a2.8 2.8 0 0 0 2 2c1.8.5 7 .5 7 .5s5.2 0 7-.5a2.8 2.8 0 0 0 2-2 29 29 0 0 0 .5-4.8A29 29 0 0 0 21 7.2Z">
+                        </path>
+
+                        <path
+                            d="m10 15.5 5-3.5-5-3.5v7Z"
+                            fill="currentColor"
+                            stroke="none">
+                        </path>
+                    </svg>
+                </a>
+
+
+                <a
+                    href="mailto:"
+                    aria-label="البريد الإلكتروني"
+                    title="البريد الإلكتروني"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <rect
+                            x="3"
+                            y="5"
+                            width="18"
+                            height="14"
+                            rx="2">
+                        </rect>
+
+                        <path d="m3 7 9 6 9-6"></path>
+                    </svg>
+                </a>
+
+            </div>
+
+            <p>
+                © قافية
+            </p>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================================================
+         الإشعارات
+    ========================================================= -->
+
+    <div
+        class="notification-panel"
+        id="notificationPanel"
+        aria-hidden="true"
+    >
+
+        <div class="notification-header">
+
+            <h3>
+                الإشعارات
+            </h3>
+
+            <button
+                id="closeNotificationButton"
+                type="button"
+                aria-label="إغلاق الإشعارات"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="notification-content"
+            id="notificationContent"
+        >
+            <p>
+                لا توجد إشعارات جديدة.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         صفحة المقال
+         content.js يستبدل المحتوى تلقائيًا
+    ========================================================= -->
+
+    <main id="articleDetail">
+
+        <section class="qafiyah-detail-shell">
+
+            <div class="qafiyah-content-status">
+                جاري تحميل المقال...
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         تسجيل الدخول
+    ========================================================= -->
+
+    <div
+        class="login-modal"
+        id="loginModal"
+        aria-hidden="true"
+    >
+
+        <div class="login-box">
+
+            <button
+                class="close-login-button"
+                id="closeLoginButton"
+                type="button"
+                aria-label="إغلاق"
+            >
+                ×
+            </button>
+
+
+            <div id="loginForm">
+
+                <h2>
+                    تسجيل الدخول
+                </h2>
+
+                <p>
+                    سجّل دخولك إلى حسابك في قافية
+                </p>
+
+
+                <button
+                    class="login-method"
+                    id="appleLoginButton"
+                    type="button"
+                >
+                     تسجيل الدخول باستخدام Apple
+                </button>
+
+
+                <div class="login-divider">
+                    <span>أو</span>
+                </div>
+
+
+                <label for="emailLogin">
+                    البريد الإلكتروني
+                </label>
+
+                <input
+                    type="email"
+                    id="emailLogin"
+                    placeholder="أدخل بريدك الإلكتروني"
+                    autocomplete="email"
+                >
+
+
+                <label for="passwordLogin">
+                    كلمة المرور
+                </label>
+
+                <input
+                    type="password"
+                    id="passwordLogin"
+                    placeholder="أدخل كلمة المرور"
+                    autocomplete="current-password"
+                >
+
+
+                <button
+                    class="login-submit"
+                    id="emailLoginButton"
+                    type="button"
+                >
+                    تسجيل الدخول
+                </button>
+
+
+                <button
+                    class="login-register"
+                    id="showRegisterButton"
+                    type="button"
+                >
+                    إنشاء حساب جديد
+                </button>
+
+            </div>
+
+
+            <div
+                id="registerForm"
+                style="display:none;"
+            >
+
+                <h2>
+                    إنشاء حساب
+                </h2>
+
+                <p>
+                    أنشئ حسابك في قافية
+                </p>
+
+
+                <label for="firstName">
+                    الاسم الأول
+                </label>
+
+                <input
+                    type="text"
+                    id="firstName"
+                    placeholder="الاسم الأول"
+                    autocomplete="given-name"
+                >
+
+
+                <label for="lastName">
+                    الاسم الأخير
+                    <span>(اختياري)</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="lastName"
+                    placeholder="الاسم الأخير"
+                    autocomplete="family-name"
+                >
+
+
+                <label>
+                    تاريخ الميلاد
+                </label>
+
+
+                <div class="birth-date-fields">
+
+                    <select id="birthDay">
+                        <option value="">
+                            اليوم
+                        </option>
+                    </select>
+
+
+                    <select id="birthMonth">
+
+                        <option value="">
+                            الشهر
+                        </option>
+
+                        <option value="1">يناير</option>
+                        <option value="2">فبراير</option>
+                        <option value="3">مارس</option>
+                        <option value="4">أبريل</option>
+                        <option value="5">مايو</option>
+                        <option value="6">يونيو</option>
+                        <option value="7">يوليو</option>
+                        <option value="8">أغسطس</option>
+                        <option value="9">سبتمبر</option>
+                        <option value="10">أكتوبر</option>
+                        <option value="11">نوفمبر</option>
+                        <option value="12">ديسمبر</option>
+
+                    </select>
+
+
+                    <select id="birthYear">
+                        <option value="">
+                            السنة
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <label for="gender">
+                    الجنس
+                </label>
+
+                <select id="gender">
+
+                    <option value="">
+                        اختر الجنس
+                    </option>
+
+                    <option value="male">
+                        ذكر
+                    </option>
+
+                    <option value="female">
+                        أنثى
+                    </option>
+
+                </select>
+
+
+                <label for="emailRegister">
+                    البريد الإلكتروني
+                </label>
+
+                <input
+                    type="email"
+                    id="emailRegister"
+                    placeholder="أدخل بريدك الإلكتروني"
+                    autocomplete="email"
+                >
+
+
+                <label for="passwordRegister">
+                    كلمة المرور
+                </label>
+
+                <input
+                    type="password"
+                    id="passwordRegister"
+                    placeholder="6 أحرف على الأقل"
+                    autocomplete="new-password"
+                >
+
+
+                <label for="confirmPasswordRegister">
+                    تأكيد كلمة المرور
+                </label>
+
+                <input
+                    type="password"
+                    id="confirmPasswordRegister"
+                    placeholder="أعد كتابة كلمة المرور"
+                    autocomplete="new-password"
+                >
+
+
+                <button
+                    class="login-submit"
+                    id="registerSubmitButton"
+                    type="button"
+                >
+                    إنشاء الحساب
+                </button>
+
+
+                <button
+                    class="login-register"
+                    id="showLoginButton"
+                    type="button"
+                >
+                    لدي حساب بالفعل
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         التذييل
+    ========================================================= -->
+
+    <footer class="site-footer">
+
+        <div class="footer-container">
+
+            <div class="footer-brand">
+
+                <a
+                    href="index.html"
+                    class="footer-logo"
+                >
+                    قافية
+                </a>
+
+                <p>
+                    موسوعة عربية مختصة في الشعر والأدب العربي،
+                    تجمع القصائد والشعراء والمقالات في مكان واحد.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <h3>
+                    استكشف
+                </h3>
+
+                <a href="Poems.html">
+                    القصائد
+                </a>
+
+                <a href="poets.html">
+                    الشعراء
+                </a>
+
+                <a href="articles.html">
+                    المقالات
+                </a>
+
+                <a href="about.html">
+                    نبذة عن قافية
+                </a>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <h3>
+                    الحساب
+                </h3>
+
+                <a href="profile.html">
+                    الملف الشخصي
+                </a>
+
+                <a
+                    href="#"
+                    id="footerFavoritesLink"
+                >
+                    المفضلة
+                </a>
+
+                <a
+                    href="#"
+                    id="footerSettingsLink"
+                >
+                    الإعدادات
+                </a>
+
+            </div>
+
+
+            <div class="footer-contact">
+
+                <h3>
+                    تواصل معنا
+                </h3>
+
+                <a
+                    href="mailto:"
+                    class="footer-email"
+                >
+                    البريد الإلكتروني
+                </a>
+
+
+                <div class="footer-socials">
+
+                    <a
+                        href="#"
+                        aria-label="X"
+                        title="X"
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.38L6.49 22H3.38l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.52h1.73L8.29 4.34H6.43L17.8 19.52Z">
+                            </path>
+                        </svg>
+                    </a>
+
+
+                    <a
+                        href="#"
+                        aria-label="Instagram"
+                        title="Instagram"
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            aria-hidden="true"
+                        >
+                            <rect
+                                x="3"
+                                y="3"
+                                width="18"
+                                height="18"
+                                rx="5">
+                            </rect>
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="4">
+                            </circle>
+
+                            <circle
+                                cx="17.5"
+                                cy="6.5"
+                                r="1">
+                            </circle>
+                        </svg>
+                    </a>
+
+
+                    <a
+                        href="#"
+                        aria-label="YouTube"
+                        title="YouTube"
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M21 7.2a2.8 2.8 0 0 0-2-2C17.2 4.7 12 4.7 12 4.7s-5.2 0-7 .5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2.5 12 29 29 0 0 0 3 16.8a2.8 2.8 0 0 0 2 2c1.8.5 7 .5 7 .5s5.2 0 7-.5a2.8 2.8 0 0 0 2-2 29 29 0 0 0 .5-4.8A29 29 0 0 0 21 7.2Z">
+                            </path>
+
+                            <path
+                                d="m10 15.5 5-3.5-5-3.5v7Z"
+                                fill="currentColor"
+                                stroke="none">
+                            </path>
+                        </svg>
+                    </a>
+
+
+                    <a
+                        href="mailto:"
+                        aria-label="البريد الإلكتروني"
+                        title="البريد الإلكتروني"
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="14"
+                                rx="2">
+                            </rect>
+
+                            <path d="m3 7 9 6 9-6"></path>
+                        </svg>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 قافية — جميع الحقوق محفوظة
+            </p>
+
+            <span>
+                موسوعة الشعر والأدب العربي
+            </span>
+
+        </div>
+
+    </footer>
+
+</body>
+
+</html>
