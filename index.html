@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -16,679 +17,471 @@
         name="description"
         content="القافية — موسوعة عربية مختصة في الشعر والأدب العربي">
 
-    <title>القافية | موسوعة الشعر والأدب العربي</title>
+    <title>
+        القافية | موسوعة الشعر والأدب العربي
+    </title>
 
     <link
         rel="stylesheet"
         href="style.css">
 
-    <!-- تحسينات خاصة بالصفحة الرئيسية فقط -->
+
     <style>
+
+        /* =========================================================
+           الصفحة الرئيسية
+           ========================================================= */
+
+        html {
+            background: #ffffff;
+        }
+
+        body.home-page {
+            margin: 0;
+            background: #3E2723 !important;
+            color: #ffffff;
+        }
+
+        .home-page main {
+            background: #3E2723 !important;
+        }
+
+
+        /* =========================================================
+           الواجهة الرئيسية
+           ========================================================= */
+
         .home-page .hero-section {
-            position: relative;
-            isolation: isolate;
-            min-height: clamp(520px, 72vh, 760px);
-            display: grid;
-            place-items: center;
-            overflow: hidden;
-            padding: 96px 24px 88px;
+            min-height: 470px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 76px 24px 68px;
+
+            background: #3E2723 !important;
+
             text-align: center;
         }
 
-        .home-page .hero-section::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: -2;
-
-            background:
-                radial-gradient(
-                    circle at 50% 8%,
-                    rgba(203,153,126,.20),
-                    transparent 34%
-                ),
-                radial-gradient(
-                    circle at 84% 72%,
-                    rgba(181,131,141,.10),
-                    transparent 28%
-                ),
-                linear-gradient(
-                    180deg,
-                    #ffffff 0%,
-                    #fffaf7 100%
-                );
-        }
-
-        .home-page .hero-section::after {
-            content: "القافية";
-
-            position: absolute;
-            inset-inline-start: 50%;
-            bottom: -42px;
-
-            z-index: -1;
-
-            transform: translateX(-50%);
-
-            color: rgba(62,39,35,.035);
-
-            font-size:
-                clamp(
-                    110px,
-                    19vw,
-                    280px
-                );
-
-            line-height: 1;
-            white-space: nowrap;
-
-            pointer-events: none;
-        }
-
         .home-page .hero-content {
-            width: min(900px, 100%);
-            margin-inline: auto;
+            width: min(760px, 100%);
+            margin: 0 auto;
         }
 
-        .home-page .hero-eyebrow,
+        .home-page .hero-eyebrow {
+            display: inline-block;
+
+            margin-bottom: 16px;
+
+            color: #CB997E;
+
+            font-size: .95rem;
+        }
+
+        .home-page .hero-content h1 {
+            margin: 0 0 17px;
+
+            color: #ffffff;
+
+            font-size: clamp(2.3rem, 5vw, 4rem);
+            line-height: 1.25;
+        }
+
+        .home-page .hero-content > p {
+            max-width: 640px;
+
+            margin: 0 auto;
+
+            color: rgba(255, 255, 255, .72);
+
+            font-size: 1.05rem;
+            line-height: 1.95;
+        }
+
+
+        /* =========================================================
+           أزرار الواجهة
+           ========================================================= */
+
+        .home-page .hero-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin-top: 28px;
+        }
+
+        .home-page .hero-actions a {
+            min-width: 155px;
+        }
+
+        .home-page .hero-section .primary-button {
+            background: #FFE8D6 !important;
+            color: #3E2723 !important;
+
+            border: 1px solid #FFE8D6 !important;
+        }
+
+        .home-page .hero-section .primary-button:hover {
+            background: #CB997E !important;
+            color: #ffffff !important;
+
+            border-color: #CB997E !important;
+        }
+
+        .home-page .hero-section .secondary-button {
+            background: transparent !important;
+
+            color: #ffffff !important;
+
+            border: 1px solid rgba(255, 255, 255, .32) !important;
+        }
+
+        .home-page .hero-section .secondary-button:hover {
+            background: rgba(255, 255, 255, .06) !important;
+        }
+
+
+        /* =========================================================
+           استكشف القافية
+           ========================================================= */
+
+        .home-page .site-sections {
+            width: min(1080px, calc(100% - 40px));
+
+            margin: 0 auto;
+
+            padding: 62px 0 66px;
+
+            background: #3E2723 !important;
+        }
+
+        .home-page .section-title {
+            max-width: 620px;
+
+            margin: 0 auto 34px;
+
+            text-align: center;
+        }
+
         .home-page .section-kicker {
+            display: inline-block;
+
+            margin-bottom: 8px;
+
+            color: #CB997E;
+
+            font-size: .92rem;
+        }
+
+        .home-page .section-title h2 {
+            margin: 0 0 10px;
+
+            color: #ffffff;
+
+            font-size: clamp(1.8rem, 4vw, 2.55rem);
+            line-height: 1.35;
+        }
+
+        .home-page .section-title p {
+            margin: 0;
+
+            color: rgba(255, 255, 255, .65);
+
+            line-height: 1.85;
+        }
+
+
+        /* =========================================================
+           البطاقات الدافئة
+           ========================================================= */
+
+        .home-page .section-cards {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 16px;
+        }
+
+        .home-page .section-card {
+            min-height: 210px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            padding: 25px;
+
+            border: 1px solid rgba(255, 232, 214, .24);
+            border-radius: 16px;
+
+            background: #DCC3B2 !important;
+
+            box-shadow:
+                0 7px 20px rgba(0, 0, 0, .10);
+
+            text-decoration: none;
+
+            transition:
+                transform .18s ease,
+                background .18s ease,
+                box-shadow .18s ease;
+        }
+
+        .home-page .section-card:hover {
+            transform: translateY(-3px);
+
+            background: #E4CCBC !important;
+
+            box-shadow:
+                0 10px 26px rgba(0, 0, 0, .13);
+        }
+
+
+        /* أيقونات البطاقات */
+
+        .home-page .card-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 18px;
+
+            border-radius: 11px;
+
+            background: #3E2723 !important;
+
+            color: #FFE8D6 !important;
+        }
+
+        .home-page .card-icon svg {
+            width: 21px;
+            height: 21px;
+        }
+
+
+        /* عنوان البطاقة */
+
+        .home-page .section-card h3 {
+            margin: 0 0 8px;
+
+            color: #3E2723;
+
+            font-size: 1.15rem;
+        }
+
+
+        /* وصف البطاقة */
+
+        .home-page .section-card p {
+            margin: 0;
+
+            color: rgba(62, 39, 35, .74);
+
+            font-size: .95rem;
+            line-height: 1.85;
+        }
+
+
+        /* سهم البطاقة */
+
+        .home-page .card-arrow {
+            width: 32px;
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: auto;
+            padding-top: 15px;
+
+            color: #6D6875;
+        }
+
+        .home-page .card-arrow svg {
+            width: 17px;
+            height: 17px;
+        }
+
+
+        /* =========================================================
+           حيث يلتقي الشعر بالتاريخ
+           بنفس هوية البطاقات
+           ========================================================= */
+
+        .home-page .home-introduction {
+            width: min(900px, calc(100% - 40px));
+
+            margin: 46px auto 92px;
+
+            text-align: center;
+
+            background: transparent !important;
+        }
+
+        .home-page .home-introduction-content {
+            padding: 52px 30px;
+
+            background: #DCC3B2 !important;
+
+            border: 1px solid rgba(255, 232, 214, .24);
+            border-radius: 18px;
+
+            box-shadow:
+                0 8px 24px rgba(0, 0, 0, .11);
+        }
+
+        .home-page .home-introduction .section-kicker {
+            color: #6D6875;
+        }
+
+        .home-page .home-introduction h2 {
+            max-width: 680px;
+
+            margin: 13px auto 14px;
+
+            color: #3E2723;
+
+            font-size: clamp(1.9rem, 4vw, 2.65rem);
+            line-height: 1.4;
+        }
+
+        .home-page .home-introduction p {
+            max-width: 690px;
+
+            margin: 0 auto;
+
+            color: rgba(62, 39, 35, .74);
+
+            font-size: 1rem;
+            line-height: 2;
+        }
+
+        .home-page .home-introduction .primary-button {
             display: inline-flex;
             align-items: center;
             justify-content: center;
 
-            min-height: 34px;
+            margin-top: 26px;
 
-            padding:
-                6px
-                14px;
+            background: #3E2723 !important;
+            color: #FFE8D6 !important;
 
-            border:
-                1px
-                solid
-                rgba(62,39,35,.12);
-
-            border-radius:
-                999px;
-
-            background:
-                rgba(255,255,255,.72);
-
-            color:
-                #6D6875;
-
-            font-size:
-                .92rem;
-
-            letter-spacing:
-                .02em;
+            border: 1px solid #3E2723 !important;
         }
 
-        .home-page .hero-content h1 {
-            max-width:
-                850px;
+        .home-page .home-introduction .primary-button:hover {
+            background: #51362F !important;
+            color: #ffffff !important;
 
-            margin:
-                20px
-                auto
-                16px;
-
-            color:
-                #3E2723;
-
-            font-size:
-                clamp(
-                    2.35rem,
-                    6vw,
-                    5rem
-                );
-
-            line-height:
-                1.15;
+            border-color: #51362F !important;
         }
 
-        .home-page .hero-content > p {
-            max-width:
-                690px;
 
-            margin:
-                0
-                auto;
-
-            color:
-                rgba(62,39,35,.72);
-
-            font-size:
-                clamp(
-                    1.02rem,
-                    2vw,
-                    1.25rem
-                );
-
-            line-height:
-                2;
-        }
-
-        .home-page .hero-actions {
-            display:
-                flex;
-
-            flex-wrap:
-                wrap;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            gap:
-                12px;
-
-            margin-top:
-                30px;
-        }
-
-        .home-page .hero-actions a {
-            min-width:
-                150px;
-        }
-
-        .home-page .site-sections {
-            width:
-                min(
-                    1180px,
-                    calc(100% - 40px)
-                );
-
-            margin:
-                0
-                auto;
-
-            padding:
-                88px
-                0
-                72px;
-        }
-
-        .home-page .section-title {
-            max-width:
-                720px;
-
-            margin:
-                0
-                auto
-                38px;
-
-            text-align:
-                center;
-        }
-
-        .home-page .section-title h2 {
-            margin:
-                14px
-                0
-                10px;
-
-            color:
-                #3E2723;
-
-            font-size:
-                clamp(
-                    1.9rem,
-                    4vw,
-                    3rem
-                );
-        }
-
-        .home-page .section-title p {
-            margin:
-                0;
-
-            color:
-                rgba(62,39,35,.66);
-
-            line-height:
-                1.9;
-        }
-
-        .home-page .section-cards {
-            display:
-                grid;
-
-            grid-template-columns:
-                repeat(
-                    4,
-                    minmax(0, 1fr)
-                );
-
-            gap:
-                18px;
-        }
-
-        .home-page .section-card {
-            position:
-                relative;
-
-            min-height:
-                250px;
-
-            display:
-                flex;
-
-            flex-direction:
-                column;
-
-            align-items:
-                flex-start;
-
-            gap:
-                18px;
-
-            padding:
-                28px;
-
-            overflow:
-                hidden;
-
-            border:
-                1px
-                solid
-                rgba(62,39,35,.10);
-
-            border-radius:
-                22px;
-
-            background:
-                #ffffff;
-
-            box-shadow:
-                0
-                12px
-                34px
-                rgba(62,39,35,.055);
-
-            text-decoration:
-                none;
-
-            transition:
-                transform .22s ease,
-                box-shadow .22s ease,
-                border-color .22s ease;
-        }
-
-        .home-page .section-card:hover {
-            transform:
-                translateY(-5px);
-
-            border-color:
-                rgba(62,39,35,.20);
-
-            box-shadow:
-                0
-                18px
-                42px
-                rgba(62,39,35,.10);
-        }
-
-        .home-page .card-icon {
-            width:
-                52px;
-
-            height:
-                52px;
-
-            display:
-                inline-grid;
-
-            place-items:
-                center;
-
-            flex:
-                0
-                0
-                52px;
-
-            border-radius:
-                16px;
-
-            background:
-                #FFE8D6;
-
-            color:
-                #3E2723;
-        }
-
-        .home-page .card-icon svg {
-            width:
-                25px;
-
-            height:
-                25px;
-        }
-
-        .home-page .section-card h3 {
-            margin:
-                0
-                0
-                8px;
-
-            color:
-                #3E2723;
-
-            font-size:
-                1.18rem;
-        }
-
-        .home-page .section-card p {
-            margin:
-                0;
-
-            color:
-                rgba(62,39,35,.65);
-
-            line-height:
-                1.85;
-        }
-
-        .home-page .card-arrow {
-            width:
-                36px;
-
-            height:
-                36px;
-
-            display:
-                inline-grid;
-
-            place-items:
-                center;
-
-            margin-top:
-                auto;
-
-            border-radius:
-                50%;
-
-            background:
-                #f7f3f1;
-
-            color:
-                #3E2723;
-        }
-
-        .home-page .card-arrow svg {
-            width:
-                18px;
-
-            height:
-                18px;
-        }
-
-        .home-page .home-introduction {
-            width:
-                min(
-                    1100px,
-                    calc(100% - 40px)
-                );
-
-            margin:
-                54px
-                auto
-                96px;
-
-            padding:
-                0;
-
-            text-align:
-                center;
-        }
-
-        .home-page .home-introduction-content {
-            position:
-                relative;
-
-            max-width:
-                920px;
-
-            margin:
-                0
-                auto;
-
-            padding:
-                clamp(
-                    40px,
-                    6vw,
-                    72px
-                )
-                clamp(
-                    24px,
-                    7vw,
-                    80px
-                );
-
-            overflow:
-                hidden;
-
-            border:
-                1px
-                solid
-                rgba(62,39,35,.10);
-
-            border-radius:
-                28px;
-
-            background:
-                radial-gradient(
-                    circle at 90% 0%,
-                    rgba(255,232,214,.86),
-                    transparent 32%
-                ),
-                linear-gradient(
-                    145deg,
-                    #ffffff 0%,
-                    #fbf7f4 100%
-                );
-
-            box-shadow:
-                0
-                18px
-                50px
-                rgba(62,39,35,.07);
-        }
-
-        .home-page .home-introduction-content::before {
-            content:
-                "“";
-
-            position:
-                absolute;
-
-            top:
-                -24px;
-
-            inset-inline-start:
-                34px;
-
-            color:
-                rgba(62,39,35,.05);
-
-            font-size:
-                160px;
-
-            line-height:
-                1;
-
-            pointer-events:
-                none;
-        }
-
-        .home-page .home-introduction h2 {
-            max-width:
-                700px;
-
-            margin:
-                18px
-                auto
-                14px;
-
-            color:
-                #3E2723;
-
-            font-size:
-                clamp(
-                    2rem,
-                    4vw,
-                    3.35rem
-                );
-
-            line-height:
-                1.3;
-        }
-
-        .home-page .home-introduction p {
-            max-width:
-                720px;
-
-            margin:
-                0
-                auto;
-
-            color:
-                rgba(62,39,35,.68);
-
-            font-size:
-                1.05rem;
-
-            line-height:
-                2;
-        }
-
-        .home-page .home-introduction .primary-button {
-            display:
-                inline-flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            margin-top:
-                28px;
-        }
+        /* =========================================================
+           أيقونات القائمة
+           ========================================================= */
 
         .home-page .side-navigation .menu-icon {
-            width:
-                24px;
+            width: 24px;
+            min-width: 24px;
 
-            min-width:
-                24px;
-
-            display:
-                inline-flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .home-page .side-navigation .menu-icon svg {
-            width:
-                20px;
-
-            height:
-                20px;
+            width: 20px;
+            height: 20px;
         }
 
         .home-page .user-avatar svg {
-            width:
-                50%;
-
-            height:
-                50%;
+            width: 52%;
+            height: 52%;
         }
 
-        @media (max-width: 980px) {
+
+        /* =========================================================
+           تابلت
+           ========================================================= */
+
+        @media (max-width: 950px) {
 
             .home-page .section-cards {
                 grid-template-columns:
-                    repeat(
-                        2,
-                        minmax(0, 1fr)
-                    );
+                    repeat(2, minmax(0, 1fr));
             }
+
         }
 
-        @media (max-width: 640px) {
+
+        /* =========================================================
+           جوال
+           ========================================================= */
+
+        @media (max-width: 620px) {
 
             .home-page .hero-section {
-                min-height:
-                    auto;
+                min-height: auto;
 
-                padding:
-                    76px
-                    20px
-                    70px;
+                padding: 64px 18px 58px;
+            }
+
+            .home-page .hero-content h1 {
+                font-size: 2.2rem;
             }
 
             .home-page .hero-actions {
-                flex-direction:
-                    column;
+                flex-direction: column;
             }
 
             .home-page .hero-actions a {
-                width:
-                    min(
-                        100%,
-                        310px
-                    );
+                width: min(100%, 285px);
             }
 
             .home-page .site-sections {
-                width:
-                    min(
-                        calc(100% - 28px),
-                        1180px
-                    );
+                width: calc(100% - 28px);
 
-                padding:
-                    68px
-                    0
-                    54px;
+                padding: 52px 0 48px;
             }
 
             .home-page .section-cards {
-                grid-template-columns:
-                    1fr;
+                grid-template-columns: 1fr;
             }
 
             .home-page .section-card {
-                min-height:
-                    220px;
+                min-height: 190px;
+
+                padding: 22px;
             }
 
             .home-page .home-introduction {
-                width:
-                    min(
-                        calc(100% - 28px),
-                        1100px
-                    );
+                width: calc(100% - 28px);
 
-                margin-top:
-                    36px;
-
-                margin-bottom:
-                    72px;
+                margin-top: 28px;
+                margin-bottom: 70px;
             }
 
             .home-page .home-introduction-content {
-                border-radius:
-                    22px;
+                padding: 40px 20px;
             }
+
         }
+
     </style>
+
 
     <script
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
@@ -706,7 +499,9 @@
 
 </head>
 
+
 <body class="home-page">
+
 
     <!-- ========================================================= -->
     <!-- الرأس -->
@@ -730,6 +525,7 @@
 
             </button>
 
+
             <a
                 href="index.html"
                 class="site-logo"
@@ -738,6 +534,7 @@
                 القافية
 
             </a>
+
 
             <div class="header-actions">
 
@@ -778,6 +575,7 @@
 
                 </button>
 
+
                 <button
                     class="login-button"
                     id="loginButton"
@@ -793,6 +591,7 @@
 
     </header>
 
+
     <!-- ========================================================= -->
     <!-- طبقة القائمة -->
     <!-- ========================================================= -->
@@ -802,6 +601,7 @@
         id="menuOverlay">
     </div>
 
+
     <!-- ========================================================= -->
     <!-- القائمة الجانبية -->
     <!-- ========================================================= -->
@@ -810,6 +610,7 @@
         class="side-menu"
         id="sideMenu"
         aria-hidden="true">
+
 
         <div class="side-menu-header">
 
@@ -829,7 +630,6 @@
 
         </div>
 
-        <!-- المستخدم -->
 
         <div class="user-section">
 
@@ -858,6 +658,7 @@
 
             </div>
 
+
             <div class="user-info">
 
                 <strong id="menuUserName">
@@ -872,11 +673,11 @@
 
         </div>
 
-        <!-- روابط القائمة -->
 
         <nav
             class="side-navigation"
             aria-label="القائمة الرئيسية">
+
 
             <a
                 href="index.html"
@@ -912,6 +713,7 @@
 
             </a>
 
+
             <a href="Poems.html">
 
                 <span
@@ -944,6 +746,7 @@
 
             </a>
 
+
             <a href="poets.html">
 
                 <span
@@ -958,9 +761,7 @@
                         stroke-linecap="round"
                         stroke-linejoin="round">
 
-                        <path
-                            d="M4 20h6">
-                        </path>
+                        <path d="M4 20h6"></path>
 
                         <path
                             d="M14.5 4.5a2.12 2.12 0 0 1 3 3L9 16l-4 1 1-4Z">
@@ -976,6 +777,7 @@
 
             </a>
 
+
             <a href="articles.html">
 
                 <span
@@ -990,21 +792,10 @@
                         stroke-linecap="round"
                         stroke-linejoin="round">
 
-                        <path
-                            d="M6 3h9l3 3v15H6Z">
-                        </path>
-
-                        <path
-                            d="M14 3v4h4">
-                        </path>
-
-                        <path
-                            d="M9 11h6">
-                        </path>
-
-                        <path
-                            d="M9 15h6">
-                        </path>
+                        <path d="M6 3h9l3 3v15H6Z"></path>
+                        <path d="M14 3v4h4"></path>
+                        <path d="M9 11h6"></path>
+                        <path d="M9 15h6"></path>
 
                     </svg>
 
@@ -1015,6 +806,7 @@
                 </span>
 
             </a>
+
 
             <a
                 href="#"
@@ -1046,6 +838,7 @@
 
             </a>
 
+
             <a
                 href="#"
                 id="settingsLink">
@@ -1069,23 +862,7 @@
                         </circle>
 
                         <path
-                            d="M19 12a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z">
-                        </path>
-
-                        <path
-                            d="M12 2v3">
-                        </path>
-
-                        <path
-                            d="M12 19v3">
-                        </path>
-
-                        <path
-                            d="M2 12h3">
-                        </path>
-
-                        <path
-                            d="M19 12h3">
+                            d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z">
                         </path>
 
                     </svg>
@@ -1097,6 +874,7 @@
                 </span>
 
             </a>
+
 
             <a href="about.html">
 
@@ -1118,13 +896,8 @@
                             r="9">
                         </circle>
 
-                        <path
-                            d="M12 10v6">
-                        </path>
-
-                        <path
-                            d="M12 7h.01">
-                        </path>
+                        <path d="M12 10v6"></path>
+                        <path d="M12 7h.01"></path>
 
                     </svg>
 
@@ -1136,13 +909,14 @@
 
             </a>
 
+
         </nav>
 
-        <!-- تذييل القائمة -->
 
         <div class="side-menu-footer">
 
             <div class="side-menu-socials">
+
 
                 <a
                     href="#"
@@ -1160,6 +934,7 @@
                     </svg>
 
                 </a>
+
 
                 <a
                     href="#"
@@ -1197,6 +972,7 @@
 
                 </a>
 
+
                 <a
                     href="#"
                     aria-label="YouTube"
@@ -1224,6 +1000,7 @@
 
                 </a>
 
+
                 <a
                     href="mailto:"
                     aria-label="البريد الإلكتروني"
@@ -1246,13 +1023,12 @@
                             rx="2">
                         </rect>
 
-                        <path
-                            d="m3 7 9 6 9-6">
-                        </path>
+                        <path d="m3 7 9 6 9-6"></path>
 
                     </svg>
 
                 </a>
+
 
             </div>
 
@@ -1263,6 +1039,7 @@
         </div>
 
     </aside>
+
 
     <!-- ========================================================= -->
     <!-- الإشعارات -->
@@ -1290,6 +1067,7 @@
 
         </div>
 
+
         <div
             class="notification-content"
             id="notificationContent">
@@ -1302,13 +1080,15 @@
 
     </div>
 
+
     <!-- ========================================================= -->
-    <!-- المحتوى الرئيسي -->
+    <!-- المحتوى -->
     <!-- ========================================================= -->
 
     <main>
 
-        <!-- الواجهة الرئيسية -->
+
+        <!-- الواجهة -->
 
         <section
             id="intro"
@@ -1325,8 +1105,8 @@
                 </h1>
 
                 <p>
-                    مساحة عربية تجمع القصيدة والشاعر والتاريخ الأدبي
-                    في تجربة واضحة، أنيقة، وسهلة الوصول.
+                    مساحة عربية تجمع الشعر والأدب وسير الشعراء
+                    في مكان واحد منظم وسهل الوصول.
                 </p>
 
                 <div class="hero-actions">
@@ -1353,9 +1133,8 @@
 
         </section>
 
-        <!-- ===================================================== -->
-        <!-- استكشف القافية -->
-        <!-- ===================================================== -->
+
+        <!-- استكشف -->
 
         <section
             class="site-sections"
@@ -1372,13 +1151,15 @@
                 </h2>
 
                 <p>
-                    أبواب مرتبة تقودك إلى القصائد والشعراء والمقالات
-                    والهوية المعرفية للموسوعة.
+                    تصفح القصائد والشعراء والمقالات
+                    في أقسام واضحة ومنظمة.
                 </p>
 
             </div>
 
+
             <div class="section-cards">
+
 
                 <!-- القصائد -->
 
@@ -1417,7 +1198,7 @@
                         </h3>
 
                         <p>
-                            مجموعة من القصائد العربية المختارة
+                            مختارات من الشعر العربي
                             عبر مختلف العصور.
                         </p>
 
@@ -1435,15 +1216,14 @@
                             stroke-linecap="round"
                             stroke-linejoin="round">
 
-                            <path
-                                d="M15 18l-6-6 6-6">
-                            </path>
+                            <path d="M15 18l-6-6 6-6"></path>
 
                         </svg>
 
                     </span>
 
                 </a>
+
 
                 <!-- الشعراء -->
 
@@ -1463,9 +1243,7 @@
                             stroke-linecap="round"
                             stroke-linejoin="round">
 
-                            <path
-                                d="M4 20h6">
-                            </path>
+                            <path d="M4 20h6"></path>
 
                             <path
                                 d="M14.5 4.5a2.12 2.12 0 0 1 3 3L9 16l-4 1 1-4Z">
@@ -1482,8 +1260,8 @@
                         </h3>
 
                         <p>
-                            تعرّف على الشعراء وسيرهم وأبرز
-                            ما خلّدوه من شعر.
+                            تعرّف على الشعراء وسيرهم
+                            وأبرز ما خلّدوه من شعر.
                         </p>
 
                     </div>
@@ -1500,15 +1278,14 @@
                             stroke-linecap="round"
                             stroke-linejoin="round">
 
-                            <path
-                                d="M15 18l-6-6 6-6">
-                            </path>
+                            <path d="M15 18l-6-6 6-6"></path>
 
                         </svg>
 
                     </span>
 
                 </a>
+
 
                 <!-- المقالات -->
 
@@ -1528,21 +1305,10 @@
                             stroke-linecap="round"
                             stroke-linejoin="round">
 
-                            <path
-                                d="M6 3h9l3 3v15H6Z">
-                            </path>
-
-                            <path
-                                d="M14 3v4h4">
-                            </path>
-
-                            <path
-                                d="M9 11h6">
-                            </path>
-
-                            <path
-                                d="M9 15h6">
-                            </path>
+                            <path d="M6 3h9l3 3v15H6Z"></path>
+                            <path d="M14 3v4h4"></path>
+                            <path d="M9 11h6"></path>
+                            <path d="M9 15h6"></path>
 
                         </svg>
 
@@ -1555,8 +1321,8 @@
                         </h3>
 
                         <p>
-                            مقالات في الشعر والأدب والتاريخ
-                            والثقافة العربية.
+                            مقالات في الشعر والأدب
+                            والتاريخ والثقافة العربية.
                         </p>
 
                     </div>
@@ -1573,15 +1339,14 @@
                             stroke-linecap="round"
                             stroke-linejoin="round">
 
-                            <path
-                                d="M15 18l-6-6 6-6">
-                            </path>
+                            <path d="M15 18l-6-6 6-6"></path>
 
                         </svg>
 
                     </span>
 
                 </a>
+
 
                 <!-- عن القافية -->
 
@@ -1607,13 +1372,8 @@
                                 r="9">
                             </circle>
 
-                            <path
-                                d="M12 10v6">
-                            </path>
-
-                            <path
-                                d="M12 7h.01">
-                            </path>
+                            <path d="M12 10v6"></path>
+                            <path d="M12 7h.01"></path>
 
                         </svg>
 
@@ -1626,8 +1386,8 @@
                         </h3>
 
                         <p>
-                            تعرّف على القافية وفكرتها وأهدافها
-                            ورسالتها في حفظ الشعر والأدب.
+                            تعرّف على القافية وفكرتها
+                            وأهدافها ومحتواها.
                         </p>
 
                     </div>
@@ -1644,9 +1404,7 @@
                             stroke-linecap="round"
                             stroke-linejoin="round">
 
-                            <path
-                                d="M15 18l-6-6 6-6">
-                            </path>
+                            <path d="M15 18l-6-6 6-6"></path>
 
                         </svg>
 
@@ -1654,13 +1412,13 @@
 
                 </a>
 
+
             </div>
 
         </section>
 
-        <!-- ===================================================== -->
-        <!-- التعريف بالقافية -->
-        <!-- ===================================================== -->
+
+        <!-- حيث يلتقي الشعر بالتاريخ -->
 
         <section class="home-introduction">
 
@@ -1692,7 +1450,9 @@
 
         </section>
 
+
     </main>
+
 
     <!-- ========================================================= -->
     <!-- تسجيل الدخول -->
@@ -1715,7 +1475,6 @@
 
             </button>
 
-            <!-- تسجيل الدخول -->
 
             <div id="loginForm">
 
@@ -1726,6 +1485,7 @@
                 <p>
                     سجّل دخولك إلى حسابك في القافية
                 </p>
+
 
                 <button
                     class="login-method"
@@ -1751,6 +1511,7 @@
 
                 </button>
 
+
                 <div class="login-divider">
 
                     <span>
@@ -1758,6 +1519,7 @@
                     </span>
 
                 </div>
+
 
                 <label for="emailLogin">
                     البريد الإلكتروني
@@ -1769,6 +1531,7 @@
                     placeholder="أدخل بريدك الإلكتروني"
                     autocomplete="email">
 
+
                 <label for="passwordLogin">
                     كلمة المرور
                 </label>
@@ -1779,6 +1542,7 @@
                     placeholder="أدخل كلمة المرور"
                     autocomplete="current-password">
 
+
                 <button
                     class="login-submit"
                     id="emailLoginButton"
@@ -1787,6 +1551,7 @@
                     تسجيل الدخول
 
                 </button>
+
 
                 <button
                     class="login-register"
@@ -1799,11 +1564,10 @@
 
             </div>
 
-            <!-- إنشاء الحساب -->
 
             <div
                 id="registerForm"
-                style="display: none;">
+                style="display:none;">
 
                 <h2>
                     إنشاء حساب
@@ -1812,6 +1576,7 @@
                 <p>
                     أنشئ حسابك في القافية
                 </p>
+
 
                 <label for="firstName">
                     الاسم الأول
@@ -1822,6 +1587,7 @@
                     id="firstName"
                     placeholder="الاسم الأول"
                     autocomplete="given-name">
+
 
                 <label for="lastName">
 
@@ -1839,6 +1605,7 @@
                     placeholder="الاسم الأخير"
                     autocomplete="family-name">
 
+
                 <label>
                     تاريخ الميلاد
                 </label>
@@ -1853,61 +1620,28 @@
 
                     </select>
 
+
                     <select id="birthMonth">
 
                         <option value="">
                             الشهر
                         </option>
 
-                        <option value="1">
-                            يناير
-                        </option>
-
-                        <option value="2">
-                            فبراير
-                        </option>
-
-                        <option value="3">
-                            مارس
-                        </option>
-
-                        <option value="4">
-                            أبريل
-                        </option>
-
-                        <option value="5">
-                            مايو
-                        </option>
-
-                        <option value="6">
-                            يونيو
-                        </option>
-
-                        <option value="7">
-                            يوليو
-                        </option>
-
-                        <option value="8">
-                            أغسطس
-                        </option>
-
-                        <option value="9">
-                            سبتمبر
-                        </option>
-
-                        <option value="10">
-                            أكتوبر
-                        </option>
-
-                        <option value="11">
-                            نوفمبر
-                        </option>
-
-                        <option value="12">
-                            ديسمبر
-                        </option>
+                        <option value="1">يناير</option>
+                        <option value="2">فبراير</option>
+                        <option value="3">مارس</option>
+                        <option value="4">أبريل</option>
+                        <option value="5">مايو</option>
+                        <option value="6">يونيو</option>
+                        <option value="7">يوليو</option>
+                        <option value="8">أغسطس</option>
+                        <option value="9">سبتمبر</option>
+                        <option value="10">أكتوبر</option>
+                        <option value="11">نوفمبر</option>
+                        <option value="12">ديسمبر</option>
 
                     </select>
+
 
                     <select id="birthYear">
 
@@ -1918,6 +1652,7 @@
                     </select>
 
                 </div>
+
 
                 <label for="gender">
                     الجنس
@@ -1939,6 +1674,7 @@
 
                 </select>
 
+
                 <label for="emailRegister">
                     البريد الإلكتروني
                 </label>
@@ -1948,6 +1684,7 @@
                     id="emailRegister"
                     placeholder="أدخل بريدك الإلكتروني"
                     autocomplete="email">
+
 
                 <label for="passwordRegister">
                     كلمة المرور
@@ -1959,6 +1696,7 @@
                     placeholder="6 أحرف على الأقل"
                     autocomplete="new-password">
 
+
                 <label for="confirmPasswordRegister">
                     تأكيد كلمة المرور
                 </label>
@@ -1969,6 +1707,7 @@
                     placeholder="أعد كتابة كلمة المرور"
                     autocomplete="new-password">
 
+
                 <button
                     class="login-submit"
                     id="registerSubmitButton"
@@ -1977,6 +1716,7 @@
                     إنشاء الحساب
 
                 </button>
+
 
                 <button
                     class="login-register"
@@ -1987,11 +1727,13 @@
 
                 </button>
 
+
             </div>
 
         </div>
 
     </div>
+
 
     <!-- ========================================================= -->
     <!-- الفوتر -->
@@ -2000,6 +1742,7 @@
     <footer class="site-footer">
 
         <div class="footer-container">
+
 
             <div class="footer-brand">
 
@@ -2017,6 +1760,7 @@
                 </p>
 
             </div>
+
 
             <div class="footer-links">
 
@@ -2041,6 +1785,7 @@
                 </a>
 
             </div>
+
 
             <div class="footer-links">
 
@@ -2070,6 +1815,7 @@
 
             </div>
 
+
             <div class="footer-contact">
 
                 <h3>
@@ -2084,7 +1830,9 @@
 
                 </a>
 
+
                 <div class="footer-socials">
+
 
                     <a
                         href="#"
@@ -2102,6 +1850,7 @@
                         </svg>
 
                     </a>
+
 
                     <a
                         href="#"
@@ -2139,6 +1888,7 @@
 
                     </a>
 
+
                     <a
                         href="#"
                         aria-label="YouTube"
@@ -2165,6 +1915,7 @@
                         </svg>
 
                     </a>
+
 
                     <a
                         href="mailto:"
@@ -2196,11 +1947,13 @@
 
                     </a>
 
+
                 </div>
 
             </div>
 
         </div>
+
 
         <div class="footer-bottom">
 
@@ -2215,6 +1968,7 @@
         </div>
 
     </footer>
+
 
 </body>
 
