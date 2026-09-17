@@ -1,7 +1,6 @@
 // ============================================================
-// القافية - النظام الرئيسي
-// Supabase Auth + Profiles + Account UI + Menu + Notifications
-// Profile + Avatar Management
+// القافية - script.js النهائي
+// Auth + Account + Profile + Menu + Notifications
 // ============================================================
 
 (function () {
@@ -11,42 +10,72 @@
     window.__ALQAFIYAH_SCRIPT_STARTED__ = true;
 
     const $ = (id) => document.getElementById(id);
-    const q = (selector, root = document) =>
-        root.querySelector(selector);
+    const q = (selector, root = document) => root.querySelector(selector);
+    const qa = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-    const qa = (selector, root = document) =>
-        Array.from(
-            root.querySelectorAll(selector)
-        );
+    const USER_ICON = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7"></path>
+        </svg>`;
 
-    // ============================================================
-    // أدوات عامة
-    // ============================================================
+    const ICONS = {
+        home: `
+            <path d="M3 11.5 12 4l9 7.5"></path>
+            <path d="M5 10.5V20h5v-6h4v6h5v-9.5"></path>
+        `,
 
-    function currentPage() {
-        return window.location.pathname
-            .split("/")
-            .pop()
-            .toLowerCase();
-    }
+        poems: `
+            <path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"></path>
+            <path d="M8 7h8"></path>
+            <path d="M8 11h8"></path>
+            <path d="M8 15h5"></path>
+        `,
 
-    function escapeHtml(value) {
-        const div =
-            document.createElement("div");
+        poets: `
+            <path d="M4 20h6"></path>
+            <path d="M14.5 4.5a2.12 2.12 0 0 1 3 3L9 16l-4 1 1-4Z"></path>
+        `,
 
-        div.textContent =
-            value ?? "";
+        articles: `
+            <path d="M6 3h9l3 3v15H6Z"></path>
+            <path d="M14 3v4h4"></path>
+            <path d="M9 11h6"></path>
+            <path d="M9 15h6"></path>
+        `,
 
-        return div.innerHTML;
-    }
+        star: `
+            <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2 7.5 14 3 9.6l6.2-.9Z"></path>
+        `,
 
-    // ============================================================
-    // أيقونة المستخدم
-    // ============================================================
+        settings: `
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"></path>
+        `,
 
-    function userIcon() {
+        info: `
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 10v6"></path>
+            <path d="M12 7h.01"></path>
+        `,
+
+        user: `
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7"></path>
+        `,
+
+        logout: `
+            <path d="M10 17l5-5-5-5"></path>
+            <path d="M15 12H3"></path>
+            <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
+        `
+    };
+
+    function icon(name, className = "alqafiyah-ui-icon") {
         return `
             <svg
+                class="${className}"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -55,23 +84,11 @@
                 stroke-linejoin="round"
                 aria-hidden="true">
 
-                <circle
-                    cx="12"
-                    cy="8"
-                    r="4">
-                </circle>
-
-                <path
-                    d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
-                </path>
+                ${ICONS[name] || ICONS.info}
 
             </svg>
         `;
     }
-
-    // ============================================================
-    // شعار Google
-    // ============================================================
 
     function googleIcon() {
         return `
@@ -104,10 +121,6 @@
         `;
     }
 
-    // ============================================================
-    // شعار Apple
-    // ============================================================
-
     function appleIcon() {
         return `
             <svg
@@ -123,10 +136,6 @@
             </svg>
         `;
     }
-
-    // ============================================================
-    // أيقونة الهاتف
-    // ============================================================
 
     function phoneIcon() {
         return `
@@ -148,163 +157,39 @@
         `;
     }
 
-    // ============================================================
-    // الأيقونات الكلاسيكية
-    // ============================================================
-
-    function icon(name) {
-
-        const paths = {
-
-            home: `
-                <path
-                    d="M3 11.5 12 4l9 7.5">
-                </path>
-
-                <path
-                    d="M5 10.5V20h5v-6h4v6h5v-9.5">
-                </path>
-            `,
-
-            poems: `
-                <path
-                    d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z">
-                </path>
-
-                <path d="M8 7h8"></path>
-                <path d="M8 11h8"></path>
-                <path d="M8 15h5"></path>
-            `,
-
-            poets: `
-                <path d="M4 20h6"></path>
-
-                <path
-                    d="M14.5 4.5a2.12 2.12 0 0 1 3 3L9 16l-4 1 1-4Z">
-                </path>
-            `,
-
-            articles: `
-                <path
-                    d="M6 3h9l3 3v15H6Z">
-                </path>
-
-                <path d="M14 3v4h4"></path>
-                <path d="M9 11h6"></path>
-                <path d="M9 15h6"></path>
-            `,
-
-            star: `
-                <path
-                    d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2 7.5 14 3 9.6l6.2-.9Z">
-                </path>
-            `,
-
-            settings: `
-                <circle
-                    cx="12"
-                    cy="12"
-                    r="3">
-                </circle>
-
-                <path
-                    d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z">
-                </path>
-            `,
-
-            info: `
-                <circle
-                    cx="12"
-                    cy="12"
-                    r="9">
-                </circle>
-
-                <path d="M12 10v6"></path>
-                <path d="M12 7h.01"></path>
-            `,
-
-            user: `
-                <circle
-                    cx="12"
-                    cy="8"
-                    r="4">
-                </circle>
-
-                <path
-                    d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
-                </path>
-            `,
-
-            logout: `
-                <path
-                    d="M10 17l5-5-5-5">
-                </path>
-
-                <path
-                    d="M15 12H3">
-                </path>
-
-                <path
-                    d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5">
-                </path>
-            `
-        };
-
-        return `
-            <svg
-                class="alqafiyah-ui-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true">
-
-                ${
-                    paths[name] ||
-                    paths.info
-                }
-
-            </svg>
-        `;
+    function escapeHtml(value) {
+        const div = document.createElement("div");
+        div.textContent = value ?? "";
+        return div.innerHTML;
     }
 
-    // ============================================================
-    // التنسيقات
-    // ============================================================
+    function currentPage() {
+        return location.pathname
+            .split("/")
+            .pop()
+            .toLowerCase();
+    }
 
     function injectStyles() {
-
-        if (
-            $("alqafiyahRuntimeStyles")
-        ) {
-            return;
-        }
+        if ($("alqafiyahRuntimeStyles")) return;
 
         const style =
-            document.createElement(
-                "style"
-            );
+            document.createElement("style");
 
         style.id =
             "alqafiyahRuntimeStyles";
 
         style.textContent = `
 
-            html,
-            body {
+            /*
+                مهم:
+                لا نغير body إلى اللون الأبيض.
+                الأبيض هنا لخلفية المتصفح خلف الصفحة فقط
+                عند السحب الزائد أعلى أو أسفل الصفحة.
+            */
+
+            html {
                 background: #ffffff !important;
-            }
-
-            body {
-                min-height: 100vh;
-            }
-
-            .site-footer {
-                flex: 0 0 auto !important;
-                height: auto !important;
-                min-height: 0 !important;
             }
 
             .alqafiyah-auth-method {
@@ -399,19 +284,15 @@
 
             .qafiyah-account-dropdown {
                 position: fixed !important;
-                display: none;
+                display: none !important;
                 min-width: 205px;
                 padding: 7px;
                 background: #ffffff;
                 border: 1px solid rgba(62,39,35,.12);
                 border-radius: 14px;
                 box-shadow: 0 12px 34px rgba(0,0,0,.15);
-                z-index: 1000000;
+                z-index: 2147483647 !important;
                 direction: rtl;
-            }
-
-            .qafiyah-account-dropdown.open {
-                display: block !important;
             }
 
             .qafiyah-account-dropdown button {
@@ -470,7 +351,6 @@
             }
 
             @media (max-width: 640px) {
-
                 .qafiyah-account-dropdown {
                     min-width: 185px;
                 }
@@ -488,14 +368,7 @@
         );
     }
 
-    // ============================================================
-    // توحيد اسم القافية
-    // ============================================================
-
-    function normalizeBrandText(
-        text
-    ) {
-
+    function normalizeBrandText(text) {
         const marker =
             "__ALQAFIYAH_BRAND__";
 
@@ -523,9 +396,7 @@
     function normalizeBrand(
         root = document.body
     ) {
-
         if (document.title) {
-
             document.title =
                 normalizeBrandText(
                     document.title
@@ -540,259 +411,193 @@
             'meta[name="twitter:description"]'
         ).forEach(
             function (meta) {
-
-                const content =
+                const value =
                     meta.getAttribute(
                         "content"
                     );
 
-                if (content) {
-
+                if (value) {
                     meta.setAttribute(
                         "content",
                         normalizeBrandText(
-                            content
+                            value
                         )
                     );
                 }
             }
         );
 
-        function normalizeNode(
-            node
-        ) {
+        if (!root) return;
 
-            if (!node) {
-                return;
-            }
-
-            if (
-                node.nodeType ===
-                Node.TEXT_NODE
-            ) {
-
-                const parent =
-                    node.parentElement;
-
-                if (
-                    !parent ||
-                    parent.closest(
-                        "script," +
-                        "style," +
-                        "textarea," +
-                        "input," +
-                        "select," +
-                        "option"
-                    )
-                ) {
-                    return;
-                }
-
-                const next =
-                    normalizeBrandText(
-                        node.nodeValue
-                    );
-
-                if (
-                    next !==
-                    node.nodeValue
-                ) {
-
-                    node.nodeValue =
-                        next;
-                }
-
-                return;
-            }
-
-            const walker =
-                document.createTreeWalker(
-                    node,
-                    NodeFilter.SHOW_TEXT
-                );
-
-            let textNode;
-
-            while (
-                (
-                    textNode =
-                        walker.nextNode()
-                )
-            ) {
-
-                normalizeNode(
-                    textNode
-                );
-            }
-        }
-
-        normalizeNode(
-            root
-        );
-
-        if (
-            !window
-                .__ALQAFIYAH_BRAND_OBSERVER__
-        ) {
-
-            const observer =
-                new MutationObserver(
-                    function (
-                        mutations
-                    ) {
-
-                        mutations.forEach(
-                            function (
-                                mutation
-                            ) {
-
-                                if (
-                                    mutation.type ===
-                                    "characterData"
-                                ) {
-
-                                    normalizeNode(
-                                        mutation.target
-                                    );
-                                }
-
-                                mutation
-                                    .addedNodes
-                                    ?.forEach(
-                                        normalizeNode
-                                    );
-                            }
-                        );
-                    }
-                );
-
-            observer.observe(
-                document.body,
-                {
-                    childList: true,
-                    subtree: true,
-                    characterData: true
-                }
+        const walker =
+            document.createTreeWalker(
+                root,
+                NodeFilter.SHOW_TEXT
             );
 
-            window
-                .__ALQAFIYAH_BRAND_OBSERVER__ =
-                observer;
+        let node;
+
+        while (
+            (
+                node =
+                    walker.nextNode()
+            )
+        ) {
+            const parent =
+                node.parentElement;
+
+            if (
+                !parent ||
+                parent.closest(
+                    "script," +
+                    "style," +
+                    "textarea," +
+                    "input," +
+                    "select," +
+                    "option"
+                )
+            ) {
+                continue;
+            }
+
+            const next =
+                normalizeBrandText(
+                    node.nodeValue
+                );
+
+            if (
+                next !==
+                node.nodeValue
+            ) {
+                node.nodeValue =
+                    next;
+            }
         }
     }
 
-    // ============================================================
-    // استبدال إيموجيات القائمة بأيقونات كلاسيكية
-    // ============================================================
-
     function applyClassicMenuIcons() {
+        qa(
+            ".side-navigation a"
+        ).forEach(
+            function (link) {
+                const text =
+                    (
+                        link.textContent ||
+                        ""
+                    )
+                        .replace(
+                            /\s+/g,
+                            " "
+                        )
+                        .trim();
 
-        const mappings = [
-
-            [
-                '.side-navigation a[href="index.html"]',
-                "home"
-            ],
-
-            [
-                '.side-navigation a[href="Poems.html"]',
-                "poems"
-            ],
-
-            [
-                '.side-navigation a[href="poets.html"]',
-                "poets"
-            ],
-
-            [
-                '.side-navigation a[href="articles.html"]',
-                "articles"
-            ],
-
-            [
-                "#favoritesLink",
-                "star"
-            ],
-
-            [
-                "#settingsLink",
-                "settings"
-            ],
-
-            [
-                '.side-navigation a[href="about.html"]',
-                "info"
-            ],
-
-            [
-                "#sideLogoutButton",
-                "logout"
-            ]
-        ];
-
-        mappings.forEach(
-            function (
-                [
-                    selector,
-                    name
-                ]
-            ) {
-
-                qa(
-                    selector
-                ).forEach(
-                    function (
+                const holder =
+                    q(
+                        "span:first-child",
                         link
-                    ) {
+                    );
 
-                        const holder =
-                            q(
-                                "span:first-child",
-                                link
-                            );
+                if (!holder) {
+                    return;
+                }
 
-                        if (holder) {
+                let name =
+                    null;
 
-                            holder.innerHTML =
-                                icon(
-                                    name
-                                );
-                        }
-                    }
-                );
+                if (
+                    text.includes(
+                        "الرئيسية"
+                    )
+                ) {
+                    name =
+                        "home";
+
+                } else if (
+                    text.includes(
+                        "القصائد"
+                    )
+                ) {
+                    name =
+                        "poems";
+
+                } else if (
+                    text.includes(
+                        "الشعراء"
+                    )
+                ) {
+                    name =
+                        "poets";
+
+                } else if (
+                    text.includes(
+                        "المقالات"
+                    )
+                ) {
+                    name =
+                        "articles";
+
+                } else if (
+                    text.includes(
+                        "المفضلة"
+                    )
+                ) {
+                    name =
+                        "star";
+
+                } else if (
+                    text.includes(
+                        "الإعدادات"
+                    )
+                ) {
+                    name =
+                        "settings";
+
+                } else if (
+                    text.includes(
+                        "نبذة"
+                    )
+                ) {
+                    name =
+                        "info";
+
+                } else if (
+                    text.includes(
+                        "تسجيل الخروج"
+                    )
+                ) {
+                    name =
+                        "logout";
+                }
+
+                if (name) {
+                    holder.innerHTML =
+                        icon(
+                            name
+                        );
+                }
             }
         );
 
         qa(
             ".side-menu .user-avatar"
         ).forEach(
-            function (
-                avatar
-            ) {
-
+            function (avatar) {
                 if (
                     !q(
                         "img",
                         avatar
                     )
                 ) {
-
                     avatar.innerHTML =
-                        userIcon();
+                        USER_ICON;
                 }
             }
         );
     }
 
-    // ============================================================
-    // جزء "تعرف على القافية" في الرئيسية
-    // ============================================================
-
     function styleHomeAboutSection() {
-
         const path =
-            window
-                .location
+            location
                 .pathname
                 .toLowerCase();
 
@@ -805,28 +610,18 @@
                 "index.html"
             );
 
-        if (!isHome) {
-            return;
-        }
+        if (!isHome) return;
 
-        const link =
+        const aboutLink =
             qa(
                 'a[href$="about.html"]'
             ).find(
-                function (
-                    element
-                ) {
-
+                function (a) {
                     const text =
-                        String(
-                            element
-                                .textContent ||
+                        (
+                            a.textContent ||
                             ""
                         )
-                            .replace(
-                                /\s+/g,
-                                " "
-                            )
                             .trim();
 
                     return (
@@ -841,37 +636,27 @@
             );
 
         let section =
-            link?.closest(
-                "section," +
-                ".home-about," +
-                ".about-preview," +
-                ".intro-section," +
-                ".site-intro," +
-                "div"
-            ) ||
+            aboutLink
+                ?.closest(
+                    "section," +
+                    ".home-about," +
+                    ".about-preview," +
+                    ".intro-section," +
+                    ".site-intro"
+                ) ||
             null;
 
         if (!section) {
-
-            const heading =
+            const textNode =
                 qa(
                     "h1,h2,h3,p"
                 ).find(
-                    function (
-                        element
-                    ) {
-
+                    function (el) {
                         const text =
-                            String(
-                                element
-                                    .textContent ||
-                                ""
-                            );
+                            el.textContent ||
+                            "";
 
                         return (
-                            text.includes(
-                                "يلتقي"
-                            ) &&
                             text.includes(
                                 "الشعر"
                             ) &&
@@ -883,34 +668,28 @@
                 );
 
             section =
-                heading?.closest(
-                    "section," +
-                    ".home-about," +
-                    ".about-preview," +
-                    ".intro-section," +
-                    ".site-intro," +
-                    "div"
-                ) ||
+                textNode
+                    ?.closest(
+                        "section," +
+                        ".home-about," +
+                        ".about-preview," +
+                        ".intro-section," +
+                        ".site-intro"
+                    ) ||
                 null;
         }
 
         if (section) {
-
             section.classList.add(
                 "alqafiyah-home-about"
             );
         }
     }
 
-    // ============================================================
-    // OAuth Redirect
-    // ============================================================
-
     function oauthRedirectUrl() {
-
         const url =
             new URL(
-                window.location.href
+                location.href
             );
 
         url.hash =
@@ -923,10 +702,7 @@
             "error_code",
             "error_description"
         ].forEach(
-            function (
-                key
-            ) {
-
+            function (key) {
                 url
                     .searchParams
                     .delete(
@@ -938,14 +714,7 @@
         return url.toString();
     }
 
-    // ============================================================
-    // رقم الهاتف
-    // ============================================================
-
-    function normalizePhone(
-        value
-    ) {
-
+    function normalizePhone(value) {
         let phone =
             String(
                 value || ""
@@ -965,7 +734,6 @@
                 "00"
             )
         ) {
-
             phone =
                 `+${phone.slice(2)}`;
         }
@@ -976,7 +744,6 @@
             ) &&
             phone.length === 10
         ) {
-
             phone =
                 `+966${phone.slice(1)}`;
 
@@ -986,29 +753,18 @@
             ) &&
             phone.length === 9
         ) {
-
             phone =
                 `+966${phone}`;
         }
 
-        if (
-            /^\+\d{8,15}$/.test(
-                phone
-            )
-        ) {
-
-            return phone;
-        }
-
-        return "";
+        return /^\+\d{8,15}$/.test(
+            phone
+        )
+            ? phone
+            : "";
     }
 
-    // ============================================================
-    // إنشاء أزرار طرق الدخول
-    // ============================================================
-
     function ensureAuthMethods() {
-
         const loginForm =
             $("loginForm");
 
@@ -1016,17 +772,16 @@
             return;
         }
 
-        let apple =
-            $("appleLoginButton");
-
         const divider =
             q(
                 ".login-divider",
                 loginForm
             );
 
-        if (!apple) {
+        let apple =
+            $("appleLoginButton");
 
+        if (!apple) {
             apple =
                 document.createElement(
                     "button"
@@ -1042,14 +797,11 @@
                 "login-method";
 
             if (divider) {
-
                 loginForm.insertBefore(
                     apple,
                     divider
                 );
-
             } else {
-
                 loginForm.appendChild(
                     apple
                 );
@@ -1067,7 +819,6 @@
             $("googleLoginButton");
 
         if (!google) {
-
             google =
                 document.createElement(
                     "button"
@@ -1097,7 +848,6 @@
             $("phoneLoginButton");
 
         if (!phone) {
-
             phone =
                 document.createElement(
                     "button"
@@ -1125,7 +875,6 @@
         if (
             !$("phoneAuthPanel")
         ) {
-
             const panel =
                 document.createElement(
                     "div"
@@ -1138,12 +887,8 @@
                 "alqafiyah-phone-panel";
 
             panel.innerHTML = `
-
-                <label
-                    for="phoneAuthNumber">
-
+                <label for="phoneAuthNumber">
                     رقم الجوال
-
                 </label>
 
                 <input
@@ -1154,8 +899,7 @@
                     autocomplete="tel"
                     placeholder="05XXXXXXXX">
 
-                <div
-                    class="alqafiyah-phone-actions">
+                <div class="alqafiyah-phone-actions">
 
                     <button
                         type="button"
@@ -1170,11 +914,11 @@
 
                 <div
                     id="phoneOtpFields"
-                    style="display:none;">
+                    style="display:none">
 
                     <label
                         for="phoneOtpCode"
-                        style="margin-top:12px;">
+                        style="margin-top:12px">
 
                         رمز التحقق
 
@@ -1189,8 +933,7 @@
                         maxlength="8"
                         placeholder="أدخل الرمز">
 
-                    <div
-                        class="alqafiyah-phone-actions">
+                    <div class="alqafiyah-phone-actions">
 
                         <button
                             type="button"
@@ -1220,11 +963,10 @@
         }
     }
 
-    function phoneStatus(
+    function setPhoneStatus(
         text = "",
         error = false
     ) {
-
         const element =
             $("phoneAuthStatus");
 
@@ -1235,16 +977,13 @@
         element.textContent =
             text;
 
-        element
-            .classList
-            .toggle(
-                "error",
-                error
-            );
+        element.classList.toggle(
+            "error",
+            error
+        );
     }
 
     function resetPhoneUI() {
-
         $("phoneAuthPanel")
             ?.classList
             .remove(
@@ -1254,7 +993,6 @@
         if (
             $("phoneOtpFields")
         ) {
-
             $("phoneOtpFields")
                 .style
                 .display =
@@ -1264,18 +1002,60 @@
         if (
             $("phoneOtpCode")
         ) {
-
             $("phoneOtpCode")
                 .value =
                 "";
         }
 
-        phoneStatus();
+        setPhoneStatus();
     }
 
-    // ============================================================
-    // بدء النظام
-    // ============================================================
+    function populateSelect(
+        id,
+        from,
+        to,
+        descending = false
+    ) {
+        const select =
+            $(id);
+
+        if (
+            !select ||
+            select.options.length !==
+            1
+        ) {
+            return;
+        }
+
+        if (descending) {
+            for (
+                let number = from;
+                number >= to;
+                number--
+            ) {
+                select.add(
+                    new Option(
+                        number,
+                        number
+                    )
+                );
+            }
+
+        } else {
+            for (
+                let number = from;
+                number <= to;
+                number++
+            ) {
+                select.add(
+                    new Option(
+                        number,
+                        number
+                    )
+                );
+            }
+        }
+    }
 
     document.addEventListener(
         "DOMContentLoaded",
@@ -1283,12 +1063,10 @@
     );
 
     async function init() {
-
         if (
             typeof supabaseClient ===
             "undefined"
         ) {
-
             console.error(
                 "القافية: supabaseClient غير موجود."
             );
@@ -1297,13 +1075,9 @@
         }
 
         injectStyles();
-        normalizeBrand();
         ensureAuthMethods();
+        normalizeBrand();
         styleHomeAboutSection();
-
-        // ========================================================
-        // عناصر الصفحة
-        // ========================================================
 
         const menuButton =
             $("menuButton");
@@ -1353,14 +1127,9 @@
             $("accountArea");
 
         let accountDropdown =
-            $("accountDropdown");
-
-        // ========================================================
-        // القائمة الجانبية
-        // ========================================================
+            null;
 
         function openSideMenu() {
-
             sideMenu
                 ?.classList
                 .add(
@@ -1379,16 +1148,12 @@
                     "false"
                 );
 
-            document
-                .body
-                .classList
-                .add(
-                    "menu-open"
-                );
+            document.body.classList.add(
+                "menu-open"
+            );
         }
 
         function closeSideMenu() {
-
             sideMenu
                 ?.classList
                 .remove(
@@ -1407,12 +1172,9 @@
                     "true"
                 );
 
-            document
-                .body
-                .classList
-                .remove(
-                    "menu-open"
-                );
+            document.body.classList.remove(
+                "menu-open"
+            );
         }
 
         menuButton
@@ -1433,46 +1195,34 @@
                 closeSideMenu
             );
 
-        // ========================================================
-        // الإشعارات
-        // ========================================================
-
         function openNotifications() {
-
             if (!notificationPanel) {
                 return;
             }
 
-            notificationPanel
-                .classList
-                .add(
-                    "open"
-                );
+            notificationPanel.classList.add(
+                "open"
+            );
 
-            notificationPanel
-                .setAttribute(
-                    "aria-hidden",
-                    "false"
-                );
+            notificationPanel.setAttribute(
+                "aria-hidden",
+                "false"
+            );
         }
 
         function closeNotifications() {
-
             if (!notificationPanel) {
                 return;
             }
 
-            notificationPanel
-                .classList
-                .remove(
-                    "open"
-                );
+            notificationPanel.classList.remove(
+                "open"
+            );
 
-            notificationPanel
-                .setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
+            notificationPanel.setAttribute(
+                "aria-hidden",
+                "true"
+            );
         }
 
         notificationButton
@@ -1487,16 +1237,10 @@
                 closeNotifications
             );
 
-        // ========================================================
-        // نافذة تسجيل الدخول
-        // ========================================================
-
         function showLogin() {
-
             if (
                 $("loginForm")
             ) {
-
                 $("loginForm")
                     .style
                     .display =
@@ -1506,7 +1250,6 @@
             if (
                 $("registerForm")
             ) {
-
                 $("registerForm")
                     .style
                     .display =
@@ -1515,11 +1258,9 @@
         }
 
         function showRegister() {
-
             if (
                 $("loginForm")
             ) {
-
                 $("loginForm")
                     .style
                     .display =
@@ -1529,7 +1270,6 @@
             if (
                 $("registerForm")
             ) {
-
                 $("registerForm")
                     .style
                     .display =
@@ -1538,7 +1278,6 @@
         }
 
         function openLoginModal() {
-
             if (!loginModal) {
                 return;
             }
@@ -1546,38 +1285,31 @@
             loginModal.style.display =
                 "flex";
 
-            loginModal
-                .classList
-                .add(
-                    "open"
-                );
+            loginModal.classList.add(
+                "open"
+            );
 
-            loginModal
-                .setAttribute(
-                    "aria-hidden",
-                    "false"
-                );
+            loginModal.setAttribute(
+                "aria-hidden",
+                "false"
+            );
 
             showLogin();
         }
 
         function closeLoginModal() {
-
             if (!loginModal) {
                 return;
             }
 
-            loginModal
-                .classList
-                .remove(
-                    "open"
-                );
+            loginModal.classList.remove(
+                "open"
+            );
 
-            loginModal
-                .setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
+            loginModal.setAttribute(
+                "aria-hidden",
+                "true"
+            );
 
             loginModal.style.display =
                 "none";
@@ -1600,15 +1332,11 @@
         loginModal
             ?.addEventListener(
                 "click",
-                function (
-                    event
-                ) {
-
+                function (event) {
                     if (
                         event.target ===
                         loginModal
                     ) {
-
                         closeLoginModal();
                     }
                 }
@@ -1617,12 +1345,8 @@
         showRegisterButton
             ?.addEventListener(
                 "click",
-                function (
-                    event
-                ) {
-
+                function (event) {
                     event.preventDefault();
-
                     showRegister();
                 }
             );
@@ -1630,25 +1354,16 @@
         showLoginButton
             ?.addEventListener(
                 "click",
-                function (
-                    event
-                ) {
-
+                function (event) {
                     event.preventDefault();
-
                     showLogin();
                 }
             );
-
-        // ========================================================
-        // منطقة الحساب في الهيدر
-        // ========================================================
 
         if (
             !accountArea &&
             loginButton
         ) {
-
             accountArea =
                 document.createElement(
                     "div"
@@ -1671,14 +1386,9 @@
                 );
         }
 
-        // ========================================================
-        // Profiles
-        // ========================================================
-
         async function getProfile(
             userId
         ) {
-
             if (!userId) {
                 return null;
             }
@@ -1701,7 +1411,6 @@
                     .maybeSingle();
 
             if (error) {
-
                 console.error(
                     "القافية: خطأ في جلب الملف الشخصي:",
                     error
@@ -1716,7 +1425,6 @@
         async function ensureProfile(
             user
         ) {
-
             if (!user?.id) {
                 return null;
             }
@@ -1734,20 +1442,19 @@
                 user.user_metadata ||
                 {};
 
-            const rawName =
+            const parts =
                 String(
                     metadata.full_name ||
                     metadata.name ||
                     ""
                 )
-                    .trim();
-
-            const parts =
-                rawName
-                ? rawName.split(
-                    /\s+/
-                )
-                : [];
+                    .trim()
+                    .split(
+                        /\s+/
+                    )
+                    .filter(
+                        Boolean
+                    );
 
             const firstName =
                 metadata.first_name ||
@@ -1760,17 +1467,18 @@
                 metadata.family_name ||
                 (
                     parts.length
-                    ? parts.join(" ")
-                    : null
+                        ? parts.join(
+                            " "
+                        )
+                        : null
                 );
 
-            const avatarUrl =
+            const avatar =
                 metadata.avatar_url ||
                 metadata.picture ||
                 null;
 
             try {
-
                 const {
                     error
                 } =
@@ -1794,7 +1502,7 @@
                                     null,
 
                                 avatar_url:
-                                    avatarUrl
+                                    avatar
                             },
                             {
                                 onConflict:
@@ -1812,7 +1520,6 @@
                     );
 
             } catch (error) {
-
                 console.warn(
                     "القافية: تعذر إنشاء ملف شخصي تلقائي:",
                     error
@@ -1822,43 +1529,35 @@
             return profile;
         }
 
-        function avatarUrl(
-            user,
-            profile
-        ) {
-
-            return (
-                profile?.avatar_url ||
-                user
-                    ?.user_metadata
-                    ?.avatar_url ||
-                user
-                    ?.user_metadata
-                    ?.picture ||
-                null
-            );
-        }
-
-        // ========================================================
-        // قائمة الحساب الصغيرة
-        // ========================================================
+        const getAvatar =
+            function (
+                user,
+                profile
+            ) {
+                return (
+                    profile?.avatar_url ||
+                    user
+                        ?.user_metadata
+                        ?.avatar_url ||
+                    user
+                        ?.user_metadata
+                        ?.picture ||
+                    null
+                );
+            };
 
         function closeAccountDropdown() {
-
             if (!accountDropdown) {
                 return;
             }
 
             accountDropdown
-                .classList
-                .remove(
-                    "open"
-                );
-
-            accountDropdown
                 .style
-                .visibility =
-                "";
+                .setProperty(
+                    "display",
+                    "none",
+                    "important"
+                );
 
             accountDropdown
                 .setAttribute(
@@ -1876,7 +1575,6 @@
         function openAccountDropdown(
             avatar
         ) {
-
             if (
                 !accountDropdown ||
                 !avatar
@@ -1889,60 +1587,69 @@
                     .getBoundingClientRect();
 
             accountDropdown
-                .classList
-                .add(
-                    "open"
+                .style
+                .setProperty(
+                    "display",
+                    "block",
+                    "important"
                 );
 
             accountDropdown
                 .style
-                .visibility =
-                "hidden";
+                .setProperty(
+                    "visibility",
+                    "hidden",
+                    "important"
+                );
 
             const width =
                 accountDropdown
                     .offsetWidth;
 
-            let left =
-                rect.right -
-                width;
+            const left =
+                Math.max(
+                    10,
+                    Math.min(
+                        rect.right -
+                        width,
 
-            if (left < 10) {
-                left = 10;
-            }
-
-            if (
-                left +
-                width >
-                window.innerWidth -
-                10
-            ) {
-
-                left =
-                    window.innerWidth -
-                    width -
-                    10;
-            }
+                        innerWidth -
+                        width -
+                        10
+                    )
+                );
 
             accountDropdown
                 .style
-                .left =
-                `${left}px`;
+                .setProperty(
+                    "left",
+                    `${left}px`,
+                    "important"
+                );
 
             accountDropdown
                 .style
-                .right =
-                "auto";
+                .setProperty(
+                    "right",
+                    "auto",
+                    "important"
+                );
 
             accountDropdown
                 .style
-                .top =
-                `${rect.bottom + 8}px`;
+                .setProperty(
+                    "top",
+                    `${rect.bottom + 8}px`,
+                    "important"
+                );
 
             accountDropdown
                 .style
-                .visibility =
-                "visible";
+                .setProperty(
+                    "visibility",
+                    "visible",
+                    "important"
+                );
 
             accountDropdown
                 .setAttribute(
@@ -1950,43 +1657,34 @@
                     "false"
                 );
 
-            avatar
-                .setAttribute(
-                    "aria-expanded",
-                    "true"
-                );
+            avatar.setAttribute(
+                "aria-expanded",
+                "true"
+            );
         }
 
         function toggleAccountDropdown(
             avatar
         ) {
-
-            if (
+            const isOpen =
                 accountDropdown
-                    ?.classList
-                    .contains(
-                        "open"
-                    )
-            ) {
+                    ?.getAttribute(
+                        "aria-hidden"
+                    ) ===
+                "false";
 
+            if (isOpen) {
                 closeAccountDropdown();
 
             } else {
-
                 openAccountDropdown(
                     avatar
                 );
             }
         }
 
-        // ========================================================
-        // تسجيل الخروج
-        // ========================================================
-
         async function logout() {
-
             try {
-
                 const {
                     error
                 } =
@@ -2021,14 +1719,12 @@
                     currentPage() ===
                     "profile.html"
                 ) {
-
-                    window.location.replace(
+                    location.replace(
                         "index.html"
                     );
                 }
 
             } catch (error) {
-
                 console.error(
                     "القافية: خطأ في تسجيل الخروج:",
                     error
@@ -2042,10 +1738,8 @@
         }
 
         function createAccountDropdown() {
-
-            if (accountDropdown) {
-                return;
-            }
+            $("accountDropdown")
+                ?.remove();
 
             accountDropdown =
                 document.createElement(
@@ -2058,17 +1752,21 @@
             accountDropdown.className =
                 "qafiyah-account-dropdown";
 
-            accountDropdown
-                .setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
+            accountDropdown.setAttribute(
+                "role",
+                "menu"
+            );
+
+            accountDropdown.setAttribute(
+                "aria-hidden",
+                "true"
+            );
 
             accountDropdown.innerHTML = `
-
                 <button
                     type="button"
-                    id="accountProfileButton">
+                    id="accountProfileButton"
+                    role="menuitem">
 
                     ${icon("user")}
 
@@ -2085,7 +1783,8 @@
 
                 <button
                     type="button"
-                    id="accountLogoutButton">
+                    id="accountLogoutButton"
+                    role="menuitem">
 
                     ${icon("logout")}
 
@@ -2096,6 +1795,14 @@
                 </button>
             `;
 
+            accountDropdown
+                .style
+                .setProperty(
+                    "display",
+                    "none",
+                    "important"
+                );
+
             document.body.appendChild(
                 accountDropdown
             );
@@ -2103,11 +1810,12 @@
             $("accountProfileButton")
                 ?.addEventListener(
                     "click",
-                    function () {
+                    function (event) {
+                        event.preventDefault();
 
                         closeAccountDropdown();
 
-                        window.location.href =
+                        location.href =
                             "profile.html";
                     }
                 );
@@ -2115,21 +1823,21 @@
             $("accountLogoutButton")
                 ?.addEventListener(
                     "click",
-                    logout
+                    async function (
+                        event
+                    ) {
+                        event.preventDefault();
+                        await logout();
+                    }
                 );
         }
 
         createAccountDropdown();
 
-        // ========================================================
-        // تحديث دائرة الحساب
-        // ========================================================
-
         function updateHeader(
             user,
             profile
         ) {
-
             if (
                 !accountArea ||
                 !loginButton
@@ -2138,7 +1846,6 @@
             }
 
             if (!user) {
-
                 accountArea.innerHTML =
                     "";
 
@@ -2159,14 +1866,13 @@
             accountArea.style.display =
                 "";
 
-            const url =
-                avatarUrl(
+            const avatar =
+                getAvatar(
                     user,
                     profile
                 );
 
             accountArea.innerHTML = `
-
                 <button
                     type="button"
                     id="headerAccountAvatar"
@@ -2177,15 +1883,15 @@
                     title="الحساب">
 
                     ${
-                        url
-                        ? `
-                            <img
-                                src="${escapeHtml(url)}"
-                                alt="الصورة الشخصية"
-                                loading="eager">
-                        `
-                        :
-                        userIcon()
+                        avatar
+                            ? `
+                                <img
+                                    src="${escapeHtml(avatar)}"
+                                    alt="الصورة الشخصية"
+                                    loading="eager">
+                            `
+                            :
+                            USER_ICON
                     }
 
                 </button>
@@ -2194,10 +1900,7 @@
             $("headerAccountAvatar")
                 ?.addEventListener(
                     "click",
-                    function (
-                        event
-                    ) {
-
+                    function (event) {
                         event.preventDefault();
                         event.stopPropagation();
 
@@ -2208,44 +1911,35 @@
                 );
         }
 
-        // ========================================================
-        // معلومات المستخدم في القائمة
-        // ========================================================
-
         function updateSideUser(
             user,
             profile
         ) {
-
             const name =
                 $("menuUserName");
 
             const contact =
                 $("menuUserEmail");
 
-            const avatar =
+            const avatarElement =
                 q(
                     ".side-menu .user-avatar"
                 );
 
             if (!user) {
-
                 if (name) {
-
                     name.textContent =
                         "مرحبًا بك";
                 }
 
                 if (contact) {
-
                     contact.textContent =
                         "سجّل الدخول للوصول إلى حسابك";
                 }
 
-                if (avatar) {
-
-                    avatar.innerHTML =
-                        userIcon();
+                if (avatarElement) {
+                    avatarElement.innerHTML =
+                        USER_ICON;
                 }
 
                 return;
@@ -2265,7 +1959,6 @@
                     .trim();
 
             if (name) {
-
                 name.textContent =
                     fullName ||
                     user.email ||
@@ -2274,51 +1967,43 @@
             }
 
             if (contact) {
-
                 contact.textContent =
                     user.email ||
                     user.phone ||
                     "";
             }
 
-            if (avatar) {
-
-                const url =
-                    avatarUrl(
+            if (avatarElement) {
+                const avatar =
+                    getAvatar(
                         user,
                         profile
                     );
 
-                avatar.innerHTML =
-                    url
-                    ? `
-                        <img
-                            src="${escapeHtml(url)}"
-                            alt="الصورة الشخصية"
-                            loading="eager">
-                    `
-                    :
-                    userIcon();
+                avatarElement.innerHTML =
+                    avatar
+                        ? `
+                            <img
+                                src="${escapeHtml(avatar)}"
+                                alt="الصورة الشخصية"
+                                loading="eager">
+                        `
+                        :
+                        USER_ICON;
             }
         }
 
-        // ========================================================
-        // إغلاق قائمة الحساب خارجها
-        // ========================================================
-
         document.addEventListener(
             "click",
-            function (
-                event
-            ) {
-
+            function (event) {
                 const avatar =
                     $("headerAccountAvatar");
 
                 if (
-                    avatar?.contains(
-                        event.target
-                    ) ||
+                    avatar
+                        ?.contains(
+                            event.target
+                        ) ||
                     accountDropdown
                         ?.contains(
                             event.target
@@ -2331,33 +2016,24 @@
             }
         );
 
-        window.addEventListener(
+        addEventListener(
             "resize",
             closeAccountDropdown
         );
 
-        window.addEventListener(
+        addEventListener(
             "scroll",
             closeAccountDropdown,
             true
         );
 
-        // ========================================================
-        // حذف رابط الملف الشخصي المنفصل
-        // ========================================================
-
         $("profileLink")
             ?.remove();
-
-        // ========================================================
-        // تسجيل الخروج بالقائمة الجانبية
-        // ========================================================
 
         let sideLogout =
             $("sideLogoutButton");
 
         if (!sideLogout) {
-
             const navigation =
                 sideMenu
                     ?.querySelector(
@@ -2365,7 +2041,6 @@
                     );
 
             if (navigation) {
-
                 sideLogout =
                     document.createElement(
                         "a"
@@ -2381,12 +2056,8 @@
                     "alqafiyah-side-logout";
 
                 sideLogout.innerHTML = `
-
-                    <span
-                        aria-hidden="true">
-
+                    <span aria-hidden="true">
                         ${icon("logout")}
-
                     </span>
 
                     <span>
@@ -2403,15 +2074,11 @@
         function updateSideLogout(
             loggedIn
         ) {
-
             if (sideLogout) {
-
-                sideLogout
-                    .style
-                    .display =
+                sideLogout.style.display =
                     loggedIn
-                    ? ""
-                    : "none";
+                        ? ""
+                        : "none";
             }
         }
 
@@ -2421,7 +2088,6 @@
                 async function (
                     event
                 ) {
-
                     event.preventDefault();
 
                     closeSideMenu();
@@ -2430,21 +2096,15 @@
                 }
             );
 
-        // ========================================================
-        // اللوح الكبير في القائمة
-        // ========================================================
-
         async function sideUserClick(
             event
         ) {
-
             event?.preventDefault();
             event?.stopPropagation();
 
             closeSideMenu();
 
             try {
-
                 const {
                     data,
                     error
@@ -2467,15 +2127,13 @@
                     user;
 
                 if (user) {
-
-                    window.location.href =
+                    location.href =
                         "profile.html";
 
                     return;
                 }
 
             } catch (error) {
-
                 console.error(
                     "القافية: تعذر التحقق من جلسة المستخدم:",
                     error
@@ -2491,7 +2149,6 @@
                     q(
                         ".user-section"
                     ),
-
                     q(
                         ".side-menu-user"
                     )
@@ -2501,10 +2158,7 @@
                     )
             )
         ].forEach(
-            function (
-                element
-            ) {
-
+            function (element) {
                 element.style.cursor =
                     "pointer";
 
@@ -2525,17 +2179,13 @@
 
                 element.addEventListener(
                     "keydown",
-                    function (
-                        event
-                    ) {
-
+                    function (event) {
                         if (
                             event.key ===
                             "Enter" ||
                             event.key ===
                             " "
                         ) {
-
                             event.preventDefault();
 
                             sideUserClick(
@@ -2549,15 +2199,10 @@
 
         applyClassicMenuIcons();
 
-        // ========================================================
-        // إنشاء Profile لحساب البريد
-        // ========================================================
-
         async function createEmailProfile(
             user,
             values
         ) {
-
             const {
                 error
             } =
@@ -2608,20 +2253,14 @@
             }
         }
 
-        // ========================================================
-        // إنشاء حساب جديد
-        // ========================================================
-
         $("registerSubmitButton")
             ?.addEventListener(
                 "click",
                 async function () {
-
                     const button =
                         this;
 
                     const values = {
-
                         firstName:
                             $("firstName")
                                 ?.value
@@ -2672,7 +2311,6 @@
                         !values.password ||
                         !values.confirmPassword
                     ) {
-
                         alert(
                             "يرجى تعبئة جميع البيانات المطلوبة."
                         );
@@ -2684,7 +2322,6 @@
                         values.password !==
                         values.confirmPassword
                     ) {
-
                         alert(
                             "كلمتا المرور غير متطابقتين."
                         );
@@ -2698,7 +2335,6 @@
                             .length <
                         6
                     ) {
-
                         alert(
                             "كلمة المرور يجب أن تكون 6 أحرف على الأقل."
                         );
@@ -2710,7 +2346,6 @@
                         true;
 
                     try {
-
                         const {
                             data,
                             error
@@ -2734,7 +2369,6 @@
                         if (
                             !data?.user
                         ) {
-
                             throw new Error(
                                 "لم يتم إنشاء المستخدم في Supabase."
                             );
@@ -2742,26 +2376,18 @@
 
                         let session =
                             data.session ||
+                            (
+                                await supabaseClient
+                                    .auth
+                                    .getSession()
+                            )
+                                .data
+                                ?.session ||
                             null;
 
                         if (!session) {
-
-                            const result =
-                                await supabaseClient
-                                    .auth
-                                    .getSession();
-
-                            session =
-                                result
-                                    .data
-                                    ?.session ||
-                                null;
-                        }
-
-                        if (!session) {
-
                             throw new Error(
-                                "تم إنشاء الحساب، لكن لم يتم تسجيل الدخول تلقائيًا. تأكد من أن Confirm email مغلق في Supabase."
+                                "تم إنشاء الحساب، لكن لم يتم تسجيل الدخول تلقائيًا. تأكد من إعداد Confirm email في Supabase."
                             );
                         }
 
@@ -2773,7 +2399,6 @@
                             );
 
                         if (!profile) {
-
                             await createEmailProfile(
                                 session.user,
                                 values
@@ -2811,12 +2436,6 @@
                         );
 
                     } catch (error) {
-
-                        console.error(
-                            "القافية: خطأ في إنشاء الحساب:",
-                            error
-                        );
-
                         const message =
                             String(
                                 error?.message ||
@@ -2830,13 +2449,11 @@
                                     "user already registered"
                                 )
                         ) {
-
                             alert(
                                 "هذا البريد الإلكتروني مسجل مسبقًا."
                             );
 
                         } else {
-
                             alert(
                                 message ||
                                 "حدث خطأ أثناء إنشاء الحساب."
@@ -2844,22 +2461,16 @@
                         }
 
                     } finally {
-
                         button.disabled =
                             false;
                     }
                 }
             );
 
-        // ========================================================
-        // تسجيل الدخول بالبريد
-        // ========================================================
-
         $("emailLoginButton")
             ?.addEventListener(
                 "click",
                 async function () {
-
                     const button =
                         this;
 
@@ -2876,7 +2487,6 @@
                         !email ||
                         !password
                     ) {
-
                         alert(
                             "أدخل البريد الإلكتروني وكلمة المرور."
                         );
@@ -2888,7 +2498,6 @@
                         true;
 
                     try {
-
                         const {
                             data,
                             error
@@ -2931,7 +2540,6 @@
                         closeLoginModal();
 
                     } catch (error) {
-
                         const message =
                             String(
                                 error?.message ||
@@ -2945,13 +2553,11 @@
                                     "invalid login credentials"
                                 )
                         ) {
-
                             alert(
                                 "البريد الإلكتروني أو كلمة المرور غير صحيحة."
                             );
 
                         } else {
-
                             alert(
                                 message ||
                                 "تعذر تسجيل الدخول."
@@ -2959,22 +2565,16 @@
                         }
 
                     } finally {
-
                         button.disabled =
                             false;
                     }
                 }
             );
 
-        // ========================================================
-        // Google + Apple OAuth
-        // ========================================================
-
         async function oauth(
             provider,
             button
         ) {
-
             if (!button) {
                 return;
             }
@@ -2983,7 +2583,6 @@
                 true;
 
             try {
-
                 const {
                     error
                 } =
@@ -3005,14 +2604,13 @@
                 }
 
             } catch (error) {
-
                 alert(
                     error?.message ||
                     `تعذر تسجيل الدخول باستخدام ${
                         provider ===
                         "google"
-                        ? "Google"
-                        : "Apple"
+                            ? "Google"
+                            : "Apple"
                     }.`
                 );
 
@@ -3025,7 +2623,6 @@
             ?.addEventListener(
                 "click",
                 function () {
-
                     oauth(
                         "google",
                         $("googleLoginButton")
@@ -3037,7 +2634,6 @@
             ?.addEventListener(
                 "click",
                 function () {
-
                     oauth(
                         "apple",
                         $("appleLoginButton")
@@ -3045,44 +2641,36 @@
                 }
             );
 
-        // ========================================================
-        // إظهار تسجيل الدخول بالرقم
-        // ========================================================
-
         $("phoneLoginButton")
             ?.addEventListener(
                 "click",
                 function () {
+                    const panel =
+                        $("phoneAuthPanel");
 
-                    $("phoneAuthPanel")
+                    panel
                         ?.classList
                         .toggle(
                             "open"
                         );
 
                     if (
-                        $("phoneAuthPanel")
+                        panel
                             ?.classList
                             .contains(
                                 "open"
                             )
                     ) {
-
                         $("phoneAuthNumber")
                             ?.focus();
                     }
                 }
             );
 
-        // ========================================================
-        // إرسال OTP
-        // ========================================================
-
         $("sendPhoneOtpButton")
             ?.addEventListener(
                 "click",
                 async function () {
-
                     const phone =
                         normalizePhone(
                             $("phoneAuthNumber")
@@ -3090,8 +2678,7 @@
                         );
 
                     if (!phone) {
-
-                        phoneStatus(
+                        setPhoneStatus(
                             "أدخل رقم جوال صحيحًا بصيغة 05XXXXXXXX أو بصيغة دولية تبدأ بـ +.",
                             true
                         );
@@ -3102,12 +2689,11 @@
                     this.disabled =
                         true;
 
-                    phoneStatus(
+                    setPhoneStatus(
                         "جارٍ إرسال رمز التحقق..."
                     );
 
                     try {
-
                         const {
                             error
                         } =
@@ -3131,14 +2717,13 @@
                         if (
                             $("phoneOtpFields")
                         ) {
-
                             $("phoneOtpFields")
                                 .style
                                 .display =
                                 "block";
                         }
 
-                        phoneStatus(
+                        setPhoneStatus(
                             "تم إرسال رمز التحقق إلى رقم الجوال."
                         );
 
@@ -3146,30 +2731,23 @@
                             ?.focus();
 
                     } catch (error) {
-
-                        phoneStatus(
+                        setPhoneStatus(
                             error?.message ||
                             "تعذر إرسال رمز التحقق. تأكد من تفعيل مزود الرسائل في Supabase.",
                             true
                         );
 
                     } finally {
-
                         this.disabled =
                             false;
                     }
                 }
             );
 
-        // ========================================================
-        // تأكيد OTP
-        // ========================================================
-
         $("verifyPhoneOtpButton")
             ?.addEventListener(
                 "click",
                 async function () {
-
                     const phone =
                         normalizePhone(
                             $("phoneAuthNumber")
@@ -3185,8 +2763,7 @@
                             .trim();
 
                     if (!phone) {
-
-                        phoneStatus(
+                        setPhoneStatus(
                             "رقم الجوال غير صحيح.",
                             true
                         );
@@ -3199,8 +2776,7 @@
                             token
                         )
                     ) {
-
-                        phoneStatus(
+                        setPhoneStatus(
                             "أدخل رمز التحقق المرسل إلى جوالك.",
                             true
                         );
@@ -3211,12 +2787,11 @@
                     this.disabled =
                         true;
 
-                    phoneStatus(
+                    setPhoneStatus(
                         "جارٍ التحقق من الرمز..."
                     );
 
                     try {
-
                         const {
                             data,
                             error
@@ -3239,7 +2814,6 @@
                         if (
                             !data?.user
                         ) {
-
                             throw new Error(
                                 "تم التحقق من الرمز لكن تعذر تحميل الحساب."
                             );
@@ -3270,84 +2844,26 @@
                         closeLoginModal();
 
                     } catch (error) {
-
-                        phoneStatus(
+                        setPhoneStatus(
                             error?.message ||
                             "رمز التحقق غير صحيح أو انتهت صلاحيته.",
                             true
                         );
 
                     } finally {
-
                         this.disabled =
                             false;
                     }
                 }
             );
 
-        // ========================================================
-        // قوائم تاريخ الميلاد
-        // ========================================================
-
-        function populateBirth(
-            selectId,
-            start,
-            end,
-            descending = false
-        ) {
-
-            const select =
-                $(selectId);
-
-            if (
-                !select ||
-                select.options.length !==
-                1
-            ) {
-                return;
-            }
-
-            if (descending) {
-
-                for (
-                    let value = start;
-                    value >= end;
-                    value--
-                ) {
-
-                    select.add(
-                        new Option(
-                            value,
-                            value
-                        )
-                    );
-                }
-
-            } else {
-
-                for (
-                    let value = start;
-                    value <= end;
-                    value++
-                ) {
-
-                    select.add(
-                        new Option(
-                            value,
-                            value
-                        )
-                    );
-                }
-            }
-        }
-
-        populateBirth(
+        populateSelect(
             "birthDay",
             1,
             31
         );
 
-        populateBirth(
+        populateSelect(
             "birthYear",
             new Date()
                 .getFullYear(),
@@ -3355,14 +2871,8 @@
             true
         );
 
-        // ========================================================
-        // تحديث الحساب الحالي
-        // ========================================================
-
         async function refreshAccount() {
-
             try {
-
                 const {
                     data,
                     error
@@ -3383,10 +2893,10 @@
 
                 const profile =
                     user
-                    ? await ensureProfile(
-                        user
-                    )
-                    : null;
+                        ? await ensureProfile(
+                            user
+                        )
+                        : null;
 
                 currentUser =
                     user;
@@ -3416,7 +2926,6 @@
                 };
 
             } catch (error) {
-
                 console.error(
                     "القافية: خطأ في تحميل الحساب:",
                     error
@@ -3440,23 +2949,19 @@
                 );
 
                 return {
-                    user: null,
-                    profile: null
+                    user:
+                        null,
+
+                    profile:
+                        null
                 };
             }
         }
 
-        // ========================================================
-        // مراقبة Auth
-        // ========================================================
-
         supabaseClient
             .auth
             .onAuthStateChange(
-                function (
-                    event
-                ) {
-
+                function (event) {
                     if (
                         [
                             "SIGNED_IN",
@@ -3467,7 +2972,6 @@
                             event
                         )
                     ) {
-
                         setTimeout(
                             refreshAccount,
                             0
@@ -3476,12 +2980,7 @@
                 }
             );
 
-        // ========================================================
-        // الإشعارات الحالية
-        // ========================================================
-
         if (notificationCount) {
-
             notificationCount.textContent =
                 "0";
 
@@ -3489,16 +2988,9 @@
                 "none";
         }
 
-        // ========================================================
-        // Escape
-        // ========================================================
-
         document.addEventListener(
             "keydown",
-            function (
-                event
-            ) {
-
+            function (event) {
                 if (
                     event.key !==
                     "Escape"
@@ -3513,24 +3005,15 @@
             }
         );
 
-        // ========================================================
-        // صفحة الملف الشخصي
-        // ========================================================
-
         if (
             q(
                 ".profile-page"
             )
         ) {
-
             await initProfilePage(
                 logout
             );
         }
-
-        // ========================================================
-        // التشغيل الأول
-        // ========================================================
 
         await refreshAccount();
 
@@ -3539,14 +3022,9 @@
         styleHomeAboutSection();
     }
 
-    // ============================================================
-    // صفحة الملف الشخصي
-    // ============================================================
-
     async function initProfilePage(
         logout
     ) {
-
         const profileAvatar =
             $("profileAvatar");
 
@@ -3592,16 +3070,11 @@
         let logoutButton =
             $("logoutButton");
 
-        // ========================================================
-        // إنشاء زر الخروج إن لم يكن موجودًا
-        // ========================================================
-
         if (
             !logoutButton &&
             saveButton
                 ?.parentElement
         ) {
-
             logoutButton =
                 document.createElement(
                     "button"
@@ -3626,90 +3099,78 @@
                 );
         }
 
-        function showMessage(
-            text,
-            error = false
-        ) {
+        const showMessage =
+            function (
+                text,
+                error = false
+            ) {
+                if (!message) {
+                    return;
+                }
 
-            if (!message) {
-                return;
-            }
+                message.textContent =
+                    text;
 
-            message.textContent =
-                text;
-
-            message
-                .classList
-                .toggle(
+                message.classList.toggle(
                     "error",
                     error
                 );
-        }
+            };
 
-        function setAvatar(
-            url
-        ) {
+        const setAvatar =
+            function (url) {
+                if (!profileAvatar) {
+                    return;
+                }
 
-            if (!profileAvatar) {
-                return;
-            }
+                if (!url) {
+                    profileAvatar.innerHTML =
+                        USER_ICON;
 
-            if (!url) {
+                    return;
+                }
 
                 profileAvatar.innerHTML =
-                    userIcon();
+                    "";
 
-                return;
-            }
+                const image =
+                    document.createElement(
+                        "img"
+                    );
 
-            profileAvatar.innerHTML =
-                "";
+                image.src =
+                    url;
 
-            const image =
-                document.createElement(
-                    "img"
+                image.alt =
+                    "الصورة الشخصية";
+
+                image.loading =
+                    "eager";
+
+                image.decoding =
+                    "async";
+
+                image.onerror =
+                    function () {
+                        profileAvatar.innerHTML =
+                            USER_ICON;
+                    };
+
+                profileAvatar.appendChild(
+                    image
                 );
-
-            image.src =
-                url;
-
-            image.alt =
-                "الصورة الشخصية";
-
-            image.loading =
-                "eager";
-
-            image.decoding =
-                "async";
-
-            image.onerror =
-                function () {
-
-                    profileAvatar.innerHTML =
-                        userIcon();
-                };
-
-            profileAvatar.appendChild(
-                image
-            );
-        }
-
-        // ========================================================
-        // قوائم الميلاد
-        // ========================================================
+            };
 
         if (
             birthDay &&
             birthDay.options.length ===
             1
         ) {
-
             for (
                 let day = 1;
                 day <= 31;
                 day++
             ) {
-
                 birthDay.add(
                     new Option(
                         day,
@@ -3724,7 +3185,6 @@
             birthYear.options.length ===
             1
         ) {
-
             for (
                 let year =
                     new Date()
@@ -3734,7 +3194,6 @@
 
                 year--
             ) {
-
                 birthYear.add(
                     new Option(
                         year,
@@ -3743,10 +3202,6 @@
                 );
             }
         }
-
-        // ========================================================
-        // المستخدم الحالي
-        // ========================================================
 
         const {
             data,
@@ -3762,8 +3217,7 @@
                 ?.session
                 ?.user
         ) {
-
-            window.location.replace(
+            location.replace(
                 "index.html"
             );
 
@@ -3773,48 +3227,33 @@
         const user =
             data.session.user;
 
-        // ========================================================
-        // تسجيل الخروج
-        // ========================================================
-
         logoutButton
             ?.addEventListener(
                 "click",
                 async function () {
-
-                    logoutButton.disabled =
+                    this.disabled =
                         true;
 
                     try {
-
                         await logout();
 
                     } finally {
-
-                        logoutButton.disabled =
+                        this.disabled =
                             false;
                     }
                 }
             );
 
-        // ========================================================
-        // البريد
-        // ========================================================
-
         if (email) {
-
             email.value =
                 user.email ||
                 "";
         }
 
-        // ========================================================
-        // جلب Profile
-        // ========================================================
-
         const {
             data:
                 profile,
+
             error:
                 profileError
         } =
@@ -3832,6 +3271,10 @@
                 .maybeSingle();
 
         if (profileError) {
+            console.error(
+                "القافية: خطأ في تحميل الملف الشخصي:",
+                profileError
+            );
 
             showMessage(
                 "تعذر تحميل بيانات الحساب.",
@@ -3842,7 +3285,6 @@
         }
 
         if (!profile) {
-
             showMessage(
                 "لا توجد بيانات الملف الشخصي لهذا الحساب.",
                 true
@@ -3851,26 +3293,19 @@
             return;
         }
 
-        // ========================================================
-        // تعبئة البيانات
-        // ========================================================
-
         if (firstName) {
-
             firstName.value =
                 profile.first_name ||
                 "";
         }
 
         if (lastName) {
-
             lastName.value =
                 profile.last_name ||
                 "";
         }
 
         if (phone) {
-
             phone.value =
                 profile.phone ||
                 user.phone ||
@@ -3878,28 +3313,24 @@
         }
 
         if (birthDay) {
-
             birthDay.value =
                 profile.birth_day ||
                 "";
         }
 
         if (birthMonth) {
-
             birthMonth.value =
                 profile.birth_month ||
                 "";
         }
 
         if (birthYear) {
-
             birthYear.value =
                 profile.birth_year ||
                 "";
         }
 
         if (gender) {
-
             gender.value =
                 profile.gender ||
                 "";
@@ -3916,21 +3347,15 @@
             null
         );
 
-        // ========================================================
-        // حفظ البيانات
-        // ========================================================
-
         profileForm
             ?.addEventListener(
                 "submit",
                 async function (
                     event
                 ) {
-
                     event.preventDefault();
 
                     if (saveButton) {
-
                         saveButton.disabled =
                             true;
                     }
@@ -3940,25 +3365,19 @@
                     );
 
                     try {
-
                         if (
                             !firstName
                                 ?.value
                                 .trim() ||
-
                             !birthDay
                                 ?.value ||
-
                             !birthMonth
                                 ?.value ||
-
                             !birthYear
                                 ?.value ||
-
                             !gender
                                 ?.value
                         ) {
-
                             throw new Error(
                                 "يرجى تعبئة جميع البيانات المطلوبة."
                             );
@@ -4027,6 +3446,10 @@
                         );
 
                     } catch (error) {
+                        console.error(
+                            "القافية: خطأ في حفظ الملف الشخصي:",
+                            error
+                        );
 
                         showMessage(
                             error?.message ||
@@ -4035,9 +3458,7 @@
                         );
 
                     } finally {
-
                         if (saveButton) {
-
                             saveButton.disabled =
                                 false;
                         }
@@ -4045,15 +3466,10 @@
                 }
             );
 
-        // ========================================================
-        // رفع الصورة الشخصية
-        // ========================================================
-
         avatarInput
             ?.addEventListener(
                 "change",
                 async function () {
-
                     const file =
                         avatarInput
                             .files
@@ -4072,7 +3488,6 @@
                             file.type
                         )
                     ) {
-
                         alert(
                             "يرجى اختيار صورة JPG أو PNG أو WebP."
                         );
@@ -4089,7 +3504,6 @@
                         1024 *
                         1024
                     ) {
-
                         alert(
                             "حجم الصورة يجب ألا يتجاوز 5MB."
                         );
@@ -4101,7 +3515,6 @@
                     }
 
                     try {
-
                         showMessage(
                             "جارٍ رفع الصورة..."
                         );
@@ -4156,7 +3569,6 @@
                             !publicData
                                 ?.publicUrl
                         ) {
-
                             throw new Error(
                                 "تعذر الحصول على رابط الصورة."
                             );
@@ -4199,6 +3611,10 @@
                         );
 
                     } catch (error) {
+                        console.error(
+                            "القافية: خطأ في رفع الصورة:",
+                            error
+                        );
 
                         showMessage(
                             error?.message ||
@@ -4207,22 +3623,16 @@
                         );
 
                     } finally {
-
                         avatarInput.value =
                             "";
                     }
                 }
             );
 
-        // ========================================================
-        // حذف الصورة الشخصية
-        // ========================================================
-
         deleteAvatarButton
             ?.addEventListener(
                 "click",
                 async function () {
-
                     if (
                         !confirm(
                             "هل تريد حذف الصورة الشخصية؟"
@@ -4231,11 +3641,10 @@
                         return;
                     }
 
-                    deleteAvatarButton.disabled =
+                    this.disabled =
                         true;
 
                     try {
-
                         showMessage(
                             "جارٍ حذف الصورة..."
                         );
@@ -4298,6 +3707,10 @@
                         );
 
                     } catch (error) {
+                        console.error(
+                            "القافية: خطأ في حذف الصورة:",
+                            error
+                        );
 
                         showMessage(
                             error?.message ||
@@ -4306,980 +3719,11 @@
                         );
 
                     } finally {
-
-                        deleteAvatarButton.disabled =
+                        this.disabled =
                             false;
                     }
                 }
             );
-    }
-
-})();
-
-// ============================================================
-// القافية - الإصلاح النهائي للواجهة والحساب
-// Account Menu + Index Icons + Bottom Overscroll
-// ============================================================
-
-(function () {
-    "use strict";
-
-    // ============================================================
-    // أيقونات كلاسيكية
-    // ============================================================
-
-    function finalIcon(name) {
-
-        const icons = {
-
-            menu: `
-                <path d="M4 7h16"></path>
-                <path d="M4 12h16"></path>
-                <path d="M4 17h16"></path>
-            `,
-
-            home: `
-                <path d="M3 11.5 12 4l9 7.5"></path>
-                <path d="M5 10.5V20h5v-6h4v6h5v-9.5"></path>
-            `,
-
-            poems: `
-                <path
-                    d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z">
-                </path>
-
-                <path d="M8 7h8"></path>
-                <path d="M8 11h8"></path>
-                <path d="M8 15h5"></path>
-            `,
-
-            poets: `
-                <path d="M4 20h6"></path>
-
-                <path
-                    d="M14.5 4.5a2.12 2.12 0 0 1 3 3L9 16l-4 1 1-4Z">
-                </path>
-            `,
-
-            articles: `
-                <path d="M6 3h9l3 3v15H6Z"></path>
-                <path d="M14 3v4h4"></path>
-                <path d="M9 11h6"></path>
-                <path d="M9 15h6"></path>
-            `,
-
-            star: `
-                <path
-                    d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2 7.5 14 3 9.6l6.2-.9Z">
-                </path>
-            `,
-
-            settings: `
-                <circle
-                    cx="12"
-                    cy="12"
-                    r="3">
-                </circle>
-
-                <path
-                    d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z">
-                </path>
-            `,
-
-            info: `
-                <circle
-                    cx="12"
-                    cy="12"
-                    r="9">
-                </circle>
-
-                <path d="M12 10v6"></path>
-                <path d="M12 7h.01"></path>
-            `,
-
-            logout: `
-                <path d="M10 17l5-5-5-5"></path>
-                <path d="M15 12H3"></path>
-
-                <path
-                    d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5">
-                </path>
-            `,
-
-            user: `
-                <circle
-                    cx="12"
-                    cy="8"
-                    r="4">
-                </circle>
-
-                <path
-                    d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
-                </path>
-            `
-        };
-
-        return `
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-                style="
-                    width:20px;
-                    height:20px;
-                    display:block;
-                ">
-
-                ${
-                    icons[name] ||
-                    icons.info
-                }
-
-            </svg>
-        `;
-    }
-
-    // ============================================================
-    // إصلاح الخلفية
-    //
-    // مهم:
-    // لا نجعل BODY أبيض.
-    // نترك الصفحة بتصميمها الأصلي.
-    // الأبيض يكون فقط خلف الصفحة عند السحب الزائد.
-    // ============================================================
-
-    function fixOverscrollBackground() {
-
-        const runtimeStyle =
-            document.getElementById(
-                "alqafiyahRuntimeStyles"
-            );
-
-        if (runtimeStyle) {
-
-            runtimeStyle.textContent =
-                runtimeStyle.textContent.replace(
-
-                    /html\s*,\s*body\s*\{\s*background\s*:\s*#(?:ffffff|fff)\s*!important\s*;\s*\}/gi,
-
-                    `
-                    html {
-                        background: #ffffff !important;
-                    }
-                    `
-                );
-        }
-
-        let style =
-            document.getElementById(
-                "alqafiyahFinalOverscrollStyle"
-            );
-
-        if (!style) {
-
-            style =
-                document.createElement(
-                    "style"
-                );
-
-            style.id =
-                "alqafiyahFinalOverscrollStyle";
-
-            style.textContent = `
-                html {
-                    background-color:
-                        #ffffff !important;
-                }
-            `;
-
-            document.head.appendChild(
-                style
-            );
-        }
-    }
-
-    // ============================================================
-    // إصلاح الأيقونات في index.html
-    // يعتمد على اسم العنصر وليس رابط HTML
-    // لذلك يعمل حتى لو اختلف شكل الرابط في الرئيسية
-    // ============================================================
-
-    function fixMenuIcons() {
-
-        const menuButton =
-            document.getElementById(
-                "menuButton"
-            );
-
-        if (
-            menuButton &&
-            !menuButton.querySelector(
-                "svg"
-            )
-        ) {
-
-            menuButton.innerHTML =
-                finalIcon(
-                    "menu"
-                );
-        }
-
-        document
-            .querySelectorAll(
-                ".side-navigation a"
-            )
-            .forEach(
-                function (
-                    link
-                ) {
-
-                    const text =
-                        String(
-                            link.textContent ||
-                            ""
-                        )
-                            .replace(
-                                /\s+/g,
-                                " "
-                            )
-                            .trim();
-
-                    const iconHolder =
-                        link.querySelector(
-                            "span:first-child"
-                        );
-
-                    if (
-                        !iconHolder
-                    ) {
-                        return;
-                    }
-
-                    let iconName =
-                        null;
-
-                    if (
-                        text.includes(
-                            "الرئيسية"
-                        )
-                    ) {
-
-                        iconName =
-                            "home";
-
-                    } else if (
-                        text.includes(
-                            "القصائد"
-                        )
-                    ) {
-
-                        iconName =
-                            "poems";
-
-                    } else if (
-                        text.includes(
-                            "الشعراء"
-                        )
-                    ) {
-
-                        iconName =
-                            "poets";
-
-                    } else if (
-                        text.includes(
-                            "المقالات"
-                        )
-                    ) {
-
-                        iconName =
-                            "articles";
-
-                    } else if (
-                        text.includes(
-                            "المفضلة"
-                        )
-                    ) {
-
-                        iconName =
-                            "star";
-
-                    } else if (
-                        text.includes(
-                            "الإعدادات"
-                        )
-                    ) {
-
-                        iconName =
-                            "settings";
-
-                    } else if (
-                        text.includes(
-                            "نبذة"
-                        )
-                    ) {
-
-                        iconName =
-                            "info";
-
-                    } else if (
-                        text.includes(
-                            "تسجيل الخروج"
-                        )
-                    ) {
-
-                        iconName =
-                            "logout";
-                    }
-
-                    if (!iconName) {
-                        return;
-                    }
-
-                    iconHolder.innerHTML =
-                        finalIcon(
-                            iconName
-                        );
-                }
-            );
-
-        // --------------------------------------------------------
-        // صورة المستخدم الافتراضية بدل 👤
-        // --------------------------------------------------------
-
-        const sideAvatar =
-            document.querySelector(
-                ".side-menu .user-avatar"
-            );
-
-        if (
-            sideAvatar &&
-            !sideAvatar.querySelector(
-                "img"
-            )
-        ) {
-
-            sideAvatar.innerHTML =
-                finalIcon(
-                    "user"
-                );
-        }
-    }
-
-    // ============================================================
-    // إخفاء قائمة الحساب القديمة
-    // ============================================================
-
-    function hideOldAccountMenu() {
-
-        const oldMenu =
-            document.getElementById(
-                "accountDropdown"
-            );
-
-        if (!oldMenu) {
-            return;
-        }
-
-        oldMenu.classList.remove(
-            "open"
-        );
-
-        oldMenu.style.setProperty(
-            "display",
-            "none",
-            "important"
-        );
-    }
-
-    // ============================================================
-    // إنشاء القائمة النهائية للدائرة
-    // ============================================================
-
-    function createFinalAccountMenu() {
-
-        let menu =
-            document.getElementById(
-                "alqafiyahFinalAccountMenu"
-            );
-
-        if (menu) {
-            return menu;
-        }
-
-        menu =
-            document.createElement(
-                "div"
-            );
-
-        menu.id =
-            "alqafiyahFinalAccountMenu";
-
-        menu.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        menu.innerHTML = `
-
-            <button
-                type="button"
-                id="alqafiyahFinalProfileButton">
-
-                ${finalIcon("user")}
-
-                <span>
-                    الملف الشخصي
-                </span>
-
-            </button>
-
-            <div
-                class="alqafiyah-final-account-divider">
-            </div>
-
-            <button
-                type="button"
-                id="alqafiyahFinalLogoutButton">
-
-                ${finalIcon("logout")}
-
-                <span>
-                    تسجيل الخروج
-                </span>
-
-            </button>
-        `;
-
-        Object.assign(
-            menu.style,
-            {
-                position:
-                    "fixed",
-
-                display:
-                    "none",
-
-                minWidth:
-                    "205px",
-
-                padding:
-                    "7px",
-
-                background:
-                    "#ffffff",
-
-                border:
-                    "1px solid rgba(62,39,35,.12)",
-
-                borderRadius:
-                    "14px",
-
-                boxShadow:
-                    "0 12px 34px rgba(0,0,0,.15)",
-
-                zIndex:
-                    "2147483647",
-
-                direction:
-                    "rtl"
-            }
-        );
-
-        menu
-            .querySelectorAll(
-                "button"
-            )
-            .forEach(
-                function (
-                    button
-                ) {
-
-                    Object.assign(
-                        button.style,
-                        {
-                            width:
-                                "100%",
-
-                            minHeight:
-                                "44px",
-
-                            display:
-                                "flex",
-
-                            alignItems:
-                                "center",
-
-                            gap:
-                                "10px",
-
-                            padding:
-                                "10px 12px",
-
-                            border:
-                                "0",
-
-                            borderRadius:
-                                "9px",
-
-                            background:
-                                "transparent",
-
-                            color:
-                                "#3E2723",
-
-                            font:
-                                "inherit",
-
-                            textAlign:
-                                "right",
-
-                            cursor:
-                                "pointer"
-                        }
-                    );
-
-                    button.addEventListener(
-                        "mouseenter",
-                        function () {
-
-                            button.style.background =
-                                "#f5f5f5";
-                        }
-                    );
-
-                    button.addEventListener(
-                        "mouseleave",
-                        function () {
-
-                            button.style.background =
-                                "transparent";
-                        }
-                    );
-                }
-            );
-
-        const divider =
-            menu.querySelector(
-                ".alqafiyah-final-account-divider"
-            );
-
-        Object.assign(
-            divider.style,
-            {
-                height:
-                    "1px",
-
-                margin:
-                    "4px 3px",
-
-                background:
-                    "rgba(62,39,35,.10)"
-            }
-        );
-
-        document.body.appendChild(
-            menu
-        );
-
-        // --------------------------------------------------------
-        // الملف الشخصي
-        // --------------------------------------------------------
-
-        document
-            .getElementById(
-                "alqafiyahFinalProfileButton"
-            )
-            ?.addEventListener(
-                "click",
-                function () {
-
-                    closeFinalAccountMenu();
-
-                    window.location.href =
-                        "profile.html";
-                }
-            );
-
-        // --------------------------------------------------------
-        // تسجيل الخروج
-        // --------------------------------------------------------
-
-        document
-            .getElementById(
-                "alqafiyahFinalLogoutButton"
-            )
-            ?.addEventListener(
-                "click",
-                async function () {
-
-                    const button =
-                        this;
-
-                    button.disabled =
-                        true;
-
-                    try {
-
-                        const {
-                            error
-                        } =
-                            await supabaseClient
-                                .auth
-                                .signOut();
-
-                        if (error) {
-                            throw error;
-                        }
-
-                        closeFinalAccountMenu();
-
-                        if (
-                            window
-                                .location
-                                .pathname
-                                .toLowerCase()
-                                .endsWith(
-                                    "profile.html"
-                                )
-                        ) {
-
-                            window.location.replace(
-                                "index.html"
-                            );
-
-                        } else {
-
-                            window.location.reload();
-                        }
-
-                    } catch (error) {
-
-                        button.disabled =
-                            false;
-
-                        alert(
-                            error?.message ||
-                            "تعذر تسجيل الخروج."
-                        );
-                    }
-                }
-            );
-
-        return menu;
-    }
-
-    // ============================================================
-    // إغلاق قائمة الدائرة
-    // ============================================================
-
-    function closeFinalAccountMenu() {
-
-        const menu =
-            document.getElementById(
-                "alqafiyahFinalAccountMenu"
-            );
-
-        if (!menu) {
-            return;
-        }
-
-        menu.style.display =
-            "none";
-
-        menu.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        document
-            .getElementById(
-                "headerAccountAvatar"
-            )
-            ?.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-    }
-
-    // ============================================================
-    // فتح قائمة الدائرة أسفلها مباشرة
-    // ============================================================
-
-    function openFinalAccountMenu(
-        avatar
-    ) {
-
-        const menu =
-            createFinalAccountMenu();
-
-        const rect =
-            avatar.getBoundingClientRect();
-
-        menu.style.display =
-            "block";
-
-        menu.style.visibility =
-            "hidden";
-
-        const menuWidth =
-            menu.offsetWidth;
-
-        let left =
-            rect.right -
-            menuWidth;
-
-        left =
-            Math.max(
-                10,
-                Math.min(
-                    left,
-                    window.innerWidth -
-                    menuWidth -
-                    10
-                )
-            );
-
-        menu.style.left =
-            `${left}px`;
-
-        menu.style.right =
-            "auto";
-
-        menu.style.top =
-            `${rect.bottom + 8}px`;
-
-        menu.style.visibility =
-            "visible";
-
-        menu.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-        avatar.setAttribute(
-            "aria-expanded",
-            "true"
-        );
-    }
-
-    // ============================================================
-    // ربط دائرة الحساب
-    //
-    // نعمل Clone للدائرة حتى نحذف أي listener قديم
-    // وهذا يمنع التعارض مع المحاولة السابقة.
-    // ============================================================
-
-    function bindFinalAccountAvatar() {
-
-        const oldAvatar =
-            document.getElementById(
-                "headerAccountAvatar"
-            );
-
-        if (
-            !oldAvatar ||
-            oldAvatar.dataset
-                .finalAccountBound ===
-                "true"
-        ) {
-            return;
-        }
-
-        const avatar =
-            oldAvatar.cloneNode(
-                true
-            );
-
-        avatar.dataset
-            .finalAccountBound =
-            "true";
-
-        avatar.setAttribute(
-            "aria-haspopup",
-            "menu"
-        );
-
-        avatar.setAttribute(
-            "aria-expanded",
-            "false"
-        );
-
-        oldAvatar.replaceWith(
-            avatar
-        );
-
-        avatar.addEventListener(
-            "click",
-            function (
-                event
-            ) {
-
-                event.preventDefault();
-
-                event.stopPropagation();
-
-                event.stopImmediatePropagation();
-
-                const menu =
-                    createFinalAccountMenu();
-
-                const isOpen =
-                    menu.style.display ===
-                    "block";
-
-                if (isOpen) {
-
-                    closeFinalAccountMenu();
-
-                } else {
-
-                    openFinalAccountMenu(
-                        avatar
-                    );
-                }
-            }
-        );
-    }
-
-    // ============================================================
-    // تشغيل الإصلاحات
-    // ============================================================
-
-    function runFinalFixes() {
-
-        fixOverscrollBackground();
-
-        hideOldAccountMenu();
-
-        fixMenuIcons();
-
-        bindFinalAccountAvatar();
-    }
-
-    // ============================================================
-    // بدء الإصلاح
-    // ============================================================
-
-    function startFinalFix() {
-
-        runFinalFixes();
-
-        // --------------------------------------------------------
-        // لأن نظام الحساب يعيد إنشاء الدائرة بعد تسجيل الدخول،
-        // نراقب فقط تغيرات العناصر ونعيد ربطها عند الحاجة.
-        // --------------------------------------------------------
-
-        const observer =
-            new MutationObserver(
-                function () {
-
-                    runFinalFixes();
-                }
-            );
-
-        observer.observe(
-            document.body,
-            {
-                childList:
-                    true,
-
-                subtree:
-                    true
-            }
-        );
-
-        // --------------------------------------------------------
-        // الضغط خارج القائمة
-        // --------------------------------------------------------
-
-        document.addEventListener(
-            "click",
-            function (
-                event
-            ) {
-
-                const menu =
-                    document.getElementById(
-                        "alqafiyahFinalAccountMenu"
-                    );
-
-                const avatar =
-                    document.getElementById(
-                        "headerAccountAvatar"
-                    );
-
-                if (
-                    menu?.contains(
-                        event.target
-                    ) ||
-                    avatar?.contains(
-                        event.target
-                    )
-                ) {
-                    return;
-                }
-
-                closeFinalAccountMenu();
-            }
-        );
-
-        // --------------------------------------------------------
-        // Escape
-        // --------------------------------------------------------
-
-        document.addEventListener(
-            "keydown",
-            function (
-                event
-            ) {
-
-                if (
-                    event.key ===
-                    "Escape"
-                ) {
-
-                    closeFinalAccountMenu();
-                }
-            }
-        );
-
-        // --------------------------------------------------------
-        // تغيير حجم الشاشة أو التمرير
-        // --------------------------------------------------------
-
-        window.addEventListener(
-            "resize",
-            closeFinalAccountMenu
-        );
-
-        window.addEventListener(
-            "scroll",
-            closeFinalAccountMenu,
-            true
-        );
-    }
-
-    if (
-        document.readyState ===
-        "loading"
-    ) {
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            startFinalFix,
-            {
-                once:
-                    true
-            }
-        );
-
-    } else {
-
-        startFinalFix();
     }
 
 })();
