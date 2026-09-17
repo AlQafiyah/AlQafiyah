@@ -10,10 +10,14 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="theme-color"
+        content="#3E2723"
+    >
+
     <title>لوحة إدارة قافية</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script src="supabase.js"></script>
 
     <style>
@@ -65,11 +69,6 @@
             font: inherit;
         }
 
-        button,
-        a {
-            -webkit-tap-highlight-color: transparent;
-        }
-
         button {
             cursor: pointer;
         }
@@ -79,18 +78,14 @@
             text-decoration: none;
         }
 
-        ::selection {
-            background: var(--brown);
-            color: white;
-        }
-
         :focus-visible {
             outline: 3px solid rgba(181,131,141,.35);
             outline-offset: 2px;
         }
 
+
         /* =========================================
-           CHECKING
+           ACCESS
         ========================================= */
 
         .checking-screen,
@@ -104,7 +99,7 @@
 
         .checking-card,
         .denied-card {
-            width: min(460px, 100%);
+            width: min(460px,100%);
             background: white;
             border: 1px solid var(--border);
             border-radius: 24px;
@@ -129,47 +124,21 @@
             }
         }
 
-        .checking-card h2,
-        .denied-card h2 {
-            margin: 0 0 10px;
-        }
-
         .checking-card p,
         .denied-card p {
             color: var(--gray);
-            margin: 0;
             line-height: 1.9;
         }
 
-        .denied-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: #f9e8e8;
-            color: var(--danger);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 34px;
-        }
 
         /* =========================================
-           APP
+           LAYOUT
         ========================================= */
-
-        .admin-app {
-            min-height: 100vh;
-        }
 
         .admin-layout {
             min-height: 100vh;
             display: flex;
         }
-
-        /* =========================================
-           SIDEBAR
-        ========================================= */
 
         .admin-sidebar {
             width: 275px;
@@ -194,12 +163,11 @@
 
         .sidebar-brand-title {
             font-size: 28px;
-            line-height: 1;
-            margin-bottom: 9px;
         }
 
         .sidebar-brand-subtitle {
-            color: rgba(255,255,255,.62);
+            margin-top: 7px;
+            color: rgba(255,255,255,.6);
             font-size: 12px;
         }
 
@@ -236,9 +204,7 @@
 
         .nav-icon {
             width: 25px;
-            min-width: 25px;
             text-align: center;
-            font-size: 17px;
         }
 
         .sidebar-bottom {
@@ -254,7 +220,7 @@
         }
 
         .sidebar-admin-name {
-            font-size: 13px;
+            font-size: 12px;
             word-break: break-word;
         }
 
@@ -263,10 +229,6 @@
             font-size: 11px;
             margin-top: 5px;
         }
-
-        /* =========================================
-           MAIN
-        ========================================= */
 
         .admin-main {
             margin-right: 275px;
@@ -300,10 +262,9 @@
         }
 
         .page-heading p {
-            margin: 4px 0 0;
+            margin: 5px 0 0;
             color: var(--gray);
             font-size: 12px;
-            font-family: Arial, sans-serif;
         }
 
         .admin-account {
@@ -323,23 +284,18 @@
             justify-content: center;
         }
 
-        .admin-account-text {
-            text-align: right;
-        }
-
         .admin-account-name {
             font-size: 12px;
-            max-width: 260px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
         }
 
         .admin-account-role {
             font-size: 10px;
             color: var(--gray);
             margin-top: 3px;
-            font-family: Arial, sans-serif;
+        }
+
+        .admin-content {
+            padding: 30px;
         }
 
         .mobile-menu-button {
@@ -348,14 +304,10 @@
             height: 43px;
             border: 1px solid var(--border);
             background: white;
-            color: var(--brown);
             border-radius: 11px;
-            font-size: 21px;
+            color: var(--brown);
         }
 
-        .admin-content {
-            padding: 30px;
-        }
 
         /* =========================================
            SECTIONS
@@ -395,7 +347,9 @@
             margin: 6px 0 0;
             color: var(--gray);
             font-size: 12px;
+            line-height: 1.8;
         }
+
 
         /* =========================================
            DASHBOARD
@@ -417,18 +371,16 @@
 
         .welcome-card h2 {
             margin: 0 0 7px;
-            font-size: 24px;
         }
 
         .welcome-card p {
             margin: 0;
             color: rgba(255,255,255,.7);
-            font-size: 13px;
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0,1fr));
+            grid-template-columns: repeat(5,minmax(0,1fr));
             gap: 16px;
             margin-bottom: 22px;
         }
@@ -447,16 +399,15 @@
         }
 
         .stat-value {
-            font-family: Arial, sans-serif;
-            font-size: 31px;
+            font-family: Arial,sans-serif;
+            font-size: 30px;
             font-weight: 700;
             margin-top: 9px;
-            color: var(--brown);
         }
 
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(4,minmax(0,1fr));
+            grid-template-columns: repeat(3,minmax(0,1fr));
             gap: 16px;
         }
 
@@ -470,7 +421,6 @@
 
         .quick-card h4 {
             margin: 0 0 14px;
-            font-size: 15px;
         }
 
         .quick-item {
@@ -492,7 +442,7 @@
         }
 
         .quick-item strong {
-            font-family: Arial, sans-serif;
+            font-family: Arial,sans-serif;
             font-size: 17px;
         }
 
@@ -500,8 +450,8 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 18px;
-            margin-top: 18px;
         }
+
 
         /* =========================================
            TOOLBAR
@@ -512,13 +462,20 @@
             border-bottom: 1px solid var(--border);
             display: flex;
             gap: 12px;
+            flex-wrap: wrap;
         }
 
         .search-box {
-            width: min(500px,100%);
+            flex: 1;
+            min-width: 220px;
         }
 
-        .search-input {
+        .filter-box {
+            width: 200px;
+        }
+
+        .search-input,
+        .filter-input {
             width: 100%;
             height: 45px;
             border: 1px solid var(--border);
@@ -528,10 +485,12 @@
             color: var(--brown);
         }
 
-        .search-input:focus {
-            border-color: var(--sand);
+        .search-input:focus,
+        .filter-input:focus {
             outline: none;
+            border-color: var(--sand);
         }
+
 
         /* =========================================
            BUTTONS
@@ -561,18 +520,10 @@
             border-color: #ecd2c0;
         }
 
-        .btn-secondary:hover {
-            background: #f7dac5;
-        }
-
         .btn-danger {
             background: #f8e6e6;
             color: var(--danger);
             border-color: #eccaca;
-        }
-
-        .btn-danger:hover {
-            background: #f3d7d7;
         }
 
         .btn-small {
@@ -586,6 +537,7 @@
             cursor: not-allowed;
         }
 
+
         /* =========================================
            TABLE
         ========================================= */
@@ -597,14 +549,13 @@
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 700px;
+            min-width: 780px;
         }
 
         .data-table th {
             background: #fbf8f6;
             color: var(--gray);
             font-size: 11px;
-            font-weight: 700;
             padding: 14px 16px;
             border-bottom: 1px solid var(--border);
             text-align: right;
@@ -618,24 +569,16 @@
             vertical-align: middle;
         }
 
-        .data-table tr:last-child td {
-            border-bottom: 0;
-        }
-
-        .data-table tbody tr:hover {
-            background: #fffdfc;
-        }
-
         .table-title {
             font-weight: 700;
-            max-width: 340px;
+            max-width: 330px;
             line-height: 1.8;
         }
 
         .table-muted {
-            color: var(--gray);
             display: block;
-            max-width: 260px;
+            color: var(--gray);
+            max-width: 330px;
             line-height: 1.8;
         }
 
@@ -680,6 +623,25 @@
             color: var(--gray);
         }
 
+        .poet-photo {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
+
+        .poet-placeholder {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--peach);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
         /* =========================================
            MODAL
         ========================================= */
@@ -701,7 +663,7 @@
         }
 
         .modal-box {
-            width: min(850px,100%);
+            width: min(900px,100%);
             max-height: calc(100vh - 40px);
             overflow-y: auto;
             background: white;
@@ -716,12 +678,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 15px;
         }
 
         .modal-header h3 {
             margin: 0;
-            font-size: 19px;
         }
 
         .modal-close {
@@ -756,7 +716,6 @@
 
         .form-group label {
             font-size: 12px;
-            color: var(--brown);
         }
 
         .form-control {
@@ -770,7 +729,7 @@
         }
 
         textarea.form-control {
-            min-height: 150px;
+            min-height: 160px;
             resize: vertical;
             line-height: 1.9;
         }
@@ -806,12 +765,12 @@
 
         .form-actions {
             display: flex;
-            justify-content: flex-start;
             gap: 9px;
             margin-top: 23px;
             padding-top: 18px;
             border-top: 1px solid var(--border);
         }
+
 
         /* =========================================
            TOAST
@@ -836,7 +795,6 @@
             box-shadow: 0 15px 35px rgba(0,0,0,.18);
             font-size: 12px;
             line-height: 1.7;
-            animation: toastIn .25s ease;
         }
 
         .toast.error {
@@ -847,65 +805,19 @@
             background: var(--success);
         }
 
-        @keyframes toastIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         .sidebar-overlay {
             display: none;
         }
 
-        /* =========================================
-           POETS
-        ========================================= */
-
-        .poet-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 17px;
-            padding: 20px;
-            box-shadow: var(--shadow);
-            transition: .2s ease;
-        }
-
-        .poet-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .poet-card h4 {
-            margin: 0 0 8px;
-            font-size: 17px;
-        }
-
-        .poet-card p {
-            color: var(--gray);
-            margin: 0;
-            font-size: 11px;
-        }
-
-        .poet-card strong {
-            font-family: Arial, sans-serif;
-            display: block;
-            margin-top: 13px;
-            font-size: 22px;
-        }
 
         /* =========================================
            RESPONSIVE
         ========================================= */
 
-        @media (max-width: 1100px) {
+        @media (max-width: 1150px) {
 
             .stats-grid {
-                grid-template-columns: repeat(2,1fr);
+                grid-template-columns: repeat(3,1fr);
             }
 
             .dashboard-grid {
@@ -945,14 +857,6 @@
                 display: block;
             }
 
-            .admin-topbar {
-                padding: 13px 18px;
-            }
-
-            .admin-content {
-                padding: 18px;
-            }
-
             .dashboard-panels {
                 grid-template-columns: 1fr;
             }
@@ -960,6 +864,14 @@
         }
 
         @media (max-width: 600px) {
+
+            .admin-content {
+                padding: 12px;
+            }
+
+            .admin-topbar {
+                padding: 13px 15px;
+            }
 
             .stats-grid,
             .dashboard-grid {
@@ -975,6 +887,14 @@
                 width: 100%;
             }
 
+            .toolbar {
+                flex-direction: column;
+            }
+
+            .filter-box {
+                width: 100%;
+            }
+
             .form-grid {
                 grid-template-columns: 1fr;
             }
@@ -987,37 +907,19 @@
                 display: none;
             }
 
-            .page-heading h1 {
-                font-size: 19px;
-            }
-
-            .page-heading p {
-                display: none;
-            }
-
-            .admin-content {
-                padding: 12px;
-            }
-
-            .welcome-card {
-                padding: 22px;
-            }
-
-            .welcome-card h2 {
-                font-size: 20px;
-            }
-
         }
 
     </style>
 
 </head>
 
+
 <body>
 
-    <!-- =========================================
-         CHECKING
-    ========================================= -->
+
+    <!-- ============================================================
+         التحقق
+    ============================================================ -->
 
     <div
         class="checking-screen"
@@ -1040,9 +942,6 @@
 
     </div>
 
-    <!-- =========================================
-         DENIED
-    ========================================= -->
 
     <div
         class="denied-screen"
@@ -1052,10 +951,6 @@
 
         <div class="denied-card">
 
-            <div class="denied-icon">
-                !
-            </div>
-
             <h2>
                 غير مصرح بالدخول
             </h2>
@@ -1063,8 +958,6 @@
             <p>
                 لا تملك صلاحية الوصول إلى لوحة إدارة قافية.
             </p>
-
-            <br>
 
             <button
                 class="btn btn-primary"
@@ -1078,21 +971,22 @@
 
     </div>
 
-    <!-- =========================================
-         ADMIN APP
-    ========================================= -->
+
+    <!-- ============================================================
+         التطبيق
+    ============================================================ -->
 
     <div
-        class="admin-app"
         id="adminApp"
         style="display:none;"
     >
 
         <div class="admin-layout">
 
-            <!-- =====================================
-                 SIDEBAR
-            ====================================== -->
+
+            <!-- ====================================================
+                 القائمة
+            ==================================================== -->
 
             <aside
                 class="admin-sidebar"
@@ -1111,6 +1005,7 @@
 
                 </div>
 
+
                 <div class="sidebar-nav">
 
                     <button
@@ -1122,14 +1017,16 @@
                         <span>لوحة التحكم</span>
                     </button>
 
+
                     <button
                         class="nav-item"
                         data-section="poets"
                         type="button"
                     >
-                        <span class="nav-icon">♙</span>
+                        <span class="nav-icon">✒</span>
                         <span>الشعراء</span>
                     </button>
+
 
                     <button
                         class="nav-item"
@@ -1140,6 +1037,7 @@
                         <span>القصائد</span>
                     </button>
 
+
                     <button
                         class="nav-item"
                         data-section="articles"
@@ -1148,6 +1046,7 @@
                         <span class="nav-icon">▤</span>
                         <span>المقالات</span>
                     </button>
+
 
                     <button
                         class="nav-item"
@@ -1158,6 +1057,7 @@
                         <span>الفيديوهات</span>
                     </button>
 
+
                     <button
                         class="nav-item"
                         data-section="notifications"
@@ -1166,6 +1066,7 @@
                         <span class="nav-icon">♢</span>
                         <span>الإشعارات</span>
                     </button>
+
 
                     <button
                         class="nav-item"
@@ -1176,6 +1077,7 @@
                         <span>التصنيفات</span>
                     </button>
 
+
                     <button
                         class="nav-item"
                         data-section="users"
@@ -1184,6 +1086,7 @@
                         <span class="nav-icon">♙</span>
                         <span>المستخدمون</span>
                     </button>
+
 
                     <button
                         class="nav-item"
@@ -1196,6 +1099,7 @@
                     </button>
 
                 </div>
+
 
                 <div class="sidebar-bottom">
 
@@ -1217,6 +1121,7 @@
 
                     </div>
 
+
                     <button
                         class="nav-item"
                         id="siteButton"
@@ -1225,6 +1130,7 @@
                         <span class="nav-icon">↗</span>
                         <span>الموقع</span>
                     </button>
+
 
                     <button
                         class="nav-item"
@@ -1239,18 +1145,19 @@
 
             </aside>
 
+
             <div
                 class="sidebar-overlay"
                 id="sidebarOverlay"
             ></div>
 
-            <!-- =====================================
-                 MAIN
-            ====================================== -->
+
+            <!-- ====================================================
+                 المحتوى
+            ==================================================== -->
 
             <main class="admin-main">
 
-                <!-- TOPBAR -->
 
                 <header class="admin-topbar">
 
@@ -1260,7 +1167,6 @@
                             class="mobile-menu-button"
                             id="mobileMenuButton"
                             type="button"
-                            aria-label="فتح القائمة"
                         >
                             ☰
                         </button>
@@ -1278,6 +1184,7 @@
                         </div>
 
                     </div>
+
 
                     <div class="admin-account">
 
@@ -1310,11 +1217,13 @@
 
                 </header>
 
+
                 <div class="admin-content">
 
-                    <!-- =====================================
-                         DASHBOARD
-                    ====================================== -->
+
+                    <!-- =================================================
+                         لوحة التحكم
+                    ================================================= -->
 
                     <section
                         class="admin-section active"
@@ -1328,86 +1237,54 @@
                             </h2>
 
                             <p>
-                                يمكنك من هنا إدارة محتوى المنصة ومتابعة الإحصائيات والصلاحيات.
+                                إدارة موسوعة قافية من مكان واحد.
                             </p>
 
                         </div>
 
+
                         <div class="stats-grid">
 
                             <div class="stat-card">
-
-                                <div class="stat-label">
-                                    القصائد
-                                </div>
-
-                                <div
-                                    class="stat-value"
-                                    id="statPoems"
-                                >
-                                    0
-                                </div>
-
+                                <div class="stat-label">الشعراء</div>
+                                <div class="stat-value" id="statPoets">0</div>
                             </div>
 
                             <div class="stat-card">
-
-                                <div class="stat-label">
-                                    المقالات
-                                </div>
-
-                                <div
-                                    class="stat-value"
-                                    id="statArticles"
-                                >
-                                    0
-                                </div>
-
+                                <div class="stat-label">القصائد</div>
+                                <div class="stat-value" id="statPoems">0</div>
                             </div>
 
                             <div class="stat-card">
-
-                                <div class="stat-label">
-                                    الفيديوهات
-                                </div>
-
-                                <div
-                                    class="stat-value"
-                                    id="statVideos"
-                                >
-                                    0
-                                </div>
-
+                                <div class="stat-label">المقالات</div>
+                                <div class="stat-value" id="statArticles">0</div>
                             </div>
 
                             <div class="stat-card">
+                                <div class="stat-label">الفيديوهات</div>
+                                <div class="stat-value" id="statVideos">0</div>
+                            </div>
 
-                                <div class="stat-label">
-                                    المستخدمون
-                                </div>
-
-                                <div
-                                    class="stat-value"
-                                    id="statUsers"
-                                >
-                                    0
-                                </div>
-
+                            <div class="stat-card">
+                                <div class="stat-label">المستخدمون</div>
+                                <div class="stat-value" id="statUsers">0</div>
                             </div>
 
                         </div>
+
 
                         <div class="dashboard-panels">
 
                             <div class="quick-card">
 
                                 <h4>
-                                    إحصائيات المنصة
+                                    إحصائيات المحتوى
                                 </h4>
 
                                 <div id="dashboardSummary"></div>
 
                             </div>
+
 
                             <div class="quick-card">
 
@@ -1423,9 +1300,10 @@
 
                     </section>
 
-                    <!-- =====================================
-                         POETS
-                    ====================================== -->
+
+                    <!-- =================================================
+                         الشعراء
+                    ================================================= -->
 
                     <section
                         class="admin-section"
@@ -1439,16 +1317,25 @@
                                 <div>
 
                                     <h3>
-                                        الشعراء
+                                        إدارة الشعراء
                                     </h3>
 
                                     <p>
-                                        فهرس الشعراء المستخرج من القصائد المضافة إلى المنصة.
+                                        إضافة الشاعر واسمه المشهور وسيرته وعصره وربط قصائده به.
                                     </p>
 
                                 </div>
 
+                                <button
+                                    class="btn btn-primary"
+                                    id="addPoetButton"
+                                    type="button"
+                                >
+                                    + إضافة شاعر
+                                </button>
+
                             </div>
+
 
                             <div class="toolbar">
 
@@ -1458,25 +1345,62 @@
                                         class="search-input"
                                         id="poetSearch"
                                         type="search"
-                                        placeholder="ابحث عن شاعر..."
+                                        placeholder="ابحث باسم الشاعر أو لقبه..."
                                     >
+
+                                </div>
+
+
+                                <div class="filter-box">
+
+                                    <select
+                                        class="filter-input"
+                                        id="poetEraFilter"
+                                    >
+
+                                        <option value="">
+                                            جميع العصور
+                                        </option>
+
+                                    </select>
 
                                 </div>
 
                             </div>
 
-                            <div
-                                class="dashboard-grid"
-                                id="poetsContainer"
-                            ></div>
+
+                            <div class="table-wrapper">
+
+                                <table class="data-table">
+
+                                    <thead>
+
+                                        <tr>
+                                            <th>الصورة</th>
+                                            <th>الاسم</th>
+                                            <th>اللقب</th>
+                                            <th>العصر</th>
+                                            <th>القصائد</th>
+                                            <th>الحالة</th>
+                                            <th>الإجراءات</th>
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody id="poetsTableBody"></tbody>
+
+                                </table>
+
+                            </div>
 
                         </div>
 
                     </section>
 
-                    <!-- =====================================
-                         POEMS
-                    ====================================== -->
+
+                    <!-- =================================================
+                         القصائد
+                    ================================================= -->
 
                     <section
                         class="admin-section"
@@ -1494,7 +1418,7 @@
                                     </h3>
 
                                     <p>
-                                        إدارة القصائد والشعراء والمحتوى الشعري.
+                                        إدارة القصائد وربطها بالشعراء وتصنيفها حسب العصر والموضوع.
                                     </p>
 
                                 </div>
@@ -1509,6 +1433,7 @@
 
                             </div>
 
+
                             <div class="toolbar">
 
                                 <div class="search-box">
@@ -1517,12 +1442,45 @@
                                         class="search-input"
                                         id="poemSearch"
                                         type="search"
-                                        placeholder="ابحث عن قصيدة أو شاعر أو تصنيف..."
+                                        placeholder="ابحث بالعنوان أو الشاعر أو جزء من القصيدة..."
                                     >
 
                                 </div>
 
+
+                                <div class="filter-box">
+
+                                    <select
+                                        class="filter-input"
+                                        id="poemEraFilter"
+                                    >
+
+                                        <option value="">
+                                            جميع العصور
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div class="filter-box">
+
+                                    <select
+                                        class="filter-input"
+                                        id="poemTopicFilter"
+                                    >
+
+                                        <option value="">
+                                            جميع الموضوعات
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
                             </div>
+
 
                             <div class="table-wrapper">
 
@@ -1531,31 +1489,12 @@
                                     <thead>
 
                                         <tr>
-
-                                            <th>
-                                                العنوان
-                                            </th>
-
-                                            <th>
-                                                الشاعر
-                                            </th>
-
-                                            <th>
-                                                العصر
-                                            </th>
-
-                                            <th>
-                                                التصنيف
-                                            </th>
-
-                                            <th>
-                                                الحالة
-                                            </th>
-
-                                            <th>
-                                                الإجراءات
-                                            </th>
-
+                                            <th>العنوان</th>
+                                            <th>الشاعر</th>
+                                            <th>العصر</th>
+                                            <th>الموضوع</th>
+                                            <th>الحالة</th>
+                                            <th>الإجراءات</th>
                                         </tr>
 
                                     </thead>
@@ -1570,9 +1509,10 @@
 
                     </section>
 
-                    <!-- =====================================
-                         ARTICLES
-                    ====================================== -->
+
+                    <!-- =================================================
+                         المقالات
+                    ================================================= -->
 
                     <section
                         class="admin-section"
@@ -1590,7 +1530,7 @@
                                     </h3>
 
                                     <p>
-                                        إدارة المقالات والمحتوى التحريري.
+                                        العنوان والنبذة المختصرة والمقال الكامل والتصنيف والكاتب.
                                     </p>
 
                                 </div>
@@ -1605,6 +1545,7 @@
 
                             </div>
 
+
                             <div class="toolbar">
 
                                 <div class="search-box">
@@ -1613,12 +1554,29 @@
                                         class="search-input"
                                         id="articleSearch"
                                         type="search"
-                                        placeholder="ابحث عن مقال أو كاتب أو تصنيف..."
+                                        placeholder="ابحث بالعنوان أو الكاتب أو محتوى المقال..."
                                     >
 
                                 </div>
 
+
+                                <div class="filter-box">
+
+                                    <select
+                                        class="filter-input"
+                                        id="articleCategoryFilter"
+                                    >
+
+                                        <option value="">
+                                            جميع التصنيفات
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
                             </div>
+
 
                             <div class="table-wrapper">
 
@@ -1627,13 +1585,12 @@
                                     <thead>
 
                                         <tr>
-
                                             <th>العنوان</th>
+                                            <th>النبذة</th>
                                             <th>الكاتب</th>
                                             <th>التصنيف</th>
                                             <th>الحالة</th>
                                             <th>الإجراءات</th>
-
                                         </tr>
 
                                     </thead>
@@ -1648,9 +1605,10 @@
 
                     </section>
 
-                    <!-- =====================================
-                         VIDEOS
-                    ====================================== -->
+
+                    <!-- =================================================
+                         الفيديوهات
+                    ================================================= -->
 
                     <section
                         class="admin-section"
@@ -1668,7 +1626,7 @@
                                     </h3>
 
                                     <p>
-                                        إضافة وتعديل وحذف الفيديوهات والصور المصغرة.
+                                        إدارة مكتبة الفيديوهات الداخلية دون الحاجة إلى صفحة عامة مستقلة.
                                     </p>
 
                                 </div>
@@ -1682,6 +1640,7 @@
                                 </button>
 
                             </div>
+
 
                             <div class="toolbar">
 
@@ -1698,22 +1657,19 @@
 
                             </div>
 
+
                             <div class="table-wrapper">
 
                                 <table class="data-table">
 
                                     <thead>
-
                                         <tr>
-
                                             <th>العنوان</th>
                                             <th>الوصف</th>
                                             <th>الرابط</th>
                                             <th>الحالة</th>
                                             <th>الإجراءات</th>
-
                                         </tr>
-
                                     </thead>
 
                                     <tbody id="videosTableBody"></tbody>
@@ -1726,9 +1682,10 @@
 
                     </section>
 
-                    <!-- =====================================
-                         NOTIFICATIONS
-                    ====================================== -->
+
+                    <!-- =================================================
+                         الإشعارات
+                    ================================================= -->
 
                     <section
                         class="admin-section"
@@ -1740,15 +1697,8 @@
                             <div class="card-header">
 
                                 <div>
-
-                                    <h3>
-                                        الإشعارات
-                                    </h3>
-
-                                    <p>
-                                        إدارة الإشعارات التي تظهر للمستخدمين.
-                                    </p>
-
+                                    <h3>الإشعارات</h3>
+                                    <p>إدارة إشعارات المنصة.</p>
                                 </div>
 
                                 <button
@@ -1761,22 +1711,19 @@
 
                             </div>
 
+
                             <div class="table-wrapper">
 
                                 <table class="data-table">
 
                                     <thead>
-
                                         <tr>
-
                                             <th>العنوان</th>
                                             <th>الرسالة</th>
                                             <th>الرابط</th>
                                             <th>التاريخ</th>
                                             <th>الإجراءات</th>
-
                                         </tr>
-
                                     </thead>
 
                                     <tbody id="notificationsTableBody"></tbody>
@@ -1789,9 +1736,10 @@
 
                     </section>
 
-                    <!-- =====================================
-                         CATEGORIES
-                    ====================================== -->
+
+                    <!-- =================================================
+                         التصنيفات
+                    ================================================= -->
 
                     <section
                         class="admin-section"
@@ -1803,15 +1751,8 @@
                             <div class="card-header">
 
                                 <div>
-
-                                    <h3>
-                                        التصنيفات
-                                    </h3>
-
-                                    <p>
-                                        عرض التصنيفات المستخدمة حاليًا في القصائد والمقالات.
-                                    </p>
-
+                                    <h3>التصنيفات</h3>
+                                    <p>الموضوعات المستخدمة في القصائد وتصنيفات المقالات.</p>
                                 </div>
 
                             </div>
@@ -1819,15 +1760,17 @@
                             <div
                                 class="dashboard-grid"
                                 id="categoriesContainer"
+                                style="padding:20px;"
                             ></div>
 
                         </div>
 
                     </section>
 
-                    <!-- =====================================
-                         USERS
-                    ====================================== -->
+
+                    <!-- =================================================
+                         المستخدمون
+                    ================================================= -->
 
                     <section
                         class="admin-section"
@@ -1839,18 +1782,12 @@
                             <div class="card-header">
 
                                 <div>
-
-                                    <h3>
-                                        المستخدمون
-                                    </h3>
-
-                                    <p>
-                                        الملفات الشخصية المسجلة في منصة قافية.
-                                    </p>
-
+                                    <h3>المستخدمون</h3>
+                                    <p>الملفات الشخصية المسجلة في قافية.</p>
                                 </div>
 
                             </div>
+
 
                             <div class="toolbar">
 
@@ -1867,22 +1804,19 @@
 
                             </div>
 
+
                             <div class="table-wrapper">
 
                                 <table class="data-table">
 
                                     <thead>
-
                                         <tr>
-
                                             <th>الاسم</th>
                                             <th>الهاتف</th>
                                             <th>تاريخ الميلاد</th>
                                             <th>الجنس</th>
-                                            <th>تاريخ التسجيل</th>
-
+                                            <th>التسجيل</th>
                                         </tr>
-
                                     </thead>
 
                                     <tbody id="usersTableBody"></tbody>
@@ -1895,9 +1829,10 @@
 
                     </section>
 
-                    <!-- =====================================
-                         ADMINS
-                    ====================================== -->
+
+                    <!-- =================================================
+                         المديرون
+                    ================================================= -->
 
                     <section
                         class="admin-section"
@@ -1909,15 +1844,8 @@
                             <div class="card-header">
 
                                 <div>
-
-                                    <h3>
-                                        المديرون والصلاحيات
-                                    </h3>
-
-                                    <p>
-                                        إدارة حسابات الإدارة وصلاحياتها.
-                                    </p>
-
+                                    <h3>المديرون والصلاحيات</h3>
+                                    <p>إدارة حسابات الإدارة.</p>
                                 </div>
 
                                 <button
@@ -1930,22 +1858,19 @@
 
                             </div>
 
+
                             <div class="table-wrapper">
 
                                 <table class="data-table">
 
                                     <thead>
-
                                         <tr>
-
                                             <th>User ID</th>
                                             <th>الصلاحية</th>
                                             <th>الحالة</th>
-                                            <th>تاريخ الإضافة</th>
+                                            <th>التاريخ</th>
                                             <th>الإجراءات</th>
-
                                         </tr>
-
                                     </thead>
 
                                     <tbody id="adminsTableBody"></tbody>
@@ -1958,6 +1883,7 @@
 
                     </section>
 
+
                 </div>
 
             </main>
@@ -1966,9 +1892,10 @@
 
     </div>
 
-    <!-- =========================================
-         EDITOR MODAL
-    ========================================= -->
+
+    <!-- ============================================================
+         نافذة التحرير
+    ============================================================ -->
 
     <div
         class="modal"
@@ -1987,12 +1914,12 @@
                     class="modal-close"
                     id="modalClose"
                     type="button"
-                    aria-label="إغلاق"
                 >
                     ×
                 </button>
 
             </div>
+
 
             <form id="editorForm">
 
@@ -2027,15 +1954,18 @@
 
     </div>
 
+
     <div id="toastContainer"></div>
 
-    <!-- =========================================
-         JAVASCRIPT
-    ========================================= -->
 
     <script>
 
         "use strict";
+
+
+        /* ============================================================
+           البيانات
+        ============================================================ */
 
         let currentUser = null;
         let currentAdmin = null;
@@ -2043,13 +1973,51 @@
         let currentEditorType = null;
         let currentEditorId = null;
 
+        let poetsCache = [];
         let poemsCache = [];
         let articlesCache = [];
         let videosCache = [];
         let notificationsCache = [];
         let usersCache = [];
         let adminsCache = [];
-        let poetsCache = [];
+
+        let poetsLoaded = false;
+
+
+        const ERAS = [
+            "قبل الإسلام",
+            "صدر الإسلام",
+            "الأموي",
+            "العباسي",
+            "الأندلسي",
+            "المملوكي",
+            "العثماني",
+            "الحديث",
+            "المعاصر"
+        ];
+
+
+        const COMMON_TOPICS = [
+            "الغزل",
+            "المدح",
+            "الرثاء",
+            "الفخر",
+            "الهجاء",
+            "الحكمة",
+            "الوصف",
+            "الزهد",
+            "الحماسة",
+            "الاعتذار",
+            "الشوق والحنين",
+            "الوطنيات",
+            "الديني",
+            "الاجتماعي"
+        ];
+
+
+        /* ============================================================
+           العناصر
+        ============================================================ */
 
         const checkingScreen =
             document.getElementById("checkingScreen");
@@ -2075,30 +2043,10 @@
         const saveEditorButton =
             document.getElementById("saveEditorButton");
 
-        /* =========================================
-           UTILITIES
-        ========================================= */
 
-        function showToast(message, type = "success") {
-
-            const container =
-                document.getElementById("toastContainer");
-
-            const toast =
-                document.createElement("div");
-
-            toast.className =
-                "toast " + type;
-
-            toast.textContent =
-                message;
-
-            container.appendChild(toast);
-
-            setTimeout(function () {
-                toast.remove();
-            }, 3500);
-        }
+        /* ============================================================
+           أدوات
+        ============================================================ */
 
         function escapeHtml(value) {
 
@@ -2117,15 +2065,24 @@
                 .replace(/'/g, "&#039;");
         }
 
-        function formatDate(date) {
 
-            if (!date) {
+        function normalize(value) {
+
+            return String(value || "")
+                .trim()
+                .toLowerCase();
+        }
+
+
+        function formatDate(value) {
+
+            if (!value) {
                 return "-";
             }
 
             try {
 
-                return new Date(date)
+                return new Date(value)
                     .toLocaleDateString(
                         "ar-SA",
                         {
@@ -2137,19 +2094,64 @@
 
             } catch {
 
-                return String(date);
-
+                return String(value);
             }
         }
 
-        function normalize(value) {
 
-            return String(value || "")
-                .trim()
-                .toLowerCase();
+        function shortText(value, length = 120) {
+
+            const text =
+                String(value || "")
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+            if (text.length <= length) {
+                return text;
+            }
+
+            return text.slice(0,length) + "…";
         }
 
-        function setLoadingRow(tbody, colspan) {
+
+        function showToast(
+            message,
+            type = "success"
+        ) {
+
+            const container =
+                document.getElementById(
+                    "toastContainer"
+                );
+
+            const toast =
+                document.createElement(
+                    "div"
+                );
+
+            toast.className =
+                "toast " + type;
+
+            toast.textContent =
+                message;
+
+            container.appendChild(
+                toast
+            );
+
+            setTimeout(
+                function () {
+                    toast.remove();
+                },
+                3500
+            );
+        }
+
+
+        function setLoadingRow(
+            tbody,
+            colspan
+        ) {
 
             tbody.innerHTML = `
                 <tr>
@@ -2162,6 +2164,7 @@
                 </tr>
             `;
         }
+
 
         function setEmptyRow(
             tbody,
@@ -2181,9 +2184,98 @@
             `;
         }
 
-        /* =========================================
-           AUTH
-        ========================================= */
+
+        function uniqueValues(
+            values
+        ) {
+
+            return [
+                ...new Set(
+                    values
+                        .map(
+                            value =>
+                                String(
+                                    value || ""
+                                ).trim()
+                        )
+                        .filter(Boolean)
+                )
+            ];
+        }
+
+
+        function setFilterOptions(
+            element,
+            values,
+            firstText
+        ) {
+
+            if (!element) {
+                return;
+            }
+
+            const current =
+                element.value;
+
+            const cleanValues =
+                uniqueValues(values);
+
+            element.innerHTML =
+                `
+                    <option value="">
+                        ${escapeHtml(firstText)}
+                    </option>
+                `
+                +
+                cleanValues
+                    .map(
+                        value => `
+                            <option value="${escapeHtml(value)}">
+                                ${escapeHtml(value)}
+                            </option>
+                        `
+                    )
+                    .join("");
+
+            if (
+                cleanValues.includes(
+                    current
+                )
+            ) {
+                element.value =
+                    current;
+            }
+        }
+
+
+        function eraOptions(
+            selected = ""
+        ) {
+
+            return `
+                <option value="">
+                    اختر العصر
+                </option>
+
+                ${
+                    ERAS.map(
+                        era => `
+                            <option
+                                value="${escapeHtml(era)}"
+                                ${era === selected ? "selected" : ""}
+                            >
+                                ${escapeHtml(era)}
+                            </option>
+                        `
+                    ).join("")
+                }
+            `;
+        }
+
+
+        /* ============================================================
+           الدخول الإداري
+        ============================================================ */
 
         async function checkAdminAccess() {
 
@@ -2193,30 +2285,35 @@
                     data: sessionData,
                     error: sessionError
                 } =
-                    await supabaseClient.auth.getSession();
+                    await supabaseClient
+                        .auth
+                        .getSession();
+
 
                 if (
                     sessionError ||
-                    !sessionData ||
-                    !sessionData.session ||
-                    !sessionData.session.user
+                    !sessionData?.session?.user
                 ) {
 
                     showDenied();
-                    return false;
 
+                    return false;
                 }
+
 
                 currentUser =
                     sessionData.session.user;
+
 
                 const {
                     data: adminData,
                     error: adminError
                 } =
-                    await supabaseClient.rpc(
-                        "get_my_admin_role"
-                    );
+                    await supabaseClient
+                        .rpc(
+                            "get_my_admin_role"
+                        );
+
 
                 if (
                     adminError ||
@@ -2224,18 +2321,23 @@
                     !adminData.length
                 ) {
 
-                    console.error(adminError);
+                    console.error(
+                        adminError
+                    );
 
                     showDenied();
 
                     return false;
                 }
 
+
                 currentAdmin =
                     adminData[0];
 
+
                 if (
-                    currentAdmin.is_active !== true
+                    currentAdmin.is_active !==
+                    true
                 ) {
 
                     showDenied();
@@ -2243,9 +2345,11 @@
                     return false;
                 }
 
+
                 showAdmin();
 
                 return true;
+
 
             } catch (error) {
 
@@ -2256,6 +2360,7 @@
                 return false;
             }
         }
+
 
         function showAdmin() {
 
@@ -2268,38 +2373,42 @@
             adminApp.style.display =
                 "block";
 
+
             const email =
-                currentUser.email || "المدير";
+                currentUser.email ||
+                "المدير";
+
 
             document.getElementById(
                 "adminUserName"
             ).textContent =
                 email;
 
+
             document.getElementById(
                 "adminUserRole"
             ).textContent =
                 currentAdmin.role;
 
+
             document.getElementById(
                 "adminAvatar"
             ).textContent =
-                email.charAt(0).toUpperCase();
+                email.charAt(0)
+                    .toUpperCase();
+
 
             document.getElementById(
                 "sidebarAdminEmail"
             ).textContent =
                 email;
 
+
             document.getElementById(
                 "sidebarAdminRole"
             ).textContent =
                 currentAdmin.role;
 
-            document.getElementById(
-                "welcomeTitle"
-            ).textContent =
-                "مرحبًا بك في لوحة إدارة قافية";
 
             if (
                 currentAdmin.role !==
@@ -2313,6 +2422,7 @@
             }
         }
 
+
         function showDenied() {
 
             checkingScreen.style.display =
@@ -2325,46 +2435,67 @@
                 "flex";
         }
 
-        /* =========================================
-           NAVIGATION
-        ========================================= */
+
+        /* ============================================================
+           التنقل
+        ============================================================ */
 
         document
             .querySelectorAll(
                 ".nav-item[data-section]"
             )
-            .forEach(function (button) {
+            .forEach(
+                function (button) {
 
-                button.addEventListener(
-                    "click",
-                    function () {
+                    button.addEventListener(
+                        "click",
+                        function () {
 
-                        openSection(
-                            button.dataset.section
-                        );
+                            openSection(
+                                button.dataset.section
+                            );
 
-                        closeMobileSidebar();
-                    }
-                );
-            });
+                            closeMobileSidebar();
+                        }
+                    );
+                }
+            );
 
-        function openSection(section) {
+
+        function openSection(
+            section
+        ) {
+
+            if (
+                section === "admins" &&
+                (
+                    !currentAdmin ||
+                    currentAdmin.role !==
+                    "super_admin"
+                )
+            ) {
+                return;
+            }
+
 
             document
                 .querySelectorAll(
                     ".admin-section"
                 )
-                .forEach(function (element) {
+                .forEach(
+                    element =>
+                        element.classList.remove(
+                            "active"
+                        )
+                );
 
-                    element.classList.remove(
-                        "active"
-                    );
-                });
 
             const target =
                 document.getElementById(
-                    "section-" + section
+                    "section-" +
+                    section
                 );
+
 
             if (target) {
 
@@ -2373,17 +2504,20 @@
                 );
             }
 
+
             document
                 .querySelectorAll(
                     ".nav-item[data-section]"
                 )
-                .forEach(function (button) {
+                .forEach(
+                    button =>
+                        button.classList.toggle(
+                            "active",
+                            button.dataset.section ===
+                                section
+                        )
+                );
 
-                    button.classList.toggle(
-                        "active",
-                        button.dataset.section === section
-                    );
-                });
 
             const titles = {
 
@@ -2394,12 +2528,12 @@
 
                 poets: [
                     "الشعراء",
-                    "فهرس شعراء منصة قافية"
+                    "إدارة الشعراء وسيرهم وعصورهم"
                 ],
 
                 poems: [
                     "القصائد",
-                    "إدارة القصائد والشعراء"
+                    "إدارة القصائد والعصور والموضوعات"
                 ],
 
                 articles: [
@@ -2409,7 +2543,7 @@
 
                 videos: [
                     "الفيديوهات",
-                    "إدارة الفيديوهات"
+                    "إدارة مكتبة الفيديوهات"
                 ],
 
                 notifications: [
@@ -2419,33 +2553,37 @@
 
                 categories: [
                     "التصنيفات",
-                    "إدارة تصنيفات المحتوى"
+                    "موضوعات القصائد وتصنيفات المقالات"
                 ],
 
                 users: [
                     "المستخدمون",
-                    "إدارة الملفات الشخصية"
+                    "الملفات الشخصية المسجلة"
                 ],
 
                 admins: [
                     "المديرون والصلاحيات",
                     "إدارة صلاحيات الإدارة"
                 ]
-
             };
 
-            if (titles[section]) {
+
+            if (
+                titles[section]
+            ) {
 
                 document.getElementById(
                     "pageTitle"
                 ).textContent =
                     titles[section][0];
 
+
                 document.getElementById(
                     "pageDescription"
                 ).textContent =
                     titles[section][1];
             }
+
 
             if (section === "dashboard")
                 loadDashboard();
@@ -2475,11 +2613,14 @@
                 loadAdmins();
         }
 
-        /* =========================================
-           DASHBOARD
-        ========================================= */
 
-        async function getExactCount(table) {
+        /* ============================================================
+           لوحة التحكم
+        ============================================================ */
+
+        async function getExactCount(
+            table
+        ) {
 
             const {
                 count,
@@ -2487,20 +2628,31 @@
             } =
                 await supabaseClient
                     .from(table)
-                    .select("id", {
-                        count: "exact",
-                        head: true
-                    });
+                    .select(
+                        "id",
+                        {
+                            count: "exact",
+                            head: true
+                        }
+                    );
+
 
             if (error) {
-                console.error(error);
+
+                console.error(
+                    error
+                );
+
                 return 0;
             }
 
             return count || 0;
         }
 
-        async function getFeaturedCount(table) {
+
+        async function getFeaturedCount(
+            table
+        ) {
 
             const {
                 count,
@@ -2508,48 +2660,59 @@
             } =
                 await supabaseClient
                     .from(table)
-                    .select("id", {
-                        count: "exact",
-                        head: true
-                    })
+                    .select(
+                        "id",
+                        {
+                            count: "exact",
+                            head: true
+                        }
+                    )
                     .eq(
                         "is_featured",
                         true
                     );
 
+
             if (error) {
-                console.error(error);
                 return 0;
             }
 
             return count || 0;
         }
+
 
         async function loadDashboard() {
 
             try {
 
                 const [
+                    poetCount,
                     poemCount,
                     articleCount,
                     videoCount,
                     userCount,
+                    featuredPoets,
                     featuredPoems,
-                    featuredArticles,
-                    featuredVideos
+                    featuredArticles
                 ] =
                     await Promise.all([
 
+                        getExactCount("poets"),
                         getExactCount("poems"),
                         getExactCount("articles"),
                         getExactCount("videos"),
                         getExactCount("profiles"),
 
+                        getFeaturedCount("poets"),
                         getFeaturedCount("poems"),
-                        getFeaturedCount("articles"),
-                        getFeaturedCount("videos")
-
+                        getFeaturedCount("articles")
                     ]);
+
+
+                document.getElementById(
+                    "statPoets"
+                ).textContent =
+                    poetCount;
 
                 document.getElementById(
                     "statPoems"
@@ -2571,19 +2734,14 @@
                 ).textContent =
                     userCount;
 
+
                 document.getElementById(
                     "dashboardSummary"
                 ).innerHTML = `
 
                     <div class="quick-item">
-                        <span>إجمالي المحتوى</span>
-                        <strong>
-                            ${
-                                poemCount +
-                                articleCount +
-                                videoCount
-                            }
-                        </strong>
+                        <span>الشعراء</span>
+                        <strong>${poetCount}</strong>
                     </div>
 
                     <div class="quick-item">
@@ -2597,25 +2755,20 @@
                     </div>
 
                     <div class="quick-item">
-                        <span>الفيديوهات</span>
-                        <strong>${videoCount}</strong>
-                    </div>
-
-                    <div class="quick-item">
                         <span>المستخدمون</span>
                         <strong>${userCount}</strong>
                     </div>
-
                 `;
 
-                const totalFeatured =
-                    featuredPoems +
-                    featuredArticles +
-                    featuredVideos;
 
                 document.getElementById(
                     "featuredSummary"
                 ).innerHTML = `
+
+                    <div class="quick-item">
+                        <span>شعراء مميزون</span>
+                        <strong>${featuredPoets}</strong>
+                    </div>
 
                     <div class="quick-item">
                         <span>قصائد مميزة</span>
@@ -2626,185 +2779,374 @@
                         <span>مقالات مميزة</span>
                         <strong>${featuredArticles}</strong>
                     </div>
-
-                    <div class="quick-item">
-                        <span>فيديوهات مميزة</span>
-                        <strong>${featuredVideos}</strong>
-                    </div>
-
-                    <div class="quick-item">
-                        <span>إجمالي المميز</span>
-                        <strong>${totalFeatured}</strong>
-                    </div>
-
                 `;
+
 
             } catch (error) {
 
                 console.error(error);
 
                 showToast(
-                    "تعذر تحميل إحصائيات لوحة التحكم",
+                    "تعذر تحميل الإحصائيات",
                     "error"
                 );
             }
         }
 
-        /* =========================================
-           POETS
-        ========================================= */
+
+        /* ============================================================
+           الشعراء
+        ============================================================ */
+
+        async function fetchPoets(
+            force = false
+        ) {
+
+            if (
+                poetsLoaded &&
+                !force
+            ) {
+                return poetsCache;
+            }
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("poets")
+                    .select("*")
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            poetsCache =
+                data || [];
+
+            poetsLoaded =
+                true;
+
+            return poetsCache;
+        }
+
 
         async function loadPoets() {
 
-            const container =
+            const tbody =
                 document.getElementById(
-                    "poetsContainer"
+                    "poetsTableBody"
                 );
 
-            container.innerHTML = `
-                <div class="quick-card">
-                    جارٍ تحميل الشعراء...
-                </div>
-            `;
+            setLoadingRow(
+                tbody,
+                7
+            );
+
 
             try {
 
+                await fetchPoets(
+                    true
+                );
+
+
                 const {
-                    data,
-                    error
+                    data: poemLinks,
+                    error: countError
                 } =
                     await supabaseClient
                         .from("poems")
-                        .select("poet");
+                        .select("poet_id");
 
-                if (error) {
-                    throw error;
+
+                if (countError) {
+                    throw countError;
                 }
 
-                const map =
+
+                const counts =
                     new Map();
 
-                (data || []).forEach(function (item) {
 
-                    const poet =
-                        String(
-                            item.poet || ""
-                        ).trim();
+                (
+                    poemLinks || []
+                ).forEach(
+                    function (item) {
 
-                    if (!poet) {
-                        return;
+                        if (!item.poet_id) {
+                            return;
+                        }
+
+                        const key =
+                            String(
+                                item.poet_id
+                            );
+
+                        counts.set(
+                            key,
+                            (
+                                counts.get(key) ||
+                                0
+                            ) + 1
+                        );
                     }
+                );
 
-                    map.set(
-                        poet,
-                        (map.get(poet) || 0) + 1
-                    );
-                });
 
                 poetsCache =
-                    Array.from(
-                        map.entries()
-                    )
-                    .map(function (entry) {
+                    poetsCache.map(
+                        poet => ({
+                            ...poet,
+                            poem_count:
+                                counts.get(
+                                    String(poet.id)
+                                ) || 0
+                        })
+                    );
 
-                        return {
-                            name: entry[0],
-                            count: entry[1]
-                        };
 
-                    })
-                    .sort(function (a,b) {
+                refreshPoetFilters();
+                filterPoets();
 
-                        return b.count - a.count;
-
-                    });
-
-                renderPoets(
-                    poetsCache
-                );
 
             } catch (error) {
 
                 console.error(error);
 
-                container.innerHTML = `
-                    <div class="quick-card">
-                        تعذر تحميل الشعراء.
-                    </div>
-                `;
+                setEmptyRow(
+                    tbody,
+                    7,
+                    "تعذر تحميل الشعراء."
+                );
             }
         }
 
-        function renderPoets(items) {
 
-            const container =
+        function refreshPoetFilters() {
+
+            setFilterOptions(
                 document.getElementById(
-                    "poetsContainer"
+                    "poetEraFilter"
+                ),
+                poetsCache.map(
+                    item => item.era
+                ),
+                "جميع العصور"
+            );
+        }
+
+
+        function filterPoets() {
+
+            const search =
+                normalize(
+                    document.getElementById(
+                        "poetSearch"
+                    ).value
                 );
+
+            const era =
+                document.getElementById(
+                    "poetEraFilter"
+                ).value;
+
+
+            const items =
+                poetsCache.filter(
+                    function (poet) {
+
+                        const searchMatch =
+                            !search ||
+                            normalize(
+                                poet.name
+                            ).includes(search) ||
+                            normalize(
+                                poet.nickname
+                            ).includes(search) ||
+                            normalize(
+                                poet.bio
+                            ).includes(search);
+
+                        const eraMatch =
+                            !era ||
+                            poet.era === era;
+
+                        return (
+                            searchMatch &&
+                            eraMatch
+                        );
+                    }
+                );
+
+
+            renderPoets(
+                items
+            );
+        }
+
+
+        function renderPoets(
+            items
+        ) {
+
+            const tbody =
+                document.getElementById(
+                    "poetsTableBody"
+                );
+
 
             if (!items.length) {
 
-                container.innerHTML = `
-                    <div class="quick-card">
-                        لا يوجد شعراء حتى الآن.
-                    </div>
-                `;
+                setEmptyRow(
+                    tbody,
+                    7,
+                    "لا يوجد شعراء مطابقون."
+                );
 
                 return;
             }
 
-            container.innerHTML =
-                items.map(function (poet) {
 
-                    return `
+            tbody.innerHTML =
+                items.map(
+                    function (poet) {
 
-                        <div class="poet-card">
+                        return `
 
-                            <h4>
-                                ${escapeHtml(poet.name)}
-                            </h4>
+                            <tr>
 
-                            <p>
-                                عدد القصائد المنشورة
-                            </p>
+                                <td>
 
-                            <strong>
-                                ${poet.count}
-                            </strong>
+                                    ${
+                                        poet.image_url
+                                        ? `
+                                            <img
+                                                class="poet-photo"
+                                                src="${escapeHtml(poet.image_url)}"
+                                                alt="${escapeHtml(poet.name)}"
+                                            >
+                                        `
+                                        : `
+                                            <div class="poet-placeholder">
+                                                ✒
+                                            </div>
+                                        `
+                                    }
 
-                        </div>
+                                </td>
 
-                    `;
+                                <td>
 
-                }).join("");
+                                    <div class="table-title">
+                                        ${escapeHtml(poet.name)}
+                                    </div>
+
+                                    ${
+                                        poet.bio
+                                        ? `
+                                            <span class="table-muted">
+                                                ${escapeHtml(shortText(poet.bio,80))}
+                                            </span>
+                                        `
+                                        : ""
+                                    }
+
+                                </td>
+
+                                <td>
+                                    ${escapeHtml(poet.nickname || "-")}
+                                </td>
+
+                                <td>
+                                    ${escapeHtml(poet.era || "-")}
+                                </td>
+
+                                <td>
+                                    ${poet.poem_count || 0}
+                                </td>
+
+                                <td>
+
+                                    ${
+                                        poet.is_featured
+                                        ? `
+                                            <span class="badge">
+                                                مميز
+                                            </span>
+                                        `
+                                        : `
+                                            <span class="badge badge-warning">
+                                                عادي
+                                            </span>
+                                        `
+                                    }
+
+                                </td>
+
+                                <td>
+
+                                    <div class="table-actions">
+
+                                        <button
+                                            class="btn btn-secondary btn-small"
+                                            onclick="editPoet(${poet.id})"
+                                            type="button"
+                                        >
+                                            تعديل
+                                        </button>
+
+                                        <button
+                                            class="btn btn-danger btn-small"
+                                            onclick="deletePoet(${poet.id})"
+                                            type="button"
+                                        >
+                                            حذف
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        `;
+                    }
+                ).join("");
         }
 
+
         document
-            .getElementById("poetSearch")
+            .getElementById(
+                "poetSearch"
+            )
             .addEventListener(
                 "input",
-                function () {
-
-                    const value =
-                        normalize(this.value);
-
-                    renderPoets(
-                        poetsCache.filter(
-                            function (poet) {
-
-                                return normalize(
-                                    poet.name
-                                ).includes(value);
-
-                            }
-                        )
-                    );
-                }
+                filterPoets
             );
 
-        /* =========================================
-           POEMS
-        ========================================= */
+
+        document
+            .getElementById(
+                "poetEraFilter"
+            )
+            .addEventListener(
+                "change",
+                filterPoets
+            );
+
+
+        /* ============================================================
+           القصائد
+        ============================================================ */
 
         async function loadPoems() {
 
@@ -2813,7 +3155,11 @@
                     "poemsTableBody"
                 );
 
-            setLoadingRow(tbody,6);
+            setLoadingRow(
+                tbody,
+                6
+            );
+
 
             const {
                 data,
@@ -2825,9 +3171,10 @@
                     .order(
                         "created_at",
                         {
-                            ascending:false
+                            ascending: false
                         }
                     );
+
 
             if (error) {
 
@@ -2842,150 +3189,240 @@
                 return;
             }
 
+
             poemsCache =
                 data || [];
 
-            renderPoems(
-                poemsCache
+
+            refreshPoemFilters();
+            filterPoems();
+        }
+
+
+        function refreshPoemFilters() {
+
+            setFilterOptions(
+                document.getElementById(
+                    "poemEraFilter"
+                ),
+                poemsCache.map(
+                    poem => poem.era
+                ),
+                "جميع العصور"
+            );
+
+
+            setFilterOptions(
+                document.getElementById(
+                    "poemTopicFilter"
+                ),
+                poemsCache.map(
+                    poem => poem.category
+                ),
+                "جميع الموضوعات"
             );
         }
 
-        function renderPoems(items) {
+
+        function filterPoems() {
+
+            const search =
+                normalize(
+                    document.getElementById(
+                        "poemSearch"
+                    ).value
+                );
+
+            const era =
+                document.getElementById(
+                    "poemEraFilter"
+                ).value;
+
+            const topic =
+                document.getElementById(
+                    "poemTopicFilter"
+                ).value;
+
+
+            const items =
+                poemsCache.filter(
+                    function (poem) {
+
+                        const searchMatch =
+                            !search ||
+                            normalize(
+                                poem.title
+                            ).includes(search) ||
+                            normalize(
+                                poem.poet
+                            ).includes(search) ||
+                            normalize(
+                                poem.content
+                            ).includes(search) ||
+                            normalize(
+                                poem.category
+                            ).includes(search);
+
+                        const eraMatch =
+                            !era ||
+                            poem.era === era;
+
+                        const topicMatch =
+                            !topic ||
+                            poem.category ===
+                                topic;
+
+                        return (
+                            searchMatch &&
+                            eraMatch &&
+                            topicMatch
+                        );
+                    }
+                );
+
+
+            renderPoems(
+                items
+            );
+        }
+
+
+        function renderPoems(
+            items
+        ) {
 
             const tbody =
                 document.getElementById(
                     "poemsTableBody"
                 );
 
+
             if (!items.length) {
 
                 setEmptyRow(
                     tbody,
                     6,
-                    "لا توجد قصائد."
+                    "لا توجد قصائد مطابقة."
                 );
 
                 return;
             }
 
+
             tbody.innerHTML =
-                items.map(function (poem) {
+                items.map(
+                    function (poem) {
 
-                    return `
+                        return `
 
-                        <tr>
+                            <tr>
 
-                            <td>
-                                <div class="table-title">
-                                    ${escapeHtml(poem.title)}
-                                </div>
-                            </td>
+                                <td>
 
-                            <td>
-                                ${escapeHtml(poem.poet)}
-                            </td>
+                                    <div class="table-title">
+                                        ${escapeHtml(poem.title)}
+                                    </div>
 
-                            <td>
-                                ${escapeHtml(poem.era)}
-                            </td>
+                                    <span class="table-muted">
+                                        ${escapeHtml(shortText(poem.content,80))}
+                                    </span>
 
-                            <td>
-                                ${escapeHtml(poem.category)}
-                            </td>
+                                </td>
 
-                            <td>
+                                <td>
+                                    ${escapeHtml(poem.poet || "-")}
+                                </td>
 
-                                ${
-                                    poem.is_featured
+                                <td>
+                                    ${escapeHtml(poem.era || "-")}
+                                </td>
 
-                                    ? `
-                                        <span class="badge">
-                                            مميز
-                                        </span>
-                                    `
+                                <td>
+                                    ${escapeHtml(poem.category || "-")}
+                                </td>
 
-                                    : `
-                                        <span class="badge badge-warning">
-                                            عادي
-                                        </span>
-                                    `
-                                }
+                                <td>
 
-                            </td>
+                                    ${
+                                        poem.is_featured
+                                        ? `
+                                            <span class="badge">
+                                                مميز
+                                            </span>
+                                        `
+                                        : `
+                                            <span class="badge badge-warning">
+                                                عادي
+                                            </span>
+                                        `
+                                    }
 
-                            <td>
+                                </td>
 
-                                <div class="table-actions">
+                                <td>
 
-                                    <button
-                                        class="btn btn-secondary btn-small"
-                                        onclick="editPoem(${poem.id})"
-                                        type="button"
-                                    >
-                                        تعديل
-                                    </button>
+                                    <div class="table-actions">
 
-                                    <button
-                                        class="btn btn-danger btn-small"
-                                        onclick="deletePoem(${poem.id})"
-                                        type="button"
-                                    >
-                                        حذف
-                                    </button>
+                                        <button
+                                            class="btn btn-secondary btn-small"
+                                            onclick="editPoem(${poem.id})"
+                                            type="button"
+                                        >
+                                            تعديل
+                                        </button>
 
-                                </div>
+                                        <button
+                                            class="btn btn-danger btn-small"
+                                            onclick="deletePoem(${poem.id})"
+                                            type="button"
+                                        >
+                                            حذف
+                                        </button>
 
-                            </td>
+                                    </div>
 
-                        </tr>
+                                </td>
 
-                    `;
-
-                }).join("");
+                            </tr>
+                        `;
+                    }
+                ).join("");
         }
 
+
         document
-            .getElementById("poemSearch")
+            .getElementById(
+                "poemSearch"
+            )
             .addEventListener(
                 "input",
-                function () {
-
-                    const value =
-                        normalize(this.value);
-
-                    renderPoems(
-                        poemsCache.filter(
-                            function (poem) {
-
-                                return (
-
-                                    normalize(
-                                        poem.title
-                                    ).includes(value)
-
-                                    ||
-
-                                    normalize(
-                                        poem.poet
-                                    ).includes(value)
-
-                                    ||
-
-                                    normalize(
-                                        poem.category
-                                    ).includes(value)
-
-                                );
-
-                            }
-                        )
-                    );
-                }
+                filterPoems
             );
 
-        /* =========================================
-           ARTICLES
-        ========================================= */
+
+        document
+            .getElementById(
+                "poemEraFilter"
+            )
+            .addEventListener(
+                "change",
+                filterPoems
+            );
+
+
+        document
+            .getElementById(
+                "poemTopicFilter"
+            )
+            .addEventListener(
+                "change",
+                filterPoems
+            );
+
+
+        /* ============================================================
+           المقالات
+        ============================================================ */
 
         async function loadArticles() {
 
@@ -2994,7 +3431,11 @@
                     "articlesTableBody"
                 );
 
-            setLoadingRow(tbody,5);
+            setLoadingRow(
+                tbody,
+                6
+            );
+
 
             const {
                 data,
@@ -3006,9 +3447,10 @@
                     .order(
                         "created_at",
                         {
-                            ascending:false
+                            ascending: false
                         }
                     );
+
 
             if (error) {
 
@@ -3016,153 +3458,223 @@
 
                 setEmptyRow(
                     tbody,
-                    5,
+                    6,
                     "تعذر تحميل المقالات."
                 );
 
                 return;
             }
 
+
             articlesCache =
                 data || [];
 
-            renderArticles(
-                articlesCache
+
+            refreshArticleFilters();
+            filterArticles();
+        }
+
+
+        function refreshArticleFilters() {
+
+            setFilterOptions(
+                document.getElementById(
+                    "articleCategoryFilter"
+                ),
+                articlesCache.map(
+                    item => item.category
+                ),
+                "جميع التصنيفات"
             );
         }
 
-        function renderArticles(items) {
+
+        function filterArticles() {
+
+            const search =
+                normalize(
+                    document.getElementById(
+                        "articleSearch"
+                    ).value
+                );
+
+            const category =
+                document.getElementById(
+                    "articleCategoryFilter"
+                ).value;
+
+
+            const items =
+                articlesCache.filter(
+                    function (article) {
+
+                        const searchMatch =
+                            !search ||
+                            normalize(
+                                article.title
+                            ).includes(search) ||
+                            normalize(
+                                article.summary
+                            ).includes(search) ||
+                            normalize(
+                                article.content
+                            ).includes(search) ||
+                            normalize(
+                                article.author
+                            ).includes(search);
+
+                        const categoryMatch =
+                            !category ||
+                            article.category ===
+                                category;
+
+                        return (
+                            searchMatch &&
+                            categoryMatch
+                        );
+                    }
+                );
+
+
+            renderArticles(
+                items
+            );
+        }
+
+
+        function renderArticles(
+            items
+        ) {
 
             const tbody =
                 document.getElementById(
                     "articlesTableBody"
                 );
 
+
             if (!items.length) {
 
                 setEmptyRow(
                     tbody,
-                    5,
-                    "لا توجد مقالات."
+                    6,
+                    "لا توجد مقالات مطابقة."
                 );
 
                 return;
             }
 
+
             tbody.innerHTML =
-                items.map(function (article) {
+                items.map(
+                    function (article) {
 
-                    return `
+                        const summary =
+                            article.summary ||
+                            shortText(
+                                article.content,
+                                140
+                            );
 
-                        <tr>
+                        return `
 
-                            <td>
-                                <div class="table-title">
-                                    ${escapeHtml(article.title)}
-                                </div>
-                            </td>
+                            <tr>
 
-                            <td>
-                                ${escapeHtml(article.author)}
-                            </td>
+                                <td>
 
-                            <td>
-                                ${escapeHtml(article.category)}
-                            </td>
+                                    <div class="table-title">
+                                        ${escapeHtml(article.title)}
+                                    </div>
 
-                            <td>
+                                </td>
 
-                                ${
-                                    article.is_featured
+                                <td>
 
-                                    ? `
-                                        <span class="badge">
-                                            مميز
-                                        </span>
-                                    `
+                                    <span class="table-muted">
+                                        ${escapeHtml(summary)}
+                                    </span>
 
-                                    : `
-                                        <span class="badge badge-warning">
-                                            عادي
-                                        </span>
-                                    `
-                                }
+                                </td>
 
-                            </td>
+                                <td>
+                                    ${escapeHtml(article.author || "-")}
+                                </td>
 
-                            <td>
+                                <td>
+                                    ${escapeHtml(article.category || "-")}
+                                </td>
 
-                                <div class="table-actions">
+                                <td>
 
-                                    <button
-                                        class="btn btn-secondary btn-small"
-                                        onclick="editArticle(${article.id})"
-                                        type="button"
-                                    >
-                                        تعديل
-                                    </button>
+                                    ${
+                                        article.is_featured
+                                        ? `
+                                            <span class="badge">
+                                                مميز
+                                            </span>
+                                        `
+                                        : `
+                                            <span class="badge badge-warning">
+                                                عادي
+                                            </span>
+                                        `
+                                    }
 
-                                    <button
-                                        class="btn btn-danger btn-small"
-                                        onclick="deleteArticle(${article.id})"
-                                        type="button"
-                                    >
-                                        حذف
-                                    </button>
+                                </td>
 
-                                </div>
+                                <td>
 
-                            </td>
+                                    <div class="table-actions">
 
-                        </tr>
+                                        <button
+                                            class="btn btn-secondary btn-small"
+                                            onclick="editArticle(${article.id})"
+                                            type="button"
+                                        >
+                                            تعديل
+                                        </button>
 
-                    `;
+                                        <button
+                                            class="btn btn-danger btn-small"
+                                            onclick="deleteArticle(${article.id})"
+                                            type="button"
+                                        >
+                                            حذف
+                                        </button>
 
-                }).join("");
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        `;
+                    }
+                ).join("");
         }
 
+
         document
-            .getElementById("articleSearch")
+            .getElementById(
+                "articleSearch"
+            )
             .addEventListener(
                 "input",
-                function () {
-
-                    const value =
-                        normalize(this.value);
-
-                    renderArticles(
-                        articlesCache.filter(
-                            function (article) {
-
-                                return (
-
-                                    normalize(
-                                        article.title
-                                    ).includes(value)
-
-                                    ||
-
-                                    normalize(
-                                        article.author
-                                    ).includes(value)
-
-                                    ||
-
-                                    normalize(
-                                        article.category
-                                    ).includes(value)
-
-                                );
-
-                            }
-                        )
-                    );
-                }
+                filterArticles
             );
 
-        /* =========================================
-           VIDEOS
-        ========================================= */
+
+        document
+            .getElementById(
+                "articleCategoryFilter"
+            )
+            .addEventListener(
+                "change",
+                filterArticles
+            );
+
+
+        /* ============================================================
+           الفيديوهات
+        ============================================================ */
 
         async function loadVideos() {
 
@@ -3171,7 +3683,11 @@
                     "videosTableBody"
                 );
 
-            setLoadingRow(tbody,5);
+            setLoadingRow(
+                tbody,
+                5
+            );
+
 
             const {
                 data,
@@ -3183,13 +3699,12 @@
                     .order(
                         "created_at",
                         {
-                            ascending:false
+                            ascending: false
                         }
                     );
 
-            if (error) {
 
-                console.error(error);
+            if (error) {
 
                 setEmptyRow(
                     tbody,
@@ -3200,20 +3715,50 @@
                 return;
             }
 
+
             videosCache =
                 data || [];
 
+            filterVideos();
+        }
+
+
+        function filterVideos() {
+
+            const search =
+                normalize(
+                    document.getElementById(
+                        "videoSearch"
+                    ).value
+                );
+
+
             renderVideos(
-                videosCache
+
+                videosCache.filter(
+                    item =>
+                        !search ||
+                        normalize(
+                            item.title
+                        ).includes(search) ||
+                        normalize(
+                            item.description
+                        ).includes(search)
+                )
+
             );
         }
 
-        function renderVideos(items) {
+
+        function renderVideos(
+            items
+        ) {
 
             const tbody =
                 document.getElementById(
                     "videosTableBody"
                 );
+
 
             if (!items.length) {
 
@@ -3226,10 +3771,10 @@
                 return;
             }
 
-            tbody.innerHTML =
-                items.map(function (video) {
 
-                    return `
+            tbody.innerHTML =
+                items.map(
+                    video => `
 
                         <tr>
 
@@ -3240,27 +3785,23 @@
                             </td>
 
                             <td>
-                                <span class="table-muted">
-                                    ${escapeHtml(video.description)}
-                                </span>
+                                ${escapeHtml(shortText(video.description,100))}
                             </td>
 
                             <td>
 
                                 ${
                                     video.video_url
-
                                     ? `
                                         <a
+                                            class="badge"
                                             href="${escapeHtml(video.video_url)}"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            class="badge"
                                         >
-                                            فتح الفيديو
+                                            فتح
                                         </a>
                                     `
-
                                     : "-"
                                 }
 
@@ -3270,18 +3811,8 @@
 
                                 ${
                                     video.is_featured
-
-                                    ? `
-                                        <span class="badge">
-                                            مميز
-                                        </span>
-                                    `
-
-                                    : `
-                                        <span class="badge badge-warning">
-                                            عادي
-                                        </span>
-                                    `
+                                    ? `<span class="badge">مميز</span>`
+                                    : `<span class="badge badge-warning">عادي</span>`
                                 }
 
                             </td>
@@ -3311,48 +3842,24 @@
                             </td>
 
                         </tr>
-
-                    `;
-
-                }).join("");
+                    `
+                ).join("");
         }
 
+
         document
-            .getElementById("videoSearch")
+            .getElementById(
+                "videoSearch"
+            )
             .addEventListener(
                 "input",
-                function () {
-
-                    const value =
-                        normalize(this.value);
-
-                    renderVideos(
-                        videosCache.filter(
-                            function (video) {
-
-                                return (
-
-                                    normalize(
-                                        video.title
-                                    ).includes(value)
-
-                                    ||
-
-                                    normalize(
-                                        video.description
-                                    ).includes(value)
-
-                                );
-
-                            }
-                        )
-                    );
-                }
+                filterVideos
             );
 
-        /* =========================================
-           NOTIFICATIONS
-        ========================================= */
+
+        /* ============================================================
+           الإشعارات
+        ============================================================ */
 
         async function loadNotifications() {
 
@@ -3361,7 +3868,11 @@
                     "notificationsTableBody"
                 );
 
-            setLoadingRow(tbody,5);
+            setLoadingRow(
+                tbody,
+                5
+            );
+
 
             const {
                 data,
@@ -3373,39 +3884,30 @@
                     .order(
                         "created_at",
                         {
-                            ascending:false
+                            ascending: false
                         }
                     );
 
-            if (error) {
 
-                console.error(error);
+            if (error) {
 
                 setEmptyRow(
                     tbody,
                     5,
-                    "تعذر تحميل الإشعارات. تأكد من تفعيل Data API وRLS لجدول notifications."
+                    "تعذر تحميل الإشعارات."
                 );
 
                 return;
             }
 
+
             notificationsCache =
                 data || [];
 
-            renderNotifications(
-                notificationsCache
-            );
-        }
 
-        function renderNotifications(items) {
-
-            const tbody =
-                document.getElementById(
-                    "notificationsTableBody"
-                );
-
-            if (!items.length) {
+            if (
+                !notificationsCache.length
+            ) {
 
                 setEmptyRow(
                     tbody,
@@ -3416,82 +3918,79 @@
                 return;
             }
 
+
             tbody.innerHTML =
-                items.map(function (notification) {
+                notificationsCache
+                    .map(
+                        item => `
 
-                    return `
+                            <tr>
 
-                        <tr>
+                                <td>
+                                    ${escapeHtml(item.title)}
+                                </td>
 
-                            <td>
-                                <div class="table-title">
-                                    ${escapeHtml(notification.title)}
-                                </div>
-                            </td>
+                                <td>
+                                    ${escapeHtml(shortText(item.message,120))}
+                                </td>
 
-                            <td>
-                                ${escapeHtml(notification.message)}
-                            </td>
+                                <td>
 
-                            <td>
+                                    ${
+                                        item.link
+                                        ? `
+                                            <a
+                                                class="badge"
+                                                href="${escapeHtml(item.link)}"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                فتح
+                                            </a>
+                                        `
+                                        : "-"
+                                    }
 
-                                ${
-                                    notification.link
+                                </td>
 
-                                    ? `
-                                        <a
-                                            href="${escapeHtml(notification.link)}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            class="badge"
+                                <td>
+                                    ${formatDate(item.created_at)}
+                                </td>
+
+                                <td>
+
+                                    <div class="table-actions">
+
+                                        <button
+                                            class="btn btn-secondary btn-small"
+                                            onclick="editNotification(${item.id})"
+                                            type="button"
                                         >
-                                            فتح الرابط
-                                        </a>
-                                    `
+                                            تعديل
+                                        </button>
 
-                                    : "-"
-                                }
+                                        <button
+                                            class="btn btn-danger btn-small"
+                                            onclick="deleteNotification(${item.id})"
+                                            type="button"
+                                        >
+                                            حذف
+                                        </button>
 
-                            </td>
+                                    </div>
 
-                            <td>
-                                ${formatDate(notification.created_at)}
-                            </td>
+                                </td>
 
-                            <td>
-
-                                <div class="table-actions">
-
-                                    <button
-                                        class="btn btn-secondary btn-small"
-                                        onclick="editNotification(${notification.id})"
-                                        type="button"
-                                    >
-                                        تعديل
-                                    </button>
-
-                                    <button
-                                        class="btn btn-danger btn-small"
-                                        onclick="deleteNotification(${notification.id})"
-                                        type="button"
-                                    >
-                                        حذف
-                                    </button>
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-                    `;
-
-                }).join("");
+                            </tr>
+                        `
+                    )
+                    .join("");
         }
 
-        /* =========================================
-           CATEGORIES
-        ========================================= */
+
+        /* ============================================================
+           التصنيفات
+        ============================================================ */
 
         async function loadCategories() {
 
@@ -3500,11 +3999,13 @@
                     "categoriesContainer"
                 );
 
+
             container.innerHTML = `
                 <div class="quick-card">
-                    جارٍ تحميل التصنيفات...
+                    جارٍ التحميل...
                 </div>
             `;
+
 
             try {
 
@@ -3521,98 +4022,72 @@
                         supabaseClient
                             .from("articles")
                             .select("category")
-
                     ]);
 
-                if (poemsResult.error)
+
+                if (poemsResult.error) {
                     throw poemsResult.error;
+                }
 
-                if (articlesResult.error)
+                if (articlesResult.error) {
                     throw articlesResult.error;
-
-                const categories =
-                    new Map();
-
-                function addCategory(value) {
-
-                    const category =
-                        String(
-                            value || ""
-                        ).trim();
-
-                    if (!category)
-                        return;
-
-                    categories.set(
-                        category,
-                        (
-                            categories.get(category) ||
-                            0
-                        ) + 1
-                    );
                 }
 
-                (poemsResult.data || [])
-                    .forEach(function(item) {
-                        addCategory(item.category);
-                    });
 
-                (articlesResult.data || [])
-                    .forEach(function(item) {
-                        addCategory(item.category);
-                    });
+                const poemTopics =
+                    countValues(
+                        (poemsResult.data || [])
+                            .map(
+                                item =>
+                                    item.category
+                            )
+                    );
 
-                const entries =
-                    Array.from(
-                        categories.entries()
-                    )
-                    .sort(
-                        function(a,b) {
-                            return b[1] - a[1];
+
+                const articleCategories =
+                    countValues(
+                        (articlesResult.data || [])
+                            .map(
+                                item =>
+                                    item.category
+                            )
+                    );
+
+
+                container.innerHTML = `
+
+                    <div class="quick-card">
+
+                        <h4>
+                            موضوعات القصائد
+                        </h4>
+
+                        ${
+                            renderCountList(
+                                poemTopics
+                            )
                         }
-                    );
 
-                if (!entries.length) {
+                    </div>
 
-                    container.innerHTML = `
-                        <div class="quick-card">
-                            لا توجد تصنيفات مستخدمة حاليًا.
-                        </div>
-                    `;
 
-                    return;
-                }
+                    <div class="quick-card">
 
-                container.innerHTML =
-                    entries.map(function(item) {
+                        <h4>
+                            تصنيفات المقالات
+                        </h4>
 
-                        return `
+                        ${
+                            renderCountList(
+                                articleCategories
+                            )
+                        }
 
-                            <div class="quick-card">
+                    </div>
+                `;
 
-                                <h4>
-                                    ${escapeHtml(item[0])}
-                                </h4>
 
-                                <div class="quick-item">
-
-                                    <span>
-                                        عدد المحتويات
-                                    </span>
-
-                                    <strong>
-                                        ${item[1]}
-                                    </strong>
-
-                                </div>
-
-                            </div>
-
-                        `;
-
-                    }).join("");
-
-            } catch(error) {
+            } catch (error) {
 
                 console.error(error);
 
@@ -3624,9 +4099,83 @@
             }
         }
 
-        /* =========================================
-           USERS
-        ========================================= */
+
+        function countValues(
+            values
+        ) {
+
+            const map =
+                new Map();
+
+
+            values.forEach(
+                function (value) {
+
+                    const clean =
+                        String(
+                            value || ""
+                        ).trim();
+
+                    if (!clean) {
+                        return;
+                    }
+
+                    map.set(
+                        clean,
+                        (
+                            map.get(clean) ||
+                            0
+                        ) + 1
+                    );
+                }
+            );
+
+
+            return Array.from(
+                map.entries()
+            ).sort(
+                (a,b) =>
+                    b[1] - a[1]
+            );
+        }
+
+
+        function renderCountList(
+            entries
+        ) {
+
+            if (!entries.length) {
+
+                return `
+                    <p class="table-muted">
+                        لا توجد بيانات بعد.
+                    </p>
+                `;
+            }
+
+
+            return entries.map(
+                item => `
+
+                    <div class="quick-item">
+
+                        <span>
+                            ${escapeHtml(item[0])}
+                        </span>
+
+                        <strong>
+                            ${item[1]}
+                        </strong>
+
+                    </div>
+                `
+            ).join("");
+        }
+
+
+        /* ============================================================
+           المستخدمون
+        ============================================================ */
 
         async function loadUsers() {
 
@@ -3635,7 +4184,11 @@
                     "usersTableBody"
                 );
 
-            setLoadingRow(tbody,5);
+            setLoadingRow(
+                tbody,
+                5
+            );
+
 
             const {
                 data,
@@ -3647,13 +4200,12 @@
                     .order(
                         "created_at",
                         {
-                            ascending:false
+                            ascending: false
                         }
                     );
 
-            if (error) {
 
-                console.error(error);
+            if (error) {
 
                 setEmptyRow(
                     tbody,
@@ -3664,20 +4216,60 @@
                 return;
             }
 
+
             usersCache =
                 data || [];
 
+            filterUsers();
+        }
+
+
+        function filterUsers() {
+
+            const search =
+                normalize(
+                    document.getElementById(
+                        "userSearch"
+                    ).value
+                );
+
+
             renderUsers(
-                usersCache
+
+                usersCache.filter(
+                    function (user) {
+
+                        const name =
+                            [
+                                user.first_name,
+                                user.last_name
+                            ]
+                            .filter(Boolean)
+                            .join(" ");
+
+                        return (
+                            !search ||
+                            normalize(name)
+                                .includes(search) ||
+                            normalize(user.phone)
+                                .includes(search)
+                        );
+                    }
+                )
+
             );
         }
 
-        function renderUsers(items) {
+
+        function renderUsers(
+            items
+        ) {
 
             const tbody =
                 document.getElementById(
                     "usersTableBody"
                 );
+
 
             if (!items.length) {
 
@@ -3690,122 +4282,101 @@
                 return;
             }
 
+
             tbody.innerHTML =
-                items.map(function(user) {
+                items.map(
+                    function (user) {
 
-                    const birth =
-                        [
-                            user.birth_day,
-                            user.birth_month,
-                            user.birth_year
-                        ]
-                        .filter(
-                            value =>
-                                value !== null &&
-                                value !== undefined
-                        )
-                        .join("/");
+                        const name =
+                            [
+                                user.first_name,
+                                user.last_name
+                            ]
+                            .filter(Boolean)
+                            .join(" ");
 
-                    const fullName =
-                        [
-                            user.first_name,
-                            user.last_name
-                        ]
-                        .filter(Boolean)
-                        .join(" ");
 
-                    return `
+                        const birth =
+                            [
+                                user.birth_day,
+                                user.birth_month,
+                                user.birth_year
+                            ]
+                            .filter(
+                                value =>
+                                    value !== null &&
+                                    value !== undefined
+                            )
+                            .join("/");
 
-                        <tr>
 
-                            <td>
-                                <div class="table-title">
-                                    ${escapeHtml(fullName || "-")}
-                                </div>
-                            </td>
+                        return `
 
-                            <td>
-                                ${escapeHtml(user.phone || "-")}
-                            </td>
+                            <tr>
 
-                            <td>
-                                ${escapeHtml(birth || "-")}
-                            </td>
+                                <td>
+                                    ${escapeHtml(name || "-")}
+                                </td>
 
-                            <td>
-                                ${escapeHtml(user.gender || "-")}
-                            </td>
+                                <td>
+                                    ${escapeHtml(user.phone || "-")}
+                                </td>
 
-                            <td>
-                                ${formatDate(user.created_at)}
-                            </td>
+                                <td>
+                                    ${escapeHtml(birth || "-")}
+                                </td>
 
-                        </tr>
+                                <td>
+                                    ${escapeHtml(user.gender || "-")}
+                                </td>
 
-                    `;
+                                <td>
+                                    ${formatDate(user.created_at)}
+                                </td>
 
-                }).join("");
+                            </tr>
+                        `;
+                    }
+                )
+                .join("");
         }
 
+
         document
-            .getElementById("userSearch")
+            .getElementById(
+                "userSearch"
+            )
             .addEventListener(
                 "input",
-                function() {
-
-                    const value =
-                        normalize(this.value);
-
-                    renderUsers(
-                        usersCache.filter(
-                            function(user) {
-
-                                const name =
-                                    [
-                                        user.first_name,
-                                        user.last_name
-                                    ]
-                                    .filter(Boolean)
-                                    .join(" ");
-
-                                return (
-
-                                    normalize(
-                                        name
-                                    ).includes(value)
-
-                                    ||
-
-                                    normalize(
-                                        user.phone
-                                    ).includes(value)
-
-                                );
-                            }
-                        )
-                    );
-                }
+                filterUsers
             );
 
-        /* =========================================
-           ADMINS
-        ========================================= */
+
+        /* ============================================================
+           المديرون
+        ============================================================ */
 
         async function loadAdmins() {
 
             if (
                 !currentAdmin ||
-                currentAdmin.role !== "super_admin"
+                currentAdmin.role !==
+                "super_admin"
             ) {
                 return;
             }
+
 
             const tbody =
                 document.getElementById(
                     "adminsTableBody"
                 );
 
-            setLoadingRow(tbody,5);
+            setLoadingRow(
+                tbody,
+                5
+            );
+
 
             const {
                 data,
@@ -3817,13 +4388,12 @@
                     .order(
                         "created_at",
                         {
-                            ascending:false
+                            ascending: false
                         }
                     );
 
-            if (error) {
 
-                console.error(error);
+            if (error) {
 
                 setEmptyRow(
                     tbody,
@@ -3834,22 +4404,12 @@
                 return;
             }
 
+
             adminsCache =
                 data || [];
 
-            renderAdmins(
-                adminsCache
-            );
-        }
 
-        function renderAdmins(items) {
-
-            const tbody =
-                document.getElementById(
-                    "adminsTableBody"
-                );
-
-            if (!items.length) {
+            if (!adminsCache.length) {
 
                 setEmptyRow(
                     tbody,
@@ -3860,116 +4420,97 @@
                 return;
             }
 
+
             tbody.innerHTML =
-                items.map(function(admin) {
+                adminsCache.map(
+                    function (admin) {
 
-                    const isSelf =
-                        admin.user_id ===
-                        currentUser.id;
+                        const self =
+                            admin.user_id ===
+                            currentUser.id;
 
-                    return `
 
-                        <tr>
+                        return `
 
-                            <td>
-                                <small>
+                            <tr>
+
+                                <td>
                                     ${escapeHtml(admin.user_id)}
-                                </small>
-                            </td>
+                                </td>
 
-                            <td>
+                                <td>
+                                    ${escapeHtml(admin.role)}
+                                </td>
 
-                                ${
-                                    admin.role === "super_admin"
-
-                                    ? `
-                                        <span class="badge">
-                                            super_admin
-                                        </span>
-                                    `
-
-                                    : `
-                                        <span class="badge badge-warning">
-                                            admin
-                                        </span>
-                                    `
-                                }
-
-                            </td>
-
-                            <td>
-
-                                ${
-                                    admin.is_active
-
-                                    ? `
-                                        <span class="badge badge-success">
-                                            مفعل
-                                        </span>
-                                    `
-
-                                    : `
-                                        <span class="badge badge-danger">
-                                            غير مفعل
-                                        </span>
-                                    `
-                                }
-
-                            </td>
-
-                            <td>
-                                ${formatDate(admin.created_at)}
-                            </td>
-
-                            <td>
-
-                                <div class="table-actions">
-
-                                    <button
-                                        class="btn btn-secondary btn-small"
-                                        onclick="editAdmin('${escapeHtml(admin.id)}')"
-                                        type="button"
-                                    >
-                                        تعديل
-                                    </button>
+                                <td>
 
                                     ${
-                                        !isSelf
-
+                                        admin.is_active
                                         ? `
-                                            <button
-                                                class="btn btn-danger btn-small"
-                                                onclick="deleteAdmin('${escapeHtml(admin.id)}')"
-                                                type="button"
-                                            >
-                                                حذف
-                                            </button>
+                                            <span class="badge badge-success">
+                                                مفعل
+                                            </span>
                                         `
-
                                         : `
-                                            <span class="badge">
-                                                حسابك
+                                            <span class="badge badge-danger">
+                                                غير مفعل
                                             </span>
                                         `
                                     }
 
-                                </div>
+                                </td>
 
-                            </td>
+                                <td>
+                                    ${formatDate(admin.created_at)}
+                                </td>
 
-                        </tr>
+                                <td>
 
-                    `;
+                                    <div class="table-actions">
 
-                }).join("");
+                                        <button
+                                            class="btn btn-secondary btn-small"
+                                            onclick="editAdmin('${escapeHtml(admin.id)}')"
+                                            type="button"
+                                        >
+                                            تعديل
+                                        </button>
+
+                                        ${
+                                            self
+                                            ? `
+                                                <span class="badge">
+                                                    حسابك
+                                                </span>
+                                            `
+                                            : `
+                                                <button
+                                                    class="btn btn-danger btn-small"
+                                                    onclick="deleteAdmin('${escapeHtml(admin.id)}')"
+                                                    type="button"
+                                                >
+                                                    حذف
+                                                </button>
+                                            `
+                                        }
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        `;
+                    }
+                )
+                .join("");
         }
 
-        /* =========================================
-           MODAL
-        ========================================= */
 
-        function openModal(
-            title,
+        /* ============================================================
+           نافذة التحرير
+        ============================================================ */
+
+        async function openEditor(
             type,
             item = null
         ) {
@@ -3978,37 +4519,122 @@
                 type;
 
             currentEditorId =
-                item
-                ? item.id
-                : null;
+                item?.id ||
+                null;
+
+
+            if (type === "poem") {
+
+                try {
+                    await fetchPoets();
+                } catch (error) {
+
+                    console.error(error);
+
+                    showToast(
+                        "تعذر تحميل الشعراء",
+                        "error"
+                    );
+
+                    return;
+                }
+            }
+
+
+            const names = {
+
+                poet:
+                    item
+                    ? "تعديل الشاعر"
+                    : "إضافة شاعر",
+
+                poem:
+                    item
+                    ? "تعديل القصيدة"
+                    : "إضافة قصيدة",
+
+                article:
+                    item
+                    ? "تعديل المقال"
+                    : "إضافة مقال",
+
+                video:
+                    item
+                    ? "تعديل الفيديو"
+                    : "إضافة فيديو",
+
+                notification:
+                    item
+                    ? "تعديل الإشعار"
+                    : "إضافة إشعار",
+
+                admin:
+                    item
+                    ? "تعديل المدير"
+                    : "إضافة مدير"
+            };
+
 
             modalTitle.textContent =
-                title;
+                names[type] ||
+                "تحرير";
+
 
             editorFields.innerHTML =
                 getFormFields(
                     type,
-                    item
+                    item || {}
                 );
+
 
             editorModal.classList.add(
                 "active"
             );
 
-            setTimeout(function() {
 
-                const first =
+            if (type === "poem") {
+
+                const poetSelect =
                     editorFields.querySelector(
-                        "input,textarea,select"
+                        '[name="poet_id"]'
                     );
 
-                if (first)
-                    first.focus();
+                const eraSelect =
+                    editorFields.querySelector(
+                        '[name="era"]'
+                    );
 
-            },50);
+
+                poetSelect?.addEventListener(
+                    "change",
+                    function () {
+
+                        const selected =
+                            poetsCache.find(
+                                poet =>
+                                    String(poet.id) ===
+                                    String(
+                                        poetSelect.value
+                                    )
+                            );
+
+
+                        if (
+                            selected &&
+                            selected.era &&
+                            eraSelect
+                        ) {
+
+                            eraSelect.value =
+                                selected.era;
+                        }
+                    }
+                );
+            }
         }
 
-        function closeModal() {
+
+        function closeEditor() {
 
             editorModal.classList.remove(
                 "active"
@@ -4023,57 +4649,156 @@
             editorForm.reset();
         }
 
-        document
-            .getElementById("modalClose")
-            .addEventListener(
-                "click",
-                closeModal
-            );
 
-        document
-            .getElementById("modalCancel")
-            .addEventListener(
-                "click",
-                closeModal
-            );
+        function poetSelectOptions(
+            selected
+        ) {
 
-        editorModal.addEventListener(
-            "click",
-            function(event) {
+            if (!poetsCache.length) {
 
-                if (
-                    event.target ===
-                    editorModal
-                ) {
-                    closeModal();
-                }
+                return `
+                    <option value="">
+                        لا يوجد شعراء - أضف شاعرًا أولًا
+                    </option>
+                `;
             }
-        );
 
-        document.addEventListener(
-            "keydown",
-            function(event) {
 
-                if (
-                    event.key === "Escape" &&
-                    editorModal.classList.contains("active")
-                ) {
-                    closeModal();
+            return `
+                <option value="">
+                    اختر الشاعر
+                </option>
+
+                ${
+                    poetsCache
+                        .map(
+                            poet => `
+
+                                <option
+                                    value="${poet.id}"
+                                    ${String(poet.id) === String(selected || "") ? "selected" : ""}
+                                >
+                                    ${escapeHtml(poet.name)}
+                                    ${poet.nickname ? " — " + escapeHtml(poet.nickname) : ""}
+                                </option>
+                            `
+                        )
+                        .join("")
                 }
-            }
-        );
+            `;
+        }
 
-        /* =========================================
-           FORM FIELDS
-        ========================================= */
 
         function getFormFields(
             type,
             item
         ) {
 
-            item =
-                item || {};
+
+            if (type === "poet") {
+
+                return `
+
+                    <div class="form-group">
+
+                        <label>
+                            اسم الشاعر
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="name"
+                            required
+                            value="${escapeHtml(item.name)}"
+                            placeholder="مثال: أحمد بن الحسين"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            اللقب / الاسم المشهور
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="nickname"
+                            value="${escapeHtml(item.nickname)}"
+                            placeholder="مثال: المتنبي"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            العصر
+                        </label>
+
+                        <select
+                            class="form-control"
+                            name="era"
+                            required
+                        >
+                            ${eraOptions(item.era)}
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            رابط صورة الشاعر
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="image_url"
+                            type="url"
+                            value="${escapeHtml(item.image_url)}"
+                            placeholder="https://..."
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            سيرة الشاعر وقصته
+                        </label>
+
+                        <textarea
+                            class="form-control"
+                            name="bio"
+                            placeholder="حياته، قصته، مكانته الأدبية، أبرز أحداث حياته..."
+                        >${escapeHtml(item.bio)}</textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label class="checkbox-row">
+
+                            <input
+                                type="checkbox"
+                                name="is_featured"
+                                ${item.is_featured ? "checked" : ""}
+                            >
+
+                            شاعر مميز
+
+                        </label>
+
+                    </div>
+                `;
+            }
+
 
             if (type === "poem") {
 
@@ -4094,20 +4819,27 @@
 
                     </div>
 
+
                     <div class="form-group">
 
                         <label>
                             الشاعر
                         </label>
 
-                        <input
+                        <select
                             class="form-control"
-                            name="poet"
+                            name="poet_id"
                             required
-                            value="${escapeHtml(item.poet)}"
                         >
+                            ${
+                                poetSelectOptions(
+                                    item.poet_id
+                                )
+                            }
+                        </select>
 
                     </div>
+
 
                     <div class="form-group">
 
@@ -4115,28 +4847,48 @@
                             العصر
                         </label>
 
-                        <input
+                        <select
                             class="form-control"
                             name="era"
-                            value="${escapeHtml(item.era)}"
+                            required
                         >
+                            ${eraOptions(item.era)}
+                        </select>
 
                     </div>
+
 
                     <div class="form-group">
 
                         <label>
-                            التصنيف
+                            موضوع القصيدة
                         </label>
 
                         <input
                             class="form-control"
                             name="category"
+                            list="poemTopics"
+                            required
                             value="${escapeHtml(item.category)}"
-                            placeholder="مثال: الحكمة، الغزل، الفخر"
+                            placeholder="مثال: الغزل"
                         >
 
+                        <datalist id="poemTopics">
+
+                            ${
+                                COMMON_TOPICS
+                                    .map(
+                                        topic => `
+                                            <option value="${escapeHtml(topic)}">
+                                        `
+                                    )
+                                    .join("")
+                            }
+
+                        </datalist>
+
                     </div>
+
 
                     <div class="form-group full">
 
@@ -4148,9 +4900,11 @@
                             class="form-control"
                             name="content"
                             required
+                            placeholder="اكتب أبيات القصيدة..."
                         >${escapeHtml(item.content)}</textarea>
 
                     </div>
+
 
                     <div class="form-group">
 
@@ -4166,6 +4920,7 @@
                         >
 
                     </div>
+
 
                     <div class="form-group">
 
@@ -4182,6 +4937,7 @@
 
                     </div>
 
+
                     <div class="form-group full">
 
                         <label class="checkbox-row">
@@ -4192,14 +4948,14 @@
                                 ${item.is_featured ? "checked" : ""}
                             >
 
-                            عرض القصيدة كمحتوى مميز
+                            قصيدة مميزة
 
                         </label>
 
                     </div>
-
                 `;
             }
+
 
             if (type === "article") {
 
@@ -4216,9 +4972,11 @@
                             name="title"
                             required
                             value="${escapeHtml(item.title)}"
+                            placeholder="مثال: من هو المتنبي؟"
                         >
 
                     </div>
+
 
                     <div class="form-group">
 
@@ -4234,6 +4992,7 @@
 
                     </div>
 
+
                     <div class="form-group">
 
                         <label>
@@ -4244,23 +5003,43 @@
                             class="form-control"
                             name="category"
                             value="${escapeHtml(item.category)}"
+                            placeholder="مثال: سير وأعلام"
                         >
 
                     </div>
 
+
                     <div class="form-group full">
 
                         <label>
-                            محتوى المقال
+                            النبذة المختصرة
+                        </label>
+
+                        <textarea
+                            class="form-control"
+                            name="summary"
+                            placeholder="هذه النبذة ستظهر في قائمة المقالات قبل فتح المقال كاملًا."
+                            style="min-height:100px;"
+                        >${escapeHtml(item.summary)}</textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            محتوى المقال كاملًا
                         </label>
 
                         <textarea
                             class="form-control"
                             name="content"
                             required
+                            style="min-height:300px;"
                         >${escapeHtml(item.content)}</textarea>
 
                     </div>
+
 
                     <div class="form-group full">
 
@@ -4277,6 +5056,7 @@
 
                     </div>
 
+
                     <div class="form-group full">
 
                         <label class="checkbox-row">
@@ -4287,14 +5067,14 @@
                                 ${item.is_featured ? "checked" : ""}
                             >
 
-                            عرض المقال كمحتوى مميز
+                            مقال مميز
 
                         </label>
 
                     </div>
-
                 `;
             }
+
 
             if (type === "video") {
 
@@ -4315,6 +5095,7 @@
 
                     </div>
 
+
                     <div class="form-group full">
 
                         <label>
@@ -4327,6 +5108,7 @@
                         >${escapeHtml(item.description)}</textarea>
 
                     </div>
+
 
                     <div class="form-group">
 
@@ -4343,10 +5125,11 @@
 
                     </div>
 
+
                     <div class="form-group">
 
                         <label>
-                            رابط الصورة المصغرة
+                            الصورة المصغرة
                         </label>
 
                         <input
@@ -4358,6 +5141,7 @@
 
                     </div>
 
+
                     <div class="form-group full">
 
                         <label class="checkbox-row">
@@ -4368,14 +5152,14 @@
                                 ${item.is_featured ? "checked" : ""}
                             >
 
-                            عرض الفيديو كمحتوى مميز
+                            فيديو مميز
 
                         </label>
 
                     </div>
-
                 `;
             }
+
 
             if (type === "notification") {
 
@@ -4396,6 +5180,7 @@
 
                     </div>
 
+
                     <div class="form-group full">
 
                         <label>
@@ -4410,6 +5195,7 @@
 
                     </div>
 
+
                     <div class="form-group full">
 
                         <label>
@@ -4419,14 +5205,14 @@
                         <input
                             class="form-control"
                             name="link"
-                            type="url"
                             value="${escapeHtml(item.link)}"
+                            placeholder="مثال: poem.html?id=12"
                         >
 
                     </div>
-
                 `;
             }
+
 
             if (type === "admin") {
 
@@ -4443,14 +5229,10 @@
                             name="user_id"
                             required
                             value="${escapeHtml(item.user_id)}"
-                            placeholder="UUID لحساب المستخدم في Supabase Auth"
                         >
 
-                        <div class="hint">
-                            استخدم UUID لحساب موجود مسبقًا في Authentication.
-                        </div>
-
                     </div>
+
 
                     <div class="form-group">
 
@@ -4482,6 +5264,7 @@
 
                     </div>
 
+
                     <div class="form-group">
 
                         <label class="checkbox-row">
@@ -4497,22 +5280,75 @@
                         </label>
 
                     </div>
-
                 `;
             }
+
 
             return "";
         }
 
-        /* =========================================
-           FORM SUBMIT
-        ========================================= */
+
+        document
+            .getElementById(
+                "modalClose"
+            )
+            .addEventListener(
+                "click",
+                closeEditor
+            );
+
+
+        document
+            .getElementById(
+                "modalCancel"
+            )
+            .addEventListener(
+                "click",
+                closeEditor
+            );
+
+
+        editorModal.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target ===
+                    editorModal
+                ) {
+                    closeEditor();
+                }
+            }
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key ===
+                    "Escape" &&
+                    editorModal.classList.contains(
+                        "active"
+                    )
+                ) {
+                    closeEditor();
+                }
+            }
+        );
+
+
+        /* ============================================================
+           الحفظ
+        ============================================================ */
 
         editorForm.addEventListener(
             "submit",
-            async function(event) {
+            async function (event) {
 
                 event.preventDefault();
+
 
                 saveEditorButton.disabled =
                     true;
@@ -4520,196 +5356,288 @@
                 saveEditorButton.textContent =
                     "جارٍ الحفظ...";
 
-                const formData =
-                    new FormData(
-                        editorForm
-                    );
-
-                const values =
-                    Object.fromEntries(
-                        formData.entries()
-                    );
-
-                const featured =
-                    formData.get(
-                        "is_featured"
-                    ) === "on";
-
-                const active =
-                    formData.get(
-                        "is_active"
-                    ) === "on";
-
-                let table = null;
-                let payload = {};
-
-                if (
-                    currentEditorType ===
-                    "poem"
-                ) {
-
-                    table = "poems";
-
-                    payload = {
-
-                        title:
-                            values.title,
-
-                        poet:
-                            values.poet,
-
-                        content:
-                            values.content,
-
-                        era:
-                            values.era || null,
-
-                        category:
-                            values.category || null,
-
-                        image_url:
-                            values.image_url || null,
-
-                        video_url:
-                            values.video_url || null,
-
-                        is_featured:
-                            featured
-                    };
-                }
-
-                if (
-                    currentEditorType ===
-                    "article"
-                ) {
-
-                    table = "articles";
-
-                    payload = {
-
-                        title:
-                            values.title,
-
-                        content:
-                            values.content,
-
-                        author:
-                            values.author || null,
-
-                        image_url:
-                            values.image_url || null,
-
-                        category:
-                            values.category || null,
-
-                        is_featured:
-                            featured
-                    };
-                }
-
-                if (
-                    currentEditorType ===
-                    "video"
-                ) {
-
-                    table = "videos";
-
-                    payload = {
-
-                        title:
-                            values.title,
-
-                        description:
-                            values.description || null,
-
-                        video_url:
-                            values.video_url || null,
-
-                        thumbnail_url:
-                            values.thumbnail_url || null,
-
-                        is_featured:
-                            featured
-                    };
-                }
-
-                if (
-                    currentEditorType ===
-                    "notification"
-                ) {
-
-                    table = "notifications";
-
-                    payload = {
-
-                        title:
-                            values.title,
-
-                        message:
-                            values.message,
-
-                        link:
-                            values.link || null,
-
-                        is_read:
-                            false
-                    };
-                }
-
-                if (
-                    currentEditorType ===
-                    "admin"
-                ) {
-
-                    if (
-                        !currentAdmin ||
-                        currentAdmin.role !==
-                        "super_admin"
-                    ) {
-
-                        showToast(
-                            "هذه العملية متاحة للـ Super Admin فقط",
-                            "error"
-                        );
-
-                        saveEditorButton.disabled =
-                            false;
-
-                        saveEditorButton.textContent =
-                            "حفظ";
-
-                        return;
-                    }
-
-                    table = "admin_users";
-
-                    payload = {
-
-                        user_id:
-                            values.user_id,
-
-                        role:
-                            values.role,
-
-                        is_active:
-                            active
-                    };
-                }
-
-                if (!table) {
-
-                    saveEditorButton.disabled =
-                        false;
-
-                    saveEditorButton.textContent =
-                        "حفظ";
-
-                    return;
-                }
 
                 try {
 
+                    const formData =
+                        new FormData(
+                            editorForm
+                        );
+
+                    const values =
+                        Object.fromEntries(
+                            formData.entries()
+                        );
+
+
+                    const featured =
+                        formData.get(
+                            "is_featured"
+                        ) === "on";
+
+
+                    const active =
+                        formData.get(
+                            "is_active"
+                        ) === "on";
+
+
+                    let table =
+                        null;
+
+                    let payload =
+                        {};
+
+
+                    /* الشعراء */
+
+                    if (
+                        currentEditorType ===
+                        "poet"
+                    ) {
+
+                        table =
+                            "poets";
+
+                        payload = {
+
+                            name:
+                                values.name.trim(),
+
+                            nickname:
+                                values.nickname?.trim() ||
+                                null,
+
+                            era:
+                                values.era ||
+                                null,
+
+                            bio:
+                                values.bio?.trim() ||
+                                null,
+
+                            image_url:
+                                values.image_url?.trim() ||
+                                null,
+
+                            is_featured:
+                                featured
+                        };
+                    }
+
+
+                    /* القصائد */
+
+                    if (
+                        currentEditorType ===
+                        "poem"
+                    ) {
+
+                        const selectedPoet =
+                            poetsCache.find(
+                                poet =>
+                                    String(poet.id) ===
+                                    String(values.poet_id)
+                            );
+
+
+                        if (!selectedPoet) {
+
+                            throw new Error(
+                                "يرجى اختيار شاعر صحيح"
+                            );
+                        }
+
+
+                        table =
+                            "poems";
+
+                        payload = {
+
+                            title:
+                                values.title.trim(),
+
+                            poet_id:
+                                Number(
+                                    values.poet_id
+                                ),
+
+                            poet:
+                                selectedPoet.name,
+
+                            content:
+                                values.content,
+
+                            era:
+                                values.era ||
+                                selectedPoet.era ||
+                                null,
+
+                            category:
+                                values.category?.trim() ||
+                                null,
+
+                            image_url:
+                                values.image_url?.trim() ||
+                                null,
+
+                            video_url:
+                                values.video_url?.trim() ||
+                                null,
+
+                            is_featured:
+                                featured
+                        };
+                    }
+
+
+                    /* المقالات */
+
+                    if (
+                        currentEditorType ===
+                        "article"
+                    ) {
+
+                        table =
+                            "articles";
+
+                        payload = {
+
+                            title:
+                                values.title.trim(),
+
+                            summary:
+                                values.summary?.trim() ||
+                                null,
+
+                            content:
+                                values.content,
+
+                            author:
+                                values.author?.trim() ||
+                                null,
+
+                            category:
+                                values.category?.trim() ||
+                                null,
+
+                            image_url:
+                                values.image_url?.trim() ||
+                                null,
+
+                            is_featured:
+                                featured
+                        };
+                    }
+
+
+                    /* الفيديو */
+
+                    if (
+                        currentEditorType ===
+                        "video"
+                    ) {
+
+                        table =
+                            "videos";
+
+                        payload = {
+
+                            title:
+                                values.title,
+
+                            description:
+                                values.description ||
+                                null,
+
+                            video_url:
+                                values.video_url ||
+                                null,
+
+                            thumbnail_url:
+                                values.thumbnail_url ||
+                                null,
+
+                            is_featured:
+                                featured
+                        };
+                    }
+
+
+                    /* الإشعار */
+
+                    if (
+                        currentEditorType ===
+                        "notification"
+                    ) {
+
+                        table =
+                            "notifications";
+
+                        payload = {
+
+                            title:
+                                values.title,
+
+                            message:
+                                values.message,
+
+                            link:
+                                values.link ||
+                                null,
+
+                            is_read:
+                                false
+                        };
+                    }
+
+
+                    /* المدير */
+
+                    if (
+                        currentEditorType ===
+                        "admin"
+                    ) {
+
+                        if (
+                            !currentAdmin ||
+                            currentAdmin.role !==
+                            "super_admin"
+                        ) {
+
+                            throw new Error(
+                                "غير مصرح بهذه العملية"
+                            );
+                        }
+
+
+                        table =
+                            "admin_users";
+
+                        payload = {
+
+                            user_id:
+                                values.user_id,
+
+                            role:
+                                values.role,
+
+                            is_active:
+                                active
+                        };
+                    }
+
+
+                    if (!table) {
+
+                        throw new Error(
+                            "نوع المحتوى غير معروف"
+                        );
+                    }
+
+
                     let result;
+
 
                     if (currentEditorId) {
 
@@ -4732,86 +5660,138 @@
                                 );
                     }
 
+
                     if (result.error) {
 
-                        console.error(
-                            result.error
-                        );
-
-                        showToast(
-                            result.error.message ||
-                            "حدث خطأ أثناء الحفظ",
-                            "error"
-                        );
-
-                        return;
+                        throw result.error;
                     }
 
-                    const wasEdit =
-                        Boolean(
-                            currentEditorId
-                        );
+
+                    /*
+                     * إذا تغيّر اسم الشاعر أو عصره
+                     * يتم تحديث بيانات قصائده المتصلة به.
+                     */
+
+                    if (
+                        table === "poets" &&
+                        currentEditorId
+                    ) {
+
+                        const {
+                            error: poemSyncError
+                        } =
+                            await supabaseClient
+                                .from("poems")
+                                .update({
+                                    poet:
+                                        payload.name,
+                                    era:
+                                        payload.era
+                                })
+                                .eq(
+                                    "poet_id",
+                                    currentEditorId
+                                );
+
+
+                        if (poemSyncError) {
+
+                            console.error(
+                                poemSyncError
+                            );
+                        }
+                    }
+
 
                     showToast(
-                        wasEdit
+                        currentEditorId
                         ? "تم التعديل بنجاح"
                         : "تمت الإضافة بنجاح",
                         "success"
                     );
 
+
                     const savedTable =
                         table;
 
-                    closeModal();
+
+                    closeEditor();
+
+
+                    if (
+                        savedTable ===
+                        "poets"
+                    ) {
+
+                        poetsLoaded =
+                            false;
+
+                        await loadPoets();
+
+                        await loadPoems();
+                    }
+
 
                     if (
                         savedTable ===
                         "poems"
                     ) {
+
                         await loadPoems();
+
                         await loadPoets();
                     }
+
 
                     if (
                         savedTable ===
                         "articles"
                     ) {
+
                         await loadArticles();
                     }
+
 
                     if (
                         savedTable ===
                         "videos"
                     ) {
+
                         await loadVideos();
                     }
+
 
                     if (
                         savedTable ===
                         "notifications"
                     ) {
+
                         await loadNotifications();
                     }
+
 
                     if (
                         savedTable ===
                         "admin_users"
                     ) {
+
                         await loadAdmins();
                     }
 
+
                     await loadDashboard();
 
-                    await loadCategories();
 
-                } catch(error) {
+                } catch (error) {
 
                     console.error(error);
 
                     showToast(
-                        "حدث خطأ غير متوقع أثناء الحفظ",
+                        error.message ||
+                        "حدث خطأ أثناء الحفظ",
                         "error"
                     );
+
 
                 } finally {
 
@@ -4824,95 +5804,141 @@
             }
         );
 
-        /* =========================================
-           ADD
-        ========================================= */
+
+        /* ============================================================
+           الإضافة
+        ============================================================ */
 
         document
-            .getElementById("addPoemButton")
+            .getElementById(
+                "addPoetButton"
+            )
             .addEventListener(
                 "click",
-                function() {
+                function () {
 
-                    openModal(
-                        "إضافة قصيدة",
+                    openEditor(
+                        "poet"
+                    );
+                }
+            );
+
+
+        document
+            .getElementById(
+                "addPoemButton"
+            )
+            .addEventListener(
+                "click",
+                async function () {
+
+                    await openEditor(
                         "poem"
                     );
                 }
             );
 
+
         document
-            .getElementById("addArticleButton")
+            .getElementById(
+                "addArticleButton"
+            )
             .addEventListener(
                 "click",
-                function() {
+                function () {
 
-                    openModal(
-                        "إضافة مقال",
+                    openEditor(
                         "article"
                     );
                 }
             );
 
+
         document
-            .getElementById("addVideoButton")
+            .getElementById(
+                "addVideoButton"
+            )
             .addEventListener(
                 "click",
-                function() {
+                function () {
 
-                    openModal(
-                        "إضافة فيديو",
+                    openEditor(
                         "video"
                     );
                 }
             );
 
+
         document
-            .getElementById("addNotificationButton")
+            .getElementById(
+                "addNotificationButton"
+            )
             .addEventListener(
                 "click",
-                function() {
+                function () {
 
-                    openModal(
-                        "إضافة إشعار",
+                    openEditor(
                         "notification"
                     );
                 }
             );
 
+
         document
-            .getElementById("addAdminButton")
+            .getElementById(
+                "addAdminButton"
+            )
             .addEventListener(
                 "click",
-                function() {
+                function () {
 
                     if (
-                        !currentAdmin ||
-                        currentAdmin.role !==
+                        currentAdmin?.role !==
                         "super_admin"
                     ) {
 
                         showToast(
-                            "هذه العملية متاحة للـ Super Admin فقط",
+                            "غير مصرح",
                             "error"
                         );
 
                         return;
                     }
 
-                    openModal(
-                        "إضافة مدير",
+
+                    openEditor(
                         "admin"
                     );
                 }
             );
 
-        /* =========================================
-           EDIT
-        ========================================= */
+
+        /* ============================================================
+           التعديل
+        ============================================================ */
+
+        window.editPoet =
+            function (id) {
+
+                const item =
+                    poetsCache.find(
+                        poet =>
+                            String(poet.id) ===
+                            String(id)
+                    );
+
+                if (item) {
+
+                    openEditor(
+                        "poet",
+                        item
+                    );
+                }
+            };
+
 
         window.editPoem =
-            function(id) {
+            async function (id) {
 
                 const item =
                     poemsCache.find(
@@ -4921,18 +5947,18 @@
                             String(id)
                     );
 
-                if (!item)
-                    return;
+                if (item) {
 
-                openModal(
-                    "تعديل القصيدة",
-                    "poem",
-                    item
-                );
+                    await openEditor(
+                        "poem",
+                        item
+                    );
+                }
             };
 
+
         window.editArticle =
-            function(id) {
+            function (id) {
 
                 const item =
                     articlesCache.find(
@@ -4941,18 +5967,18 @@
                             String(id)
                     );
 
-                if (!item)
-                    return;
+                if (item) {
 
-                openModal(
-                    "تعديل المقال",
-                    "article",
-                    item
-                );
+                    openEditor(
+                        "article",
+                        item
+                    );
+                }
             };
 
+
         window.editVideo =
-            function(id) {
+            function (id) {
 
                 const item =
                     videosCache.find(
@@ -4961,18 +5987,18 @@
                             String(id)
                     );
 
-                if (!item)
-                    return;
+                if (item) {
 
-                openModal(
-                    "تعديل الفيديو",
-                    "video",
-                    item
-                );
+                    openEditor(
+                        "video",
+                        item
+                    );
+                }
             };
 
+
         window.editNotification =
-            function(id) {
+            function (id) {
 
                 const item =
                     notificationsCache.find(
@@ -4981,32 +6007,26 @@
                             String(id)
                     );
 
-                if (!item)
-                    return;
+                if (item) {
 
-                openModal(
-                    "تعديل الإشعار",
-                    "notification",
-                    item
-                );
+                    openEditor(
+                        "notification",
+                        item
+                    );
+                }
             };
 
+
         window.editAdmin =
-            function(id) {
+            function (id) {
 
                 if (
-                    !currentAdmin ||
-                    currentAdmin.role !==
+                    currentAdmin?.role !==
                     "super_admin"
                 ) {
-
-                    showToast(
-                        "غير مصرح",
-                        "error"
-                    );
-
                     return;
                 }
+
 
                 const item =
                     adminsCache.find(
@@ -5015,19 +6035,20 @@
                             String(id)
                     );
 
-                if (!item)
-                    return;
 
-                openModal(
-                    "تعديل المدير",
-                    "admin",
-                    item
-                );
+                if (item) {
+
+                    openEditor(
+                        "admin",
+                        item
+                    );
+                }
             };
 
-        /* =========================================
-           DELETE
-        ========================================= */
+
+        /* ============================================================
+           الحذف
+        ============================================================ */
 
         async function deleteRecord(
             table,
@@ -5042,6 +6063,7 @@
                 return;
             }
 
+
             try {
 
                 const {
@@ -5055,164 +6077,201 @@
                             id
                         );
 
+
                 if (error) {
 
-                    console.error(error);
-
-                    showToast(
-                        error.message ||
-                        "تعذر تنفيذ الحذف",
-                        "error"
-                    );
-
-                    return;
+                    throw error;
                 }
+
 
                 showToast(
                     "تم الحذف بنجاح",
                     "success"
                 );
 
+
                 await reload();
 
                 await loadDashboard();
 
-            } catch(error) {
+
+            } catch (error) {
 
                 console.error(error);
 
                 showToast(
-                    "حدث خطأ غير متوقع",
+                    error.message ||
+                    "تعذر تنفيذ الحذف",
                     "error"
                 );
             }
         }
 
-        window.deletePoem =
-            function(id) {
+
+        window.deletePoet =
+            function (id) {
 
                 return deleteRecord(
-                    "poems",
+
+                    "poets",
+
                     id,
-                    "هل أنت متأكد من حذف هذه القصيدة؟",
-                    async function() {
+
+                    "هل أنت متأكد من حذف هذا الشاعر؟ لن تُحذف القصائد، لكن سيتم فصل ارتباطها بالشاعر.",
+
+                    async function () {
+
+                        poetsLoaded =
+                            false;
+
+                        await loadPoets();
 
                         await loadPoems();
-                        await loadPoets();
-                        await loadCategories();
-
                     }
                 );
             };
+
+
+        window.deletePoem =
+            function (id) {
+
+                return deleteRecord(
+
+                    "poems",
+
+                    id,
+
+                    "هل أنت متأكد من حذف هذه القصيدة؟",
+
+                    async function () {
+
+                        await loadPoems();
+
+                        await loadPoets();
+                    }
+                );
+            };
+
 
         window.deleteArticle =
-            function(id) {
+            function (id) {
 
                 return deleteRecord(
+
                     "articles",
+
                     id,
+
                     "هل أنت متأكد من حذف هذا المقال؟",
-                    async function() {
 
-                        await loadArticles();
-                        await loadCategories();
-
-                    }
+                    loadArticles
                 );
             };
 
+
         window.deleteVideo =
-            function(id) {
+            function (id) {
 
                 return deleteRecord(
+
                     "videos",
+
                     id,
+
                     "هل أنت متأكد من حذف هذا الفيديو؟",
+
                     loadVideos
                 );
             };
 
+
         window.deleteNotification =
-            function(id) {
+            function (id) {
 
                 return deleteRecord(
+
                     "notifications",
+
                     id,
+
                     "هل أنت متأكد من حذف هذا الإشعار؟",
+
                     loadNotifications
                 );
             };
 
+
         window.deleteAdmin =
-            async function(id) {
+            async function (id) {
 
                 if (
-                    !currentAdmin ||
-                    currentAdmin.role !==
+                    currentAdmin?.role !==
                     "super_admin"
                 ) {
-
-                    showToast(
-                        "غير مصرح",
-                        "error"
-                    );
-
                     return;
                 }
 
-                const admin =
+
+                const item =
                     adminsCache.find(
-                        item =>
-                            String(item.id) ===
+                        admin =>
+                            String(admin.id) ===
                             String(id)
                     );
 
+
                 if (
-                    admin &&
-                    admin.user_id ===
+                    item?.user_id ===
                     currentUser.id
                 ) {
 
                     showToast(
-                        "لا يمكن حذف حسابك الإداري من هنا",
+                        "لا يمكنك حذف حسابك الإداري",
                         "error"
                     );
 
                     return;
                 }
 
-                await deleteRecord(
+
+                return deleteRecord(
+
                     "admin_users",
+
                     id,
+
                     "هل أنت متأكد من حذف هذا المدير؟",
+
                     loadAdmins
                 );
             };
 
-        /* =========================================
-           SITE
-        ========================================= */
+
+        /* ============================================================
+           الموقع والخروج
+        ============================================================ */
 
         document
-            .getElementById("siteButton")
+            .getElementById(
+                "siteButton"
+            )
             .addEventListener(
                 "click",
-                function() {
+                function () {
 
                     window.location.href =
                         "index.html";
                 }
             );
 
-        /* =========================================
-           LOGOUT
-        ========================================= */
 
         document
-            .getElementById("logoutButton")
+            .getElementById(
+                "logoutButton"
+            )
             .addEventListener(
                 "click",
-                async function() {
+                async function () {
 
                     try {
 
@@ -5228,9 +6287,10 @@
                 }
             );
 
-        /* =========================================
-           MOBILE
-        ========================================= */
+
+        /* ============================================================
+           الجوال
+        ============================================================ */
 
         const mobileMenuButton =
             document.getElementById(
@@ -5247,6 +6307,7 @@
                 "sidebarOverlay"
             );
 
+
         function openMobileSidebar() {
 
             adminSidebar.classList.add(
@@ -5257,6 +6318,7 @@
                 "active"
             );
         }
+
 
         function closeMobileSidebar() {
 
@@ -5269,49 +6331,71 @@
             );
         }
 
+
         mobileMenuButton.addEventListener(
             "click",
             openMobileSidebar
         );
+
 
         sidebarOverlay.addEventListener(
             "click",
             closeMobileSidebar
         );
 
-        /* =========================================
-           AUTH STATE
-        ========================================= */
 
-        supabaseClient.auth.onAuthStateChange(
-            function(event, session) {
+        /* ============================================================
+           تغير حالة الحساب
+        ============================================================ */
 
-                if (
-                    event === "SIGNED_OUT" ||
-                    !session
+        supabaseClient
+            .auth
+            .onAuthStateChange(
+                function (
+                    event,
+                    session
                 ) {
 
-                    window.location.href =
-                        "index.html";
+                    if (
+                        event === "SIGNED_OUT" ||
+                        !session
+                    ) {
+
+                        window.location.href =
+                            "index.html";
+                    }
                 }
-            }
-        );
+            );
 
-        /* =========================================
-           START
-        ========================================= */
 
-        (async function() {
+        /* ============================================================
+           التشغيل
+        ============================================================ */
+
+        (async function () {
 
             const allowed =
                 await checkAdminAccess();
 
-            if (allowed) {
 
-                openSection(
-                    "dashboard"
-                );
+            if (!allowed) {
+                return;
             }
+
+
+            try {
+
+                await fetchPoets();
+
+            } catch (error) {
+
+                console.error(error);
+            }
+
+
+            openSection(
+                "dashboard"
+            );
 
         })();
 
