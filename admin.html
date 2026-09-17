@@ -1336,6 +1336,7 @@ let videosCache = [];
 let notificationsCache = [];
 let usersCache = [];
 let adminsCache = [];
+let userCountRefreshTimer = null;
 
 const checkingScreen = document.getElementById("checkingScreen");
 const deniedScreen = document.getElementById("deniedScreen");
@@ -2510,6 +2511,86 @@ return 0;
 return count || 0;
 }
 
+async function getUsersCount() {
+const {
+data,
+error
+} =
+await supabaseClient
+.rpc(
+"get_users_count"
+);
+
+if (error) {
+console.error(
+"get_users_count",
+error
+);
+
+return getExactCount(
+"profiles"
+);
+}
+
+return Number(data) || 0;
+}
+
+async function refreshUsersCount() {
+if (!currentAdmin) return;
+
+const userCount =
+await getUsersCount();
+
+const stat =
+document.getElementById(
+"statUsers"
+);
+
+const summary =
+document.getElementById(
+"summaryUsersCount"
+);
+
+if (stat) {
+stat.textContent =
+userCount;
+}
+
+if (summary) {
+summary.textContent =
+userCount;
+}
+}
+
+function startUsersCountAutoRefresh() {
+if (userCountRefreshTimer) {
+clearInterval(
+userCountRefreshTimer
+);
+}
+
+userCountRefreshTimer =
+setInterval(
+() => {
+if (!document.hidden) {
+refreshUsersCount()
+.catch(console.error);
+}
+},
+30000
+);
+
+document.addEventListener(
+"visibilitychange",
+() => {
+if (!document.hidden) {
+refreshUsersCount()
+.catch(console.error);
+}
+}
+);
+}
+
 async function getFeaturedCount(
 table
 ) {
@@ -2566,7 +2647,7 @@ getExactCount("articles"),
 getExactCount("meters"),
 getExactCount("rhymes"),
 getExactCount("videos"),
-getExactCount("profiles"),
+getUsersCount(),
 getFeaturedCount("poets"),
 getFeaturedCount("poems"),
 getFeaturedCount("articles"),
@@ -2661,7 +2742,7 @@ document
 
 <div class="quick-item">
 <span>المستخدمون</span>
-<strong>${userCount}</strong>
+<strong id="summaryUsersCount">${userCount}</strong>
 </div>
 `;
 
@@ -7156,6 +7237,8 @@ console.error(error);
 openSection(
 "dashboard"
 );
+
+startUsersCountAutoRefresh();
 
 })();
 
