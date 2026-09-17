@@ -1,9 +1,7 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -16,13 +14,681 @@
 
     <meta
         name="description"
-        content="قافية — موسوعة عربية مختصة في الشعر والأدب العربي">
+        content="القافية — موسوعة عربية مختصة في الشعر والأدب العربي">
 
-    <title>قافية | موسوعة الشعر والأدب العربي</title>
+    <title>القافية | موسوعة الشعر والأدب العربي</title>
 
     <link
         rel="stylesheet"
         href="style.css">
+
+    <!-- تحسينات خاصة بالصفحة الرئيسية فقط -->
+    <style>
+        .home-page .hero-section {
+            position: relative;
+            isolation: isolate;
+            min-height: clamp(520px, 72vh, 760px);
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            padding: 96px 24px 88px;
+            text-align: center;
+        }
+
+        .home-page .hero-section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+
+            background:
+                radial-gradient(
+                    circle at 50% 8%,
+                    rgba(203,153,126,.20),
+                    transparent 34%
+                ),
+                radial-gradient(
+                    circle at 84% 72%,
+                    rgba(181,131,141,.10),
+                    transparent 28%
+                ),
+                linear-gradient(
+                    180deg,
+                    #ffffff 0%,
+                    #fffaf7 100%
+                );
+        }
+
+        .home-page .hero-section::after {
+            content: "القافية";
+
+            position: absolute;
+            inset-inline-start: 50%;
+            bottom: -42px;
+
+            z-index: -1;
+
+            transform: translateX(-50%);
+
+            color: rgba(62,39,35,.035);
+
+            font-size:
+                clamp(
+                    110px,
+                    19vw,
+                    280px
+                );
+
+            line-height: 1;
+            white-space: nowrap;
+
+            pointer-events: none;
+        }
+
+        .home-page .hero-content {
+            width: min(900px, 100%);
+            margin-inline: auto;
+        }
+
+        .home-page .hero-eyebrow,
+        .home-page .section-kicker {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 34px;
+
+            padding:
+                6px
+                14px;
+
+            border:
+                1px
+                solid
+                rgba(62,39,35,.12);
+
+            border-radius:
+                999px;
+
+            background:
+                rgba(255,255,255,.72);
+
+            color:
+                #6D6875;
+
+            font-size:
+                .92rem;
+
+            letter-spacing:
+                .02em;
+        }
+
+        .home-page .hero-content h1 {
+            max-width:
+                850px;
+
+            margin:
+                20px
+                auto
+                16px;
+
+            color:
+                #3E2723;
+
+            font-size:
+                clamp(
+                    2.35rem,
+                    6vw,
+                    5rem
+                );
+
+            line-height:
+                1.15;
+        }
+
+        .home-page .hero-content > p {
+            max-width:
+                690px;
+
+            margin:
+                0
+                auto;
+
+            color:
+                rgba(62,39,35,.72);
+
+            font-size:
+                clamp(
+                    1.02rem,
+                    2vw,
+                    1.25rem
+                );
+
+            line-height:
+                2;
+        }
+
+        .home-page .hero-actions {
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            gap:
+                12px;
+
+            margin-top:
+                30px;
+        }
+
+        .home-page .hero-actions a {
+            min-width:
+                150px;
+        }
+
+        .home-page .site-sections {
+            width:
+                min(
+                    1180px,
+                    calc(100% - 40px)
+                );
+
+            margin:
+                0
+                auto;
+
+            padding:
+                88px
+                0
+                72px;
+        }
+
+        .home-page .section-title {
+            max-width:
+                720px;
+
+            margin:
+                0
+                auto
+                38px;
+
+            text-align:
+                center;
+        }
+
+        .home-page .section-title h2 {
+            margin:
+                14px
+                0
+                10px;
+
+            color:
+                #3E2723;
+
+            font-size:
+                clamp(
+                    1.9rem,
+                    4vw,
+                    3rem
+                );
+        }
+
+        .home-page .section-title p {
+            margin:
+                0;
+
+            color:
+                rgba(62,39,35,.66);
+
+            line-height:
+                1.9;
+        }
+
+        .home-page .section-cards {
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    4,
+                    minmax(0, 1fr)
+                );
+
+            gap:
+                18px;
+        }
+
+        .home-page .section-card {
+            position:
+                relative;
+
+            min-height:
+                250px;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            align-items:
+                flex-start;
+
+            gap:
+                18px;
+
+            padding:
+                28px;
+
+            overflow:
+                hidden;
+
+            border:
+                1px
+                solid
+                rgba(62,39,35,.10);
+
+            border-radius:
+                22px;
+
+            background:
+                #ffffff;
+
+            box-shadow:
+                0
+                12px
+                34px
+                rgba(62,39,35,.055);
+
+            text-decoration:
+                none;
+
+            transition:
+                transform .22s ease,
+                box-shadow .22s ease,
+                border-color .22s ease;
+        }
+
+        .home-page .section-card:hover {
+            transform:
+                translateY(-5px);
+
+            border-color:
+                rgba(62,39,35,.20);
+
+            box-shadow:
+                0
+                18px
+                42px
+                rgba(62,39,35,.10);
+        }
+
+        .home-page .card-icon {
+            width:
+                52px;
+
+            height:
+                52px;
+
+            display:
+                inline-grid;
+
+            place-items:
+                center;
+
+            flex:
+                0
+                0
+                52px;
+
+            border-radius:
+                16px;
+
+            background:
+                #FFE8D6;
+
+            color:
+                #3E2723;
+        }
+
+        .home-page .card-icon svg {
+            width:
+                25px;
+
+            height:
+                25px;
+        }
+
+        .home-page .section-card h3 {
+            margin:
+                0
+                0
+                8px;
+
+            color:
+                #3E2723;
+
+            font-size:
+                1.18rem;
+        }
+
+        .home-page .section-card p {
+            margin:
+                0;
+
+            color:
+                rgba(62,39,35,.65);
+
+            line-height:
+                1.85;
+        }
+
+        .home-page .card-arrow {
+            width:
+                36px;
+
+            height:
+                36px;
+
+            display:
+                inline-grid;
+
+            place-items:
+                center;
+
+            margin-top:
+                auto;
+
+            border-radius:
+                50%;
+
+            background:
+                #f7f3f1;
+
+            color:
+                #3E2723;
+        }
+
+        .home-page .card-arrow svg {
+            width:
+                18px;
+
+            height:
+                18px;
+        }
+
+        .home-page .home-introduction {
+            width:
+                min(
+                    1100px,
+                    calc(100% - 40px)
+                );
+
+            margin:
+                54px
+                auto
+                96px;
+
+            padding:
+                0;
+
+            text-align:
+                center;
+        }
+
+        .home-page .home-introduction-content {
+            position:
+                relative;
+
+            max-width:
+                920px;
+
+            margin:
+                0
+                auto;
+
+            padding:
+                clamp(
+                    40px,
+                    6vw,
+                    72px
+                )
+                clamp(
+                    24px,
+                    7vw,
+                    80px
+                );
+
+            overflow:
+                hidden;
+
+            border:
+                1px
+                solid
+                rgba(62,39,35,.10);
+
+            border-radius:
+                28px;
+
+            background:
+                radial-gradient(
+                    circle at 90% 0%,
+                    rgba(255,232,214,.86),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    145deg,
+                    #ffffff 0%,
+                    #fbf7f4 100%
+                );
+
+            box-shadow:
+                0
+                18px
+                50px
+                rgba(62,39,35,.07);
+        }
+
+        .home-page .home-introduction-content::before {
+            content:
+                "“";
+
+            position:
+                absolute;
+
+            top:
+                -24px;
+
+            inset-inline-start:
+                34px;
+
+            color:
+                rgba(62,39,35,.05);
+
+            font-size:
+                160px;
+
+            line-height:
+                1;
+
+            pointer-events:
+                none;
+        }
+
+        .home-page .home-introduction h2 {
+            max-width:
+                700px;
+
+            margin:
+                18px
+                auto
+                14px;
+
+            color:
+                #3E2723;
+
+            font-size:
+                clamp(
+                    2rem,
+                    4vw,
+                    3.35rem
+                );
+
+            line-height:
+                1.3;
+        }
+
+        .home-page .home-introduction p {
+            max-width:
+                720px;
+
+            margin:
+                0
+                auto;
+
+            color:
+                rgba(62,39,35,.68);
+
+            font-size:
+                1.05rem;
+
+            line-height:
+                2;
+        }
+
+        .home-page .home-introduction .primary-button {
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            margin-top:
+                28px;
+        }
+
+        .home-page .side-navigation .menu-icon {
+            width:
+                24px;
+
+            min-width:
+                24px;
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+        }
+
+        .home-page .side-navigation .menu-icon svg {
+            width:
+                20px;
+
+            height:
+                20px;
+        }
+
+        .home-page .user-avatar svg {
+            width:
+                50%;
+
+            height:
+                50%;
+        }
+
+        @media (max-width: 980px) {
+
+            .home-page .section-cards {
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(0, 1fr)
+                    );
+            }
+        }
+
+        @media (max-width: 640px) {
+
+            .home-page .hero-section {
+                min-height:
+                    auto;
+
+                padding:
+                    76px
+                    20px
+                    70px;
+            }
+
+            .home-page .hero-actions {
+                flex-direction:
+                    column;
+            }
+
+            .home-page .hero-actions a {
+                width:
+                    min(
+                        100%,
+                        310px
+                    );
+            }
+
+            .home-page .site-sections {
+                width:
+                    min(
+                        calc(100% - 28px),
+                        1180px
+                    );
+
+                padding:
+                    68px
+                    0
+                    54px;
+            }
+
+            .home-page .section-cards {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .home-page .section-card {
+                min-height:
+                    220px;
+            }
+
+            .home-page .home-introduction {
+                width:
+                    min(
+                        calc(100% - 28px),
+                        1100px
+                    );
+
+                margin-top:
+                    36px;
+
+                margin-bottom:
+                    72px;
+            }
+
+            .home-page .home-introduction-content {
+                border-radius:
+                    22px;
+            }
+        }
+    </style>
 
     <script
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
@@ -40,9 +706,7 @@
 
 </head>
 
-
-<body>
-
+<body class="home-page">
 
     <!-- ========================================================= -->
     <!-- الرأس -->
@@ -51,9 +715,6 @@
     <header class="site-header">
 
         <div class="header-container">
-
-
-            <!-- زر القائمة -->
 
             <button
                 class="menu-button"
@@ -69,25 +730,16 @@
 
             </button>
 
-
-            <!-- الشعار -->
-
             <a
                 href="index.html"
                 class="site-logo"
-                aria-label="قافية - الصفحة الرئيسية">
+                aria-label="القافية - الصفحة الرئيسية">
 
-                قافية
+                القافية
 
             </a>
 
-
-            <!-- إجراءات الرأس -->
-
             <div class="header-actions">
-
-
-                <!-- الإشعارات -->
 
                 <button
                     class="notification-button"
@@ -126,9 +778,6 @@
 
                 </button>
 
-
-                <!-- تسجيل الدخول -->
-
                 <button
                     class="login-button"
                     id="loginButton"
@@ -138,15 +787,11 @@
 
                 </button>
 
-
             </div>
-
 
         </div>
 
     </header>
-
-
 
     <!-- ========================================================= -->
     <!-- طبقة القائمة -->
@@ -157,8 +802,6 @@
         id="menuOverlay">
     </div>
 
-
-
     <!-- ========================================================= -->
     <!-- القائمة الجانبية -->
     <!-- ========================================================= -->
@@ -168,15 +811,10 @@
         id="sideMenu"
         aria-hidden="true">
 
-
-        <!-- رأس القائمة -->
-
         <div class="side-menu-header">
 
             <h2>
-
-                قافية
-
+                القافية
             </h2>
 
             <button
@@ -191,50 +829,82 @@
 
         </div>
 
-
-
-        <!-- معلومات المستخدم -->
+        <!-- المستخدم -->
 
         <div class="user-section">
 
             <div class="user-avatar">
 
-                👤
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+
+                    <circle
+                        cx="12"
+                        cy="8"
+                        r="4">
+                    </circle>
+
+                    <path
+                        d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
+                    </path>
+
+                </svg>
 
             </div>
 
             <div class="user-info">
 
                 <strong id="menuUserName">
-
                     مرحبًا بك
-
                 </strong>
 
                 <span id="menuUserEmail">
-
                     سجّل الدخول للوصول إلى حسابك
-
                 </span>
 
             </div>
 
         </div>
 
-
-
-        <!-- روابط الموقع -->
+        <!-- روابط القائمة -->
 
         <nav
             class="side-navigation"
             aria-label="القائمة الرئيسية">
 
-
             <a
                 href="index.html"
                 class="active">
 
-                <span>⌂</span>
+                <span
+                    class="menu-icon"
+                    aria-hidden="true">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <path
+                            d="M3 11.5 12 4l9 7.5">
+                        </path>
+
+                        <path
+                            d="M5 10.5V20h5v-6h4v6h5v-9.5">
+                        </path>
+
+                    </svg>
+
+                </span>
 
                 <span>
                     الرئيسية
@@ -242,11 +912,31 @@
 
             </a>
 
+            <a href="Poems.html">
 
-            <a
-                href="Poems.html">
+                <span
+                    class="menu-icon"
+                    aria-hidden="true">
 
-                <span>📜</span>
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <path
+                            d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z">
+                        </path>
+
+                        <path d="M8 7h8"></path>
+                        <path d="M8 11h8"></path>
+                        <path d="M8 15h5"></path>
+
+                    </svg>
+
+                </span>
 
                 <span>
                     القصائد
@@ -254,11 +944,31 @@
 
             </a>
 
+            <a href="poets.html">
 
-            <a
-                href="poets.html">
+                <span
+                    class="menu-icon"
+                    aria-hidden="true">
 
-                <span>✒</span>
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <path
+                            d="M4 20h6">
+                        </path>
+
+                        <path
+                            d="M14.5 4.5a2.12 2.12 0 0 1 3 3L9 16l-4 1 1-4Z">
+                        </path>
+
+                    </svg>
+
+                </span>
 
                 <span>
                     الشعراء
@@ -266,11 +976,39 @@
 
             </a>
 
+            <a href="articles.html">
 
-            <a
-                href="articles.html">
+                <span
+                    class="menu-icon"
+                    aria-hidden="true">
 
-                <span>📝</span>
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <path
+                            d="M6 3h9l3 3v15H6Z">
+                        </path>
+
+                        <path
+                            d="M14 3v4h4">
+                        </path>
+
+                        <path
+                            d="M9 11h6">
+                        </path>
+
+                        <path
+                            d="M9 15h6">
+                        </path>
+
+                    </svg>
+
+                </span>
 
                 <span>
                     المقالات
@@ -278,25 +1016,29 @@
 
             </a>
 
-
-            <a
-                href="profile.html"
-                id="profileLink">
-
-                <span>👤</span>
-
-                <span>
-                    الملف الشخصي
-                </span>
-
-            </a>
-
-
             <a
                 href="#"
                 id="favoritesLink">
 
-                <span>⭐</span>
+                <span
+                    class="menu-icon"
+                    aria-hidden="true">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <path
+                            d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2 7.5 14 3 9.6l6.2-.9Z">
+                        </path>
+
+                    </svg>
+
+                </span>
 
                 <span>
                     المفضلة
@@ -304,12 +1046,51 @@
 
             </a>
 
-
             <a
                 href="#"
                 id="settingsLink">
 
-                <span>⚙️</span>
+                <span
+                    class="menu-icon"
+                    aria-hidden="true">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="3">
+                        </circle>
+
+                        <path
+                            d="M19 12a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z">
+                        </path>
+
+                        <path
+                            d="M12 2v3">
+                        </path>
+
+                        <path
+                            d="M12 19v3">
+                        </path>
+
+                        <path
+                            d="M2 12h3">
+                        </path>
+
+                        <path
+                            d="M19 12h3">
+                        </path>
+
+                    </svg>
+
+                </span>
 
                 <span>
                     الإعدادات
@@ -317,30 +1098,51 @@
 
             </a>
 
+            <a href="about.html">
 
-            <a
-                href="about.html">
+                <span
+                    class="menu-icon"
+                    aria-hidden="true">
 
-                <span>ℹ️</span>
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="9">
+                        </circle>
+
+                        <path
+                            d="M12 10v6">
+                        </path>
+
+                        <path
+                            d="M12 7h.01">
+                        </path>
+
+                    </svg>
+
+                </span>
 
                 <span>
-                    نبذة عن قافية
+                    نبذة عن القافية
                 </span>
 
             </a>
 
-
         </nav>
-
-
 
         <!-- تذييل القائمة -->
 
         <div class="side-menu-footer">
 
-
             <div class="side-menu-socials">
-
 
                 <a
                     href="#"
@@ -358,7 +1160,6 @@
                     </svg>
 
                 </a>
-
 
                 <a
                     href="#"
@@ -396,7 +1197,6 @@
 
                 </a>
 
-
                 <a
                     href="#"
                     aria-label="YouTube"
@@ -423,7 +1223,6 @@
                     </svg>
 
                 </a>
-
 
                 <a
                     href="mailto:"
@@ -455,26 +1254,18 @@
 
                 </a>
 
-
             </div>
 
-
             <p>
-
-                © قافية
-
+                © القافية
             </p>
-
 
         </div>
 
-
     </aside>
 
-
-
     <!-- ========================================================= -->
-    <!-- لوحة الإشعارات -->
+    <!-- الإشعارات -->
     <!-- ========================================================= -->
 
     <div
@@ -482,13 +1273,10 @@
         id="notificationPanel"
         aria-hidden="true">
 
-
         <div class="notification-header">
 
             <h3>
-
                 الإشعارات
-
             </h3>
 
             <button
@@ -502,23 +1290,17 @@
 
         </div>
 
-
         <div
             class="notification-content"
             id="notificationContent">
 
             <p>
-
                 لا توجد إشعارات جديدة.
-
             </p>
 
         </div>
 
-
     </div>
-
-
 
     <!-- ========================================================= -->
     <!-- المحتوى الرئيسي -->
@@ -526,43 +1308,28 @@
 
     <main>
 
-
-        <!-- ===================================================== -->
         <!-- الواجهة الرئيسية -->
-        <!-- ===================================================== -->
 
         <section
             id="intro"
             class="hero-section">
 
-
             <div class="hero-content">
 
-
                 <span class="hero-eyebrow">
-
-                    قافية
-
+                    القافية
                 </span>
 
-
                 <h1>
-
                     موسوعة الشعر والأدب العربي
-
                 </h1>
 
-
                 <p>
-
-                    مساحة تجمع الشعر العربي والأدب وتاريخ الشعراء
-                    في مكان واحد.
-
+                    مساحة عربية تجمع القصيدة والشاعر والتاريخ الأدبي
+                    في تجربة واضحة، أنيقة، وسهلة الوصول.
                 </p>
 
-
                 <div class="hero-actions">
-
 
                     <a
                         href="Poems.html"
@@ -572,7 +1339,6 @@
 
                     </a>
 
-
                     <a
                         href="poets.html"
                         class="secondary-button">
@@ -581,52 +1347,38 @@
 
                     </a>
 
-
                 </div>
-
 
             </div>
 
-
         </section>
 
-
-
         <!-- ===================================================== -->
-        <!-- استكشف قافية -->
+        <!-- استكشف القافية -->
         <!-- ===================================================== -->
 
         <section
             class="site-sections"
             aria-labelledby="exploreTitle">
 
-
             <div class="section-title">
 
                 <span class="section-kicker">
-
                     اكتشف
-
                 </span>
 
                 <h2 id="exploreTitle">
-
-                    استكشف قافية
-
+                    استكشف القافية
                 </h2>
 
                 <p>
-
-                    اكتشف الشعر والأدب العربي في مكان واحد.
-
+                    أبواب مرتبة تقودك إلى القصائد والشعراء والمقالات
+                    والهوية المعرفية للموسوعة.
                 </p>
 
             </div>
 
-
-
             <div class="section-cards">
-
 
                 <!-- القصائد -->
 
@@ -634,44 +1386,64 @@
                     href="Poems.html"
                     class="section-card">
 
+                    <span
+                        class="card-icon"
+                        aria-hidden="true">
 
-                    <span class="card-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
 
-                        📜
+                            <path
+                                d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z">
+                            </path>
+
+                            <path d="M8 7h8"></path>
+                            <path d="M8 11h8"></path>
+                            <path d="M8 15h5"></path>
+
+                        </svg>
 
                     </span>
-
 
                     <div>
 
                         <h3>
-
                             القصائد
-
                         </h3>
 
                         <p>
-
                             مجموعة من القصائد العربية المختارة
                             عبر مختلف العصور.
-
                         </p>
 
                     </div>
-
 
                     <span
                         class="card-arrow"
                         aria-hidden="true">
 
-                        ←
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+
+                            <path
+                                d="M15 18l-6-6 6-6">
+                            </path>
+
+                        </svg>
 
                     </span>
 
-
                 </a>
-
-
 
                 <!-- الشعراء -->
 
@@ -679,44 +1451,64 @@
                     href="poets.html"
                     class="section-card">
 
+                    <span
+                        class="card-icon"
+                        aria-hidden="true">
 
-                    <span class="card-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
 
-                        ✒
+                            <path
+                                d="M4 20h6">
+                            </path>
+
+                            <path
+                                d="M14.5 4.5a2.12 2.12 0 0 1 3 3L9 16l-4 1 1-4Z">
+                            </path>
+
+                        </svg>
 
                     </span>
-
 
                     <div>
 
                         <h3>
-
                             الشعراء
-
                         </h3>
 
                         <p>
-
                             تعرّف على الشعراء وسيرهم وأبرز
                             ما خلّدوه من شعر.
-
                         </p>
 
                     </div>
-
 
                     <span
                         class="card-arrow"
                         aria-hidden="true">
 
-                        ←
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+
+                            <path
+                                d="M15 18l-6-6 6-6">
+                            </path>
+
+                        </svg>
 
                     </span>
 
-
                 </a>
-
-
 
                 <!-- المقالات -->
 
@@ -724,151 +1516,186 @@
                     href="articles.html"
                     class="section-card">
 
+                    <span
+                        class="card-icon"
+                        aria-hidden="true">
 
-                    <span class="card-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
 
-                        📝
+                            <path
+                                d="M6 3h9l3 3v15H6Z">
+                            </path>
+
+                            <path
+                                d="M14 3v4h4">
+                            </path>
+
+                            <path
+                                d="M9 11h6">
+                            </path>
+
+                            <path
+                                d="M9 15h6">
+                            </path>
+
+                        </svg>
 
                     </span>
-
 
                     <div>
 
                         <h3>
-
                             المقالات
-
                         </h3>
 
                         <p>
-
                             مقالات في الشعر والأدب والتاريخ
                             والثقافة العربية.
-
                         </p>
 
                     </div>
-
 
                     <span
                         class="card-arrow"
                         aria-hidden="true">
 
-                        ←
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+
+                            <path
+                                d="M15 18l-6-6 6-6">
+                            </path>
+
+                        </svg>
 
                     </span>
 
-
                 </a>
 
-
-
-                <!-- عن قافية -->
+                <!-- عن القافية -->
 
                 <a
                     href="about.html"
                     class="section-card">
 
+                    <span
+                        class="card-icon"
+                        aria-hidden="true">
 
-                    <span class="card-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
 
-                        ℹ️
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="9">
+                            </circle>
+
+                            <path
+                                d="M12 10v6">
+                            </path>
+
+                            <path
+                                d="M12 7h.01">
+                            </path>
+
+                        </svg>
 
                     </span>
-
 
                     <div>
 
                         <h3>
-
-                            عن قافية
-
+                            عن القافية
                         </h3>
 
                         <p>
-
-                            تعرّف على قافية وفكرتها وأهدافها
-                            ومحتواها.
-
+                            تعرّف على القافية وفكرتها وأهدافها
+                            ورسالتها في حفظ الشعر والأدب.
                         </p>
 
                     </div>
-
 
                     <span
                         class="card-arrow"
                         aria-hidden="true">
 
-                        ←
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+
+                            <path
+                                d="M15 18l-6-6 6-6">
+                            </path>
+
+                        </svg>
 
                     </span>
 
-
                 </a>
-
 
             </div>
 
-
         </section>
 
-
-
         <!-- ===================================================== -->
-        <!-- قسم تعريفي إضافي -->
+        <!-- التعريف بالقافية -->
         <!-- ===================================================== -->
 
-        <section
-            class="home-introduction">
-
+        <section class="home-introduction">
 
             <div class="home-introduction-content">
 
-
                 <span class="section-kicker">
-
-                    قافية
-
+                    القافية
                 </span>
 
-
                 <h2>
-
                     حيث يلتقي الشعر بالتاريخ
-
                 </h2>
 
-
                 <p>
-
                     نعمل على بناء مساحة عربية تحفظ القصيدة،
                     وتعرّف بالشاعر، وتقدم المعرفة الأدبية
                     بطريقة منظمة وسهلة الوصول.
-
                 </p>
-
 
                 <a
                     href="about.html"
                     class="primary-button">
 
-                    تعرف على قافية
+                    تعرّف على القافية
 
                 </a>
 
-
             </div>
-
 
         </section>
 
-
     </main>
 
-
-
     <!-- ========================================================= -->
-    <!-- نظام الحساب -->
+    <!-- تسجيل الدخول -->
     <!-- ========================================================= -->
 
     <div
@@ -876,9 +1703,7 @@
         id="loginModal"
         aria-hidden="true">
 
-
         <div class="login-box">
-
 
             <button
                 class="close-login-button"
@@ -890,56 +1715,53 @@
 
             </button>
 
-
-
-            <!-- ================================================= -->
             <!-- تسجيل الدخول -->
-            <!-- ================================================= -->
 
             <div id="loginForm">
 
-
                 <h2>
-
                     تسجيل الدخول
-
                 </h2>
 
-
                 <p>
-
-                    سجّل دخولك إلى حسابك في قافية
-
+                    سجّل دخولك إلى حسابك في القافية
                 </p>
-
 
                 <button
                     class="login-method"
                     id="appleLoginButton"
                     type="button">
 
-                     تسجيل الدخول باستخدام Apple
+                    <svg
+                        viewBox="0 0 24 24"
+                        width="20"
+                        height="20"
+                        aria-hidden="true">
+
+                        <path
+                            fill="currentColor"
+                            d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.79 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.1v-.01ZM12.03 7.25C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25Z">
+                        </path>
+
+                    </svg>
+
+                    <span>
+                        تسجيل الدخول باستخدام Apple
+                    </span>
 
                 </button>
-
 
                 <div class="login-divider">
 
                     <span>
-
                         أو
-
                     </span>
 
                 </div>
 
-
                 <label for="emailLogin">
-
                     البريد الإلكتروني
-
                 </label>
-
 
                 <input
                     type="email"
@@ -947,20 +1769,15 @@
                     placeholder="أدخل بريدك الإلكتروني"
                     autocomplete="email">
 
-
                 <label for="passwordLogin">
-
                     كلمة المرور
-
                 </label>
-
 
                 <input
                     type="password"
                     id="passwordLogin"
                     placeholder="أدخل كلمة المرور"
                     autocomplete="current-password">
-
 
                 <button
                     class="login-submit"
@@ -971,7 +1788,6 @@
 
                 </button>
 
-
                 <button
                     class="login-register"
                     id="showRegisterButton"
@@ -981,40 +1797,25 @@
 
                 </button>
 
-
             </div>
 
-
-
-            <!-- ================================================= -->
             <!-- إنشاء الحساب -->
-            <!-- ================================================= -->
 
             <div
                 id="registerForm"
                 style="display: none;">
 
-
                 <h2>
-
                     إنشاء حساب
-
                 </h2>
 
-
                 <p>
-
-                    أنشئ حسابك في قافية
-
+                    أنشئ حسابك في القافية
                 </p>
 
-
                 <label for="firstName">
-
                     الاسم الأول
-
                 </label>
-
 
                 <input
                     type="text"
@@ -1022,19 +1823,15 @@
                     placeholder="الاسم الأول"
                     autocomplete="given-name">
 
-
                 <label for="lastName">
 
                     الاسم الأخير
 
                     <span>
-
                         (اختياري)
-
                     </span>
 
                 </label>
-
 
                 <input
                     type="text"
@@ -1042,102 +1839,109 @@
                     placeholder="الاسم الأخير"
                     autocomplete="family-name">
 
-
                 <label>
-
                     تاريخ الميلاد
-
                 </label>
 
-
                 <div class="birth-date-fields">
-
 
                     <select id="birthDay">
 
                         <option value="">
-
                             اليوم
-
                         </option>
 
                     </select>
-
 
                     <select id="birthMonth">
 
                         <option value="">
-
                             الشهر
-
                         </option>
 
-                        <option value="1">يناير</option>
-                        <option value="2">فبراير</option>
-                        <option value="3">مارس</option>
-                        <option value="4">أبريل</option>
-                        <option value="5">مايو</option>
-                        <option value="6">يونيو</option>
-                        <option value="7">يوليو</option>
-                        <option value="8">أغسطس</option>
-                        <option value="9">سبتمبر</option>
-                        <option value="10">أكتوبر</option>
-                        <option value="11">نوفمبر</option>
-                        <option value="12">ديسمبر</option>
+                        <option value="1">
+                            يناير
+                        </option>
+
+                        <option value="2">
+                            فبراير
+                        </option>
+
+                        <option value="3">
+                            مارس
+                        </option>
+
+                        <option value="4">
+                            أبريل
+                        </option>
+
+                        <option value="5">
+                            مايو
+                        </option>
+
+                        <option value="6">
+                            يونيو
+                        </option>
+
+                        <option value="7">
+                            يوليو
+                        </option>
+
+                        <option value="8">
+                            أغسطس
+                        </option>
+
+                        <option value="9">
+                            سبتمبر
+                        </option>
+
+                        <option value="10">
+                            أكتوبر
+                        </option>
+
+                        <option value="11">
+                            نوفمبر
+                        </option>
+
+                        <option value="12">
+                            ديسمبر
+                        </option>
 
                     </select>
-
 
                     <select id="birthYear">
 
                         <option value="">
-
                             السنة
-
                         </option>
 
                     </select>
 
-
                 </div>
 
-
                 <label for="gender">
-
                     الجنس
-
                 </label>
-
 
                 <select id="gender">
 
                     <option value="">
-
                         اختر الجنس
-
                     </option>
 
                     <option value="male">
-
                         ذكر
-
                     </option>
 
                     <option value="female">
-
                         أنثى
-
                     </option>
 
                 </select>
 
-
                 <label for="emailRegister">
-
                     البريد الإلكتروني
-
                 </label>
-
 
                 <input
                     type="email"
@@ -1145,13 +1949,9 @@
                     placeholder="أدخل بريدك الإلكتروني"
                     autocomplete="email">
 
-
                 <label for="passwordRegister">
-
                     كلمة المرور
-
                 </label>
-
 
                 <input
                     type="password"
@@ -1159,20 +1959,15 @@
                     placeholder="6 أحرف على الأقل"
                     autocomplete="new-password">
 
-
                 <label for="confirmPasswordRegister">
-
                     تأكيد كلمة المرور
-
                 </label>
-
 
                 <input
                     type="password"
                     id="confirmPasswordRegister"
                     placeholder="أعد كتابة كلمة المرور"
                     autocomplete="new-password">
-
 
                 <button
                     class="login-submit"
@@ -1183,7 +1978,6 @@
 
                 </button>
 
-
                 <button
                     class="login-register"
                     id="showLoginButton"
@@ -1193,115 +1987,70 @@
 
                 </button>
 
-
             </div>
-
 
         </div>
 
-
     </div>
 
-
-
     <!-- ========================================================= -->
-    <!-- التذييل الرئيسي -->
+    <!-- الفوتر -->
     <!-- ========================================================= -->
 
     <footer class="site-footer">
 
-
         <div class="footer-container">
 
-
-            <!-- معلومات قافية -->
-
             <div class="footer-brand">
-
 
                 <a
                     href="index.html"
                     class="footer-logo">
 
-                    قافية
+                    القافية
 
                 </a>
-
 
                 <p>
-
                     موسوعة عربية مختصة في الشعر والأدب العربي،
                     تجمع القصائد والشعراء والمقالات في مكان واحد.
-
                 </p>
 
-
             </div>
-
-
-
-            <!-- روابط الموقع -->
 
             <div class="footer-links">
 
-
                 <h3>
-
                     استكشف
-
                 </h3>
-
 
                 <a href="Poems.html">
-
                     القصائد
-
                 </a>
-
 
                 <a href="poets.html">
-
                     الشعراء
-
                 </a>
-
 
                 <a href="articles.html">
-
                     المقالات
-
                 </a>
-
 
                 <a href="about.html">
-
-                    نبذة عن قافية
-
+                    نبذة عن القافية
                 </a>
-
 
             </div>
 
-
-
-            <!-- الحساب -->
-
             <div class="footer-links">
 
-
                 <h3>
-
                     الحساب
-
                 </h3>
 
-
                 <a href="profile.html">
-
                     الملف الشخصي
-
                 </a>
-
 
                 <a
                     href="#"
@@ -1311,7 +2060,6 @@
 
                 </a>
 
-
                 <a
                     href="#"
                     id="footerSettingsLink">
@@ -1320,22 +2068,13 @@
 
                 </a>
 
-
             </div>
-
-
-
-            <!-- التواصل -->
 
             <div class="footer-contact">
 
-
                 <h3>
-
                     تواصل معنا
-
                 </h3>
-
 
                 <a
                     href="mailto:"
@@ -1345,11 +2084,7 @@
 
                 </a>
 
-
                 <div class="footer-socials">
-
-
-                    <!-- X -->
 
                     <a
                         href="#"
@@ -1367,9 +2102,6 @@
                         </svg>
 
                     </a>
-
-
-                    <!-- Instagram -->
 
                     <a
                         href="#"
@@ -1407,9 +2139,6 @@
 
                     </a>
 
-
-                    <!-- YouTube -->
-
                     <a
                         href="#"
                         aria-label="YouTube"
@@ -1436,9 +2165,6 @@
                         </svg>
 
                     </a>
-
-
-                    <!-- البريد -->
 
                     <a
                         href="mailto:"
@@ -1470,41 +2196,25 @@
 
                     </a>
 
-
                 </div>
-
 
             </div>
 
-
         </div>
-
-
-
-        <!-- أسفل التذييل -->
 
         <div class="footer-bottom">
 
-
             <p>
-
-                © 2026 قافية — جميع الحقوق محفوظة
-
+                © 2026 القافية — جميع الحقوق محفوظة
             </p>
 
-
             <span>
-
                 موسوعة الشعر والأدب العربي
-
             </span>
-
 
         </div>
 
-
     </footer>
-
 
 </body>
 
