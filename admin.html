@@ -1214,12 +1214,12 @@ onclick="window.location.href='index.html'"
 <div class="card-header">
 <div>
 <h3>المستخدمون</h3>
-<p>الملفات الشخصية المسجلة في قافية.</p>
+<p>جميع الحسابات المسجلة في قافية وبيانات ملفاتهم الشخصية.</p>
 </div>
 </div>
 <div class="toolbar">
 <div class="search-box">
-<input class="search-input" id="userSearch" type="search" placeholder="ابحث بالاسم أو الهاتف...">
+<input class="search-input" id="userSearch" type="search" placeholder="ابحث بالاسم أو البريد أو الهاتف...">
 </div>
 </div>
 <div class="table-wrapper">
@@ -1227,6 +1227,7 @@ onclick="window.location.href='index.html'"
 <thead>
 <tr>
 <th>الاسم</th>
+<th>البريد الإلكتروني</th>
 <th>الهاتف</th>
 <th>تاريخ الميلاد</th>
 <th>الجنس</th>
@@ -2559,6 +2560,18 @@ userCount;
 if (summary) {
 summary.textContent =
 userCount;
+}
+
+if (
+document
+.getElementById(
+"section-users"
+)
+?.classList.contains(
+"active"
+)
+) {
+await loadUsers();
 }
 }
 
@@ -4417,7 +4430,7 @@ document.getElementById(
 
 setLoadingRow(
 tbody,
-5
+6
 );
 
 const {
@@ -4425,13 +4438,8 @@ data,
 error
 } =
 await supabaseClient
-.from("profiles")
-.select("*")
-.order(
-"created_at",
-{
-ascending: false
-}
+.rpc(
+"get_admin_users"
 );
 
 if (error) {
@@ -4440,7 +4448,7 @@ console.error(error);
 
 setEmptyRow(
 tbody,
-5,
+6,
 "تعذر تحميل المستخدمين."
 );
 
@@ -4467,18 +4475,18 @@ usersCache.filter(
 user => {
 
 const name =
-[
-user.first_name,
-user.last_name
-]
-.filter(Boolean)
-.join(" ");
+user.display_name ||
+"";
 
 return (
 !search ||
 normalize(name)
 .includes(search) ||
+normalize(user.email)
+.includes(search) ||
 normalize(user.phone)
+.includes(search) ||
+normalize(user.provider)
 .includes(search)
 );
 }
@@ -4497,7 +4505,7 @@ if (!items.length) {
 
 setEmptyRow(
 tbody,
-5,
+6,
 "لا يوجد مستخدمون."
 );
 
@@ -4509,12 +4517,8 @@ items.map(
 user => {
 
 const name =
-[
-user.first_name,
-user.last_name
-]
-.filter(Boolean)
-.join(" ");
+user.display_name ||
+"";
 
 const birth =
 [
@@ -4536,6 +4540,12 @@ return `
 <td>
 ${escapeHtml(
 name || "-"
+)}
+</td>
+
+<td>
+${escapeHtml(
+user.email || "-"
 )}
 </td>
 
