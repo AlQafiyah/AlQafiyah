@@ -143,3 +143,433 @@ body[data-q-theme]:not([data-q-theme='natural']) ::selection{background:var(--q-
 body, .site-header,.side-menu,.notification-panel,.site-footer,.content-card,.qafiyah-content-card,.qafiyah-detail-card,.q-settings-card,.q-fav-card,input,textarea,select,button{
   transition:background-color .22s ease,color .22s ease,border-color .22s ease,box-shadow .22s ease!important
 }
+
+/* =========================================================
+   إغلاق ملف الرؤية — تغطية كاملة لكل صفحات الموقع
+   الطبيعية لا تدخل في أي قاعدة أدناه.
+========================================================= */
+
+/* لوحة الألوان النهائية للرؤى البديلة */
+body[data-q-theme='dark']{
+  --q-bg:#151311;--q-bg-2:#1a1614;--q-surface:#211c19;--q-surface-2:#2b2420;--q-surface-3:#352b26;
+  --q-text:#f4ece7;--q-heading:#fff8f3;--q-muted:#c8b9b0;--q-border:rgba(255,245,238,.12);
+  --q-accent:#c9957e;--q-accent-2:#b78998;--q-soft:#3a2d27;--q-card-hover:#312722;
+  --q-header:#1d1815;--q-header-text:#f4ece7;--q-input:#29211d;--q-input-text:#f4ece7;
+  --q-shadow:rgba(0,0,0,.38);--q-on-accent:#171210;--q-overlay:rgba(0,0,0,.64);
+  --q-hero-start:#1b1613;--q-hero-end:#251c18;--q-ring:rgba(201,149,126,.24)
+}
+body[data-q-theme='morning']{
+  --q-bg:#fbf4e8;--q-bg-2:#f6ecdd;--q-surface:#fffdf8;--q-surface-2:#f4e7d6;--q-surface-3:#ecdac5;
+  --q-text:#402e27;--q-heading:#2f211c;--q-muted:#756158;--q-border:rgba(92,60,45,.14);
+  --q-accent:#9a5f4c;--q-accent-2:#7d6675;--q-soft:#eed9c5;--q-card-hover:#f7ead9;
+  --q-header:#fffaf1;--q-header-text:#3b2a23;--q-input:#fffefa;--q-input-text:#3d2c25;
+  --q-shadow:rgba(96,63,43,.11);--q-on-accent:#fffaf6;--q-overlay:rgba(55,38,29,.40);
+  --q-hero-start:#f6eadb;--q-hero-end:#fff9ef;--q-ring:rgba(154,95,76,.20)
+}
+body[data-q-theme='evening'],body[data-q-theme='light']{
+  --q-bg:#2b2229;--q-bg-2:#31262f;--q-surface:#382c36;--q-surface-2:#463641;--q-surface-3:#513e4b;
+  --q-text:#f6eef3;--q-heading:#fff9fc;--q-muted:#d0bdc9;--q-border:rgba(255,238,247,.12);
+  --q-accent:#d6a0a8;--q-accent-2:#b89bb5;--q-soft:#513d49;--q-card-hover:#4b3946;
+  --q-header:#332832;--q-header-text:#f8eff5;--q-input:#433440;--q-input-text:#f8eff5;
+  --q-shadow:rgba(0,0,0,.32);--q-on-accent:#2b1d22;--q-overlay:rgba(16,10,15,.58);
+  --q-hero-start:#30252e;--q-hero-end:#3b2c38;--q-ring:rgba(214,160,168,.24)
+}
+body[data-q-theme='night']{
+  --q-bg:#0d1620;--q-bg-2:#111c27;--q-surface:#152331;--q-surface-2:#1c2d3d;--q-surface-3:#25394a;
+  --q-text:#edf4f8;--q-heading:#f8fcff;--q-muted:#afc0cc;--q-border:rgba(220,236,246,.12);
+  --q-accent:#9cb9cd;--q-accent-2:#b59bb7;--q-soft:#223647;--q-card-hover:#203445;
+  --q-header:#111e2a;--q-header-text:#edf4f8;--q-input:#1b2c3b;--q-input-text:#edf4f8;
+  --q-shadow:rgba(0,0,0,.40);--q-on-accent:#10202b;--q-overlay:rgba(2,8,14,.68);
+  --q-hero-start:#101d29;--q-hero-end:#17293a;--q-ring:rgba(156,185,205,.24)
+}
+
+/* ربط المتغيرات القديمة بنظام الرؤية الجديد كي لا يبقى أي مكوّن بلونه القديم */
+body[data-q-theme]:not([data-q-theme='natural']){
+  --color-primary:var(--q-accent);
+  --color-background:var(--q-bg);
+  --color-light:var(--q-text);
+  --color-accent:var(--q-accent);
+  --color-accent-dark:var(--q-accent);
+  --color-secondary:var(--q-accent-2);
+  --color-gray:var(--q-muted);
+  --color-card:var(--q-surface);
+  --color-border:var(--q-border);
+  background:var(--q-bg)!important;
+  color:var(--q-text)!important;
+}
+
+/* الصفحة نفسها وكل المساحات الأساسية */
+body[data-q-theme]:not([data-q-theme='natural']) main,
+body[data-q-theme]:not([data-q-theme='natural']) :where(.profile-page,.content-section,.articles-list,.poets-list,.site-sections,.home-introduction){
+  background:var(--q-bg)!important;
+  color:var(--q-text)!important;
+}
+body.home-page[data-q-theme]:not([data-q-theme='natural']),
+body.home-page[data-q-theme]:not([data-q-theme='natural']) main,
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .site-sections{
+  background:var(--q-bg)!important;
+}
+
+/* الواجهة الرئيسية — تتغلب على CSS المضمّن في index.html */
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .hero-section{
+  background:
+    radial-gradient(circle at 50% 32%,color-mix(in srgb,var(--q-accent) 18%,transparent),transparent 54%),
+    linear-gradient(180deg,var(--q-hero-start),var(--q-hero-end))!important;
+  color:var(--q-text)!important;
+}
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .hero-eyebrow,
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .section-kicker{color:var(--q-accent)!important}
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .hero-content h1,
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .section-title h2{color:var(--q-heading)!important}
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .hero-content>p,
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .section-title p{color:var(--q-muted)!important}
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .section-card,
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .home-introduction-content{
+  background:var(--q-surface-2)!important;
+  color:var(--q-text)!important;
+  border-color:var(--q-border)!important;
+  box-shadow:0 8px 24px var(--q-shadow)!important;
+}
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .section-card:hover,
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .home-introduction-content:hover{
+  background:var(--q-card-hover)!important;
+}
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .section-card h3,
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .home-introduction h2{color:var(--q-heading)!important}
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .section-card p,
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .home-introduction p,
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .home-introduction .section-kicker{color:var(--q-muted)!important}
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .card-icon{
+  background:var(--q-accent)!important;color:var(--q-on-accent)!important
+}
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .card-arrow{color:var(--q-accent)!important}
+
+/* أبطال الصفحات الداخلية */
+body[data-q-theme]:not([data-q-theme='natural']) .page-hero{
+  background:
+    radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--q-accent) 17%,transparent),transparent 50%),
+    linear-gradient(180deg,var(--q-hero-start),var(--q-hero-end))!important;
+  color:var(--q-text)!important;
+}
+body[data-q-theme]:not([data-q-theme='natural']) .page-hero::before,
+body[data-q-theme]:not([data-q-theme='natural']) .page-hero::after{border-color:var(--q-border)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .page-hero h1{color:var(--q-heading)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .page-hero p{color:var(--q-muted)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .section-label{color:var(--q-accent)!important}
+
+/* كل أنواع البطاقات والأسطح الداخلية */
+body[data-q-theme]:not([data-q-theme='natural']) :where(
+  .section-card,.article-card,.poet-card,.content-card,.qafiyah-content-card,.qafiyah-detail-card,.qafiyah-poet-profile,
+  .qafiyah-related-section,.profile-card,.about-feature-card,.about-mission-card,.about-service,.about-final-content,
+  .q-settings-card,.q-fav-card,.q-empty,.articles-empty,.articles-loading,.poets-empty,.poets-loading,.empty-state,
+  .checking-card,.denied-card,.welcome-card,.stat-card,.quick-card,.quick-item,.dashboard-panels,.table-wrapper,.filter-box,.search-box
+){
+  background:var(--q-surface)!important;
+  color:var(--q-text)!important;
+  border-color:var(--q-border)!important;
+  box-shadow:0 10px 30px var(--q-shadow)!important;
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.article-card,.poet-card,.qafiyah-content-card,.section-card):hover{
+  background:var(--q-card-hover)!important;
+  border-color:color-mix(in srgb,var(--q-accent) 48%,var(--q-border))!important;
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(
+  .section-card h2,.section-card h3,.article-card h2,.article-card h3,.poet-card h2,.poet-card h3,.content-card h2,
+  .qafiyah-card-title,.qafiyah-card-title a,.qafiyah-detail-header h1,.qafiyah-poet-profile h1,.qafiyah-biography h2,
+  .qafiyah-related-heading h2,.about-feature-card h2,.about-feature-card h3,.about-mission-card h2,.about-mission-card h3,
+  .about-service h2,.about-service h3,.profile-title,.profile-heading h1,.q-settings-card h2,.q-fav-card h3,
+  .articles-empty h2,.poets-empty h2
+){color:var(--q-heading)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(
+  .section-card p,.article-card p,.article-card-meta,.poet-card-description,.poet-card-category,.content-card p,
+  .qafiyah-card-summary,.qafiyah-card-meta,.qafiyah-detail-summary,.qafiyah-detail-meta,.qafiyah-meta-row,
+  .qafiyah-poet-nickname,.qafiyah-detail-nickname,.qafiyah-article-body,.qafiyah-poem-lines,
+  .about-feature-card p,.about-mission-card p,.about-service p,.profile-heading p,.q-page-lead,.q-fav-card p,
+  .articles-empty p,.poets-empty p,.articles-loading,.poets-loading
+){color:var(--q-muted)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .qafiyah-article-body :where(p,li,strong,em,blockquote),
+body[data-q-theme]:not([data-q-theme='natural']) .qafiyah-poem-lines :where(p,span,strong,em){color:inherit!important}
+
+/* الفواصل والحدود داخل صفحات المقال والقصيدة والشاعر */
+body[data-q-theme]:not([data-q-theme='natural']) :where(
+  .qafiyah-biography,.qafiyah-detail-header,.qafiyah-poem-lines,.qafiyah-related-section,.qafiyah-related-heading,
+  .profile-photo-section,.footer-bottom,.notification-header,.side-menu-header,.side-menu-footer
+){border-color:var(--q-border)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.qafiyah-back-link,.qafiyah-read-more){color:var(--q-accent)!important}
+
+/* الصور وحالات عدم وجود صورة */
+body[data-q-theme]:not([data-q-theme='natural']) :where(.qafiyah-image-placeholder,.article-card-image,.poet-card-image){
+  background:var(--q-surface-2)!important;
+  color:var(--q-muted)!important;
+  border-color:var(--q-border)!important;
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.qafiyah-detail-image,.qafiyah-poet-detail-image,.qafiyah-list-thumbnail,.qafiyah-card-image){
+  background:transparent!important;border-color:transparent!important
+}
+
+/* شريط البحث والفلاتر وكل الحقول */
+body[data-q-theme]:not([data-q-theme='natural']) :where(
+  .articles-search input,.articles-filter select,.profile-field input,.profile-field select,.login-box input,.login-box select,
+  input,textarea,select,.form-control,.search-input,.filter-input
+){
+  background:var(--q-input)!important;
+  color:var(--q-input-text)!important;
+  border-color:var(--q-border)!important;
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(input,textarea,.articles-search input)::placeholder{
+  color:var(--q-muted)!important;opacity:.82!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(
+  .articles-search input,.articles-filter select,.profile-field input,.profile-field select,input,textarea,select
+):focus{
+  background:var(--q-input)!important;
+  color:var(--q-input-text)!important;
+  border-color:var(--q-accent)!important;
+  box-shadow:0 0 0 3px var(--q-ring)!important;
+  outline:none!important;
+}
+body[data-q-theme]:not([data-q-theme='natural']) .profile-field input[readonly]{
+  background:var(--q-surface-2)!important;color:var(--q-muted)!important;opacity:1!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.search-icon,.articles-filter,.articles-toolbar,.poets-toolbar){color:var(--q-muted)!important}
+
+/* الهيدر والقائمة الجانبية والحساب */
+body[data-q-theme]:not([data-q-theme='natural']) .site-header{
+  background:var(--q-header)!important;color:var(--q-header-text)!important;border-color:var(--q-border)!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.site-logo,.menu-button,.notification-button){color:var(--q-header-text)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.menu-button,.notification-button):hover{
+  background:var(--q-surface-2)!important;color:var(--q-heading)!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.side-menu,.account-dropdown,.qafiyah-account-dropdown,.notification-panel){
+  background:var(--q-surface)!important;color:var(--q-text)!important;border-color:var(--q-border)!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(
+  .side-menu-header h2,.close-menu-button,.side-navigation a,.side-menu-socials a,
+  .account-dropdown a,.account-dropdown button,.qafiyah-account-dropdown button,.notification-header button
+){color:var(--q-text)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(
+  .side-navigation a:hover,.side-navigation a.active,.account-dropdown a:hover,.account-dropdown button:hover,
+  .qafiyah-account-dropdown button:hover,.close-menu-button:hover,.notification-header button:hover
+){background:var(--q-surface-2)!important;color:var(--q-heading)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .user-section{
+  background:var(--q-surface-2)!important;color:var(--q-text)!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.user-info span,.side-menu-footer p,.notification-content){color:var(--q-muted)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.user-avatar,.account-avatar-button,.qafiyah-header-avatar){
+  background:var(--q-accent)!important;color:var(--q-on-accent)!important;border-color:var(--q-border)!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) .menu-overlay{background:var(--q-overlay)!important}
+
+/* الإشعارات */
+body[data-q-theme]:not([data-q-theme='natural']) .q-notification-item{border-color:var(--q-border)!important;color:var(--q-text)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .q-notification-item h4{color:var(--q-heading)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .q-notification-item p{color:var(--q-muted)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .q-notification-item a{color:var(--q-accent)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .notification-count{border-color:var(--q-header)!important}
+
+/* الأزرار: أساسي وثانوي وتسجيل ودخول وحفظ */
+body[data-q-theme]:not([data-q-theme='natural']) :where(
+  .primary-button,.login-button,.login-submit,.profile-save-button,.profile-upload-button,.q-tab.active
+){
+  background:var(--q-accent)!important;
+  color:var(--q-on-accent)!important;
+  border-color:var(--q-accent)!important;
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(
+  .primary-button,.login-button,.login-submit,.profile-save-button,.profile-upload-button,.q-tab.active
+):hover{
+  background:color-mix(in srgb,var(--q-accent) 86%,var(--q-heading))!important;
+  color:var(--q-on-accent)!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(
+  .secondary-button,.q-tab,.q-choice,.q-lang-btn,.profile-logout-button,.profile-delete-button
+){
+  background:var(--q-surface-2)!important;
+  color:var(--q-text)!important;
+  border-color:var(--q-border)!important;
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.secondary-button,.q-tab,.q-choice,.q-lang-btn):hover{
+  background:var(--q-card-hover)!important;color:var(--q-heading)!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) .q-choice.active{
+  background:var(--q-soft)!important;color:var(--q-heading)!important;outline-color:var(--q-accent)!important
+}
+
+/* الصفحة الرئيسية لها أزرار inline !important لذلك نخصصها هنا أيضًا */
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .hero-section .primary-button,
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .home-introduction .primary-button{
+  background:var(--q-accent)!important;color:var(--q-on-accent)!important;border-color:var(--q-accent)!important
+}
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .hero-section .secondary-button{
+  background:transparent!important;color:var(--q-text)!important;border-color:var(--q-border)!important
+}
+body.home-page[data-q-theme]:not([data-q-theme='natural']) .hero-section .secondary-button:hover{
+  background:var(--q-surface-2)!important;color:var(--q-heading)!important
+}
+
+/* نافذة الدخول والنوافذ المنبثقة */
+body[data-q-theme]:not([data-q-theme='natural']) :where(.login-modal,.q-modal){background:var(--q-overlay)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.login-box,.modal-box,.q-modal-card){
+  background:var(--q-surface)!important;color:var(--q-text)!important;border-color:var(--q-border)!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.close-login-button,.q-modal-close){color:var(--q-text)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.login-method,.login-register,.login-note,.login-divider){color:var(--q-muted)!important;border-color:var(--q-border)!important}
+
+/* الصوت داخل القصائد */
+body[data-q-theme]:not([data-q-theme='natural']) .qafiyah-audio-toggle{
+  background:var(--q-surface-2)!important;color:var(--q-text)!important;border-color:var(--q-border)!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) .qafiyah-audio-toggle:hover{background:var(--q-card-hover)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .qafiyah-audio-toggle.is-playing{
+  background:var(--q-accent)!important;color:var(--q-on-accent)!important;border-color:var(--q-accent)!important
+}
+
+/* الملف الشخصي */
+body[data-q-theme]:not([data-q-theme='natural']) :where(.profile-heading,.profile-field label){color:var(--q-text)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.profile-photo,.profile-avatar){
+  background:var(--q-surface-2)!important;color:var(--q-text)!important;border-color:var(--q-accent)!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) .profile-photo-section small{color:var(--q-muted)!important}
+
+/* عن قافية */
+body[data-q-theme]:not([data-q-theme='natural']) :where(.about-final,.about-grid){color:var(--q-text)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.about-feature-icon,.about-mission-icon,.about-service-icon,.about-final-mark,.about-icon){
+  background:var(--q-surface-2)!important;color:var(--q-accent)!important;border-color:var(--q-border)!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) .about-section-heading{color:var(--q-accent)!important}
+
+/* المفضلة والإعدادات والهيدر المبسط */
+body[data-q-theme]:not([data-q-theme='natural']) .q-simple-top{
+  background:var(--q-header)!important;color:var(--q-header-text)!important;border-color:var(--q-border)!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) .q-simple-top a{color:var(--q-header-text)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .q-page-shell{color:var(--q-text)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .q-page-title{color:var(--q-heading)!important}
+
+/* الفوتر بالكامل */
+body[data-q-theme]:not([data-q-theme='natural']) .site-footer{
+  background:var(--q-surface)!important;color:var(--q-text)!important;border-color:var(--q-border)!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.footer-logo,.footer-links h3,.footer-contact h3,.footer-socials a){color:var(--q-heading)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.footer-brand p,.footer-links a,.footer-email,.footer-bottom){color:var(--q-muted)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.footer-links a,.footer-email):hover{color:var(--q-accent)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .footer-socials a:hover{background:var(--q-surface-2)!important;color:var(--q-accent)!important}
+
+/* تحديد النص والتركيز */
+body[data-q-theme]:not([data-q-theme='natural']) ::selection{background:var(--q-accent)!important;color:var(--q-on-accent)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :focus-visible{outline-color:var(--q-accent)!important}
+
+/* يحافظ على نعومة الانتقال عند تبديل الرؤية */
+body[data-q-theme]:not([data-q-theme='natural']) :where(
+  main,section,header,footer,nav,aside,article,div,a,button,input,textarea,select
+){transition:background-color .22s ease,color .22s ease,border-color .22s ease,box-shadow .22s ease}
+
+/* تغطية أخيرة لعناصر الدخول والحالات الصغيرة */
+html[data-q-theme='dark']{background:#151311!important}
+html[data-q-theme='morning']{background:#fbf4e8!important}
+html[data-q-theme='evening'],html[data-q-theme='light']{background:#2b2229!important}
+html[data-q-theme='night']{background:#0d1620!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.login-method){
+  background:var(--q-accent)!important;color:var(--q-on-accent)!important;border-color:var(--q-accent)!important
+}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.login-box label,.profile-login-form,.profile-login-form h2){color:var(--q-text)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .login-divider::before,
+body[data-q-theme]:not([data-q-theme='natural']) .login-divider::after{background:var(--q-border)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.articles-empty-icon,.poets-empty-icon){
+  background:var(--q-surface-2)!important;color:var(--q-accent)!important
+}
+
+
+/* ============================================================
+   الفوتر وتواصل معنا — موحّد في جميع الصفحات
+   ============================================================ */
+.site-footer .footer-container{
+  grid-template-columns:minmax(220px,1.35fr) minmax(130px,.7fr) minmax(130px,.7fr) minmax(230px,1fr)!important;
+  align-items:start;
+}
+.footer-contact{min-width:0}
+.footer-contact>h3{
+  width:min(100%,320px);
+  margin-inline:auto;
+  text-align:center;
+}
+.footer-contact>.q-contact-socials{
+  margin-inline:auto;
+}
+.footer-contact .q-contact-email,.q-side-email{
+  display:block;
+  direction:rtl;
+  unicode-bidi:normal;
+  text-decoration:none;
+  font-size:.95rem;
+  width:max-content;
+  max-width:100%;
+  cursor:pointer;
+  text-align:center;
+  margin-inline:auto;
+}
+.q-page-return{
+  display:inline-flex;
+  align-items:center;
+  margin:0 0 22px;
+  color:inherit;
+  text-decoration:none;
+  font-weight:700;
+  opacity:.78;
+  transition:opacity .2s ease,transform .2s ease;
+}
+.q-page-return:hover{opacity:1;transform:translateX(-2px)}
+body[data-q-theme]:not([data-q-theme='natural']) .q-page-return{color:var(--q-text)!important}
+.q-contact-socials{
+  display:grid!important;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  align-items:center;
+  gap:7px!important;
+  width:min(100%,320px);
+  margin-top:14px;
+  white-space:nowrap;
+}
+.q-contact-socials a{
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:1 / 1;
+  max-width:38px;
+  min-width:0;
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  justify-self:center;
+  border-radius:12px;
+  text-decoration:none;
+}
+.q-contact-socials svg{width:19px!important;height:19px!important;display:block;fill:currentColor}
+.q-contact-socials svg[fill="none"]{fill:none}
+.q-side-contact{width:100%}
+.q-side-contact h4{margin:0 0 9px;font-size:.92rem}
+.q-side-email{margin-bottom:2px}
+.side-menu-footer{display:flex;flex-direction:column;align-items:stretch!important;gap:13px}
+.side-menu-footer>p{margin:0;opacity:.66;font-size:.82rem}
+.side-menu-footer .q-contact-socials{margin-top:11px}
+.side-menu-footer .q-contact-socials{width:100%;max-width:300px}
+.side-menu-footer .q-contact-socials a{width:100%!important;height:auto!important;max-width:34px;aspect-ratio:1 / 1;border-radius:10px}
+.side-menu-footer .q-contact-socials svg{width:17px!important;height:17px!important}
+
+/* يحافظ تواصل معنا على نظام كل رؤية */
+body[data-q-theme]:not([data-q-theme='natural']) .q-side-contact h4{color:var(--q-heading)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.q-side-email,.footer-contact .q-contact-email){color:var(--q-muted)!important}
+body[data-q-theme]:not([data-q-theme='natural']) :where(.q-side-email,.footer-contact .q-contact-email):hover{color:var(--q-accent)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .q-contact-socials a{color:var(--q-heading)!important;border-color:var(--q-border)!important;background:var(--q-surface-2)!important}
+body[data-q-theme]:not([data-q-theme='natural']) .q-contact-socials a:hover{color:var(--q-accent)!important;background:var(--q-card-hover)!important}
+
+@media(max-width:1000px){
+  .site-footer .footer-container{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:620px){
+  .site-footer .footer-container{grid-template-columns:1fr!important}
+  .footer-contact .q-contact-email{font-size:.9rem}
+  .q-contact-socials{gap:5px!important;width:min(100%,290px)}
+  .q-contact-socials a{max-width:34px}
+  .side-menu-footer .q-contact-socials{max-width:280px}
+  .side-menu-footer .q-contact-socials a{max-width:32px}
+}

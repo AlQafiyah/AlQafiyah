@@ -22,10 +22,24 @@ const fonts={
   scheherazade:"'Scheherazade New','Amiri','Qafiyah Saudi',serif",
   tajawal:"'Tajawal','Qafiyah Saudi',sans-serif"
 };
-window.QafiyahEnhancements={fonts};
+const allowedThemes=new Set(['natural','dark','morning','evening','night']);
+function normalizeTheme(theme){return theme==='light'?'evening':(allowedThemes.has(theme)?theme:'natural')}
+function applyTheme(theme){
+  const t=normalizeTheme(theme);
+  localStorage.setItem(LS.theme,t);
+  document.documentElement.setAttribute('data-q-theme',t);
+  document.body?.setAttribute('data-q-theme',t);
+  const meta=document.querySelector('meta[name="theme-color"]');
+  const metaColors={natural:'#3E2723',dark:'#1d1815',morning:'#fffaf1',evening:'#332832',night:'#111e2a'};
+  if(meta)meta.setAttribute('content',metaColors[t]||metaColors.natural);
+  if(t==='natural')document.documentElement.style.removeProperty('color-scheme');
+  else document.documentElement.style.colorScheme=(t==='morning'?'light':'dark');
+  return t;
+}
+window.QafiyahEnhancements={fonts,applyTheme,normalizeTheme};
 function getJSON(k,f){try{return JSON.parse(localStorage.getItem(k)||'')||f}catch{return f}}
 function setJSON(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function applyPrefs(){const fk=localStorage.getItem(LS.font)||'saudi';document.documentElement.style.setProperty('--qafiyah-font-family',fonts[fk]||fonts.saudi);document.body?.setAttribute('data-q-theme',localStorage.getItem(LS.theme)||'natural')}
+function applyPrefs(){const fk=localStorage.getItem(LS.font)||'saudi';document.documentElement.style.setProperty('--qafiyah-font-family',fonts[fk]||fonts.saudi);applyTheme(localStorage.getItem(LS.theme)||'natural')}
 if(document.body)applyPrefs();else document.addEventListener('DOMContentLoaded',applyPrefs);
 
 function typeFromHref(href){if(!href)return null; if(/article\.html\?id=/.test(href))return'article';if(/poet\.html\?id=/.test(href))return'poet';if(/poem\.html\?id=/.test(href))return'poem';return null}
@@ -46,4 +60,111 @@ async function loadNotifications(){const countEl=$('notificationCount'),content=
 function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}function escapeAttr(s){return escapeHtml(s)}
 function markNotificationsRead(){const rows=window.__qafiyahNotifications||[];if(!rows.length)return;setJSON(LS.read,rows.map(r=>String(r.id)));const c=$('notificationCount');if(c){c.classList.remove('q-show');c.textContent='0'}}
 document.addEventListener('DOMContentLoaded',()=>{loadNotifications();$('notificationButton')?.addEventListener('click',()=>setTimeout(markNotificationsRead,100));setInterval(loadNotifications,60000)});
+
+
+// ============================================================
+// توحيد الفوتر وتواصل معنا والقائمة الجانبية في جميع صفحات قافية
+// ============================================================
+const QAFIYAH_SOCIALS=[
+  {key:'x',label:'X',href:'#',svg:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.38L6.49 22H3.38l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.52h1.73L8.29 4.34H6.43L17.8 19.52Z"></path></svg>'},
+  {key:'tiktok',label:'TikTok',href:'#',svg:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 3c.4 2.4 1.8 3.9 4.2 4.3v3.2c-1.6 0-3-.5-4.2-1.4v6.2a6.3 6.3 0 1 1-5.4-6.2v3.3a3.1 3.1 0 1 0 2.2 3V3h3.2Z"></path></svg>'},
+  {key:'instagram',label:'Instagram',href:'#',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg>'},
+  {key:'threads',label:'Threads',href:'#',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 8.4c-1.2-2-3.2-3.1-5.7-3.1-4.3 0-7 2.7-7 6.7 0 4.1 2.8 6.8 7.1 6.8 3.6 0 6.1-1.9 6.1-4.7 0-2.5-2-4.1-5-4.1-2.7 0-4.5 1.3-4.5 3.2 0 1.6 1.3 2.7 3.2 2.7 2.6 0 4.4-1.8 4.4-4.6 0-1.6-.4-3-1.2-4.2"></path></svg>'},
+  {key:'facebook',label:'Facebook',href:'#',svg:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.8 22v-8h2.7l.4-3.1h-3.1V9c0-.9.3-1.5 1.6-1.5H17V4.7c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2H7.5V14h2.8v8h3.5Z"></path></svg>'},
+  {key:'whatsapp',label:'WhatsApp',href:'#',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.8a8.4 8.4 0 0 1-12.4 7.4L3 20.6l1.4-4.9A8.4 8.4 0 1 1 20.5 11.8Z"></path><path d="M8.2 7.8c.3-.5.6-.5.9-.5h.5c.2 0 .4.1.5.4l.8 1.9c.1.3 0 .5-.1.7l-.6.8c-.2.2-.2.4 0 .7.5.9 1.2 1.6 2 2.2.9.6 1.7.9 2.1 1 .3.1.5 0 .7-.2l.9-1.1c.2-.2.4-.3.7-.2l2 .9c.3.1.4.3.4.5 0 .4-.2 1.3-.7 1.8-.6.6-1.5.9-2.4.9-1 0-2.3-.3-3.9-1.1-1.2-.6-2.5-1.5-3.7-2.8-1.1-1.2-1.9-2.5-2.3-3.6-.4-1-.4-1.8.2-2.3Z"></path></svg>'},
+  {key:'telegram',label:'Telegram',href:'#',svg:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 4.2 18.3 19c-.2 1-1 1.2-1.8.7l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L5.9 12.6 1 11.1c-1-.3-1.1-1 .2-1.5l19.1-7.4c.9-.3 1.7.2 1.2 2Z"></path></svg>'}
+];
+function qSocialLinks(className){
+  return QAFIYAH_SOCIALS.map(s=>`<a href="${s.href}" class="${className||''}" data-q-social-placeholder="${s.key}" aria-label="${s.label}" title="${s.label}">${s.svg}</a>`).join('');
+}
+function qFooterHTML(){
+  return `
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">القافية</a>
+        <p>موسوعة عربية مختصة في الشعر والأدب العربي، تجمع القصائد والشعراء والمقالات في مكان واحد.</p>
+      </div>
+      <div class="footer-links">
+        <h3>استكشف</h3>
+        <a href="Poems.html">القصائد</a>
+        <a href="poets.html">الشعراء</a>
+        <a href="articles.html">المقالات</a>
+        <a href="about.html">نبذة عن القافية</a>
+      </div>
+      <div class="footer-links">
+        <h3>الحساب</h3>
+        <a href="profile.html">الملف الشخصي</a>
+        <a href="favorites.html" id="footerFavoritesLink">المفضلة</a>
+        <a href="settings.html" id="footerSettingsLink">الإعدادات</a>
+      </div>
+      <div class="footer-contact">
+        <h3>تواصل معنا</h3>
+        <a href="#" class="q-contact-email" data-q-email-placeholder aria-label="البريد الإلكتروني">البريد الإلكتروني</a>
+        <div class="footer-socials q-contact-socials">${qSocialLinks('')}</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 القافية — جميع الحقوق محفوظة</p>
+      <span>موسوعة الشعر والأدب العربي</span>
+    </div>`;
+}
+function qSideFooterHTML(){
+  return `
+    <div class="q-side-contact">
+      <h4>تواصل معنا</h4>
+      <a href="#" class="q-side-email" data-q-email-placeholder aria-label="البريد الإلكتروني">البريد الإلكتروني</a>
+      <div class="side-menu-socials q-contact-socials">${qSocialLinks('')}</div>
+    </div>
+    <p>© القافية</p>`;
+}
+function ensureUnifiedFooterAndContact(){
+  const currentPage=(location.pathname.split('/').pop()||'').toLowerCase();
+  const noChromePages=new Set(['favorites.html','settings.html']);
+  if(noChromePages.has(currentPage)){
+    document.querySelector('header.q-simple-top')?.remove();
+    document.querySelector('.site-footer')?.remove();
+    document.querySelector('.side-menu-footer')?.remove();
+    return;
+  }
+
+  // تصحيح روابط الحساب أينما كانت، حتى لو بقيت نسخة HTML قديمة في المتصفح.
+  document.querySelectorAll('#footerFavoritesLink,#favoritesLink').forEach(a=>a.setAttribute('href','favorites.html'));
+  document.querySelectorAll('#footerSettingsLink,#settingsLink').forEach(a=>a.setAttribute('href','settings.html'));
+  document.querySelectorAll('a').forEach(a=>{
+    const label=(a.textContent||'').trim();
+    if(label==='المفضلة' && (!a.getAttribute('href') || a.getAttribute('href')==='#')) a.setAttribute('href','favorites.html');
+    if(label==='الإعدادات' && (!a.getAttribute('href') || a.getAttribute('href')==='#')) a.setAttribute('href','settings.html');
+  });
+
+  // الفوتر موحّد في جميع صفحات الموقع العامة.
+  let footer=document.querySelector('.site-footer');
+  if(!footer){
+    footer=document.createElement('footer');
+    footer.className='site-footer';
+    const scripts=[...document.body.querySelectorAll(':scope > script')];
+    if(scripts.length) document.body.insertBefore(footer,scripts[0]); else document.body.appendChild(footer);
+  }
+  footer.innerHTML=qFooterHTML();
+
+  // تواصل معنا في أسفل القائمة الجانبية ذات الثلاثة خطوط.
+  const sideMenu=document.querySelector('.side-menu');
+  if(sideMenu){
+    let sideFooter=sideMenu.querySelector('.side-menu-footer');
+    if(!sideFooter){
+      sideFooter=document.createElement('div');
+      sideFooter.className='side-menu-footer';
+      sideMenu.appendChild(sideFooter);
+    }
+    sideFooter.innerHTML=qSideFooterHTML();
+  }
+
+  // الروابط الاجتماعية placeholders إلى أن يضيف المالك اليوزرات/الروابط.
+  document.querySelectorAll('[data-q-social-placeholder],[data-q-email-placeholder]').forEach(a=>{
+    if(a.getAttribute('href')==='#'){
+      a.addEventListener('click',e=>e.preventDefault());
+    }
+  });
+}
+document.addEventListener('DOMContentLoaded',ensureUnifiedFooterAndContact);
+
 })();
