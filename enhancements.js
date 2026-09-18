@@ -128,21 +128,10 @@ function ensureUnifiedFooterAndContact(){
   }
 
   if(currentPage==='profile.html'){
-    // الملف الشخصي: بلا رأس وبلا ذيل، مع الإبقاء على زر الثلاثة خطوط والقائمة الجانبية الأصلية.
+    // الملف الشخصي فقط: بلا رأس وبلا ذيل، مع الإبقاء على قائمة الثلاث خطوط.
     document.querySelectorAll('body > header, body > footer, .site-header, .site-footer').forEach(el=>el.remove());
-    const sideMenu=document.querySelector('.side-menu');
-    if(sideMenu){
-      let sideFooter=sideMenu.querySelector('.side-menu-footer');
-      if(!sideFooter){
-        sideFooter=document.createElement('div');
-        sideFooter.className='side-menu-footer';
-        sideMenu.appendChild(sideFooter);
-      }
-      sideFooter.innerHTML=qSideFooterHTML();
-    }
-    document.querySelectorAll('[data-q-social-placeholder],[data-q-email-placeholder]').forEach(a=>{
-      if(a.getAttribute('href')==='#') a.addEventListener('click',e=>e.preventDefault());
-    });
+    // مهم: لا نعرض ذيل/تواصل معنا داخل قائمة الملف الشخصي.
+    document.querySelectorAll('.side-menu .side-menu-footer').forEach(el=>el.remove());
     return;
   }
 
