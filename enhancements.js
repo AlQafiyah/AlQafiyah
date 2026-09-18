@@ -119,11 +119,30 @@ function qSideFooterHTML(){
 }
 function ensureUnifiedFooterAndContact(){
   const currentPage=(location.pathname.split('/').pop()||'').toLowerCase();
-  const noChromePages=new Set(['favorites.html','settings.html','profile.html']);
+  const noChromePages=new Set(['favorites.html','settings.html']);
   if(noChromePages.has(currentPage)){
-    // صفحات المفضلة والإعدادات والملف الشخصي فقط: بلا رأس، بلا ذيل، وبلا القائمة الجانبية.
+    // المفضلة والإعدادات فقط: بلا رأس، بلا ذيل، وبلا القائمة الجانبية.
     // زر «العودة للصفحة الرئيسية» داخل محتوى الصفحة لا يُمس.
     document.querySelectorAll('body > header, body > footer, .site-header, .site-footer, .side-menu, .side-menu-overlay, .menu-overlay, .menu-toggle, .hamburger, .hamburger-btn, .menu-btn').forEach(el=>el.remove());
+    return;
+  }
+
+  if(currentPage==='profile.html'){
+    // الملف الشخصي: بلا رأس وبلا ذيل، مع الإبقاء على زر الثلاثة خطوط والقائمة الجانبية الأصلية.
+    document.querySelectorAll('body > header, body > footer, .site-header, .site-footer').forEach(el=>el.remove());
+    const sideMenu=document.querySelector('.side-menu');
+    if(sideMenu){
+      let sideFooter=sideMenu.querySelector('.side-menu-footer');
+      if(!sideFooter){
+        sideFooter=document.createElement('div');
+        sideFooter.className='side-menu-footer';
+        sideMenu.appendChild(sideFooter);
+      }
+      sideFooter.innerHTML=qSideFooterHTML();
+    }
+    document.querySelectorAll('[data-q-social-placeholder],[data-q-email-placeholder]').forEach(a=>{
+      if(a.getAttribute('href')==='#') a.addEventListener('click',e=>e.preventDefault());
+    });
     return;
   }
 
