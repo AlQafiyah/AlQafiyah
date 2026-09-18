@@ -1,1041 +1,383 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
 
+<html dir="rtl" lang="ar">
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-    <title>الملف الشخصي - قافية</title>
-
-    <link
-        rel="stylesheet"
-        href="style.css">
-
-    <link rel="stylesheet" href="enhancements.css?v=footer-final-3">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>الملف الشخصي - قافية</title>
+<link href="style.css" rel="stylesheet"/>
+<link href="enhancements.css?v=footer-final-3" rel="stylesheet"/>
 </head>
-
-
 <body>
-    <script>(function(){try{var t=localStorage.getItem('qafiyah_theme')||'natural';if(t==='light')t='evening';if(!/^(natural|dark|morning|evening|night)$/.test(t))t='natural';document.documentElement.setAttribute('data-q-theme',t);document.body.setAttribute('data-q-theme',t)}catch(e){}})();</script>
-
-
-    <!-- =====================================================
+<script>(function(){try{var t=localStorage.getItem('qafiyah_theme')||'natural';if(t==='light')t='evening';if(!/^(natural|dark|morning|evening|night)$/.test(t))t='natural';document.documentElement.setAttribute('data-q-theme',t);document.body.setAttribute('data-q-theme',t)}catch(e){}})();</script>
+<!-- =====================================================
          الهيدر
     ====================================================== -->
 
-    <header class="site-header">
-
-        <div class="header-container">
-
-
-            <button
-                class="menu-button"
-                id="menuButton"
-                type="button"
-                aria-label="القائمة"
-                title="القائمة">
-
-                <span></span>
-                <span></span>
-                <span></span>
-
-            </button>
-
-
-            <a
-                href="index.html"
-                class="site-logo"
-                aria-label="قافية">
-
-                قافية
-
-            </a>
-
-
-            <div class="header-actions">
-
-
-                <!-- =================================================
-                     الإشعارات
-                ================================================== -->
-
-                <button
-                    class="notification-button"
-                    id="notificationButton"
-                    type="button"
-                    aria-label="الإشعارات"
-                    title="الإشعارات">
-
-                    <svg
-                        class="notification-icon"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true">
-
-                        <path
-                            d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9">
-                        </path>
-
-                        <path
-                            d="M10 21h4">
-                        </path>
-
-                    </svg>
-
-
-                    <span
-                        class="notification-count"
-                        id="notificationCount">
-
-                        0
-
-                    </span>
-
-                </button>
-
-
-                <!-- =================================================
-                     تسجيل الدخول
-                ================================================== -->
-
-                <button
-                    class="login-button"
-                    id="loginButton"
-                    type="button">
-
-                    تسجيل الدخول
-
-                </button>
-
-
-            </div>
-
-        </div>
-
-    </header>
-
-
-
-    <!-- =====================================================
+<!-- =====================================================
          طبقة القائمة
     ====================================================== -->
 
-    <div
-        class="menu-overlay"
-        id="menuOverlay">
-    </div>
-
-
-
-    <!-- =====================================================
+<!-- =====================================================
          القائمة الجانبية
     ====================================================== -->
 
-    <aside
-        class="side-menu"
-        id="sideMenu"
-        aria-hidden="true">
-
-
-        <div class="side-menu-header">
-
-            <h2>
-                القائمة
-            </h2>
-
-
-            <button
-                class="close-menu-button"
-                id="closeMenuButton"
-                type="button"
-                aria-label="إغلاق القائمة">
-
-                ×
-
-            </button>
-
-        </div>
-
-
-
-        <!-- =================================================
-             المستخدم
-        ================================================== -->
-
-        <div
-            class="user-section"
-            id="userSection">
-
-
-            <div class="user-avatar">
-
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true">
-
-                    <circle
-                        cx="12"
-                        cy="8"
-                        r="4">
-                    </circle>
-
-                    <path
-                        d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
-                    </path>
-
-                </svg>
-
-            </div>
-
-
-            <div class="user-info">
-
-                <strong id="menuUserName">
-                    مرحبًا بك
-                </strong>
-
-                <span id="menuUserEmail">
-                    سجّل الدخول للمتابعة
-                </span>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             التنقل
-        ================================================== -->
-
-        <nav
-            class="side-navigation"
-            aria-label="التنقل الرئيسي">
-
-
-            <a
-                href="profile.html"
-                id="profileLink"
-                class="active">
-
-                <span aria-hidden="true">
-                    ◉
-                </span>
-
-                <span>
-                    الملف الشخصي
-                </span>
-
-            </a>
-
-
-            <a
-                href="favorites.html"
-                id="favoritesLink">
-
-                <span aria-hidden="true">
-                    ♡
-                </span>
-
-                <span>
-                    المفضلة
-                </span>
-
-            </a>
-
-
-            <a
-                href="settings.html"
-                id="settingsLink">
-
-                <span aria-hidden="true">
-                    ⚙
-                </span>
-
-                <span>
-                    الإعدادات
-                </span>
-
-            </a>
-
-
-        </nav>
-
-    </aside>
-
-
-
-    <!-- =====================================================
+<!-- =====================================================
          الإشعارات
     ====================================================== -->
 
-    <aside
-        class="notification-panel"
-        id="notificationPanel"
-        aria-hidden="true">
-
-
-        <div class="notification-header">
-
-            <h3>
-                الإشعارات
-            </h3>
-
-
-            <button
-                id="closeNotificationButton"
-                type="button"
-                aria-label="إغلاق الإشعارات">
-
-                ×
-
-            </button>
-
-        </div>
-
-
-        <div class="notification-content">
-
-            لا توجد إشعارات جديدة.
-
-        </div>
-
-    </aside>
-
-
-
-    <!-- =====================================================
+<!-- =====================================================
          صفحة الملف الشخصي
     ====================================================== -->
-
-    <main class="profile-page">
-
-
-        <section class="profile-container">
-
-
-            <!-- =================================================
+<main class="profile-page">
+<section class="profile-container">
+<!-- =================================================
                  العنوان
             ================================================== -->
-
-            <div class="profile-heading">
-
-                <h1>
+<div class="profile-heading">
+<h1>
                     الملف الشخصي
                 </h1>
-
-                <p>
+<p>
                     إدارة معلومات حسابك الشخصي
                 </p>
-
-            </div>
-
-
-
-            <!-- =================================================
+</div>
+<!-- =================================================
                  البطاقة الرئيسية
             ================================================== -->
-
-            <div class="profile-card">
-
-
-                <!-- =================================================
+<div class="profile-card">
+<!-- =================================================
                      الصورة الشخصية
                 ================================================== -->
-
-                <div class="profile-photo-section">
-
-
-                    <div
-                        class="profile-photo"
-                        id="profileAvatar"
-                        aria-label="الصورة الشخصية">
-
-
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true">
-
-                            <circle
-                                cx="12"
-                                cy="8"
-                                r="4">
-                            </circle>
-
-                            <path
-                                d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
-                            </path>
-
-                        </svg>
-
-
-                    </div>
-
-
-
-                    <!-- =================================================
+<div class="profile-photo-section">
+<div aria-label="الصورة الشخصية" class="profile-photo" id="profileAvatar">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="8" r="4">
+</circle>
+<path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
+</path>
+</svg>
+</div>
+<!-- =================================================
                          أزرار الصورة
                     ================================================== -->
-
-                    <div class="profile-photo-actions">
-
-
-                        <label
-                            for="avatarInput"
-                            class="profile-upload-button">
+<div class="profile-photo-actions">
+<label class="profile-upload-button" for="avatarInput">
 
                             إضافة / تغيير الصورة
 
                         </label>
-
-
-                        <input
-                            type="file"
-                            id="avatarInput"
-                            accept="image/jpeg,image/png,image/webp"
-                            hidden>
-
-
-                        <button
-                            type="button"
-                            id="deleteAvatarButton"
-                            class="profile-delete-button">
+<input accept="image/jpeg,image/png,image/webp" hidden="" id="avatarInput" type="file"/>
+<button class="profile-delete-button" id="deleteAvatarButton" type="button">
 
                             حذف الصورة
 
                         </button>
-
-
-                    </div>
-
-
-                    <small>
+</div>
+<small>
 
                         JPG أو PNG أو WebP — بحد أقصى 5MB
 
                     </small>
-
-
-                </div>
-
-
-
-                <!-- =================================================
+</div>
+<!-- =================================================
                      بيانات الحساب
                 ================================================== -->
-
-                <form
-                    id="profileForm"
-                    class="profile-form">
-
-
-                    <div class="profile-fields">
-
-
-                        <!-- الاسم الأول -->
-
-                        <div class="profile-field">
-
-                            <label
-                                for="profileFirstName">
+<form class="profile-form" id="profileForm">
+<div class="profile-fields">
+<!-- الاسم الأول -->
+<div class="profile-field">
+<label for="profileFirstName">
 
                                 الاسم الأول
 
                             </label>
-
-                            <input
-                                type="text"
-                                id="profileFirstName"
-                                autocomplete="given-name"
-                                required>
-
-                        </div>
-
-
-
-                        <!-- اسم العائلة -->
-
-                        <div class="profile-field">
-
-                            <label
-                                for="profileLastName">
+<input autocomplete="given-name" id="profileFirstName" required="" type="text"/>
+</div>
+<!-- اسم العائلة -->
+<div class="profile-field">
+<label for="profileLastName">
 
                                 اسم العائلة
 
                             </label>
-
-                            <input
-                                type="text"
-                                id="profileLastName"
-                                autocomplete="family-name">
-
-                        </div>
-
-
-
-                        <!-- البريد -->
-
-                        <div class="profile-field">
-
-                            <label
-                                for="profileEmailDetails">
+<input autocomplete="family-name" id="profileLastName" type="text"/>
+</div>
+<!-- البريد -->
+<div class="profile-field">
+<label for="profileEmailDetails">
 
                                 البريد الإلكتروني
 
                             </label>
-
-                            <input
-                                type="email"
-                                id="profileEmailDetails"
-                                autocomplete="email"
-                                readonly>
-
-                        </div>
-
-
-
-                        <!-- الجوال -->
-
-                        <div class="profile-field">
-
-                            <label
-                                for="profilePhone">
+<input autocomplete="email" id="profileEmailDetails" readonly="" type="email"/>
+</div>
+<!-- الجوال -->
+<div class="profile-field">
+<label for="profilePhone">
 
                                 رقم الجوال
 
                             </label>
-
-                            <input
-                                type="tel"
-                                id="profilePhone"
-                                inputmode="tel"
-                                autocomplete="tel"
-                                placeholder="+9665XXXXXXXX">
-
-                        </div>
-
-
-
-                        <!-- يوم الميلاد -->
-
-                        <div class="profile-field">
-
-                            <label
-                                for="profileBirthDay">
+<input autocomplete="tel" id="profilePhone" inputmode="tel" placeholder="+9665XXXXXXXX" type="tel"/>
+</div>
+<!-- يوم الميلاد -->
+<div class="profile-field">
+<label for="profileBirthDay">
 
                                 يوم الميلاد
 
                             </label>
-
-                            <select
-                                id="profileBirthDay"
-                                required>
-
-                                <option value="">
+<select id="profileBirthDay" required="">
+<option value="">
                                     اليوم
                                 </option>
-
-                            </select>
-
-                        </div>
-
-
-
-                        <!-- شهر الميلاد -->
-
-                        <div class="profile-field">
-
-                            <label
-                                for="profileBirthMonth">
+</select>
+</div>
+<!-- شهر الميلاد -->
+<div class="profile-field">
+<label for="profileBirthMonth">
 
                                 شهر الميلاد
 
                             </label>
-
-                            <select
-                                id="profileBirthMonth"
-                                required>
-
-                                <option value="">
+<select id="profileBirthMonth" required="">
+<option value="">
                                     الشهر
                                 </option>
-
-                                <option value="1">
+<option value="1">
                                     يناير
                                 </option>
-
-                                <option value="2">
+<option value="2">
                                     فبراير
                                 </option>
-
-                                <option value="3">
+<option value="3">
                                     مارس
                                 </option>
-
-                                <option value="4">
+<option value="4">
                                     أبريل
                                 </option>
-
-                                <option value="5">
+<option value="5">
                                     مايو
                                 </option>
-
-                                <option value="6">
+<option value="6">
                                     يونيو
                                 </option>
-
-                                <option value="7">
+<option value="7">
                                     يوليو
                                 </option>
-
-                                <option value="8">
+<option value="8">
                                     أغسطس
                                 </option>
-
-                                <option value="9">
+<option value="9">
                                     سبتمبر
                                 </option>
-
-                                <option value="10">
+<option value="10">
                                     أكتوبر
                                 </option>
-
-                                <option value="11">
+<option value="11">
                                     نوفمبر
                                 </option>
-
-                                <option value="12">
+<option value="12">
                                     ديسمبر
                                 </option>
-
-                            </select>
-
-                        </div>
-
-
-
-                        <!-- سنة الميلاد -->
-
-                        <div class="profile-field">
-
-                            <label
-                                for="profileBirthYear">
+</select>
+</div>
+<!-- سنة الميلاد -->
+<div class="profile-field">
+<label for="profileBirthYear">
 
                                 سنة الميلاد
 
                             </label>
-
-                            <select
-                                id="profileBirthYear"
-                                required>
-
-                                <option value="">
+<select id="profileBirthYear" required="">
+<option value="">
                                     السنة
                                 </option>
-
-                            </select>
-
-                        </div>
-
-
-
-                        <!-- الجنس -->
-
-                        <div class="profile-field">
-
-                            <label
-                                for="profileGender">
+</select>
+</div>
+<!-- الجنس -->
+<div class="profile-field">
+<label for="profileGender">
 
                                 الجنس
 
                             </label>
-
-                            <select
-                                id="profileGender"
-                                required>
-
-                                <option value="">
+<select id="profileGender" required="">
+<option value="">
                                     اختر
                                 </option>
-
-                                <option value="male">
+<option value="male">
                                     ذكر
                                 </option>
-
-                                <option value="female">
+<option value="female">
                                     أنثى
                                 </option>
-
-                            </select>
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <!-- =================================================
+</select>
+</div>
+</div>
+<!-- =================================================
                          أزرار الحساب
                     ================================================== -->
-
-                    <div class="profile-save-area">
-
-
-                        <button
-                            type="submit"
-                            id="saveProfileButton"
-                            class="profile-save-button">
+<div class="profile-save-area">
+<button class="profile-save-button" id="saveProfileButton" type="submit">
 
                             حفظ التغييرات
 
                         </button>
-
-
-                        <button
-                            type="button"
-                            id="logoutButton"
-                            class="profile-logout-button">
+<button class="profile-logout-button" id="logoutButton" type="button">
 
                             تسجيل الخروج
 
                         </button>
-
-
-                    </div>
-
-
-
-                    <!-- =================================================
+</div>
+<!-- =================================================
                          رسائل النظام
                     ================================================== -->
-
-                    <p
-                        id="profileMessage"
-                        class="profile-message"
-                        aria-live="polite">
-                    </p>
-
-
-                </form>
-
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-
-    <!-- =====================================================
+<p aria-live="polite" class="profile-message" id="profileMessage">
+</p>
+</form>
+</div>
+</section>
+</main>
+<!-- =====================================================
          نافذة تسجيل الدخول
     ====================================================== -->
-
-    <div
-        class="login-modal"
-        id="loginModal"
-        aria-hidden="true">
-
-
-        <div class="login-box">
-
-
-            <button
-                class="close-login-button"
-                id="closeLoginButton"
-                type="button"
-                aria-label="إغلاق">
+<div aria-hidden="true" class="login-modal" id="loginModal">
+<div class="login-box">
+<button aria-label="إغلاق" class="close-login-button" id="closeLoginButton" type="button">
 
                 ×
 
             </button>
-
-
-
-            <!-- =================================================
+<!-- =================================================
                  تسجيل الدخول
             ================================================== -->
-
-            <div id="loginForm">
-
-
-                <h2>
+<div id="loginForm">
+<h2>
                     تسجيل الدخول
                 </h2>
-
-
-                <input
-                    type="email"
-                    id="emailLogin"
-                    autocomplete="email"
-                    placeholder="البريد الإلكتروني">
-
-
-                <input
-                    type="password"
-                    id="passwordLogin"
-                    autocomplete="current-password"
-                    placeholder="كلمة المرور">
-
-
-                <button
-                    type="button"
-                    id="emailLoginButton"
-                    class="login-submit">
+<input autocomplete="email" id="emailLogin" placeholder="البريد الإلكتروني" type="email"/>
+<input autocomplete="current-password" id="passwordLogin" placeholder="كلمة المرور" type="password"/>
+<button class="login-submit" id="emailLoginButton" type="button">
 
                     تسجيل الدخول
 
                 </button>
-
-
-
-
-                <div class="login-register">
+<div class="login-register">
 
                     ليس لديك حساب؟
 
-                    <button
-                        type="button"
-                        id="showRegisterButton">
+                    <button id="showRegisterButton" type="button">
 
                         إنشاء حساب
 
                     </button>
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- =================================================
+</div>
+</div>
+<!-- =================================================
                  إنشاء الحساب
             ================================================== -->
-
-            <div
-                id="registerForm"
-                style="display: none;">
-
-
-                <h2>
+<div id="registerForm" style="display: none;">
+<h2>
                     إنشاء حساب
                 </h2>
-
-
-                <input
-                    type="text"
-                    id="firstName"
-                    autocomplete="given-name"
-                    placeholder="الاسم الأول">
-
-
-                <input
-                    type="text"
-                    id="lastName"
-                    autocomplete="family-name"
-                    placeholder="اسم العائلة">
-
-
-
-                <div class="birth-date-fields">
-
-
-                    <select id="birthDay">
-
-                        <option value="">
+<input autocomplete="given-name" id="firstName" placeholder="الاسم الأول" type="text"/>
+<input autocomplete="family-name" id="lastName" placeholder="اسم العائلة" type="text"/>
+<div class="birth-date-fields">
+<select id="birthDay">
+<option value="">
                             اليوم
                         </option>
-
-                    </select>
-
-
-                    <select id="birthMonth">
-
-                        <option value="">
+</select>
+<select id="birthMonth">
+<option value="">
                             الشهر
                         </option>
-
-                        <option value="1">
+<option value="1">
                             يناير
                         </option>
-
-                        <option value="2">
+<option value="2">
                             فبراير
                         </option>
-
-                        <option value="3">
+<option value="3">
                             مارس
                         </option>
-
-                        <option value="4">
+<option value="4">
                             أبريل
                         </option>
-
-                        <option value="5">
+<option value="5">
                             مايو
                         </option>
-
-                        <option value="6">
+<option value="6">
                             يونيو
                         </option>
-
-                        <option value="7">
+<option value="7">
                             يوليو
                         </option>
-
-                        <option value="8">
+<option value="8">
                             أغسطس
                         </option>
-
-                        <option value="9">
+<option value="9">
                             سبتمبر
                         </option>
-
-                        <option value="10">
+<option value="10">
                             أكتوبر
                         </option>
-
-                        <option value="11">
+<option value="11">
                             نوفمبر
                         </option>
-
-                        <option value="12">
+<option value="12">
                             ديسمبر
                         </option>
-
-                    </select>
-
-
-                    <select id="birthYear">
-
-                        <option value="">
+</select>
+<select id="birthYear">
+<option value="">
                             السنة
                         </option>
-
-                    </select>
-
-
-                </div>
-
-
-
-                <select id="gender">
-
-                    <option value="">
+</select>
+</div>
+<select id="gender">
+<option value="">
                         الجنس
                     </option>
-
-                    <option value="male">
+<option value="male">
                         ذكر
                     </option>
-
-                    <option value="female">
+<option value="female">
                         أنثى
                     </option>
-
-                </select>
-
-
-
-                <input
-                    type="email"
-                    id="emailRegister"
-                    autocomplete="email"
-                    placeholder="البريد الإلكتروني">
-
-
-                <input
-                    type="password"
-                    id="passwordRegister"
-                    autocomplete="new-password"
-                    placeholder="كلمة المرور">
-
-
-                <input
-                    type="password"
-                    id="confirmPasswordRegister"
-                    autocomplete="new-password"
-                    placeholder="تأكيد كلمة المرور">
-
-
-                <button
-                    type="button"
-                    id="registerSubmitButton"
-                    class="login-submit">
+</select>
+<input autocomplete="email" id="emailRegister" placeholder="البريد الإلكتروني" type="email"/>
+<input autocomplete="new-password" id="passwordRegister" placeholder="كلمة المرور" type="password"/>
+<input autocomplete="new-password" id="confirmPasswordRegister" placeholder="تأكيد كلمة المرور" type="password"/>
+<button class="login-submit" id="registerSubmitButton" type="button">
 
                     إنشاء الحساب
 
                 </button>
-
-
-
-                <div class="login-register">
+<div class="login-register">
 
                     لديك حساب بالفعل؟
 
-                    <button
-                        type="button"
-                        id="showLoginButton">
+                    <button id="showLoginButton" type="button">
 
                         تسجيل الدخول
 
                     </button>
-
-                </div>
-
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =====================================================
+</div>
+</div>
+</div>
+</div>
+<!-- =====================================================
          Supabase
     ====================================================== -->
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
-
-
-    <script
-        src="supabase.js">
-    </script>
-
-
-    <script
-        src="script.js">
-    </script>
-
-
-    <script src="enhancements.js?v=footer-final-3"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+<script src="supabase.js">
+</script>
+<script src="script.js">
+</script>
+<script src="enhancements.js?v=footer-final-3"></script>
 </body>
-
 </html>
