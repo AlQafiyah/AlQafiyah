@@ -121,9 +121,9 @@ function ensureUnifiedFooterAndContact(){
   const currentPage=(location.pathname.split('/').pop()||'').toLowerCase();
   const noChromePages=new Set(['favorites.html','settings.html']);
   if(noChromePages.has(currentPage)){
-    document.querySelector('header.q-simple-top')?.remove();
-    document.querySelector('.site-footer')?.remove();
-    document.querySelector('.side-menu-footer')?.remove();
+    // صفحتا المفضلة والإعدادات فقط: بلا رأس، بلا ذيل، وبلا القائمة الجانبية.
+    // زر «العودة للصفحة الرئيسية» داخل محتوى الصفحة لا يُمس.
+    document.querySelectorAll('body > header, body > footer, .site-header, .site-footer, .side-menu, .side-menu-overlay, .menu-overlay, .menu-toggle, .hamburger, .hamburger-btn, .menu-btn').forEach(el=>el.remove());
     return;
   }
 
