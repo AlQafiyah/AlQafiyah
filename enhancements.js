@@ -1,0 +1,49 @@
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const LS={font:'qafiyah_font',theme:'qafiyah_theme',favorites:'qafiyah_favorites',read:'qafiyah_read_notifications'};
+const fonts={
+  saudi:"'Qafiyah Saudi','Saudi',Tahoma,Arial,sans-serif",
+  expo:"'Expo Arabic','Qafiyah Saudi',sans-serif",
+  expoLight:"'Expo Arabic Light','Expo Arabic','Qafiyah Saudi',sans-serif",
+  amiri:"'Amiri','Qafiyah Saudi',serif",
+  aref:"'Aref Ruqaa Ink','Amiri','Qafiyah Saudi',serif",
+  cairo:"'Cairo','Qafiyah Saudi',sans-serif",
+  changa:"'Changa','Qafiyah Saudi',sans-serif",
+  messiri:"'El Messiri','Qafiyah Saudi',sans-serif",
+  harmattan:"'Harmattan','Qafiyah Saudi',sans-serif",
+  ibm:"'IBM Plex Sans Arabic','Qafiyah Saudi',sans-serif",
+  katibeh:"'Katibeh','Amiri','Qafiyah Saudi',serif",
+  lateef:"'Lateef','Amiri','Qafiyah Saudi',serif",
+  mada:"'Mada','Qafiyah Saudi',sans-serif",
+  kufi:"'Noto Kufi Arabic','Reem Kufi','Qafiyah Saudi',sans-serif",
+  naskh:"'Noto Naskh Arabic','Amiri','Qafiyah Saudi',serif",
+  reem:"'Reem Kufi','Noto Kufi Arabic','Qafiyah Saudi',sans-serif",
+  scheherazade:"'Scheherazade New','Amiri','Qafiyah Saudi',serif",
+  tajawal:"'Tajawal','Qafiyah Saudi',sans-serif"
+};
+window.QafiyahEnhancements={fonts};
+function getJSON(k,f){try{return JSON.parse(localStorage.getItem(k)||'')||f}catch{return f}}
+function setJSON(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function applyPrefs(){const fk=localStorage.getItem(LS.font)||'saudi';document.documentElement.style.setProperty('--qafiyah-font-family',fonts[fk]||fonts.saudi);document.body?.setAttribute('data-q-theme',localStorage.getItem(LS.theme)||'natural')}
+if(document.body)applyPrefs();else document.addEventListener('DOMContentLoaded',applyPrefs);
+
+function typeFromHref(href){if(!href)return null; if(/article\.html\?id=/.test(href))return'article';if(/poet\.html\?id=/.test(href))return'poet';if(/poem\.html\?id=/.test(href))return'poem';return null}
+function itemKey(type,id){return type+':'+id}
+function favorites(){return getJSON(LS.favorites,[])}
+function setFavorites(v){setJSON(LS.favorites,v);document.dispatchEvent(new CustomEvent('qafiyah:favorites-changed'))}
+function parseId(url){try{return new URL(url,location.href).searchParams.get('id')||''}catch{return''}}
+function isFav(type,id){return favorites().some(x=>x.key===itemKey(type,id))}
+function heartSVG(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.7a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.5 1-1a5.5 5.5 0 0 0 0-7.8Z"></path></svg>'}
+function buildItem(type,id,url,scope){const title=(scope.querySelector('h1,h2,.qafiyah-card-title')?.textContent||document.title||'عنصر محفوظ').trim();const img=scope.querySelector('img')?.getAttribute('src')||'';const meta=(scope.querySelector('.qafiyah-card-meta,.qafiyah-detail-meta,.qafiyah-poet-nickname')?.textContent||'').trim();return{key:itemKey(type,id),type,id,title,url,img,meta,savedAt:Date.now()}}
+function toggleFavorite(btn){const type=btn.dataset.type,id=btn.dataset.id,url=btn.dataset.url;let list=favorites();const key=itemKey(type,id);const exists=list.some(x=>x.key===key);if(exists)list=list.filter(x=>x.key!==key);else list.unshift(buildItem(type,id,url,btn.closest('.qafiyah-content-card,.qafiyah-detail-card')||document));setFavorites(list);syncFavoriteButtons()}
+function syncFavoriteButtons(){document.querySelectorAll('.q-favorite-btn').forEach(b=>{const active=isFav(b.dataset.type,b.dataset.id);b.classList.toggle('is-favorite',active);b.setAttribute('aria-label',active?'إزالة من المفضلة':'إضافة إلى المفضلة');b.title=active?'إزالة من المفضلة':'إضافة إلى المفضلة'})}
+function addFavoriteButton(scope,type,id,url){if(!scope||!type||!id||scope.querySelector('.q-favorite-btn'))return;const b=document.createElement('button');b.type='button';b.className='q-favorite-btn';b.dataset.type=type;b.dataset.id=id;b.dataset.url=url;b.innerHTML=heartSVG();b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();toggleFavorite(b)});scope.appendChild(b)}
+function enhanceFavoriteTargets(){document.querySelectorAll('.qafiyah-content-card').forEach(card=>{const link=card.querySelector('a[href*="article.html?id="],a[href*="poet.html?id="],a[href*="poem.html?id="]');if(!link)return;const type=typeFromHref(link.getAttribute('href'));const id=parseId(link.href);addFavoriteButton(card,type,id,link.href)});const path=location.pathname.split('/').pop();const map={'article.html':'article','poet.html':'poet','poem.html':'poem'};if(map[path]){const host=document.querySelector('.qafiyah-detail-card');const id=new URLSearchParams(location.search).get('id');if(host&&id)addFavoriteButton(host,map[path],id,location.href)}syncFavoriteButtons()}
+let favTimer;const mo=new MutationObserver(()=>{clearTimeout(favTimer);favTimer=setTimeout(enhanceFavoriteTargets,80)});document.addEventListener('DOMContentLoaded',()=>{enhanceFavoriteTargets();mo.observe(document.body,{childList:true,subtree:true});document.querySelectorAll('#favoritesLink').forEach(a=>a.href='favorites.html');document.querySelectorAll('#settingsLink').forEach(a=>a.href='settings.html')});
+
+async function loadNotifications(){const countEl=$('notificationCount'),content=$('notificationContent');if(!countEl&&!content)return;let rows=[];try{if(window.supabaseClient){const res=await window.supabaseClient.from('notifications').select('*').order('created_at',{ascending:false}).limit(30);if(!res.error)rows=res.data||[]}}catch(e){console.warn('Qafiyah notifications:',e)}const read=new Set(getJSON(LS.read,[]).map(String));const unread=rows.filter(r=>!read.has(String(r.id)));if(countEl){countEl.textContent=unread.length>99?'99+':String(unread.length);countEl.classList.toggle('q-show',unread.length>0)}if(content){content.innerHTML=rows.length?rows.map(r=>`<div class="q-notification-item" data-id="${String(r.id).replace(/"/g,'')}"><h4>${escapeHtml(r.title||'إشعار')}</h4><p>${escapeHtml(r.message||'')}</p>${r.link?`<a href="${escapeAttr(r.link)}">فتح</a>`:''}</div>`).join(''):'<p>لا توجد إشعارات جديدة.</p>'}window.__qafiyahNotifications=rows}
+function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}function escapeAttr(s){return escapeHtml(s)}
+function markNotificationsRead(){const rows=window.__qafiyahNotifications||[];if(!rows.length)return;setJSON(LS.read,rows.map(r=>String(r.id)));const c=$('notificationCount');if(c){c.classList.remove('q-show');c.textContent='0'}}
+document.addEventListener('DOMContentLoaded',()=>{loadNotifications();$('notificationButton')?.addEventListener('click',()=>setTimeout(markNotificationsRead,100));setInterval(loadNotifications,60000)});
+})();

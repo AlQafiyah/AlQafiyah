@@ -703,7 +703,7 @@
 
 
                     return `
-                        <p>
+                        <p class="qafiyah-poem-line">
                             ${
                                 escapeHtml(
                                     clean
@@ -1461,9 +1461,72 @@
     }
 
 
+    function renderCardThumbnail(
+        url,
+        alt,
+        className
+    ) {
+
+        const image =
+            renderImage(
+                url,
+                alt,
+                className
+            );
+
+
+        if (image) {
+            return image;
+        }
+
+
+        return `
+            <div
+                class="${escapeHtml(className)} qafiyah-image-placeholder"
+                aria-hidden="true">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <rect x="3" y="4" width="18" height="16" rx="3"></rect>
+                    <circle cx="9" cy="10" r="2"></circle>
+                    <path d="m5 18 5-5 3 3 2-2 4 4"></path>
+
+                </svg>
+
+            </div>
+        `;
+
+    }
+
+
     // ============================================================
     // التسجيل الصوتي للقصيدة
     // ============================================================
+
+    function audioIconMarkup(
+        playing = false
+    ) {
+
+        return playing
+            ? `
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="6" y="5" width="4" height="14" rx="1"></rect>
+                    <rect x="14" y="5" width="4" height="14" rx="1"></rect>
+                </svg>
+            `
+            : `
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 5.5v13l10-6.5Z"></path>
+                </svg>
+            `;
+
+    }
 
     function renderAudio(
         value,
@@ -1499,7 +1562,7 @@
 
                     <span
                         class="qafiyah-audio-icon"
-                        aria-hidden="true">▶</span>
+                        aria-hidden="true">${audioIconMarkup()}</span>
 
                     <span class="qafiyah-audio-label">
                         استمع إلى القصيدة
@@ -1569,8 +1632,10 @@
                             );
 
                             if (icon) {
-                                icon.textContent =
-                                    playing ? "❚❚" : "▶";
+                                icon.innerHTML =
+                                    audioIconMarkup(
+                                        playing
+                                    );
                             }
 
                             if (label) {
@@ -1636,6 +1701,126 @@
 
                 }
             );
+
+    }
+
+
+    function fitPoemLines(
+        root
+    ) {
+
+        const container =
+            root?.querySelector(
+                ".qafiyah-poem-lines"
+            );
+
+
+        if (!container) return;
+
+
+        const resize = () => {
+
+            const styles =
+                getComputedStyle(
+                    container
+                );
+
+            const available =
+                container.clientWidth -
+                parseFloat(styles.paddingLeft || 0) -
+                parseFloat(styles.paddingRight || 0);
+
+
+            if (!available) return;
+
+
+            container
+                .querySelectorAll(
+                    ".qafiyah-poem-line"
+                )
+                .forEach(
+                    line => {
+
+                        line.style.fontSize =
+                            "";
+
+
+                        const base =
+                            parseFloat(
+                                getComputedStyle(
+                                    line
+                                ).fontSize
+                            ) || 20;
+
+
+                        if (
+                            line.scrollWidth >
+                            available
+                        ) {
+
+                            const fitted =
+                                Math.max(
+                                    10,
+                                    Math.floor(
+                                        base *
+                                        available /
+                                        line.scrollWidth *
+                                        .97
+                                    )
+                                );
+
+                            line.style.fontSize =
+                                `${fitted}px`;
+
+                        }
+
+                    }
+                );
+
+        };
+
+
+        requestAnimationFrame(
+            resize
+        );
+
+
+        if (
+            document.fonts?.ready
+        ) {
+
+            document.fonts.ready
+                .then(
+                    resize
+                )
+                .catch(
+                    () => {}
+                );
+
+        }
+
+
+        if (
+            "ResizeObserver" in window
+        ) {
+
+            const observer =
+                new ResizeObserver(
+                    resize
+                );
+
+            observer.observe(
+                container
+            );
+
+        } else {
+
+            window.addEventListener(
+                "resize",
+                resize
+            );
+
+        }
 
     }
 
@@ -1875,7 +2060,8 @@
 
 
                 container.classList.add(
-                    "qafiyah-list-grid"
+                    "qafiyah-list-grid",
+                    "qafiyah-articles-list"
                 );
 
 
@@ -1894,14 +2080,7 @@
                                         article.summary ||
                                         ""
                                     )
-                                        .trim()
-
-                                    ||
-
-                                    shortText(
-                                        article.content,
-                                        190
-                                    );
+                                        .trim();
 
 
                                 return `
@@ -1910,13 +2089,14 @@
                                         class="
                                             content-card
                                             qafiyah-content-card
+                                            qafiyah-article-card
                                         ">
 
                                         ${
-                                            renderImage(
+                                            renderCardThumbnail(
                                                 article.image_url,
                                                 article.title,
-                                                "qafiyah-card-image"
+                                                "qafiyah-list-thumbnail"
                                             )
                                         }
 
@@ -1964,27 +2144,6 @@
 
                                             </h2>
 
-                                            ${
-                                                article.author
-
-                                                    ? `
-                                                        <p
-                                                            class="qafiyah-card-meta">
-
-                                                            بقلم
-                                                            ${
-                                                                escapeHtml(
-                                                                    article.author
-                                                                )
-                                                            }
-
-                                                        </p>
-                                                    `
-
-                                                    :
-                                                    ""
-                                            }
-
                                             <p
                                                 class="qafiyah-card-summary">
 
@@ -1992,6 +2151,28 @@
                                                     escapeHtml(
                                                         summary
                                                     )
+                                                }
+
+                                            </p>
+
+                                            <p class="qafiyah-card-meta">
+
+                                                ${
+                                                    article.author
+                                                        ? `بقلم ${escapeHtml(article.author)}`
+                                                        : ""
+                                                }
+
+                                                ${
+                                                    article.author && article.category
+                                                        ? `<span aria-hidden="true">•</span>`
+                                                        : ""
+                                                }
+
+                                                ${
+                                                    article.category
+                                                        ? escapeHtml(article.category)
+                                                        : ""
                                                 }
 
                                             </p>
@@ -2459,7 +2640,8 @@
 
 
                 container.classList.add(
-                    "qafiyah-list-grid"
+                    "qafiyah-list-grid",
+                    "qafiyah-poets-list"
                 );
 
 
@@ -2482,10 +2664,10 @@
                                         ">
 
                                         ${
-                                            renderImage(
+                                            renderCardThumbnail(
                                                 poet.image_url,
                                                 poet.name,
-                                                "qafiyah-poet-image"
+                                                "qafiyah-list-thumbnail"
                                             )
                                         }
 
@@ -4333,6 +4515,10 @@
                 host
             );
 
+            fitPoemLines(
+                host
+            );
+
         } catch (
             error
         ) {
@@ -4663,6 +4849,170 @@
                 opacity: .72;
             }
 
+            .qafiyah-articles-list,
+            .qafiyah-poets-list {
+                grid-template-columns: 1fr;
+                gap: 18px;
+                width: min(920px, 100%);
+                margin-inline: auto;
+            }
+
+            .qafiyah-article-card,
+            .qafiyah-poet-card {
+                display: flex;
+                align-items: center;
+                gap: clamp(14px, 2.5vw, 24px);
+                min-height: 150px;
+                padding: 12px;
+                border-radius: 20px;
+                overflow: hidden;
+            }
+
+            .qafiyah-list-thumbnail {
+                width: clamp(112px, 18vw, 170px);
+                aspect-ratio: 1 / 1;
+                height: auto;
+                flex: 0 0 auto;
+                display: block;
+                object-fit: cover;
+                border: 1px solid rgba(62, 39, 35, .12);
+                border-radius: 16px;
+                background: #f1ece8;
+            }
+
+            .qafiyah-image-placeholder {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: rgba(62, 39, 35, .42);
+            }
+
+            .qafiyah-image-placeholder svg {
+                width: 38%;
+                height: 38%;
+            }
+
+            .qafiyah-poem-index-card .qafiyah-card-image {
+                width: calc(100% - 24px);
+                margin: 12px 12px 0;
+                border: 1px solid rgba(62, 39, 35, .12);
+                border-radius: 16px;
+                object-fit: contain;
+                background: #f7f3f0;
+            }
+
+            .qafiyah-article-card .qafiyah-card-body,
+            .qafiyah-poet-card .qafiyah-card-body {
+                flex: 1 1 auto;
+                min-width: 0;
+                padding: 14px 4px 14px 16px;
+            }
+
+            .qafiyah-article-card .section-label {
+                display: none;
+            }
+
+            .qafiyah-article-card .qafiyah-card-title,
+            .qafiyah-poet-card .qafiyah-card-title {
+                margin: 0 0 7px;
+                font-size: clamp(19px, 2.4vw, 27px);
+                line-height: 1.55;
+            }
+
+            .qafiyah-article-card .qafiyah-card-summary {
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+                margin: 4px 0 10px;
+                font-size: clamp(13px, 1.5vw, 16px);
+                line-height: 1.7;
+                opacity: .78;
+            }
+
+            .qafiyah-article-card .qafiyah-card-meta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px 8px;
+                margin: 0;
+                font-size: .84rem;
+            }
+
+            .qafiyah-article-card .qafiyah-read-more,
+            .qafiyah-poet-card .qafiyah-read-more,
+            .qafiyah-poet-card .qafiyah-card-summary {
+                display: none;
+            }
+
+            .qafiyah-poet-card .section-label {
+                margin-bottom: 6px;
+            }
+
+            .qafiyah-poet-card .qafiyah-poet-nickname,
+            .qafiyah-poet-card .qafiyah-card-meta {
+                margin: 4px 0;
+                font-size: .9rem;
+            }
+
+            .qafiyah-detail-image {
+                width: auto;
+                max-width: calc(100% - 48px);
+                max-height: min(72vh, 720px);
+                height: auto;
+                object-fit: contain;
+                border: 1px solid rgba(62, 39, 35, .12);
+                border-radius: 20px;
+                margin: 24px auto 0;
+                background: #f7f3f0;
+            }
+
+            .qafiyah-poet-detail-image {
+                height: auto;
+                max-height: 560px;
+                object-fit: contain;
+                border: 1px solid rgba(62, 39, 35, .12);
+                border-radius: 20px;
+                padding: 6px;
+                background: #f7f3f0;
+            }
+
+            .qafiyah-poem-detail-card .qafiyah-detail-header {
+                text-align: center;
+            }
+
+            .qafiyah-poem-detail-card .qafiyah-meta-row {
+                justify-content: center;
+            }
+
+            .qafiyah-poem-lines {
+                overflow: hidden;
+                text-align: center;
+                padding-inline: clamp(10px, 4vw, 40px);
+            }
+
+            .qafiyah-poem-lines .qafiyah-poem-line {
+                width: 100%;
+                white-space: nowrap;
+                text-align: center;
+                font-size: clamp(17px, 2.3vw, 26px);
+                line-height: 2.15;
+            }
+
+            .qafiyah-audio-player {
+                display: flex;
+                justify-content: center;
+                margin: 6px auto 12px;
+                padding-inline: 18px;
+            }
+
+            .qafiyah-audio-icon svg {
+                width: 16px;
+                height: 16px;
+                display: block;
+                fill: currentColor;
+                stroke: none;
+            }
+
             @media (max-width: 780px) {
 
                 .qafiyah-list-grid {
@@ -4685,6 +5035,35 @@
                 .qafiyah-poet-detail-image {
                     max-width: 360px;
                     margin: 0 auto;
+                }
+
+                .qafiyah-article-card,
+                .qafiyah-poet-card {
+                    gap: 12px;
+                    min-height: 124px;
+                    padding: 9px;
+                }
+
+                .qafiyah-list-thumbnail {
+                    width: clamp(96px, 30vw, 126px);
+                    border-radius: 13px;
+                }
+
+                .qafiyah-article-card .qafiyah-card-body,
+                .qafiyah-poet-card .qafiyah-card-body {
+                    padding: 8px 2px 8px 6px;
+                }
+
+                .qafiyah-article-card .qafiyah-card-title,
+                .qafiyah-poet-card .qafiyah-card-title {
+                    font-size: clamp(17px, 5vw, 22px);
+                }
+
+                .qafiyah-detail-image {
+                    max-width: calc(100% - 24px);
+                    max-height: 68vh;
+                    border-radius: 16px;
+                    margin-top: 12px;
                 }
 
                 .qafiyah-detail-header,

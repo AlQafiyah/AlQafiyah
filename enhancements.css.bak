@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa+Ink:wght@400;700&family=Cairo:wght@400;600;700&family=Changa:wght@400;600;700&family=El+Messiri:wght@400;600;700&family=Harmattan:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Katibeh&family=Lateef:wght@400;700&family=Mada:wght@400;600;700&family=Noto+Kufi+Arabic:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&family=Reem+Kufi:wght@400;600;700&family=Scheherazade+New:wght@400;700&family=Tajawal:wght@400;500;700&display=swap');
+@font-face{font-family:'Qafiyah Saudi';src:url('assets/fonts/Saudi-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Qafiyah Saudi';src:url('assets/fonts/Saudi-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Expo Arabic';src:url('assets/fonts/ExpoArabic-Book.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Expo Arabic';src:url('assets/fonts/ExpoArabic-Medium.ttf') format('truetype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Expo Arabic';src:url('assets/fonts/ExpoArabic-SemiBold.ttf') format('truetype');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Expo Arabic';src:url('assets/fonts/ExpoArabic-Bold.otf') format('opentype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Expo Arabic Light';src:url('assets/fonts/ExpoArabic-Light.ttf') format('truetype');font-weight:300;font-style:normal;font-display:swap}
+
+:root{
+  --qafiyah-font-family:'Qafiyah Saudi','Saudi',Tahoma,Arial,sans-serif;
+  --q-bg:#f5f5f5;--q-surface:#ffffff;--q-text:#3E2723;--q-muted:#6d6875;--q-border:rgba(62,39,35,.13);--q-accent:#B5838D;--q-soft:#FFE8D6;
+}
+html,body,button,input,textarea,select{font-family:var(--qafiyah-font-family)!important}
+body{background:var(--q-bg);color:var(--q-text);transition:background .25s ease,color .25s ease}
+body[data-q-theme='dark']{--q-bg:#171311;--q-surface:#211b18;--q-text:#f7eee8;--q-muted:#c9b9af;--q-border:rgba(255,255,255,.12);--q-accent:#d6a3ad;--q-soft:#332821}
+body[data-q-theme='morning']{--q-bg:#fff8ef;--q-surface:#fffdfa;--q-text:#4b3127;--q-muted:#806a5f;--q-border:rgba(122,82,57,.13);--q-accent:#c98d72;--q-soft:#ffead8}
+body[data-q-theme='night']{--q-bg:#0f1720;--q-surface:#16212d;--q-text:#edf3f8;--q-muted:#afbfcb;--q-border:rgba(255,255,255,.1);--q-accent:#a783aa;--q-soft:#243343}
+body[data-q-theme='dark'] .content-card,body[data-q-theme='night'] .content-card,body[data-q-theme='dark'] .side-menu,body[data-q-theme='night'] .side-menu,body[data-q-theme='dark'] .notification-panel,body[data-q-theme='night'] .notification-panel{background:var(--q-surface)!important;color:var(--q-text)!important;border-color:var(--q-border)!important}
+
+/* الصور: لا خلفية ولا إطار مفروض ولا قص */
+.qafiyah-list-thumbnail,.qafiyah-card-image,.qafiyah-detail-image,.qafiyah-poet-detail-image,.qafiyah-poet-image{
+  object-fit:contain!important;background:transparent!important;border:none!important;box-shadow:none!important;border-radius:18px!important;height:auto!important;
+}
+.qafiyah-list-thumbnail{width:auto!important;max-width:min(170px,36vw)!important;max-height:180px!important;aspect-ratio:auto!important;flex:0 0 auto!important}
+.qafiyah-card-image{width:auto!important;max-width:min(170px,36vw)!important;max-height:180px!important;margin:0!important;aspect-ratio:auto!important;flex:0 0 auto!important}
+.qafiyah-detail-image{width:auto!important;max-width:min(92%,920px)!important;max-height:72vh!important;margin:24px auto 0!important}
+.qafiyah-poet-detail-image{width:auto!important;max-width:min(320px,90%)!important;max-height:520px!important;aspect-ratio:auto!important}
+.qafiyah-image-placeholder{background:transparent!important;border:1px dashed var(--q-border)!important;border-radius:18px!important}
+
+/* توحيد القصائد مع المقالات والشعراء */
+.qafiyah-poem-index-card{display:flex!important;align-items:center!important;gap:clamp(14px,2.5vw,24px)!important;min-height:150px!important;padding:12px!important;border-radius:20px!important;overflow:visible!important;position:relative!important}
+.qafiyah-poem-index-card .qafiyah-card-body{flex:1 1 auto!important;min-width:0!important;padding:14px 4px 14px 16px!important}
+.qafiyah-poem-index-card .qafiyah-card-title{margin:0 0 7px!important;font-size:clamp(19px,2.4vw,27px)!important;line-height:1.55!important}
+.qafiyah-poem-index-card .qafiyah-card-summary{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;overflow:hidden!important;margin:4px 0 10px!important;font-size:clamp(13px,1.5vw,16px)!important;line-height:1.7!important;opacity:.78!important}
+.qafiyah-poem-index-card .qafiyah-read-more{display:none!important}
+.qafiyah-article-card,.qafiyah-poet-card{position:relative!important;overflow:visible!important}
+
+/* زر المفضلة */
+.q-favorite-btn{position:absolute;left:14px;top:14px;z-index:6;width:38px;height:38px;border:1px solid var(--q-border);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--q-surface) 90%,transparent);color:var(--q-text);cursor:pointer;backdrop-filter:blur(8px);transition:transform .18s ease,background .18s ease,color .18s ease}
+.q-favorite-btn:hover{transform:scale(1.06)}
+.q-favorite-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8}
+.q-favorite-btn.is-favorite{color:#b4233b;background:#fff1f3;border-color:#f1b5c0}
+.q-favorite-btn.is-favorite svg{fill:currentColor}
+.qafiyah-detail-card{position:relative!important;overflow:visible!important}
+.qafiyah-detail-card>.q-favorite-btn{top:18px;left:18px}
+
+/* عداد الإشعارات */
+.notification-button{position:relative!important}
+.notification-count{position:absolute!important;right:-7px!important;top:-7px!important;min-width:20px!important;height:20px!important;padding:0 5px!important;border-radius:999px!important;background:#d52132!important;color:#fff!important;border:2px solid #fff!important;font:700 11px/16px Arial,sans-serif!important;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.22);z-index:20}
+.notification-count.q-show{display:flex!important}
+.q-notification-item{padding:14px 6px;border-bottom:1px solid var(--q-border);line-height:1.7}
+.q-notification-item:last-child{border-bottom:none}.q-notification-item h4{margin:0 0 4px;font-size:1rem}.q-notification-item p{margin:0;opacity:.8}.q-notification-item a{display:inline-block;margin-top:7px;color:inherit;font-weight:700}
+
+/* صفحات المفضلة والإعدادات */
+.q-page-shell{width:min(1080px,calc(100% - 30px));margin:0 auto;padding:46px 0 80px}.q-page-title{margin:0 0 8px;font-size:clamp(30px,5vw,50px)}.q-page-lead{margin:0 0 28px;opacity:.72;line-height:1.9}
+.q-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px}.q-tab{border:1px solid var(--q-border);background:var(--q-surface);color:var(--q-text);padding:10px 18px;border-radius:999px;cursor:pointer}.q-tab.active{background:#3E2723;color:#fff;border-color:#3E2723}
+.q-fav-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}.q-fav-card{position:relative;display:flex;gap:14px;align-items:center;padding:16px;border:1px solid var(--q-border);background:var(--q-surface);border-radius:20px}.q-fav-card img{width:auto;max-width:110px;max-height:110px;border-radius:14px;object-fit:contain}.q-fav-card h3{margin:0 0 6px;font-size:1.12rem}.q-fav-card p{margin:0;opacity:.68;font-size:.9rem}.q-fav-card a{text-decoration:none;color:inherit}.q-empty{padding:45px 20px;text-align:center;border:1px dashed var(--q-border);border-radius:20px;opacity:.7}
+.q-settings-grid{display:grid;gap:18px}.q-settings-card{background:var(--q-surface);border:1px solid var(--q-border);border-radius:22px;padding:22px}.q-settings-card h2{margin:0 0 16px;font-size:1.3rem}.q-font-grid,.q-theme-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.q-choice{min-height:58px;border:1px solid var(--q-border);background:transparent;color:var(--q-text);border-radius:14px;padding:12px 14px;cursor:pointer;text-align:right}.q-choice.active{outline:2px solid #B5838D;background:color-mix(in srgb,var(--q-soft) 62%,transparent)}.q-choice small{display:block;opacity:.6;margin-top:3px}.q-lang-btn{width:100%;text-align:right}
+.q-modal{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.48);display:none;align-items:center;justify-content:center;padding:20px}.q-modal.open{display:flex}.q-modal-card{position:relative;width:min(520px,100%);background:var(--q-surface);color:var(--q-text);border-radius:22px;padding:30px;border:1px solid var(--q-border);box-shadow:0 24px 70px rgba(0,0,0,.25);text-align:center}.q-modal-close{position:absolute;left:12px;top:10px;border:0;background:transparent;color:inherit;font-size:30px;cursor:pointer}.q-modal-card p{font-size:1.15rem;line-height:2;margin:10px 0}
+@media(max-width:640px){.qafiyah-poem-index-card,.qafiyah-article-card,.qafiyah-poet-card{align-items:flex-start!important}.qafiyah-list-thumbnail,.qafiyah-card-image{max-width:96px!important;max-height:120px!important}.q-favorite-btn{left:8px;top:8px;width:34px;height:34px}.qafiyah-poet-profile{grid-template-columns:1fr!important}.qafiyah-poet-detail-image{margin-inline:auto!important}}
