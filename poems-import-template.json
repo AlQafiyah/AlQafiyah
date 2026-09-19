@@ -1,0 +1,19 @@
+{
+  "poems": [
+    {
+      "catalog_id": "qafiyah:poem:example-001",
+      "title": "عنوان القصيدة",
+      "poet_catalog_id": "qafiyah:العصر-الجاهلي:امرؤ-القيس",
+      "poet_name": "امرؤ القيس",
+      "era": "العصر الجاهلي",
+      "category": "الغزل",
+      "meter": "بحر الطويل",
+      "rhyme": null,
+      "content": "البيت الأول\nالبيت الثاني",
+      "source_url": "https://example.com/source",
+      "source_refs": [],
+      "verification_status": "verified",
+      "is_featured": false
+    }
+  ]
+}

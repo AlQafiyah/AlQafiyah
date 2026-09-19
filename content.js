@@ -25,14 +25,34 @@
 
     const ERAS = [
         "قبل الإسلام",
+        "المخضرمون",
         "صدر الإسلام",
         "الأموي",
         "العباسي",
         "الأندلسي",
+        "الأيوبي",
         "المملوكي",
         "العثماني",
+        "النهضة",
         "الحديث",
         "المعاصر"
+    ];
+
+    const COMMON_TOPICS = [
+        "الغزل",
+        "المدح",
+        "الرثاء",
+        "الفخر",
+        "الهجاء",
+        "الحكمة",
+        "الوصف",
+        "الزهد",
+        "الحماسة",
+        "الاعتذار",
+        "الشوق والحنين",
+        "الوطنيات",
+        "الديني",
+        "الاجتماعي"
     ];
 
 
@@ -2258,597 +2278,175 @@
 
     async function initPoetsList() {
 
-        const db =
-            window.supabaseClient;
+        const db = window.supabaseClient;
+        const container = document.getElementById("poetsContainer");
+        const loading = document.getElementById("poetsLoading");
+        const empty = document.getElementById("poetsEmpty");
+        const noResults = document.getElementById("poetsNoResults");
+        const search = document.getElementById("poetSearch");
+        const era = document.getElementById("poetEra");
+        const oldCategory = document.getElementById("poetCategory");
 
+        if (!container) return;
 
-        const container =
-            document.getElementById(
-                "poetsContainer"
-            );
-
-
-        const loading =
-            document.getElementById(
-                "poetsLoading"
-            );
-
-
-        const empty =
-            document.getElementById(
-                "poetsEmpty"
-            );
-
-
-        const noResults =
-            document.getElementById(
-                "poetsNoResults"
-            );
-
-
-        const search =
-            document.getElementById(
-                "poetSearch"
-            );
-
-
-        const era =
-            document.getElementById(
-                "poetEra"
-            );
-
-
-        const oldCategory =
-            document.getElementById(
-                "poetCategory"
-            );
-
-
-        if (!container) {
-
-            return;
-
+        if (oldCategory) {
+            const wrapper = oldCategory.closest(".articles-filter");
+            if (wrapper) wrapper.hidden = true;
+            else oldCategory.hidden = true;
         }
 
+        // العصور ثابتة حتى لا نحمّل آلاف السجلات فقط لبناء الفلتر.
+        fillSelect(era, ERAS, "جميع العصور");
 
-        if (
-            oldCategory
-        ) {
+        const PAGE_SIZE = 48;
+        let page = 0;
+        let hasMore = true;
+        let rows = [];
+        let busy = false;
+        let searchTimer = null;
+        let requestSerial = 0;
 
-            const wrapper =
-                oldCategory.closest(
-                    ".articles-filter"
-                );
+        const sentinel = document.createElement("div");
+        sentinel.className = "qafiyah-load-sentinel";
+        sentinel.setAttribute("aria-hidden", "true");
+        container.insertAdjacentElement("afterend", sentinel);
 
-
-            if (wrapper) {
-
-                wrapper.hidden =
-                    true;
-
-            } else {
-
-                oldCategory.hidden =
-                    true;
-
-            }
-
+        function card(poet) {
+            return `
+                <article class="content-card qafiyah-content-card qafiyah-poet-card">
+                    ${renderCardThumbnail(poet.image_url, poet.name, "qafiyah-list-thumbnail")}
+                    <div class="qafiyah-card-body">
+                        ${poet.era ? `<span class="section-label">${escapeHtml(poet.era)}</span>` : ""}
+                        <h2 class="qafiyah-card-title">
+                            <a href="poet.html?id=${encodeURIComponent(poet.id)}">${escapeHtml(poet.name || "بدون اسم")}</a>
+                        </h2>
+                        ${poet.nickname ? `<p class="qafiyah-poet-nickname">${escapeHtml(poet.nickname)}</p>` : ""}
+                        ${poet.bio ? `<p class="qafiyah-card-summary">${escapeHtml(shortText(poet.bio,170))}</p>` : ""}
+                        <p class="qafiyah-card-meta">${Number(poet.poem_count || 0)} ${Number(poet.poem_count || 0) === 1 ? "قصيدة" : "قصائد"}</p>
+                        <a class="qafiyah-read-more" href="poet.html?id=${encodeURIComponent(poet.id)}">صفحة الشاعر</a>
+                    </div>
+                </article>`;
         }
 
+        function paint() {
+            hideElement(loading);
+            container.classList.add("qafiyah-list-grid", "qafiyah-poets-list");
 
-        try {
-
-            const [
-                poetsResult,
-                poemsResult
-            ] =
-                await Promise.all([
-
-                    db
-                        .from(
-                            "poets"
-                        )
-                        .select(
-                            "*"
-                        )
-                        .order(
-                            "is_featured",
-                            {
-                                ascending:
-                                    false
-                            }
-                        )
-                        .order(
-                            "name",
-                            {
-                                ascending:
-                                    true
-                            }
-                        ),
-
-                    db
-                        .from(
-                            "poems"
-                        )
-                        .select(
-                            "poet_id"
-                        )
-
-                ]);
-
-
-            if (
-                poetsResult.error
-            ) {
-
-                throw (
-                    poetsResult.error
-                );
-
+            if (!rows.length) {
+                container.innerHTML = "";
+                if ((search?.value || "").trim() || (era?.value || "")) {
+                    hideElement(empty);
+                    showElement(noResults);
+                } else {
+                    showElement(empty);
+                    hideElement(noResults);
+                }
+                return;
             }
 
+            hideElement(empty);
+            hideElement(noResults);
+            container.innerHTML = rows.map(card).join("");
+        }
 
-            if (
-                poemsResult.error
-            ) {
+        async function legacyLoadAll() {
+            const [poetsResult, poemsResult] = await Promise.all([
+                db.from("poets").select("*").order("is_featured", {ascending:false}).order("name", {ascending:true}),
+                db.from("poems").select("poet_id")
+            ]);
+            if (poetsResult.error) throw poetsResult.error;
+            if (poemsResult.error) throw poemsResult.error;
+            const counts = new Map();
+            (poemsResult.data || []).forEach(item => {
+                if (item.poet_id === null || item.poet_id === undefined) return;
+                const k = String(item.poet_id);
+                counts.set(k, (counts.get(k) || 0) + 1);
+            });
+            const q = normalizeArabic(search?.value);
+            const selectedEra = String(era?.value || "");
+            rows = (poetsResult.data || []).map(poet => ({...poet, poem_count: counts.get(String(poet.id)) || 0})).filter(poet => {
+                const hay = normalizeArabic([poet.name, poet.nickname, poet.bio, poet.era].filter(Boolean).join(" "));
+                return (!q || hay.includes(q)) && (!selectedEra || poet.era === selectedEra);
+            });
+            hasMore = false;
+            page = 1;
+            paint();
+        }
 
-                throw (
-                    poemsResult.error
-                );
+        async function load({reset=false} = {}) {
+            if (busy) return;
+            if (!reset && !hasMore) return;
+            busy = true;
+            const serial = ++requestSerial;
 
+            if (reset) {
+                page = 0;
+                hasMore = true;
+                rows = [];
+                container.innerHTML = "";
+                showElement(loading);
+                hideElement(empty);
+                hideElement(noResults);
             }
 
+            try {
+                const from = page * PAGE_SIZE;
+                const to = from + PAGE_SIZE;
+                const q = normalizeArabic(search?.value);
+                const selectedEra = String(era?.value || "");
 
-            const counts =
-                new Map();
+                let request = db
+                    .from("poets")
+                    .select("id,name,nickname,era,bio,image_url,is_featured,poem_count")
+                    .order("is_featured", {ascending:false})
+                    .order("name", {ascending:true})
+                    .range(from, to);
 
+                if (q) request = request.ilike("search_text", `%${q}%`);
+                if (selectedEra) request = request.eq("era", selectedEra);
 
-            (
-                poemsResult.data ||
-                []
-            )
-                .forEach(
-                    function (
-                        poem
-                    ) {
+                const result = await request;
+                if (serial !== requestSerial) return;
 
-                        if (
-                            !poem.poet_id
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        const key =
-                            String(
-                                poem.poet_id
-                            );
-
-
-                        counts.set(
-
-                            key,
-
-                            (
-                                counts.get(
-                                    key
-                                )
-                                ||
-                                0
-                            )
-                            +
-                            1
-
-                        );
-
+                if (result.error) {
+                    // يضمن استمرار النسخة القديمة حتى تشغيل ملف الترقية SQL.
+                    const message = String(result.error.message || "");
+                    if (/search_text|poem_count/i.test(message)) {
+                        await legacyLoadAll();
+                        return;
                     }
-                );
-
-
-            const poets =
-
-                (
-                    poetsResult.data ||
-                    []
-                )
-
-                    .map(
-                        function (
-                            poet
-                        ) {
-
-                            return {
-
-                                ...poet,
-
-                                poem_count:
-                                    counts.get(
-                                        String(
-                                            poet.id
-                                        )
-                                    )
-                                    ||
-                                    0
-
-                            };
-
-                        }
-                    );
-
-
-            fillSelect(
-
-                era,
-
-                poets.map(
-                    function (
-                        poet
-                    ) {
-
-                        return (
-                            poet.era
-                        );
-
-                    }
-                ),
-
-                "جميع العصور"
-
-            );
-
-
-            function render() {
-
-                const query =
-                    normalizeArabic(
-                        search?.value
-                    );
-
-
-                const selectedEra =
-                    String(
-                        era?.value ||
-                        ""
-                    );
-
-
-                const filtered =
-                    poets.filter(
-
-                        function (
-                            poet
-                        ) {
-
-                            const matchesSearch =
-
-                                !query
-
-                                ||
-
-                                normalizeArabic(
-                                    poet.name
-                                )
-                                    .includes(
-                                        query
-                                    )
-
-                                ||
-
-                                normalizeArabic(
-                                    poet.nickname
-                                )
-                                    .includes(
-                                        query
-                                    )
-
-                                ||
-
-                                normalizeArabic(
-                                    poet.bio
-                                )
-                                    .includes(
-                                        query
-                                    )
-
-                                ||
-
-                                normalizeArabic(
-                                    poet.era
-                                )
-                                    .includes(
-                                        query
-                                    );
-
-
-                            const matchesEra =
-
-                                !selectedEra
-
-                                ||
-
-                                poet.era ===
-                                    selectedEra;
-
-
-                            return (
-                                matchesSearch
-                                &&
-                                matchesEra
-                            );
-
-                        }
-
-                    );
-
-
-                hideElement(
-                    loading
-                );
-
-
-                if (
-                    !poets.length
-                ) {
-
-                    container.innerHTML =
-                        "";
-
-
-                    showElement(
-                        empty
-                    );
-
-
-                    hideElement(
-                        noResults
-                    );
-
-
-                    return;
-
+                    throw result.error;
                 }
 
-
-                hideElement(
-                    empty
-                );
-
-
-                if (
-                    !filtered.length
-                ) {
-
-                    container.innerHTML =
-                        "";
-
-
-                    showElement(
-                        noResults
-                    );
-
-
-                    return;
-
-                }
-
-
-                hideElement(
-                    noResults
-                );
-
-
-                container.classList.add(
-                    "qafiyah-list-grid",
-                    "qafiyah-poets-list"
-                );
-
-
-                container.innerHTML =
-
-                    filtered
-
-                        .map(
-                            function (
-                                poet
-                            ) {
-
-                                return `
-
-                                    <article
-                                        class="
-                                            content-card
-                                            qafiyah-content-card
-                                            qafiyah-poet-card
-                                        ">
-
-                                        ${
-                                            renderCardThumbnail(
-                                                poet.image_url,
-                                                poet.name,
-                                                "qafiyah-list-thumbnail"
-                                            )
-                                        }
-
-                                        <div
-                                            class="qafiyah-card-body">
-
-                                            ${
-                                                poet.era
-
-                                                    ? `
-                                                        <span
-                                                            class="section-label">
-
-                                                            ${
-                                                                escapeHtml(
-                                                                    poet.era
-                                                                )
-                                                            }
-
-                                                        </span>
-                                                    `
-
-                                                    :
-                                                    ""
-                                            }
-
-                                            <h2
-                                                class="qafiyah-card-title">
-
-                                                <a
-                                                    href="poet.html?id=${
-                                                        encodeURIComponent(
-                                                            poet.id
-                                                        )
-                                                    }">
-
-                                                    ${
-                                                        escapeHtml(
-                                                            poet.name ||
-                                                            "بدون اسم"
-                                                        )
-                                                    }
-
-                                                </a>
-
-                                            </h2>
-
-                                            ${
-                                                poet.nickname
-
-                                                    ? `
-                                                        <p
-                                                            class="qafiyah-poet-nickname">
-
-                                                            ${
-                                                                escapeHtml(
-                                                                    poet.nickname
-                                                                )
-                                                            }
-
-                                                        </p>
-                                                    `
-
-                                                    :
-                                                    ""
-                                            }
-
-                                            ${
-                                                poet.bio
-
-                                                    ? `
-                                                        <p
-                                                            class="qafiyah-card-summary">
-
-                                                            ${
-                                                                escapeHtml(
-                                                                    shortText(
-                                                                        poet.bio,
-                                                                        170
-                                                                    )
-                                                                )
-                                                            }
-
-                                                        </p>
-                                                    `
-
-                                                    :
-                                                    ""
-                                            }
-
-                                            <p
-                                                class="qafiyah-card-meta">
-
-                                                ${
-                                                    poet.poem_count
-                                                }
-
-                                                ${
-                                                    poet.poem_count ===
-                                                    1
-
-                                                        ? "قصيدة"
-
-                                                        :
-                                                        "قصائد"
-                                                }
-
-                                            </p>
-
-                                            <a
-                                                class="qafiyah-read-more"
-
-                                                href="poet.html?id=${
-                                                    encodeURIComponent(
-                                                        poet.id
-                                                    )
-                                                }">
-
-                                                صفحة الشاعر
-
-                                            </a>
-
-                                        </div>
-
-                                    </article>
-
-                                `;
-
-                            }
-                        )
-
-                        .join("");
-
+                const batch = result.data || [];
+                hasMore = batch.length > PAGE_SIZE;
+                const visible = batch.slice(0, PAGE_SIZE);
+                rows = reset ? visible : rows.concat(visible);
+                page += 1;
+                paint();
+            } catch (error) {
+                console.error("القافية: تعذر تحميل الشعراء:", error);
+                hideElement(loading);
+                container.innerHTML = `<div class="qafiyah-content-status qafiyah-content-error">تعذر تحميل الشعراء.</div>`;
+            } finally {
+                busy = false;
             }
-
-
-            search?.addEventListener(
-                "input",
-                render
-            );
-
-
-            era?.addEventListener(
-                "change",
-                render
-            );
-
-
-            render();
-
-        } catch (
-            error
-        ) {
-
-            console.error(
-                "القافية: تعذر تحميل الشعراء:",
-                error
-            );
-
-
-            hideElement(
-                loading
-            );
-
-
-            container.innerHTML = `
-
-                <div
-                    class="
-                        qafiyah-content-status
-                        qafiyah-content-error
-                    ">
-
-                    تعذر تحميل الشعراء.
-
-                </div>
-
-            `;
-
         }
 
+        const observer = "IntersectionObserver" in window
+            ? new IntersectionObserver(entries => {
+                if (entries.some(entry => entry.isIntersecting) && hasMore) load();
+            }, {rootMargin:"500px 0px"})
+            : null;
+        observer?.observe(sentinel);
+
+        search?.addEventListener("input", function () {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => load({reset:true}), 280);
+        });
+        era?.addEventListener("change", () => load({reset:true}));
+
+        await load({reset:true});
     }
 
 
@@ -2858,549 +2456,157 @@
 
     async function initPoemsList() {
 
-        const db =
-            window.supabaseClient;
-
-
-        const section =
-            document.getElementById(
-                "Poems"
-            );
-
-
-        if (!section) {
-
-            return;
-
-        }
-
+        const db = window.supabaseClient;
+        const section = document.getElementById("Poems");
+        if (!section) return;
 
         section.innerHTML = `
-
-            <div
-                class="qafiyah-poems-index">
-
-                <section
-                    class="
-                        articles-toolbar
-                        qafiyah-poems-toolbar
-                    ">
-
-                    <div
-                        class="articles-search">
-
-                        <label
-                            for="poemSearch"
-                            class="sr-only">
-
-                            البحث في القصائد
-
-                        </label>
-
-                        <div
-                            class="search-input-wrapper">
-
-                            <input
-                                type="search"
-                                id="poemSearch"
-                                placeholder="ابحث باسم القصيدة أو الشاعر أو جزء من الأبيات..."
-                                autocomplete="off"
-                            >
-
+            <div class="qafiyah-poems-index">
+                <section class="articles-toolbar qafiyah-poems-toolbar">
+                    <div class="articles-search">
+                        <label for="poemSearch" class="sr-only">البحث في القصائد</label>
+                        <div class="search-input-wrapper">
+                            <input type="search" id="poemSearch" placeholder="ابحث باسم القصيدة أو الشاعر أو جزء من الأبيات..." autocomplete="off">
                         </div>
-
                     </div>
-
-                    <div
-                        class="articles-filter">
-
-                        <select
-                            id="poemEra">
-
-                            <option value="">
-                                جميع العصور
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                    <div
-                        class="articles-filter">
-
-                        <select
-                            id="poemTopic">
-
-                            <option value="">
-                                جميع الموضوعات
-                            </option>
-
-                        </select>
-
-                    </div>
-
+                    <div class="articles-filter"><select id="poemEra"><option value="">جميع العصور</option></select></div>
+                    <div class="articles-filter"><select id="poemTopic"><option value="">جميع الموضوعات</option></select></div>
                 </section>
-
-                <div
-                    id="poemsPublicContainer"
-                    class="qafiyah-list-grid">
-                </div>
-
-                <div
-                    id="poemsPublicStatus"
-                    class="qafiyah-content-status">
-
-                    جاري تحميل القصائد...
-
-                </div>
-
-            </div>
-
-        `;
-
-
-        const container =
-            document.getElementById(
-                "poemsPublicContainer"
-            );
-
-
-        const status =
-            document.getElementById(
-                "poemsPublicStatus"
-            );
-
-
-        const search =
-            document.getElementById(
-                "poemSearch"
-            );
-
-
-        const era =
-            document.getElementById(
-                "poemEra"
-            );
-
-
-        const topic =
-            document.getElementById(
-                "poemTopic"
-            );
-
-
-        try {
-
-            const {
-                data,
-                error
-            } =
-                await db
-
-                    .from(
-                        "poems"
-                    )
-
-                    .select(
-                        "*"
-                    )
-
-                    .order(
-                        "is_featured",
-                        {
-                            ascending:
-                                false
-                        }
-                    )
-
-                    .order(
-                        "created_at",
-                        {
-                            ascending:
-                                false
-                        }
-                    );
-
-
-            if (error) {
-
-                throw error;
-
-            }
-
-
-            const poems =
-                data ||
-                [];
-
-
-            fillSelect(
-
-                era,
-
-                poems.map(
-                    function (
-                        poem
-                    ) {
-
-                        return (
-                            poem.era
-                        );
-
-                    }
-                ),
-
-                "جميع العصور"
-
-            );
-
-
-            fillSelect(
-
-                topic,
-
-                poems.map(
-                    function (
-                        poem
-                    ) {
-
-                        return (
-                            poem.category
-                        );
-
-                    }
-                ),
-
-                "جميع الموضوعات"
-
-            );
-
-
-            function render() {
-
-                const query =
-                    normalizeArabic(
-                        search?.value
-                    );
-
-
-                const selectedEra =
-                    String(
-                        era?.value ||
-                        ""
-                    );
-
-
-                const selectedTopic =
-                    String(
-                        topic?.value ||
-                        ""
-                    );
-
-
-                const filtered =
-                    poems.filter(
-
-                        function (
-                            poem
-                        ) {
-
-                            const matchesSearch =
-
-                                !query
-
-                                ||
-
-                                normalizeArabic(
-                                    poem.title
-                                )
-                                    .includes(
-                                        query
-                                    )
-
-                                ||
-
-                                normalizeArabic(
-                                    poem.poet
-                                )
-                                    .includes(
-                                        query
-                                    )
-
-                                ||
-
-                                normalizeArabic(
-                                    poem.content
-                                )
-                                    .includes(
-                                        query
-                                    )
-
-                                ||
-
-                                normalizeArabic(
-                                    poem.category
-                                )
-                                    .includes(
-                                        query
-                                    )
-
-                                ||
-
-                                normalizeArabic(
-                                    poem.era
-                                )
-                                    .includes(
-                                        query
-                                    );
-
-
-                            const matchesEra =
-
-                                !selectedEra
-
-                                ||
-
-                                poem.era ===
-                                    selectedEra;
-
-
-                            const matchesTopic =
-
-                                !selectedTopic
-
-                                ||
-
-                                poem.category ===
-                                    selectedTopic;
-
-
-                            return (
-                                matchesSearch
-                                &&
-                                matchesEra
-                                &&
-                                matchesTopic
-                            );
-
-                        }
-
-                    );
-
-
-                if (
-                    !filtered.length
-                ) {
-
-                    container.innerHTML =
-                        "";
-
-
-                    status.hidden =
-                        false;
-
-
-                    status.textContent =
-
-                        poems.length
-
-                            ? "لم نجد قصيدة مطابقة لبحثك."
-
-                            :
-                            "لا توجد قصائد حاليًا.";
-
-
-                    return;
-
-                }
-
-
-                status.hidden =
-                    true;
-
-
-                container.innerHTML =
-
-                    filtered
-
-                        .map(
-                            function (
-                                poem
-                            ) {
-
-                                return `
-
-                                    <article
-                                        class="
-                                            content-card
-                                            qafiyah-content-card
-                                            qafiyah-poem-index-card
-                                        ">
-
-                                        ${
-                                            renderImage(
-                                                poem.image_url,
-                                                poem.title,
-                                                "qafiyah-card-image"
-                                            )
-                                        }
-
-                                        <div
-                                            class="qafiyah-card-body">
-
-                                            ${
-                                                poem.category
-
-                                                    ? `
-                                                        <span
-                                                            class="section-label">
-
-                                                            ${
-                                                                escapeHtml(
-                                                                    poem.category
-                                                                )
-                                                            }
-
-                                                        </span>
-                                                    `
-
-                                                    :
-                                                    ""
-                                            }
-
-                                            <h2
-                                                class="qafiyah-card-title">
-
-                                                <a
-                                                    href="poem.html?id=${
-                                                        encodeURIComponent(
-                                                            poem.id
-                                                        )
-                                                    }">
-
-                                                    ${
-                                                        escapeHtml(
-                                                            poem.title ||
-                                                            "بدون عنوان"
-                                                        )
-                                                    }
-
-                                                </a>
-
-                                            </h2>
-
-                                            ${
-                                                poem.poet
-
-                                                    ? `
-                                                        <p
-                                                            class="
-                                                                poem-poet
-                                                                qafiyah-card-meta
-                                                            ">
-
-                                                            ${
-                                                                escapeHtml(
-                                                                    poem.poet
-                                                                )
-                                                            }
-
-                                                        </p>
-                                                    `
-
-                                                    :
-                                                    ""
-                                            }
-
-                                            <p
-                                                class="qafiyah-card-summary">
-
-                                                ${
-                                                    escapeHtml(
-                                                        shortText(
-                                                            poem.content,
-                                                            190
-                                                        )
-                                                    )
-                                                }
-
-                                            </p>
-
-                                            <a
-                                                class="qafiyah-read-more"
-
-                                                href="poem.html?id=${
-                                                    encodeURIComponent(
-                                                        poem.id
-                                                    )
-                                                }">
-
-                                                قراءة القصيدة
-
-                                            </a>
-
-                                        </div>
-
-                                    </article>
-
-                                `;
-
-                            }
-                        )
-
-                        .join("");
-
-            }
-
-
-            search?.addEventListener(
-                "input",
-                render
-            );
-
-
-            era?.addEventListener(
-                "change",
-                render
-            );
-
-
-            topic?.addEventListener(
-                "change",
-                render
-            );
-
-
-            render();
-
-        } catch (
-            error
-        ) {
-
-            console.error(
-                "القافية: تعذر تحميل القصائد:",
-                error
-            );
-
-
-            container.innerHTML =
-                "";
-
-
-            status.hidden =
-                false;
-
-
-            status.textContent =
-                "تعذر تحميل القصائد.";
-
-
-            status.classList.add(
-                "qafiyah-content-error"
-            );
-
+                <div id="poemsPublicContainer" class="qafiyah-list-grid"></div>
+                <div id="poemsPublicStatus" class="qafiyah-content-status">جاري تحميل القصائد...</div>
+            </div>`;
+
+        const container = document.getElementById("poemsPublicContainer");
+        const status = document.getElementById("poemsPublicStatus");
+        const search = document.getElementById("poemSearch");
+        const era = document.getElementById("poemEra");
+        const topic = document.getElementById("poemTopic");
+
+        fillSelect(era, ERAS, "جميع العصور");
+        fillSelect(topic, COMMON_TOPICS, "جميع الموضوعات");
+
+        const PAGE_SIZE = 40;
+        let page = 0;
+        let hasMore = true;
+        let rows = [];
+        let busy = false;
+        let timer = null;
+        let serial = 0;
+
+        const sentinel = document.createElement("div");
+        sentinel.className = "qafiyah-load-sentinel";
+        sentinel.setAttribute("aria-hidden", "true");
+        container.insertAdjacentElement("afterend", sentinel);
+
+        function card(poem) {
+            const meta = [poem.poet, poem.era].filter(Boolean).map(escapeHtml).join(" • ");
+            return `
+                <article class="content-card qafiyah-content-card qafiyah-poem-index-card">
+                    ${renderImage(poem.image_url, poem.title, "qafiyah-card-image")}
+                    <div class="qafiyah-card-body">
+                        ${poem.category ? `<span class="section-label">${escapeHtml(poem.category)}</span>` : ""}
+                        <h2 class="qafiyah-card-title"><a href="poem.html?id=${encodeURIComponent(poem.id)}">${escapeHtml(poem.title || "بدون عنوان")}</a></h2>
+                        ${meta ? `<p class="poem-poet qafiyah-card-meta">${meta}</p>` : ""}
+                        <a class="qafiyah-read-more" href="poem.html?id=${encodeURIComponent(poem.id)}">قراءة القصيدة</a>
+                    </div>
+                </article>`;
         }
 
+        function paint() {
+            if (!rows.length) {
+                container.innerHTML = "";
+                status.hidden = false;
+                status.textContent = (search?.value || era?.value || topic?.value) ? "لم نجد قصيدة مطابقة لبحثك." : "لا توجد قصائد حاليًا.";
+                return;
+            }
+            status.hidden = true;
+            container.innerHTML = rows.map(card).join("");
+        }
+
+        async function legacyLoadAll() {
+            const result = await db.from("poems").select("*").order("is_featured",{ascending:false}).order("created_at",{ascending:false});
+            if (result.error) throw result.error;
+            const q = normalizeArabic(search?.value);
+            const selectedEra = String(era?.value || "");
+            const selectedTopic = String(topic?.value || "");
+            rows = (result.data || []).filter(poem => {
+                const hay = normalizeArabic([poem.title,poem.poet,poem.content,poem.category,poem.era].filter(Boolean).join(" "));
+                return (!q || hay.includes(q)) && (!selectedEra || poem.era === selectedEra) && (!selectedTopic || poem.category === selectedTopic);
+            });
+            hasMore = false;
+            page = 1;
+            paint();
+        }
+
+        async function load({reset=false} = {}) {
+            if (busy) return;
+            if (!reset && !hasMore) return;
+            busy = true;
+            const token = ++serial;
+            if (reset) {
+                page = 0; hasMore = true; rows = [];
+                status.hidden = false;
+                status.textContent = "جاري تحميل القصائد...";
+                container.innerHTML = "";
+            }
+            try {
+                const from = page * PAGE_SIZE;
+                const to = from + PAGE_SIZE;
+                const q = normalizeArabic(search?.value);
+                const selectedEra = String(era?.value || "");
+                const selectedTopic = String(topic?.value || "");
+
+                let request = db.from("poems")
+                    .select("id,title,poet,era,category,image_url,is_featured,created_at")
+                    .order("is_featured", {ascending:false})
+                    .order("created_at", {ascending:false})
+                    .range(from,to);
+                if (q) request = request.ilike("search_text", `%${q}%`);
+                if (selectedEra) request = request.eq("era", selectedEra);
+                if (selectedTopic) request = request.eq("category", selectedTopic);
+
+                const result = await request;
+                if (token !== serial) return;
+                if (result.error) {
+                    const message = String(result.error.message || "");
+                    if (/search_text/i.test(message)) {
+                        await legacyLoadAll();
+                        return;
+                    }
+                    throw result.error;
+                }
+                const batch = result.data || [];
+                hasMore = batch.length > PAGE_SIZE;
+                const visible = batch.slice(0, PAGE_SIZE);
+                rows = reset ? visible : rows.concat(visible);
+                page += 1;
+                paint();
+            } catch (error) {
+                console.error("القافية: تعذر تحميل القصائد:", error);
+                container.innerHTML = "";
+                status.hidden = false;
+                status.textContent = "تعذر تحميل القصائد.";
+                status.classList.add("qafiyah-content-error");
+            } finally {
+                busy = false;
+            }
+        }
+
+        const observer = "IntersectionObserver" in window
+            ? new IntersectionObserver(entries => {
+                if (entries.some(entry => entry.isIntersecting) && hasMore) load();
+            }, {rootMargin:"500px 0px"})
+            : null;
+        observer?.observe(sentinel);
+
+        search?.addEventListener("input", () => {
+            clearTimeout(timer);
+            timer = setTimeout(() => load({reset:true}), 280);
+        });
+        era?.addEventListener("change", () => load({reset:true}));
+        topic?.addEventListener("change", () => load({reset:true}));
+
+        await load({reset:true});
     }
 
 
@@ -4058,20 +3264,6 @@
 
                                                                     </h3>
 
-                                                                    <p
-                                                                        class="qafiyah-card-summary">
-
-                                                                        ${
-                                                                            escapeHtml(
-                                                                                shortText(
-                                                                                    poem.content,
-                                                                                    150
-                                                                                )
-                                                                            )
-                                                                        }
-
-                                                                    </p>
-
                                                                     <a
                                                                         class="qafiyah-read-more"
 
@@ -4652,6 +3844,12 @@
                 height: 100%;
                 min-height: 220px;
                 object-fit: cover;
+            }
+
+            .qafiyah-load-sentinel {
+                width: 100%;
+                height: 1px;
+                pointer-events: none;
             }
 
             .qafiyah-content-status {

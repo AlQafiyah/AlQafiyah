@@ -1,7 +1,119 @@
-<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#3E2723"><title>المفضلة | القافية</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="enhancements.css?v=footer-final-3"><style>.q-simple-top{background:#3E2723;color:#fff}.q-simple-top>div{width:min(1080px,calc(100% - 30px));margin:auto;min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}.q-simple-top a{color:#fff;text-decoration:none}.q-brand{font-size:1.55rem;font-weight:700}.q-back{opacity:.85}.q-fav-card .q-favorite-btn{position:static;margin-inline-start:auto;flex:0 0 auto}</style>
-<style id="q-no-chrome-page">body>header,body>footer,.site-header,.site-footer,.side-menu,.side-menu-overlay,.menu-overlay,.menu-toggle,.hamburger,.hamburger-btn,.menu-btn{display:none!important}</style></head><body>
-    <script>(function(){try{var t=localStorage.getItem('qafiyah_theme')||'natural';if(t==='light')t='evening';if(!/^(natural|dark|morning|evening|night)$/.test(t))t='natural';document.documentElement.setAttribute('data-q-theme',t);document.body.setAttribute('data-q-theme',t)}catch(e){}})();</script>
-<main class="q-page-shell"><a class="q-page-return" href="index.html">العودة للصفحة الرئيسية ←</a><h1 class="q-page-title">المفضلة</h1><p class="q-page-lead">كل ما حفظته من مقالات وقصائد وشعراء في مكان واحد.</p><div class="q-tabs" id="favoriteTabs"><button class="q-tab active" data-filter="all">الكل</button><button class="q-tab" data-filter="article">المقالات</button><button class="q-tab" data-filter="poem">القصائد</button><button class="q-tab" data-filter="poet">الشعراء</button></div><div class="q-fav-grid" id="favoritesGrid"></div></main>
-<script src="enhancements.js?v=footer-final-3"></script><script>
-(function(){const grid=document.getElementById('favoritesGrid');let filter='all';const esc=s=>String(s||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));const typeName={article:'مقال',poem:'قصيدة',poet:'شاعر'};function data(){try{return JSON.parse(localStorage.getItem('qafiyah_favorites')||'[]')}catch{return[]}}function remove(key){localStorage.setItem('qafiyah_favorites',JSON.stringify(data().filter(x=>x.key!==key)));render()}function render(){const items=data().filter(x=>filter==='all'||x.type===filter);if(!items.length){grid.innerHTML='<div class="q-empty">لا توجد عناصر في هذا القسم من المفضلة حتى الآن.</div>';return}grid.innerHTML='';items.forEach(x=>{const card=document.createElement('article');card.className='q-fav-card';card.innerHTML=(x.img?'<a href="'+esc(x.url)+'"><img src="'+esc(x.img)+'" alt=""></a>':'')+'<div><p>'+esc(typeName[x.type]||'محفوظ')+'</p><h3><a href="'+esc(x.url)+'">'+esc(x.title)+'</a></h3>'+(x.meta?'<p>'+esc(x.meta)+'</p>':'')+'</div>';const b=document.createElement('button');b.type='button';b.className='q-favorite-btn is-favorite';b.setAttribute('aria-label','إزالة من المفضلة');b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.7a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.5 1-1a5.5 5.5 0 0 0 0-7.8Z"></path></svg>';b.onclick=()=>remove(x.key);card.appendChild(b);grid.appendChild(card)})}document.getElementById('favoriteTabs').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(!b)return;filter=b.dataset.filter;document.querySelectorAll('.q-tab').forEach(x=>x.classList.toggle('active',x===b));render()});document.addEventListener('qafiyah:favorites-changed',render);render()})();
-</script></body></html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#3E2723">
+<title>المفضلة | القافية</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="enhancements.css?v=scale-1">
+<style>
+.q-simple-top{background:#3E2723;color:#fff}.q-simple-top>div{width:min(1080px,calc(100% - 30px));margin:auto;min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}.q-simple-top a{color:#fff;text-decoration:none}.q-brand{font-size:1.55rem;font-weight:700}.q-back{opacity:.85}.q-fav-card .q-favorite-btn{position:static;margin-inline-start:auto;flex:0 0 auto}
+.q-fav-tools{display:grid;grid-template-columns:minmax(0,2fr) minmax(150px,1fr) minmax(150px,1fr);gap:10px;margin:0 0 22px}.q-fav-tools input,.q-fav-tools select{width:100%;min-height:46px;border:1px solid var(--q-border);border-radius:14px;background:var(--q-surface);color:var(--q-text);padding:0 14px;font:inherit}.q-fav-status{font-size:.9rem;opacity:.65;margin:-8px 0 18px}.q-fav-card small{display:block;opacity:.66;margin-top:6px}.q-fav-card mark{background:transparent;color:inherit}
+@media(max-width:700px){.q-fav-tools{grid-template-columns:1fr}.q-fav-tools input,.q-fav-tools select{font-size:16px}}
+</style>
+<style id="q-no-chrome-page">body>header,body>footer,.site-header,.site-footer,.side-menu,.side-menu-overlay,.menu-overlay,.menu-toggle,.hamburger,.hamburger-btn,.menu-btn{display:none!important}</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+</head>
+<body>
+<script>(function(){try{var t=localStorage.getItem('qafiyah_theme')||'natural';if(t==='light')t='evening';if(!/^(natural|dark|morning|evening|night)$/.test(t))t='natural';document.documentElement.setAttribute('data-q-theme',t);document.body.setAttribute('data-q-theme',t)}catch(e){}})();</script>
+<main class="q-page-shell">
+<a class="q-page-return" href="index.html">العودة للصفحة الرئيسية ←</a>
+<h1 class="q-page-title">المفضلة</h1>
+<p class="q-page-lead">كل ما حفظته من مقالات وقصائد وشعراء في مكان واحد.</p>
+<div class="q-tabs" id="favoriteTabs">
+<button class="q-tab active" data-filter="all">الكل</button>
+<button class="q-tab" data-filter="article">المقالات</button>
+<button class="q-tab" data-filter="poem">القصائد</button>
+<button class="q-tab" data-filter="poet">الشعراء</button>
+</div>
+<div class="q-fav-tools">
+<input id="favoriteSearch" type="search" placeholder="ابحث بالاسم أو اللقب أو جزء من النص..." autocomplete="off" aria-label="البحث في المفضلة">
+<select id="favoriteEra" aria-label="فرز المفضلة حسب العصر"><option value="">جميع العصور</option></select>
+<select id="favoriteCategory" aria-label="فرز المفضلة حسب الموضوع أو التصنيف"><option value="">جميع الموضوعات والتصنيفات</option></select>
+</div>
+<p class="q-fav-status" id="favoriteStatus"></p>
+<div class="q-fav-grid" id="favoritesGrid"></div>
+</main>
+<script src="enhancements.js?v=scale-1"></script>
+<script>
+(function(){
+'use strict';
+const grid=document.getElementById('favoritesGrid');
+const search=document.getElementById('favoriteSearch');
+const era=document.getElementById('favoriteEra');
+const category=document.getElementById('favoriteCategory');
+const status=document.getElementById('favoriteStatus');
+let filter='all', enriched=new Map(), remoteMatches=null, timer=null, searchSerial=0;
+const esc=s=>String(s||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+const typeName={article:'مقال',poem:'قصيدة',poet:'شاعر'};
+function norm(v){return String(v||'').normalize('NFKD').replace(/[ً-ٰٟۖ-ۭ]/g,'').replace(/ـ/g,'').replace(/[إأآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/ة/g,'ه').replace(/\s+/g,' ').trim().toLowerCase()}
+function data(){try{return JSON.parse(localStorage.getItem('qafiyah_favorites')||'[]')}catch{return[]}}
+function save(v){localStorage.setItem('qafiyah_favorites',JSON.stringify(v))}
+function remove(key){save(data().filter(x=>x.key!==key));enriched.delete(key);hydrate().then(render)}
+function idsByType(items,type){return items.filter(x=>x.type===type).map(x=>String(x.id)).filter(Boolean)}
+function chunks(arr,n=100){const out=[];for(let i=0;i<arr.length;i+=n)out.push(arr.slice(i,i+n));return out}
+function fillSelect(el,values,first){const cur=el.value;const vals=[...new Set(values.filter(Boolean).map(String))].sort((a,b)=>a.localeCompare(b,'ar'));el.innerHTML='<option value="">'+esc(first)+'</option>'+vals.map(v=>'<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');if(vals.includes(cur))el.value=cur}
+async function queryChunks(table,ids,fields){const out=[];for(const batch of chunks(ids)){const r=await window.supabaseClient.from(table).select(fields).in('id',batch);if(r.error)throw r.error;out.push(...(r.data||[]))}return out}
+async function hydrate(){
+ const items=data(); if(!window.supabaseClient||!items.length){render();return}
+ try{
+  const [articles,poems,poets]=await Promise.all([
+   queryChunks('articles',idsByType(items,'article'),'id,title,author,category,image_url').catch(()=>[]),
+   queryChunks('poems',idsByType(items,'poem'),'id,title,poet,era,category,image_url').catch(()=>[]),
+   queryChunks('poets',idsByType(items,'poet'),'id,name,nickname,era,image_url').catch(()=>[])
+  ]);
+  const index=new Map();
+  articles.forEach(x=>index.set('article:'+x.id,{title:x.title,meta:[x.author,x.category].filter(Boolean).join(' • '),category:x.category,img:x.image_url}));
+  poems.forEach(x=>index.set('poem:'+x.id,{title:x.title,meta:[x.poet,x.era,x.category].filter(Boolean).join(' • '),era:x.era,category:x.category,img:x.image_url}));
+  poets.forEach(x=>index.set('poet:'+x.id,{title:x.name,meta:[x.nickname,x.era].filter(Boolean).join(' • '),nickname:x.nickname,era:x.era,img:x.image_url}));
+  items.forEach(x=>enriched.set(x.key,{...x,...(index.get(x.key)||{})}));
+  fillSelect(era,[...enriched.values()].map(x=>x.era),'جميع العصور');
+  fillSelect(category,[...enriched.values()].map(x=>x.category),'جميع الموضوعات والتصنيفات');
+ }catch(e){console.warn('Qafiyah favorites hydrate:',e)}
+ render();
+}
+async function searchRemote(q){
+ const items=data(); const token=++searchSerial;
+ if(!q||!window.supabaseClient){remoteMatches=null;render();return}
+ const matched=new Set();
+ const configs={
+  article:{table:'articles'}, poem:{table:'poems'}, poet:{table:'poets'}
+ };
+ await Promise.all(Object.entries(configs).map(async([type,cfg])=>{
+  const ids=idsByType(items,type); if(!ids.length)return;
+  for(const batch of chunks(ids,80)){
+   let r=await window.supabaseClient.from(cfg.table).select('id').in('id',batch).ilike('search_text','%'+q+'%');
+   if(r.error){
+    // قبل تشغيل ملف الترقية: يبقى البحث في العنوان والبيانات المحفوظة فعالًا.
+    return;
+   }
+   (r.data||[]).forEach(row=>matched.add(type+':'+row.id));
+  }
+ }));
+ if(token!==searchSerial)return;
+ remoteMatches=matched; render();
+}
+function render(){
+ const q=norm(search.value), selectedEra=era.value, selectedCategory=category.value;
+ let items=data().map(x=>enriched.get(x.key)||x).filter(x=>filter==='all'||x.type===filter);
+ items=items.filter(x=>{
+  const local=norm([x.title,x.meta,x.nickname,x.era,x.category].filter(Boolean).join(' '));
+  const matchesSearch=!q||local.includes(q)||(remoteMatches&&remoteMatches.has(x.key));
+  return matchesSearch&&(!selectedEra||x.era===selectedEra)&&(!selectedCategory||x.category===selectedCategory);
+ });
+ status.textContent=data().length?`المعروض ${items.length} من ${data().length} عنصر محفوظ`:'';
+ if(!items.length){grid.innerHTML='<div class="q-empty">لا توجد عناصر مطابقة في المفضلة.</div>';return}
+ grid.innerHTML='';
+ items.forEach(x=>{const card=document.createElement('article');card.className='q-fav-card';card.innerHTML=(x.img?'<a href="'+esc(x.url)+'"><img src="'+esc(x.img)+'" alt=""></a>':'')+'<div><p>'+esc(typeName[x.type]||'محفوظ')+'</p><h3><a href="'+esc(x.url)+'">'+esc(x.title)+'</a></h3>'+(x.meta?'<p>'+esc(x.meta)+'</p>':'')+'</div>';const b=document.createElement('button');b.type='button';b.className='q-favorite-btn is-favorite';b.setAttribute('aria-label','إزالة من المفضلة');b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.7a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.5 1-1a5.5 5.5 0 0 0 0-7.8Z"></path></svg>';b.onclick=()=>remove(x.key);card.appendChild(b);grid.appendChild(card)})
+}
+document.getElementById('favoriteTabs').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(!b)return;filter=b.dataset.filter;document.querySelectorAll('.q-tab').forEach(x=>x.classList.toggle('active',x===b));render()});
+search.addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(()=>searchRemote(norm(search.value)),260)});
+era.addEventListener('change',render);category.addEventListener('change',render);
+document.addEventListener('qafiyah:favorites-changed',hydrate);
+hydrate();
+})();
+</script>
+</body>
+</html>

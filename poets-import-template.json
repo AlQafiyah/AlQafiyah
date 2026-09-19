@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "description": "قالب استيراد شعراء قافية. لا تستبدل السجلات الموجودة عند تكرار الاستيراد.",
+  "poets": [
+    {
+      "catalog_id": "qafiyah:example:poet-001",
+      "name": "اسم الشاعر الكامل",
+      "nickname": "اللقب أو الاسم المشهور",
+      "era": "قبل الإسلام",
+      "bio": "سيرة الشاعر وقصته بصياغة قافية.",
+      "image_url": null,
+      "aliases": [],
+      "source_refs": [
+        {
+          "title": "اسم المصدر",
+          "ref": "مرجع أو رابط"
+        }
+      ],
+      "verification_status": "verified",
+      "is_featured": false
+    }
+  ]
+}

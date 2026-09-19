@@ -991,7 +991,11 @@ onclick="window.location.href='index.html'"
 <h3>إدارة الشعراء</h3>
 <p>إضافة الشاعر واسمه المشهور وسيرته وعصره وربط قصائده به.</p>
 </div>
+<div class="table-actions">
+<button class="btn btn-secondary" id="importPoetsButton" type="button">استيراد شعراء</button>
 <button class="btn btn-primary" id="addPoetButton" type="button">+ إضافة شاعر</button>
+<input id="poetsImportInput" type="file" accept="application/json,.json" hidden>
+</div>
 </div>
 <div class="toolbar">
 <div class="search-box">
@@ -1019,6 +1023,13 @@ onclick="window.location.href='index.html'"
 <tbody id="poetsTableBody"></tbody>
 </table>
 </div>
+<div class="toolbar" id="poetsPager">
+<div class="table-actions">
+<button class="btn btn-secondary btn-small" id="poetsPrevPage" type="button">السابق</button>
+<span class="badge" id="poetsPageInfo">—</span>
+<button class="btn btn-secondary btn-small" id="poetsNextPage" type="button">التالي</button>
+</div>
+</div>
 </div>
 </section>
 <section class="admin-section" id="section-poems">
@@ -1028,7 +1039,11 @@ onclick="window.location.href='index.html'"
 <h3>إدارة القصائد</h3>
 <p>إدارة القصائد وربطها بالشعراء والبحور والقوافي وتصنيفها حسب العصر والموضوع.</p>
 </div>
+<div class="table-actions">
+<button class="btn btn-secondary" id="importPoemsButton" type="button">استيراد قصائد</button>
 <button class="btn btn-primary" id="addPoemButton" type="button">+ إضافة قصيدة</button>
+<input id="poemsImportInput" type="file" accept="application/json,.json" hidden>
+</div>
 </div>
 <div class="toolbar">
 <div class="search-box">
@@ -1071,6 +1086,13 @@ onclick="window.location.href='index.html'"
 </thead>
 <tbody id="poemsTableBody"></tbody>
 </table>
+</div>
+<div class="toolbar" id="poemsPager">
+<div class="table-actions">
+<button class="btn btn-secondary btn-small" id="poemsPrevPage" type="button">السابق</button>
+<span class="badge" id="poemsPageInfo">—</span>
+<button class="btn btn-secondary btn-small" id="poemsNextPage" type="button">التالي</button>
+</div>
 </div>
 </div>
 </section>
@@ -1321,12 +1343,15 @@ const AUDIO_MAX_BYTES = 50 * 1024 * 1024;
 
 const ERAS = [
 "قبل الإسلام",
+"المخضرمون",
 "صدر الإسلام",
 "الأموي",
 "العباسي",
 "الأندلسي",
+"الأيوبي",
 "المملوكي",
 "العثماني",
+"النهضة",
 "الحديث",
 "المعاصر"
 ];
@@ -1356,7 +1381,15 @@ let currentEditorItem = null;
 let editorSaving = false;
 
 let poetsCache = [];
+let poetsAdminPage = 0;
+let poetsAdminTotal = 0;
+let poetsAdminSearchTimer = null;
+const POETS_ADMIN_PAGE_SIZE = 100;
 let poemsCache = [];
+let poemsAdminPage = 0;
+let poemsAdminTotal = 0;
+let poemsAdminSearchTimer = null;
+const POEMS_ADMIN_PAGE_SIZE = 100;
 let articlesCache = [];
 let metersCache = [];
 let rhymesCache = [];
@@ -1515,16 +1548,11 @@ element.value = current;
 }
 
 function eraOptions(selected = "") {
+const values = selected && !ERAS.includes(selected) ? [...ERAS, selected] : ERAS;
 return `
 <option value="">اختر العصر</option>
-
-${ERAS.map(era => `
-<option
-value="${escapeHtml(era)}"
-${era === selected ? "selected" : ""}
->
-${escapeHtml(era)}
-</option>
+${values.map(era => `
+<option value="${escapeHtml(era)}" ${era === selected ? "selected" : ""}>${escapeHtml(era)}</option>
 `).join("")}
 `;
 }
@@ -2942,162 +2970,71 @@ String(id)
 }
 
 async function loadPoets() {
-const tbody =
-document.getElementById(
-"poetsTableBody"
-);
-
-setLoadingRow(
-tbody,
-7
-);
+const tbody = document.getElementById("poetsTableBody");
+setLoadingRow(tbody, 7);
 
 try {
+const search = normalize(document.getElementById("poetSearch").value);
+const era = document.getElementById("poetEraFilter").value;
+const from = poetsAdminPage * POETS_ADMIN_PAGE_SIZE;
+const to = from + POETS_ADMIN_PAGE_SIZE - 1;
 
-const [
-poetsResult,
-poemLinksResult
-] =
-await Promise.all([
+setFilterOptions(document.getElementById("poetEraFilter"), ERAS, "جميع العصور");
+if (era) document.getElementById("poetEraFilter").value = era;
 
-supabaseClient
+let query = supabaseClient
 .from("poets")
-.select("*")
-.order(
-"is_featured",
-{
-ascending: false
-}
-)
-.order(
-"name",
-{
-ascending: true
-}
-),
+.select("id,name,nickname,era,bio,image_url,is_featured,poem_count,catalog_id", {count:"exact"})
+.order("is_featured", {ascending:false})
+.order("name", {ascending:true})
+.range(from,to);
 
-supabaseClient
-.from("poems")
-.select("poet_id")
-]);
+if (search) query = query.ilike("search_text", `%${search}%`);
+if (era) query = query.eq("era", era);
 
-if (
-poetsResult.error
-) {
-throw poetsResult.error;
-}
+let result = await query;
 
-if (
-poemLinksResult.error
-) {
-throw poemLinksResult.error;
+if (result.error && /search_text|poem_count/i.test(String(result.error.message || ""))) {
+// توافق مؤقت قبل تشغيل qafiyah-scale-foundation.sql
+let legacy = supabaseClient.from("poets").select("*").order("is_featured",{ascending:false}).order("name",{ascending:true});
+const legacyResult = await legacy;
+if (legacyResult.error) throw legacyResult.error;
+let all = legacyResult.data || [];
+if (search) all = all.filter(poet => normalize([poet.name,poet.nickname,poet.bio,poet.era].filter(Boolean).join(" ")).includes(search));
+if (era) all = all.filter(poet => poet.era === era);
+poetsAdminTotal = all.length;
+poetsCache = all.slice(from,to+1);
+} else {
+if (result.error) throw result.error;
+poetsAdminTotal = Number(result.count || 0);
+poetsCache = result.data || [];
 }
 
-poetsCache =
-poetsResult.data ||
-[];
-
-const counts =
-new Map();
-
-for (
-const row
-of poemLinksResult.data || []
-) {
-
-if (
-row.poet_id ===
-null ||
-row.poet_id ===
-undefined
-) {
-continue;
-}
-
-const key =
-String(row.poet_id);
-
-counts.set(
-key,
-(counts.get(key) || 0) + 1
-);
-}
-
-poetsCache =
-poetsCache.map(
-poet => ({
-...poet,
-poem_count:
-counts.get(
-String(poet.id)
-) || 0
-})
-);
-
-setFilterOptions(
-document.getElementById(
-"poetEraFilter"
-),
-poetsCache.map(
-item => item.era
-),
-"جميع العصور"
-);
-
-filterPoets();
-
+renderPoets(poetsCache);
+updatePoetsPager();
 } catch (error) {
-
 console.error(error);
-
-setEmptyRow(
-tbody,
-7,
-"تعذر تحميل الشعراء."
-);
+setEmptyRow(tbody,7,"تعذر تحميل الشعراء.");
 }
 }
 
 function filterPoets() {
-const search =
-normalize(
-document.getElementById(
-"poetSearch"
-).value
-);
-
-const era =
-document.getElementById(
-"poetEraFilter"
-).value;
-
-renderPoets(
-
-poetsCache.filter(
-poet => {
-
-const hay =
-normalize(
-[
-poet.name,
-poet.nickname,
-poet.bio
-]
-.filter(Boolean)
-.join(" ")
-);
-
-return (
-(!search ||
-hay.includes(search))
-&&
-(!era ||
-poet.era === era)
-);
+clearTimeout(poetsAdminSearchTimer);
+poetsAdminSearchTimer = setTimeout(() => {
+poetsAdminPage = 0;
+loadPoets();
+}, 260);
 }
-)
 
-);
+function updatePoetsPager() {
+const info = document.getElementById("poetsPageInfo");
+const prev = document.getElementById("poetsPrevPage");
+const next = document.getElementById("poetsNextPage");
+const pages = Math.max(1, Math.ceil(poetsAdminTotal / POETS_ADMIN_PAGE_SIZE));
+if (poetsAdminPage >= pages) poetsAdminPage = pages - 1;
+if (info) info.textContent = `صفحة ${poetsAdminPage + 1} من ${pages} — ${poetsAdminTotal} شاعر`;
+if (prev) prev.disabled = poetsAdminPage <= 0;
+if (next) next.disabled = (poetsAdminPage + 1) >= pages;
 }
 
 function renderPoets(items) {
@@ -3519,194 +3456,68 @@ type="button"
 }
 
 async function loadPoems() {
-const tbody =
-document.getElementById(
-"poemsTableBody"
-);
-
-setLoadingRow(
-tbody,
-8
-);
-
+const tbody = document.getElementById("poemsTableBody");
+setLoadingRow(tbody,8);
 try {
+await Promise.all([fetchMeters(), fetchRhymes()]);
+const search = normalize(document.getElementById("poemSearch").value);
+const era = document.getElementById("poemEraFilter").value;
+const topic = document.getElementById("poemTopicFilter").value;
+const meterName = document.getElementById("poemMeterFilter").value;
+const rhymeName = document.getElementById("poemRhymeFilter").value;
+const meter = metersCache.find(item => item.name === meterName);
+const rhyme = rhymesCache.find(item => item.name === rhymeName);
+const from = poemsAdminPage * POEMS_ADMIN_PAGE_SIZE;
+const to = from + POEMS_ADMIN_PAGE_SIZE - 1;
 
-const [
-poemsResult
-] =
-await Promise.all([
+setFilterOptions(document.getElementById("poemEraFilter"), ERAS, "جميع العصور");
+if (era) document.getElementById("poemEraFilter").value = era;
+setFilterOptions(document.getElementById("poemTopicFilter"), COMMON_TOPICS, "جميع الموضوعات");
+if (topic) document.getElementById("poemTopicFilter").value = topic;
+setFilterOptions(document.getElementById("poemMeterFilter"), metersCache.map(item=>item.name), "جميع البحور");
+if (meterName) document.getElementById("poemMeterFilter").value = meterName;
+setFilterOptions(document.getElementById("poemRhymeFilter"), rhymesCache.map(item=>item.name), "جميع القوافي");
+if (rhymeName) document.getElementById("poemRhymeFilter").value = rhymeName;
 
-supabaseClient
-.from("poems")
-.select("*")
-.order(
-"is_featured",
-{
-ascending: false
-}
-)
-.order(
-"created_at",
-{
-ascending: false
-}
-),
-
-fetchPoets(),
-fetchMeters(),
-fetchRhymes()
-
-]);
-
-if (poemsResult.error) {
-throw poemsResult.error;
-}
-
-poemsCache =
-poemsResult.data ||
-[];
-
-setFilterOptions(
-document.getElementById(
-"poemEraFilter"
-),
-poemsCache.map(
-item => item.era
-),
-"جميع العصور"
-);
-
-setFilterOptions(
-document.getElementById(
-"poemTopicFilter"
-),
-poemsCache.map(
-item => item.category
-),
-"جميع الموضوعات"
-);
-
-setFilterOptions(
-document.getElementById(
-"poemMeterFilter"
-),
-metersCache.map(
-item => item.name
-),
-"جميع البحور"
-);
-
-setFilterOptions(
-document.getElementById(
-"poemRhymeFilter"
-),
-rhymesCache.map(
-item => item.name
-),
-"جميع القوافي"
-);
-
-filterPoems();
-
+let query = supabaseClient.from("poems")
+.select("id,title,poet_id,poet,era,category,meter_id,rhyme_id,is_featured,created_at,catalog_id,image_url,video_url,audio_url",{count:"exact"})
+.order("is_featured",{ascending:false})
+.order("created_at",{ascending:false})
+.range(from,to);
+if (search) query = query.ilike("search_text",`%${search}%`);
+if (era) query = query.eq("era",era);
+if (topic) query = query.eq("category",topic);
+if (meterName) query = meter ? query.eq("meter_id",meter.id) : query.eq("meter_id",-1);
+if (rhymeName) query = rhyme ? query.eq("rhyme_id",rhyme.id) : query.eq("rhyme_id",-1);
+const result = await query;
+if (result.error) throw result.error;
+poemsAdminTotal = Number(result.count || 0);
+poemsCache = result.data || [];
+renderPoems(poemsCache);
+updatePoemsPager();
 } catch (error) {
-
 console.error(error);
-
-setEmptyRow(
-tbody,
-8,
-"تعذر تحميل القصائد."
-);
+setEmptyRow(tbody,8,"تعذر تحميل القصائد.");
 }
 }
 
 function filterPoems() {
-
-const search =
-normalize(
-document.getElementById(
-"poemSearch"
-).value
-);
-
-const era =
-document.getElementById(
-"poemEraFilter"
-).value;
-
-const topic =
-document.getElementById(
-"poemTopicFilter"
-).value;
-
-const meterName =
-document.getElementById(
-"poemMeterFilter"
-).value;
-
-const rhymeName =
-document.getElementById(
-"poemRhymeFilter"
-).value;
-
-renderPoems(
-
-poemsCache.filter(
-poem => {
-
-const poet =
-poetById(
-poem.poet_id
-);
-
-const meter =
-meterById(
-poem.meter_id
-);
-
-const rhyme =
-rhymeById(
-poem.rhyme_id
-);
-
-const hay =
-normalize(
-[
-poem.title,
-poem.poet,
-poet?.name,
-poet?.nickname,
-poem.content,
-poem.category,
-poem.era,
-meter?.name,
-rhyme?.name,
-rhyme?.rawi_letter
-]
-.filter(Boolean)
-.join(" ")
-);
-
-return (
-(!search ||
-hay.includes(search))
-&&
-(!era ||
-poem.era === era)
-&&
-(!topic ||
-poem.category === topic)
-&&
-(!meterName ||
-meter?.name === meterName)
-&&
-(!rhymeName ||
-rhyme?.name === rhymeName)
-);
+clearTimeout(poemsAdminSearchTimer);
+poemsAdminSearchTimer = setTimeout(() => {
+poemsAdminPage = 0;
+loadPoems();
+},260);
 }
-)
 
-);
+function updatePoemsPager() {
+const info = document.getElementById("poemsPageInfo");
+const prev = document.getElementById("poemsPrevPage");
+const next = document.getElementById("poemsNextPage");
+const pages = Math.max(1, Math.ceil(poemsAdminTotal / POEMS_ADMIN_PAGE_SIZE));
+if (poemsAdminPage >= pages) poemsAdminPage = pages - 1;
+if (info) info.textContent = `صفحة ${poemsAdminPage + 1} من ${pages} — ${poemsAdminTotal} قصيدة`;
+if (prev) prev.disabled = poemsAdminPage <= 0;
+if (next) next.disabled = (poemsAdminPage + 1) >= pages;
 }
 
 function renderPoems(items) {
@@ -6505,19 +6316,13 @@ item
 
 window.editPoem =
 async function (id) {
-
-const item =
-poemsCache.find(
-poem =>
-String(poem.id) ===
-String(id)
-);
-
-if (item) {
-await openEditor(
-"poem",
-item
-);
+try {
+const { data, error } = await supabaseClient.from("poems").select("*").eq("id",id).single();
+if (error) throw error;
+await openEditor("poem",data);
+} catch (error) {
+console.error(error);
+showToast(error?.message || "تعذر تحميل القصيدة للتعديل.","error");
 }
 };
 
@@ -6906,6 +6711,194 @@ openEditor("poet");
 }
 );
 
+document.getElementById("poetsPrevPage")?.addEventListener("click", function () {
+if (poetsAdminPage <= 0) return;
+poetsAdminPage -= 1;
+loadPoets();
+});
+
+document.getElementById("poetsNextPage")?.addEventListener("click", function () {
+if ((poetsAdminPage + 1) * POETS_ADMIN_PAGE_SIZE >= poetsAdminTotal) return;
+poetsAdminPage += 1;
+loadPoets();
+});
+
+document.getElementById("poemsPrevPage")?.addEventListener("click", function () {
+if (poemsAdminPage <= 0) return;
+poemsAdminPage -= 1;
+loadPoems();
+});
+
+document.getElementById("poemsNextPage")?.addEventListener("click", function () {
+if ((poemsAdminPage + 1) * POEMS_ADMIN_PAGE_SIZE >= poemsAdminTotal) return;
+poemsAdminPage += 1;
+loadPoems();
+});
+
+function qafiyahCatalogPart(value) {
+return normalize(value).replace(/[^\u0600-\u06FFa-z0-9]+/gi,"-").replace(/^-+|-+$/g,"").slice(0,120) || "unknown";
+}
+
+async function importPoetsFile(file) {
+const button = document.getElementById("importPoetsButton");
+const originalText = button?.textContent || "استيراد شعراء";
+try {
+if (!file) return;
+button.disabled = true;
+button.textContent = "جارٍ قراءة الملف...";
+const parsed = JSON.parse(await file.text());
+const source = Array.isArray(parsed) ? parsed : parsed.poets;
+if (!Array.isArray(source) || !source.length) throw new Error("ملف الاستيراد لا يحتوي قائمة شعراء صالحة.");
+
+const seen = new Set();
+const rows = [];
+for (const item of source) {
+const name = String(item?.name || "").trim();
+const era = String(item?.era || "").trim();
+if (!name || !era) continue;
+const catalogId = String(item.catalog_id || `qafiyah:${qafiyahCatalogPart(era)}:${qafiyahCatalogPart(name)}`).trim();
+if (seen.has(catalogId)) continue;
+seen.add(catalogId);
+rows.push({
+catalog_id: catalogId,
+name,
+nickname: String(item.nickname || "").trim() || null,
+era,
+bio: String(item.bio || "").trim() || null,
+image_url: String(item.image_url || "").trim() || null,
+is_featured: Boolean(item.is_featured),
+aliases: Array.isArray(item.aliases) ? item.aliases.map(v=>String(v).trim()).filter(Boolean) : [],
+source_refs: Array.isArray(item.source_refs) ? item.source_refs : [],
+verification_status: ["verified","review","disputed"].includes(item.verification_status) ? item.verification_status : "verified"
+});
+}
+if (!rows.length) throw new Error("لم نجد أي شاعر صالح للاستيراد.");
+
+const BATCH = 200;
+let imported = 0;
+for (let i=0; i<rows.length; i+=BATCH) {
+const batch = rows.slice(i,i+BATCH);
+button.textContent = `استيراد ${Math.min(i+BATCH,rows.length)} / ${rows.length}`;
+const result = await supabaseClient.from("poets").upsert(batch,{onConflict:"catalog_id",ignoreDuplicates:true});
+if (result.error) throw result.error;
+imported += batch.length;
+}
+showToast(`تم فحص ${rows.length} شاعر واستيراد الجديد دون استبدال تعديلاتك.`,"success");
+poetsAdminPage = 0;
+await Promise.all([loadPoets(),loadDashboard()]);
+} catch (error) {
+console.error(error);
+showToast(error?.message || "تعذر استيراد ملف الشعراء.","error");
+} finally {
+if (button) { button.disabled = false; button.textContent = originalText; }
+const input = document.getElementById("poetsImportInput");
+if (input) input.value = "";
+}
+}
+
+document.getElementById("importPoetsButton")?.addEventListener("click", () => document.getElementById("poetsImportInput")?.click());
+document.getElementById("poetsImportInput")?.addEventListener("change", event => importPoetsFile(event.target.files?.[0]));
+
+async function qafiyahFetchPoetImportMaps(source) {
+const catalogIds = [...new Set(source.map(item => String(item?.poet_catalog_id || "").trim()).filter(Boolean))];
+const names = [...new Set(source.map(item => String(item?.poet_name || item?.poet || "").trim()).filter(Boolean))];
+const byCatalog = new Map();
+const byName = new Map();
+const chunkSize = 150;
+for (let i = 0; i < catalogIds.length; i += chunkSize) {
+const { data, error } = await supabaseClient.from("poets").select("id,catalog_id,name,era").in("catalog_id", catalogIds.slice(i,i+chunkSize));
+if (error) throw error;
+(data || []).forEach(poet => { byCatalog.set(String(poet.catalog_id), poet); byName.set(normalize(poet.name), poet); });
+}
+for (let i = 0; i < names.length; i += chunkSize) {
+const { data, error } = await supabaseClient.from("poets").select("id,catalog_id,name,era").in("name", names.slice(i,i+chunkSize));
+if (error) throw error;
+(data || []).forEach(poet => { byCatalog.set(String(poet.catalog_id), poet); byName.set(normalize(poet.name), poet); });
+}
+return { byCatalog, byName };
+}
+
+async function importPoemsFile(file) {
+const button = document.getElementById("importPoemsButton");
+const originalText = button?.textContent || "استيراد قصائد";
+try {
+if (!file) return;
+button.disabled = true;
+button.textContent = "جارٍ قراءة الملف...";
+const parsed = JSON.parse(await file.text());
+const source = Array.isArray(parsed) ? parsed : parsed.poems;
+if (!Array.isArray(source) || !source.length) throw new Error("ملف الاستيراد لا يحتوي قائمة قصائد صالحة.");
+
+await Promise.all([fetchMeters(), fetchRhymes()]);
+const { byCatalog, byName } = await qafiyahFetchPoetImportMaps(source);
+const meterByName = new Map(metersCache.map(item => [normalize(item.name), item]));
+const rhymeByName = new Map(rhymesCache.map(item => [normalize(item.name), item]));
+const seen = new Set();
+const rows = [];
+let skippedNoPoet = 0;
+let skippedInvalid = 0;
+
+for (const item of source) {
+const title = String(item?.title || "").trim();
+const content = String(item?.content || item?.full_text || "").trim();
+if (!title || !content) { skippedInvalid += 1; continue; }
+const poetCatalogId = String(item?.poet_catalog_id || "").trim();
+const poetName = String(item?.poet_name || item?.poet || "").trim();
+const poet = (poetCatalogId && byCatalog.get(poetCatalogId)) || (poetName && byName.get(normalize(poetName)));
+if (!poet) { skippedNoPoet += 1; continue; }
+const era = String(item?.era || poet.era || "").trim() || null;
+const externalKey = String(item?.catalog_id || item?.source_id || "").trim();
+const catalogId = externalKey || `qafiyah:poem:${qafiyahCatalogPart(poet.catalog_id || poet.name)}:${qafiyahCatalogPart(title)}:${String(item?.source_url || "").trim().slice(-80)}`;
+if (seen.has(catalogId)) continue;
+seen.add(catalogId);
+const meter = item?.meter_id ? {id:Number(item.meter_id)} : meterByName.get(normalize(String(item?.meter || item?.meter_name || "")));
+const rhyme = item?.rhyme_id ? {id:Number(item.rhyme_id)} : rhymeByName.get(normalize(String(item?.rhyme || item?.rhyme_name || "")));
+const sourceRefs = Array.isArray(item?.source_refs) ? item.source_refs : (item?.source_url ? [{url:String(item.source_url)}] : []);
+rows.push({
+catalog_id: catalogId,
+title,
+poet_id: poet.id,
+poet: poet.name,
+content,
+era,
+category: String(item?.category || item?.theme || "").trim() || null,
+meter_id: meter?.id || null,
+rhyme_id: rhyme?.id || null,
+image_url: String(item?.image_url || "").trim() || null,
+video_url: String(item?.video_url || "").trim() || null,
+audio_url: String(item?.audio_url || "").trim() || null,
+is_featured: Boolean(item?.is_featured),
+source_refs: sourceRefs,
+verification_status: ["verified","review","disputed"].includes(item?.verification_status) ? item.verification_status : "verified"
+});
+}
+if (!rows.length) throw new Error("لم نجد قصائد صالحة للاستيراد. تأكد أن الشعراء مستوردون أولًا وأن كل قصيدة تحمل poet_catalog_id أو اسم شاعر مطابق.");
+
+const BATCH = 75;
+for (let i=0; i<rows.length; i+=BATCH) {
+const batch = rows.slice(i,i+BATCH);
+button.textContent = `استيراد ${Math.min(i+BATCH,rows.length)} / ${rows.length}`;
+const result = await supabaseClient.from("poems").upsert(batch,{onConflict:"catalog_id",ignoreDuplicates:true});
+if (result.error) throw result.error;
+}
+let message = `تم فحص ${source.length} سجل واستيراد القصائد الجديدة دون استبدال تعديلاتك.`;
+if (skippedNoPoet) message += ` تخطينا ${skippedNoPoet} لعدم العثور على الشاعر.`;
+if (skippedInvalid) message += ` وتخطينا ${skippedInvalid} لسجل ناقص العنوان أو النص.`;
+showToast(message,"success");
+await Promise.all([loadPoems(), loadPoets(), loadDashboard()]);
+} catch (error) {
+console.error(error);
+showToast(error?.message || "تعذر استيراد ملف القصائد.","error");
+} finally {
+if (button) { button.disabled = false; button.textContent = originalText; }
+const input = document.getElementById("poemsImportInput");
+if (input) input.value = "";
+}
+}
+
+document.getElementById("importPoemsButton")?.addEventListener("click", () => document.getElementById("poemsImportInput")?.click());
+document.getElementById("poemsImportInput")?.addEventListener("change", event => importPoemsFile(event.target.files?.[0]));
+
 document
 .getElementById(
 "addPoemButton"
@@ -7012,7 +7005,7 @@ document
 )
 .addEventListener(
 "change",
-filterPoets
+function () { poetsAdminPage = 0; loadPoets(); }
 );
 
 document
