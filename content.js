@@ -1481,47 +1481,9 @@
     }
 
 
-    function renderCardThumbnail(
-        url,
-        alt,
-        className
-    ) {
-
-        const image =
-            renderImage(
-                url,
-                alt,
-                className
-            );
-
-
-        if (image) {
-            return image;
-        }
-
-
-        return `
-            <div
-                class="${escapeHtml(className)} qafiyah-image-placeholder"
-                aria-hidden="true">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round">
-
-                    <rect x="3" y="4" width="18" height="16" rx="3"></rect>
-                    <circle cx="9" cy="10" r="2"></circle>
-                    <path d="m5 18 5-5 3 3 2-2 4 4"></path>
-
-                </svg>
-
-            </div>
-        `;
-
+    function renderCardThumbnail(url, alt, className) {
+        // لا نعرض أي شعار/نقاط/مساحة وهمية عندما لا توجد صورة.
+        return renderImage(url, alt, className);
     }
 
 
@@ -1548,180 +1510,44 @@
 
     }
 
-    function renderAudio(
-        value,
-        title
-    ) {
-
-        const safe =
-            safeUrl(
-                value
-            );
-
-
-        if (!safe) {
-
-            return "";
-
-        }
-
-
-        return `
-
-            <div class="qafiyah-audio-player">
-
-                <button
-                    class="qafiyah-audio-toggle"
-                    type="button"
-                    aria-pressed="false"
-                    aria-label="تشغيل التسجيل الصوتي لقصيدة ${
-                        escapeHtml(
-                            title || ""
-                        )
-                    }">
-
-                    <span
-                        class="qafiyah-audio-icon"
-                        aria-hidden="true">${audioIconMarkup()}</span>
-
-                    <span class="qafiyah-audio-label">
-                        استمع إلى القصيدة
-                    </span>
-
-                </button>
-
-                <audio
-                    class="qafiyah-poem-audio"
-                    preload="metadata"
-                    src="${escapeHtml(safe)}">
-                </audio>
-
+    function renderAudioTracks(tracks, title) {
+        const valid=(tracks||[]).map((t,i)=>({
+            audio_url:safeUrl(t?.audio_url), reader_name:String(t?.reader_name||'').trim(), sort_order:Number(t?.sort_order??i)
+        })).filter(t=>t.audio_url).sort((a,b)=>a.sort_order-b.sort_order);
+        if(!valid.length)return "";
+        return `<div class="qafiyah-audio-collection">${valid.map((t,i)=>`
+          <div class="qafiyah-audio-player" data-track-index="${i}">
+            <div class="qafiyah-audio-main-row">
+              <button class="qafiyah-audio-toggle" type="button" aria-pressed="false" aria-label="تشغيل التسجيل الصوتي لقصيدة ${escapeHtml(title||'')}">
+                <span class="qafiyah-audio-icon" aria-hidden="true">${audioIconMarkup()}</span>
+                <span class="qafiyah-audio-label">استمع إلى القصيدة</span>
+              </button>
+              <div class="qafiyah-audio-controls" aria-label="التحكم في التسجيل">
+                <button type="button" data-audio-action="restart" title="إعادة من البداية" aria-label="إعادة من البداية">↺</button>
+                <button type="button" data-audio-action="back5" title="رجوع 5 ثوان" aria-label="رجوع 5 ثوان">−5</button>
+                <button type="button" data-audio-action="back1" title="رجوع ثانية" aria-label="رجوع ثانية">−1</button>
+                <button type="button" data-audio-action="forward1" title="تقديم ثانية" aria-label="تقديم ثانية">+1</button>
+                <button type="button" data-audio-action="forward5" title="تقديم 5 ثوان" aria-label="تقديم 5 ثوان">+5</button>
+              </div>
             </div>
-
-        `;
-
+            ${t.reader_name?`<div class="qafiyah-audio-reader">بصوت ${escapeHtml(t.reader_name)}</div>`:''}
+            <audio class="qafiyah-poem-audio" preload="metadata" src="${escapeHtml(t.audio_url)}"></audio>
+          </div>`).join('')}</div>`;
     }
 
+    function renderAudio(value,title){
+        const safe=safeUrl(value); return safe?renderAudioTracks([{audio_url:safe}],title):"";
+    }
 
-    function bindAudioPlayers(
-        root
-    ) {
-
-        root
-            ?.querySelectorAll(
-                ".qafiyah-audio-player"
-            )
-            .forEach(
-                player => {
-
-                    const button =
-                        player.querySelector(
-                            ".qafiyah-audio-toggle"
-                        );
-
-                    const audio =
-                        player.querySelector(
-                            ".qafiyah-poem-audio"
-                        );
-
-                    const icon =
-                        player.querySelector(
-                            ".qafiyah-audio-icon"
-                        );
-
-                    const label =
-                        player.querySelector(
-                            ".qafiyah-audio-label"
-                        );
-
-
-                    if (!button || !audio) return;
-
-
-                    const setPlaying =
-                        playing => {
-
-                            button.setAttribute(
-                                "aria-pressed",
-                                String(playing)
-                            );
-
-                            button.classList.toggle(
-                                "is-playing",
-                                playing
-                            );
-
-                            if (icon) {
-                                icon.innerHTML =
-                                    audioIconMarkup(
-                                        playing
-                                    );
-                            }
-
-                            if (label) {
-                                label.textContent =
-                                    playing
-                                        ? "إيقاف مؤقت"
-                                        : "استمع إلى القصيدة";
-                            }
-
-                        };
-
-
-                    button.addEventListener(
-                        "click",
-                        async () => {
-
-                            if (!audio.paused) {
-                                audio.pause();
-                                return;
-                            }
-
-
-                            document
-                                .querySelectorAll(
-                                    ".qafiyah-poem-audio"
-                                )
-                                .forEach(
-                                    other => {
-                                        if (other !== audio) {
-                                            other.pause();
-                                        }
-                                    }
-                                );
-
-
-                            try {
-                                await audio.play();
-                            } catch (error) {
-                                console.error(
-                                    "القافية: تعذر تشغيل الصوت:",
-                                    error
-                                );
-                            }
-
-                        }
-                    );
-
-
-                    audio.addEventListener(
-                        "play",
-                        () => setPlaying(true)
-                    );
-
-                    audio.addEventListener(
-                        "pause",
-                        () => setPlaying(false)
-                    );
-
-                    audio.addEventListener(
-                        "ended",
-                        () => setPlaying(false)
-                    );
-
-                }
-            );
-
+    function bindAudioPlayers(root) {
+        root?.querySelectorAll('.qafiyah-audio-player').forEach(player=>{
+            const button=player.querySelector('.qafiyah-audio-toggle'),audio=player.querySelector('.qafiyah-poem-audio'),icon=player.querySelector('.qafiyah-audio-icon'),label=player.querySelector('.qafiyah-audio-label');
+            if(!button||!audio)return;
+            const setPlaying=playing=>{button.setAttribute('aria-pressed',String(playing));button.classList.toggle('is-playing',playing);if(icon)icon.innerHTML=audioIconMarkup(playing);if(label)label.textContent=playing?'إيقاف مؤقت':'استمع إلى القصيدة'};
+            button.addEventListener('click',async()=>{if(!audio.paused){audio.pause();return}document.querySelectorAll('.qafiyah-poem-audio').forEach(other=>{if(other!==audio)other.pause()});try{await audio.play()}catch(e){console.error('القافية: تعذر تشغيل الصوت:',e)}});
+            player.querySelectorAll('[data-audio-action]').forEach(ctrl=>ctrl.addEventListener('click',()=>{const a=ctrl.dataset.audioAction;if(a==='restart')audio.currentTime=0;if(a==='back5')audio.currentTime=Math.max(0,audio.currentTime-5);if(a==='back1')audio.currentTime=Math.max(0,audio.currentTime-1);if(a==='forward1')audio.currentTime=Math.min(Number.isFinite(audio.duration)?audio.duration:audio.currentTime+1,audio.currentTime+1);if(a==='forward5')audio.currentTime=Math.min(Number.isFinite(audio.duration)?audio.duration:audio.currentTime+5,audio.currentTime+5)}));
+            audio.addEventListener('play',()=>setPlaying(true));audio.addEventListener('pause',()=>setPlaying(false));audio.addEventListener('ended',()=>setPlaying(false));
+        });
     }
 
 
@@ -2314,7 +2140,7 @@
         function card(poet) {
             return `
                 <article class="content-card qafiyah-content-card qafiyah-poet-card">
-                    ${renderCardThumbnail(poet.image_url, poet.name, "qafiyah-list-thumbnail")}
+                    ${renderImage(poet.image_url, poet.name, "qafiyah-list-thumbnail")}
                     <div class="qafiyah-card-body">
                         ${poet.era ? `<span class="section-label">${escapeHtml(poet.era)}</span>` : ""}
                         <h2 class="qafiyah-card-title">
@@ -3060,7 +2886,7 @@
                         ">
 
                         <div
-                            class="qafiyah-poet-profile">
+                            class="qafiyah-poet-profile${safeUrl(poet.image_url) ? "" : " qafiyah-no-image"}">
 
                             ${
                                 renderImage(
@@ -3470,6 +3296,13 @@
             }
 
 
+            let audioTracks=[];
+            try {
+                const {data:tracks,error:audioError}=await db.from("poem_audio").select("audio_url,reader_name,sort_order,id").eq("poem_id",poem.id).order("sort_order").order("id");
+                if(!audioError && Array.isArray(tracks)) audioTracks=tracks;
+            } catch (audioError) { console.warn("القافية: تعذر تحميل الصوتيات المتعددة",audioError); }
+            if(!audioTracks.length && poem.audio_url) audioTracks=[{audio_url:poem.audio_url,reader_name:null,sort_order:0}];
+
             setDocumentTitle(
                 poem.title
             );
@@ -3669,8 +3502,8 @@
                         </header>
 
                         ${
-                            renderAudio(
-                                poem.audio_url,
+                            renderAudioTracks(
+                                audioTracks,
                                 poem.title
                             )
                         }
@@ -3812,6 +3645,15 @@
                 opacity: .72;
             }
 
+            .qafiyah-audio-collection{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0 24px}
+            .qafiyah-audio-player{flex:1 1 320px;max-width:520px;border:1px solid color-mix(in srgb,currentColor 14%,transparent);border-radius:16px;padding:12px 14px;background:color-mix(in srgb,var(--q-surface,#fff) 94%,transparent)}
+            .qafiyah-audio-main-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+            .qafiyah-audio-toggle{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:9px 13px;cursor:pointer;background:color-mix(in srgb,currentColor 8%,transparent);color:inherit;font:inherit}
+            .qafiyah-audio-icon svg{width:18px;height:18px;fill:currentColor}
+            .qafiyah-audio-controls{display:flex;gap:5px;flex-wrap:wrap}
+            .qafiyah-audio-controls button{min-width:35px;height:35px;border:1px solid color-mix(in srgb,currentColor 16%,transparent);border-radius:10px;background:transparent;color:inherit;cursor:pointer;font:inherit;font-size:.84rem}
+            .qafiyah-audio-reader{font-size:.82rem;opacity:.72;margin-top:8px;padding-inline-start:4px}
+
             .qafiyah-card-summary {
                 line-height: 2;
                 margin: 14px 0 18px;
@@ -3929,6 +3771,10 @@
                 gap: 34px;
                 align-items: center;
                 padding: 34px;
+            }
+
+            .qafiyah-poet-profile.qafiyah-no-image {
+                grid-template-columns: 1fr;
             }
 
             .qafiyah-poet-detail-image {
@@ -4076,18 +3922,6 @@
                 border: 1px solid rgba(62, 39, 35, .12);
                 border-radius: 16px;
                 background: #f1ece8;
-            }
-
-            .qafiyah-image-placeholder {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: rgba(62, 39, 35, .42);
-            }
-
-            .qafiyah-image-placeholder svg {
-                width: 38%;
-                height: 38%;
             }
 
             .qafiyah-poem-index-card .qafiyah-card-image {

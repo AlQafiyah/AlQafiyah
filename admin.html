@@ -520,24 +520,6 @@ border-radius: 50%;
 object-fit: cover;
 border: 1px solid var(--border);
 }
-.poet-placeholder {
-width: 44px;
-height: 44px;
-border-radius: 50%;
-background: var(--peach);
-display: flex;
-align-items: center;
-justify-content: center;
-}
-.poet-placeholder svg {
-width: 21px;
-height: 21px;
-fill: none;
-stroke: currentColor;
-stroke-width: 1.8;
-stroke-linecap: round;
-stroke-linejoin: round;
-}
 .modal {
 position: fixed;
 inset: 0;
@@ -826,6 +808,8 @@ display: inline-flex;
 align-items: center;
 gap: 6px;
 }
+
+.analytics-detail{margin-top:18px}.analytics-period-grid{margin-bottom:18px}.analytics-list{display:grid;gap:8px}.analytics-list>div{display:flex;justify-content:space-between;gap:18px;padding:10px 0;border-bottom:1px solid var(--border)}.analytics-list>div:last-child{border-bottom:0}.analytics-list strong{font-variant-numeric:tabular-nums}.analytics-breakdown{margin-top:0}
 </style>
 </head>
 <body>
@@ -881,6 +865,7 @@ onclick="window.location.href='index.html'"
 <span class="nav-icon" data-admin-icon="article"></span>
 <span>المقالات</span>
 </button>
+<button class="nav-item" data-section="books" type="button"><span class="nav-icon" data-admin-icon="document"></span><span>الكتب</span></button>
 <button class="nav-item" data-section="videos" type="button">
 <span class="nav-icon" data-admin-icon="video"></span>
 <span>الفيديوهات</span>
@@ -893,6 +878,7 @@ onclick="window.location.href='index.html'"
 <span class="nav-icon" data-admin-icon="grid"></span>
 <span>التصنيفات</span>
 </button>
+<button class="nav-item" data-section="legal" id="legalNav" type="button"><span class="nav-icon" data-admin-icon="document"></span><span>حقوق وسياسة الموقع</span></button>
 <button class="nav-item" data-section="users" type="button">
 <span class="nav-icon" data-admin-icon="users"></span>
 <span>المستخدمون</span>
@@ -940,7 +926,7 @@ onclick="window.location.href='index.html'"
 <div class="admin-content">
 <section class="admin-section active" id="section-dashboard">
 <div class="welcome-card">
-<h2 id="welcomeTitle">مرحبًا بك في لوحة إدارة قافية</h2>
+<h2 id="welcomeTitle">مرحبًا بك في لوحة الإدارة</h2>
 <p>إدارة موسوعة قافية من مكان واحد.</p>
 </div>
 <div class="stats-grid">
@@ -972,6 +958,21 @@ onclick="window.location.href='index.html'"
 <div class="stat-label">المستخدمون</div>
 <div class="stat-value" id="statUsers">0</div>
 </div>
+<div class="stat-card"><div class="stat-label">إجمالي الزيارات</div><div class="stat-value" id="statVisitsAll">0</div></div><div class="stat-card"><div class="stat-label">الأجهزة المختلفة</div><div class="stat-value" id="statDevicesAll">0</div></div><div class="stat-card"><div class="stat-label">الحسابات المختلفة</div><div class="stat-value" id="statAccountsAll">0</div></div><div class="stat-card"><div class="stat-label">النشطون الآن</div><div class="stat-value" id="statActiveNow">0</div></div>
+</div>
+<div class="analytics-detail" id="analyticsDetail">
+  <div class="stats-grid analytics-period-grid">
+    <div class="stat-card"><div class="stat-label">زيارات اليوم</div><div class="stat-value" id="statVisitsToday">0</div></div>
+    <div class="stat-card"><div class="stat-label">آخر 7 أيام</div><div class="stat-value" id="statVisits7">0</div></div>
+    <div class="stat-card"><div class="stat-label">آخر 30 يومًا</div><div class="stat-value" id="statVisits30">0</div></div>
+    <div class="stat-card"><div class="stat-label">هذا الشهر</div><div class="stat-value" id="statVisitsMonth">0</div></div>
+    <div class="stat-card"><div class="stat-label">آخر سنة</div><div class="stat-value" id="statVisits365">0</div></div>
+    <div class="stat-card"><div class="stat-label">هذه السنة الميلادية</div><div class="stat-value" id="statVisitsYear">0</div></div>
+  </div>
+  <div class="dashboard-panels analytics-breakdown">
+    <div class="quick-card"><h4>الزيارات حسب السنوات</h4><div id="analyticsYears">لا توجد بيانات بعد.</div></div>
+    <div class="quick-card"><h4>الزيارات حسب الأشهر</h4><div id="analyticsMonths">لا توجد بيانات بعد.</div></div>
+  </div>
 </div>
 <div class="dashboard-panels">
 <div class="quick-card">
@@ -1163,7 +1164,7 @@ onclick="window.location.href='index.html'"
 <h3>إدارة المقالات</h3>
 <p>العنوان والنبذة المختصرة والمقال الكامل والتصنيف والكاتب.</p>
 </div>
-<button class="btn btn-primary" id="addArticleButton" type="button">+ إضافة مقال</button>
+<div class="table-actions"><button class="btn btn-secondary" id="importArticlesButton" type="button">استيراد مقالات</button><button class="btn btn-primary" id="addArticleButton" type="button">+ إضافة مقال</button><input id="articlesImportInput" type="file" accept="application/json,.json" hidden></div>
 </div>
 <div class="toolbar">
 <div class="search-box">
@@ -1192,6 +1193,7 @@ onclick="window.location.href='index.html'"
 </div>
 </div>
 </section>
+<section class="admin-section" id="section-books"><div class="content-card"><div class="card-header"><div><h3>إدارة الكتب</h3><p>إضافة الكتب وأغلفتها وملفات PDF ومعلوماتها.</p></div><div class="table-actions"><button class="btn btn-secondary" id="importBooksButton" type="button">استيراد كتب</button><button class="btn btn-primary" id="addBookButton" type="button">+ إضافة كتاب</button><input id="booksImportInput" type="file" accept="application/json,.json" hidden></div></div><div class="toolbar"><div class="search-box"><input class="search-input" id="bookSearch" type="search" placeholder="ابحث باسم الكتاب أو المؤلف..."></div></div><div class="table-wrapper"><table class="data-table"><thead><tr><th>الكتاب</th><th>المؤلف</th><th>الفئة</th><th>العصر</th><th>الإجراءات</th></tr></thead><tbody id="booksTableBody"></tbody></table></div></div></section>
 <section class="admin-section" id="section-videos">
 <div class="content-card">
 <div class="card-header">
@@ -1258,6 +1260,7 @@ onclick="window.location.href='index.html'"
 <div class="dashboard-grid" id="categoriesContainer" style="padding:20px;"></div>
 </div>
 </section>
+<section class="admin-section" id="section-legal"><div class="content-card"><div class="card-header"><div><h3>حقوق الطبع والنشر وسياسة الخصوصية</h3><p>يمكن للمالك والمدير فقط تعديل هذين النصين.</p></div></div><div class="table-actions"><button class="btn btn-primary" id="editCopyright" type="button">تعديل حقوق الطبع والنشر</button><button class="btn btn-secondary" id="editPrivacy" type="button">تعديل سياسة الخصوصية</button></div></div></section>
 <section class="admin-section" id="section-users">
 <div class="content-card">
 <div class="card-header">
@@ -1340,6 +1343,7 @@ const MEDIA_BUCKET = "qafiyah-media";
 const LARGE_UPLOAD_THRESHOLD = 6 * 1024 * 1024;
 const IMAGE_MAX_BYTES = 20 * 1024 * 1024;
 const AUDIO_MAX_BYTES = 50 * 1024 * 1024;
+const PDF_MAX_BYTES = 150 * 1024 * 1024;
 
 const ERAS = [
 "قبل الإسلام",
@@ -1379,6 +1383,8 @@ let currentEditorType = null;
 let currentEditorId = null;
 let currentEditorItem = null;
 let editorSaving = false;
+let poemAudioDraft = [];
+let poemAudioRemoved = [];
 
 let poetsCache = [];
 let poetsAdminPage = 0;
@@ -1580,9 +1586,11 @@ ${escapeHtml(item[labelKey] ?? "")}
 }
 
 function roleLabel(role) {
-return role === "super_admin"
-? "مدير رئيسي"
-: "مدير";
+return ({owner:"المالك",manager:"المدير",supervisor:"المشرف",writer:"الكاتب"}[role] || role);
+}
+
+function canEditContentItem(item){
+return currentAdmin?.role !== "writer" || String(item?.created_by||"") === String(currentUser?.id||"");
 }
 
 function mediaChip(url, label) {
@@ -1784,6 +1792,12 @@ throw new Error(
 "صيغة الفيديو غير مدعومة. استخدم MP4 أو WebM أو MOV أو M4V."
 );
 }
+}
+
+if (kind === "pdf") {
+const pdfOk = file.type === "application/pdf" || /\.pdf$/i.test(file.name || "");
+if (!pdfOk) throw new Error("ملف الكتاب يجب أن يكون PDF.");
+if (file.size > PDF_MAX_BYTES) throw new Error("حجم ملف PDF كبير جدًا. الحد 150MB.");
 }
 
 if (kind === "audio") {
@@ -2028,8 +2042,10 @@ kind
 const extension =
 safeExtension(file);
 
-const path =
-`${folder}/${randomToken()}.${extension}`;
+const safeFolder = (currentAdmin?.role === "writer" && currentUser?.id)
+? `users/${currentUser.id}/${folder}`
+: folder;
+const path = `${safeFolder}/${randomToken()}.${extension}`;
 
 if (
 file.size >
@@ -2071,15 +2087,10 @@ src="${safe}"
 }
 
 if (kind === "audio") {
-return `
-<div class="media-existing">
-<audio
-controls
-preload="metadata"
-src="${safe}"
-></audio>
-</div>
-`;
+return `<div class="media-existing"><audio controls preload="metadata" src="${safe}"></audio></div>`;
+}
+if (kind === "pdf") {
+return `<div class="media-existing"><a href="${safe}" target="_blank" rel="noopener">فتح ملف PDF الحالي</a></div>`;
 }
 
 return `
@@ -2104,6 +2115,8 @@ kind === "video"
 ? "video/mp4,video/webm,video/quicktime,video/x-m4v,.mp4,.webm,.mov,.m4v"
 : kind === "audio"
 ? "audio/mpeg,audio/mp4,audio/x-m4a,audio/aac,audio/wav,audio/x-wav,audio/ogg,.mp3,.m4a,.aac,.wav,.ogg"
+: kind === "pdf"
+? "application/pdf,.pdf"
 : "image/jpeg,image/png,image/webp,image/avif,image/gif";
 
 return `
@@ -2232,7 +2245,9 @@ URL.createObjectURL(file);
 if (preview) {
 
 preview.innerHTML =
-kind === "video"
+kind === "pdf"
+? `<div class="table-muted">${escapeHtml(file.name)} — ${(file.size/1024/1024).toFixed(1)}MB</div>`
+: kind === "video"
 ? `
 <video
 controls
@@ -2304,6 +2319,11 @@ field: "image_url",
 folder: "articles",
 kind: "image"
 }
+],
+
+book: [
+{ field: "cover_url", folder: "books/covers", kind: "image" },
+{ field: "file_url", folder: "books/files", kind: "pdf" }
 ],
 
 video: [
@@ -2453,8 +2473,10 @@ if (
 adminError ||
 !adminData?.length ||
 ![
-"admin",
-"super_admin"
+"owner",
+"manager",
+"supervisor",
+"writer"
 ].includes(
 adminData[0]?.role
 )
@@ -2550,9 +2572,18 @@ roleLabel(
 currentAdmin.role
 );
 
+if(["supervisor","writer"].includes(currentAdmin.role)) document.querySelector('[data-section="dashboard"]')?.style.setProperty("display","none");
+if(currentAdmin.role==="writer"){
+document.querySelector('[data-section="notifications"]')?.style.setProperty("display","none");
+document.querySelector('[data-section="meters"]')?.style.setProperty("display","none");
+document.querySelector('[data-section="rhymes"]')?.style.setProperty("display","none");
+document.getElementById("adminsNav")?.style.setProperty("display","none");
+["importPoetsButton","importPoemsButton","importArticlesButton","importBooksButton"].forEach(id=>document.getElementById(id)?.style.setProperty("display","none"));
+}
+if(!["owner","manager"].includes(currentAdmin.role)) document.getElementById("legalNav")?.style.setProperty("display","none");
+
 if (
-currentAdmin.role !==
-"super_admin"
+!["owner","manager","supervisor"].includes(currentAdmin.role)
 ) {
 document
 .getElementById(
@@ -3060,21 +3091,9 @@ poet => `
 <tr>
 
 <td>
-${
-poet.image_url
-? `
-<img
-class="poet-photo"
-src="${escapeHtml(poet.image_url)}"
-alt=""
->
-`
-: `
-<div class="poet-placeholder">
-${adminIcon("pen")}
-</div>
-`
-}
+${poet.image_url ? `
+<img class="poet-photo" src="${escapeHtml(poet.image_url)}" alt="">
+` : ""}
 </td>
 
 <td>
@@ -3127,21 +3146,9 @@ type="button"
 عرض
 </button>
 
-<button
-class="btn btn-secondary btn-small"
-onclick="editPoet(${poet.id})"
-type="button"
->
-تعديل
-</button>
+${canEditContentItem(poet)?`<button class="btn btn-secondary btn-small" onclick="editPoet(${poet.id})" type="button">تعديل</button>`:`<span class="table-muted">عرض فقط</span>`}
 
-<button
-class="btn btn-danger btn-small"
-onclick="deletePoet(${poet.id})"
-type="button"
->
-حذف
-</button>
+${canEditContentItem(poet)?`<button class="btn btn-danger btn-small" onclick="deletePoet(${poet.id})" type="button">حذف</button>`:""}
 
 </div>
 
@@ -3480,7 +3487,7 @@ setFilterOptions(document.getElementById("poemRhymeFilter"), rhymesCache.map(ite
 if (rhymeName) document.getElementById("poemRhymeFilter").value = rhymeName;
 
 let query = supabaseClient.from("poems")
-.select("id,title,poet_id,poet,era,category,meter_id,rhyme_id,is_featured,created_at,catalog_id,image_url,video_url,audio_url",{count:"exact"})
+.select("id,title,poet_id,poet,era,category,meter_id,rhyme_id,is_featured,created_at,catalog_id,image_url,video_url,audio_url,created_by",{count:"exact"})
 .order("is_featured",{ascending:false})
 .order("created_at",{ascending:false})
 .range(from,to);
@@ -3625,21 +3632,11 @@ type="button"
 عرض
 </button>
 
-<button
-class="btn btn-secondary btn-small"
-onclick="editPoem(${poem.id})"
-type="button"
->
-تعديل
-</button>
+${canEditContentItem(poem)?`<button class="btn btn-secondary btn-small" onclick="editPoem(${poem.id})" type="button">تعديل</button>`:`<span class="table-muted">عرض فقط</span>`}
 
-<button
-class="btn btn-danger btn-small"
-onclick="deletePoem(${poem.id})"
-type="button"
->
-حذف
-</button>
+${canEditContentItem(poem)?`<button class="btn btn-secondary btn-small" onclick="managePoemAudio(${poem.id})" type="button">الصوتيات</button>`:""}
+
+${canEditContentItem(poem)?`<button class="btn btn-danger btn-small" onclick="deletePoem(${poem.id})" type="button">حذف</button>`:""}
 
 </div>
 
@@ -3839,21 +3836,9 @@ type="button"
 عرض
 </button>
 
-<button
-class="btn btn-secondary btn-small"
-onclick="editArticle(${article.id})"
-type="button"
->
-تعديل
-</button>
+${canEditContentItem(article)?`<button class="btn btn-secondary btn-small" onclick="editArticle(${article.id})" type="button">تعديل</button>`:`<span class="table-muted">عرض فقط</span>`}
 
-<button
-class="btn btn-danger btn-small"
-onclick="deleteArticle(${article.id})"
-type="button"
->
-حذف
-</button>
+${canEditContentItem(article)?`<button class="btn btn-danger btn-small" onclick="deleteArticle(${article.id})" type="button">حذف</button>`:""}
 
 </div>
 
@@ -4016,21 +4001,9 @@ video.is_featured
 <td>
 <div class="table-actions">
 
-<button
-class="btn btn-secondary btn-small"
-onclick="editVideo(${video.id})"
-type="button"
->
-تعديل
-</button>
+${canEditContentItem(video)?`<button class="btn btn-secondary btn-small" onclick="editVideo(${video.id})" type="button">تعديل</button>`:`<span class="table-muted">عرض فقط</span>`}
 
-<button
-class="btn btn-danger btn-small"
-onclick="deleteVideo(${video.id})"
-type="button"
->
-حذف
-</button>
+${canEditContentItem(video)?`<button class="btn btn-danger btn-small" onclick="deleteVideo(${video.id})" type="button">حذف</button>`:""}
 
 </div>
 </td>
@@ -4454,8 +4427,7 @@ user.created_at
 
 async function loadAdmins() {
 if (
-currentAdmin?.role !==
-"super_admin"
+!["owner","manager","supervisor"].includes(currentAdmin?.role)
 ) {
 return;
 }
@@ -4637,6 +4609,18 @@ articles: [
 loadArticles
 ],
 
+books: [
+"الكتب",
+"إدارة الكتب والأغلفة وملفات PDF والاستيراد",
+()=>window.loadBooks?.()
+],
+
+legal: [
+"حقوق وسياسة الموقع",
+"حقوق الطبع والنشر وسياسة الخصوصية",
+()=>Promise.resolve()
+],
+
 videos: [
 "الفيديوهات",
 "رفع وإدارة الفيديوهات والصور المصغرة",
@@ -4672,8 +4656,7 @@ function openSection(section) {
 
 if (
 section === "admins" &&
-currentAdmin?.role !==
-"super_admin"
+!["owner","manager","supervisor"].includes(currentAdmin?.role)
 ) {
 return;
 }
@@ -5007,13 +4990,12 @@ item.video_url,
 "poems/videos"
 )}
 
-${mediaPicker(
-"audio_url",
-"التسجيل الصوتي للقصيدة (اختياري)",
-item.audio_url,
-"audio",
-"poems/audio"
-)}
+<div class="form-group full" id="poemAudioManager">
+<label>التسجيلات الصوتية للقصيدة</label>
+<p class="form-hint">يمكن إضافة تسجيل واحد أو عدة تسجيلات. اسم القارئ اختياري لكل تسجيل.</p>
+<div class="audio-editor-list" id="poemAudioRows"></div>
+<button class="btn btn-secondary btn-small" id="addPoemAudioRow" type="button">+ إضافة صوتية</button>
+</div>
 
 <div class="form-group full">
 
@@ -5413,7 +5395,20 @@ placeholder="مثال: poem.html?id=12"
 `;
 }
 
-if (type === "admin") {
+if (type === "book") {
+return `
+<div class="form-group"><label>اسم الكتاب</label><input class="form-control" name="title" required value="${fieldValue(item,"title")}"></div>
+<div class="form-group"><label>المؤلف</label><input class="form-control" name="author" value="${fieldValue(item,"author")}"></div>
+<div class="form-group"><label>الفئة الأدبية</label><input class="form-control" name="literary_category" value="${fieldValue(item,"literary_category")}" placeholder="مثال: كتاب شعري أو نثري"></div>
+<div class="form-group"><label>العصر</label><select class="form-control" name="era">${eraOptions(item.era)}</select></div>
+<div class="form-group full"><label>وصف مختصر</label><textarea class="form-control" name="description">${fieldValue(item,"description")}</textarea></div>
+${mediaPicker("cover_url","غلاف الكتاب",item.cover_url,"image","books/covers")}
+${mediaPicker("file_url","ملف الكتاب PDF",item.file_url,"pdf","books/files")}
+<div class="form-group full"><label class="checkbox-row"><input type="checkbox" name="is_featured" ${item.is_featured ? "checked" : ""}> كتاب مميز</label></div>
+`;
+}
+
+if (type === "manager") {
 
 return `
 <div class="form-group full">
@@ -5443,19 +5438,7 @@ name="role"
 required
 >
 
-<option
-value="admin"
-${item.role === "admin" ? "selected" : ""}
->
-admin
-</option>
-
-<option
-value="super_admin"
-${item.role === "super_admin" ? "selected" : ""}
->
-super_admin
-</option>
+${(currentAdmin?.role === "owner" ? [["owner","المالك"],["manager","المدير"],["supervisor","المشرف"],["writer","الكاتب"]] : currentAdmin?.role === "manager" ? [["supervisor","المشرف"],["writer","الكاتب"]] : [["writer","الكاتب"]]).map(([value,label])=>`<option value="${value}" ${item.role===value?"selected":""}>${label}</option>`).join("")}
 
 </select>
 
@@ -5480,6 +5463,203 @@ ${item.is_active !== false ? "checked" : ""}
 }
 
 return "";
+}
+
+
+async function loadPoemAudioDraft(poemId, legacyAudioUrl = null) {
+poemAudioDraft = [];
+poemAudioRemoved = [];
+if (!poemId) {
+if (legacyAudioUrl) {
+poemAudioDraft.push({
+id: null,
+audio_url: String(legacyAudioUrl),
+reader_name: "",
+sort_order: 0,
+file: null,
+is_legacy: true
+});
+}
+return;
+}
+try {
+const { data, error } = await supabaseClient
+.from("poem_audio")
+.select("id,audio_url,reader_name,sort_order,created_by")
+.eq("poem_id", poemId)
+.order("sort_order")
+.order("id");
+if (error) throw error;
+poemAudioDraft = (data || []).map((row, index) => ({
+id: row.id,
+audio_url: row.audio_url || "",
+reader_name: row.reader_name || "",
+sort_order: Number(row.sort_order ?? index),
+file: null,
+created_by: row.created_by || null
+}));
+if (!poemAudioDraft.length && legacyAudioUrl) {
+poemAudioDraft.push({
+id: null,
+audio_url: String(legacyAudioUrl),
+reader_name: "",
+sort_order: 0,
+file: null,
+is_legacy: true
+});
+}
+} catch (error) {
+console.warn("تعذر تحميل الصوتيات المتعددة:", error);
+if (legacyAudioUrl) {
+poemAudioDraft.push({
+id: null,
+audio_url: String(legacyAudioUrl),
+reader_name: "",
+sort_order: 0,
+file: null,
+is_legacy: true
+});
+}
+}
+}
+
+function renderPoemAudioEditor() {
+const host = document.getElementById("poemAudioRows");
+const addButton = document.getElementById("addPoemAudioRow");
+if (!host || !addButton) return;
+
+const draw = () => {
+host.innerHTML = "";
+if (!poemAudioDraft.length) {
+const empty = document.createElement("div");
+empty.className = "audio-editor-empty";
+empty.textContent = "لا توجد صوتيات بعد.";
+host.appendChild(empty);
+}
+poemAudioDraft.forEach((track, index) => {
+const row = document.createElement("div");
+row.className = "audio-editor-row";
+row.dataset.index = String(index);
+
+const readerGroup = document.createElement("div");
+readerGroup.className = "form-group";
+readerGroup.innerHTML = '<label>اسم القارئ (اختياري)</label>';
+const reader = document.createElement("input");
+reader.className = "form-control";
+reader.type = "text";
+reader.value = track.reader_name || "";
+reader.placeholder = "مثال: فلان الفلاني";
+reader.addEventListener("input", () => {
+track.reader_name = reader.value;
+});
+readerGroup.appendChild(reader);
+
+const fileGroup = document.createElement("div");
+fileGroup.className = "form-group";
+fileGroup.innerHTML = '<label>' + (track.audio_url ? "استبدال الملف الصوتي (اختياري)" : "الملف الصوتي") + '</label>';
+const file = document.createElement("input");
+file.className = "form-control";
+file.type = "file";
+file.accept = "audio/mpeg,audio/mp4,audio/x-m4a,audio/aac,audio/wav,audio/x-wav,audio/ogg,.mp3,.m4a,.aac,.wav,.ogg";
+file.addEventListener("change", () => {
+track.file = file.files?.[0] || null;
+});
+fileGroup.appendChild(file);
+if (track.audio_url) {
+const current = document.createElement("small");
+current.className = "audio-editor-current";
+current.textContent = "يوجد تسجيل محفوظ حاليًا";
+fileGroup.appendChild(current);
+}
+
+const remove = document.createElement("button");
+remove.type = "button";
+remove.className = "btn btn-danger btn-small";
+remove.textContent = "إزالة";
+remove.addEventListener("click", () => {
+if (track.id) poemAudioRemoved.push({ ...track });
+poemAudioDraft.splice(index, 1);
+draw();
+});
+
+row.appendChild(readerGroup);
+row.appendChild(fileGroup);
+row.appendChild(remove);
+host.appendChild(row);
+});
+};
+
+addButton.onclick = () => {
+poemAudioDraft.push({
+id: null,
+audio_url: "",
+reader_name: "",
+sort_order: poemAudioDraft.length,
+file: null
+});
+draw();
+};
+draw();
+}
+
+async function savePoemAudioDraft(poemId) {
+const uploaded = [];
+const oldToDelete = [];
+try {
+for (const removed of poemAudioRemoved) {
+if (!removed?.id) continue;
+const { error } = await supabaseClient.from("poem_audio").delete().eq("id", removed.id);
+if (error) throw error;
+const oldPath = storagePathFromPublicUrl(removed.audio_url);
+if (oldPath) oldToDelete.push(oldPath);
+}
+
+for (let i = 0; i < poemAudioDraft.length; i += 1) {
+const track = poemAudioDraft[i];
+let audioUrl = track.audio_url || "";
+if (track.file) {
+const upload = await uploadMedia(track.file, "poems/audio", "audio", null);
+uploaded.push(upload.path);
+if (track.audio_url) {
+const oldPath = storagePathFromPublicUrl(track.audio_url);
+if (oldPath) oldToDelete.push(oldPath);
+}
+audioUrl = upload.url;
+}
+if (!audioUrl) continue;
+
+const payload = {
+poem_id: poemId,
+audio_url: audioUrl,
+reader_name: String(track.reader_name || "").trim() || null,
+sort_order: i,
+created_by: currentUser?.id || null
+};
+
+if (track.id) {
+const { error } = await supabaseClient
+.from("poem_audio")
+.update(payload)
+.eq("id", track.id);
+if (error) throw error;
+} else {
+const { data, error } = await supabaseClient
+.from("poem_audio")
+.insert(payload)
+.select("id")
+.single();
+if (error) throw error;
+track.id = data?.id || null;
+track.audio_url = audioUrl;
+track.file = null;
+}
+}
+poemAudioRemoved = [];
+return { uploaded, oldToDelete };
+} catch (error) {
+try { await removeMediaPaths(uploaded); } catch {}
+throw error;
+}
 }
 
 async function openEditor(
@@ -5509,6 +5689,14 @@ fetchMeters(),
 fetchRhymes()
 ]);
 
+await loadPoemAudioDraft(
+item?.id || null,
+item?.audio_url || null
+);
+
+} else {
+poemAudioDraft = [];
+poemAudioRemoved = [];
 }
 
 } catch (error) {
@@ -5539,6 +5727,11 @@ article:
 item
 ? "تعديل المقال"
 : "إضافة مقال",
+
+book:
+item
+? "تعديل الكتاب"
+: "إضافة كتاب",
 
 meter:
 item
@@ -5583,6 +5776,7 @@ editorModal
 bindMediaInputs();
 
 if (type === "poem") {
+renderPoemAudioEditor();
 
 const poetSelect =
 editorFields.querySelector(
@@ -5794,6 +5988,19 @@ featured
 };
 }
 
+if (currentEditorType === "book") {
+if (!values.title?.trim()) throw new Error("اسم الكتاب مطلوب.");
+return { table: "books", payload: {
+title: values.title.trim(),
+author: values.author?.trim() || null,
+literary_category: values.literary_category?.trim() || null,
+era: values.era || null,
+description: values.description?.trim() || null,
+is_featured: featured,
+catalog_id: currentEditorItem?.catalog_id || (`manual:book:${randomToken()}`)
+}};
+}
+
 if (
 currentEditorType ===
 "meter"
@@ -5903,12 +6110,11 @@ false
 
 if (
 currentEditorType ===
-"admin"
+"manager"
 ) {
 
 if (
-currentAdmin?.role !==
-"super_admin"
+!["owner","manager","supervisor"].includes(currentAdmin?.role)
 ) {
 
 throw new Error(
@@ -5981,6 +6187,9 @@ loadRhymes(),
 loadPoems()
 ]);
 
+} else if (table === "books") {
+await window.loadBooks?.();
+
 } else if (
 table === "videos"
 ) {
@@ -6042,6 +6251,10 @@ currentEditorType,
 payload
 );
 
+if (currentEditorType === "book" && !payload.file_url) {
+throw new Error("يرجى اختيار ملف PDF للكتاب.");
+}
+
 uploadedPaths =
 mediaResult.uploaded;
 
@@ -6075,6 +6288,19 @@ await supabaseClient
 
 if (result.error) {
 throw result.error;
+}
+
+if (table === "poems") {
+const audioMediaResult = await savePoemAudioDraft(result.data.id);
+uploadedPaths.push(...audioMediaResult.uploaded);
+oldPathsToDelete.push(...audioMediaResult.oldToDelete);
+
+// الصوتيات الجديدة تحفظ في poem_audio. نترك الحقل القديم للترحيل فقط.
+if (currentEditorItem?.audio_url) {
+try {
+await supabaseClient.from("poems").update({ audio_url: null }).eq("id", result.data.id);
+} catch {}
+}
 }
 
 if (
@@ -6420,8 +6646,7 @@ window.editAdmin =
 function (id) {
 
 if (
-currentAdmin?.role !==
-"super_admin"
+!["owner","manager","supervisor"].includes(currentAdmin?.role)
 ) {
 return;
 }
@@ -6435,7 +6660,7 @@ String(id)
 
 if (item) {
 openEditor(
-"admin",
+"manager",
 item
 );
 }
@@ -6659,8 +6884,7 @@ window.deleteAdmin =
 async function (id) {
 
 if (
-currentAdmin?.role !==
-"super_admin"
+!["owner","manager","supervisor"].includes(currentAdmin?.role)
 ) {
 return;
 }
@@ -6779,11 +7003,11 @@ let imported = 0;
 for (let i=0; i<rows.length; i+=BATCH) {
 const batch = rows.slice(i,i+BATCH);
 button.textContent = `استيراد ${Math.min(i+BATCH,rows.length)} / ${rows.length}`;
-const result = await supabaseClient.from("poets").upsert(batch,{onConflict:"catalog_id",ignoreDuplicates:true});
+const result = await supabaseClient.rpc("qafiyah_import_poets",{payload:batch});
 if (result.error) throw result.error;
 imported += batch.length;
 }
-showToast(`تم فحص ${rows.length} شاعر واستيراد الجديد دون استبدال تعديلاتك.`,"success");
+showToast(`تم فحص ${rows.length} شاعر؛ أُضيف الجديد وحُدِّث السجل المتكرر بدل إنشاء نسخة مكررة.`,"success");
 poetsAdminPage = 0;
 await Promise.all([loadPoets(),loadDashboard()]);
 } catch (error) {
@@ -6867,6 +7091,13 @@ rhyme_id: rhyme?.id || null,
 image_url: String(item?.image_url || "").trim() || null,
 video_url: String(item?.video_url || "").trim() || null,
 audio_url: String(item?.audio_url || "").trim() || null,
+audio_readings: Array.isArray(item?.audio_readings)
+? item.audio_readings.map((track, index) => ({
+audio_url: String(track?.audio_url || "").trim(),
+reader_name: String(track?.reader_name || "").trim() || null,
+sort_order: Number(track?.sort_order ?? index)
+})).filter(track => track.audio_url)
+: [],
 is_featured: Boolean(item?.is_featured),
 source_refs: sourceRefs,
 verification_status: ["verified","review","disputed"].includes(item?.verification_status) ? item.verification_status : "verified"
@@ -6878,10 +7109,10 @@ const BATCH = 75;
 for (let i=0; i<rows.length; i+=BATCH) {
 const batch = rows.slice(i,i+BATCH);
 button.textContent = `استيراد ${Math.min(i+BATCH,rows.length)} / ${rows.length}`;
-const result = await supabaseClient.from("poems").upsert(batch,{onConflict:"catalog_id",ignoreDuplicates:true});
+const result = await supabaseClient.rpc("qafiyah_import_poems",{payload:batch});
 if (result.error) throw result.error;
 }
-let message = `تم فحص ${source.length} سجل واستيراد القصائد الجديدة دون استبدال تعديلاتك.`;
+let message = `تم فحص ${source.length} سجل؛ أُضيفت القصائد الجديدة وحُدِّث المتكرر في مكانه دون تكدس.`;
 if (skippedNoPoet) message += ` تخطينا ${skippedNoPoet} لعدم العثور على الشاعر.`;
 if (skippedInvalid) message += ` وتخطينا ${skippedInvalid} لسجل ناقص العنوان أو النص.`;
 showToast(message,"success");
@@ -6974,8 +7205,7 @@ document
 function () {
 
 if (
-currentAdmin?.role !==
-"super_admin"
+!["owner","manager","supervisor"].includes(currentAdmin?.role)
 ) {
 
 showToast(
@@ -6986,7 +7216,7 @@ showToast(
 return;
 }
 
-openEditor("admin");
+openEditor("manager");
 }
 );
 
@@ -7299,7 +7529,7 @@ console.error(error);
 }
 
 openSection(
-"dashboard"
+["owner","manager"].includes(currentAdmin?.role) ? "dashboard" : "poets"
 );
 
 startUsersCountAutoRefresh();
@@ -7307,5 +7537,48 @@ startUsersCountAutoRefresh();
 })();
 
 </script>
+<script>
+async function managePoemAudio(poemId){
+const poem = (poemsCache || []).find(item => String(item.id) === String(poemId));
+if (!poem) {
+showToast("تعذر العثور على القصيدة.", "error");
+return;
+}
+if (!canEditContentItem(poem)) {
+showToast("يمكنك إدارة صوتيات المحتوى الذي أضفته فقط.", "error");
+return;
+}
+await openEditor("poem", poem);
+setTimeout(() => document.getElementById("poemAudioManager")?.scrollIntoView({behavior:"smooth",block:"center"}), 80);
+}
+(function(){
+const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+window.loadBooks=async function loadBooks(){
+ const b=document.getElementById('booksTableBody');if(!b)return;
+ let q=supabaseClient.from('books').select('*').order('created_at',{ascending:false}).limit(500),term=document.getElementById('bookSearch')?.value.trim();
+ if(term)q=q.or(`title.ilike.%${term.replace(/[,()]/g,' ')}%,author.ilike.%${term.replace(/[,()]/g,' ')}%`);
+ const r=await q;if(r.error){b.innerHTML=`<tr><td colspan="5">${esc(r.error.message)}</td></tr>`;return}
+ window.__qBooks=r.data||[];
+ b.innerHTML=window.__qBooks.map(x=>`<tr><td>${esc(x.title)}</td><td>${esc(x.author||'—')}</td><td>${esc(x.literary_category||'—')}</td><td>${esc(x.era||'—')}</td><td>${canEditContentItem(x)?`<button class="btn btn-secondary btn-small" data-edit-book="${x.id}">تعديل</button> <button class="btn btn-danger btn-small" data-del-book="${x.id}">حذف</button>`:`<span class="table-muted">عرض فقط</span>`}</td></tr>`).join('')||'<tr><td colspan="5">لا توجد كتب.</td></tr>';
+};
+document.getElementById('addBookButton')?.addEventListener('click',()=>openEditor('book'));
+document.getElementById('booksTableBody')?.addEventListener('click',async e=>{const eb=e.target.closest('[data-edit-book]'),db=e.target.closest('[data-del-book]');if(eb)openEditor('book',(window.__qBooks||[]).find(x=>String(x.id)===eb.dataset.editBook));if(db&&confirm('حذف الكتاب؟')){const r=await supabaseClient.from('books').delete().eq('id',db.dataset.delBook);if(r.error)showToast(r.error.message,'error');else loadBooks()}});
+document.getElementById('bookSearch')?.addEventListener('input',()=>loadBooks());
+async function imp(file,key,table,map){if(!file)return;try{const j=JSON.parse(await file.text()),src=Array.isArray(j)?j:j[key];if(!Array.isArray(src))throw Error('صيغة الملف غير صحيحة');const rows=src.map(map).filter(Boolean);for(let i=0;i<rows.length;i+=100){const fn=table==='books'?'qafiyah_import_books':table==='articles'?'qafiyah_import_articles':null;const r=fn?await supabaseClient.rpc(fn,{payload:rows.slice(i,i+100)}):await supabaseClient.from(table).upsert(rows.slice(i,i+100),{onConflict:'catalog_id',ignoreDuplicates:false});if(r.error)throw r.error}showToast('تم الاستيراد وتحديث المتكرر دون تكدس.','success');if(table==='books')loadBooks();if(table==='articles')loadArticles()}catch(e){showToast(e.message,'error')}}
+document.getElementById('importBooksButton')?.addEventListener('click',()=>document.getElementById('booksImportInput').click());
+document.getElementById('booksImportInput')?.addEventListener('change',e=>imp(e.target.files[0],'books','books',x=>x?.title?{catalog_id:x.catalog_id||('qafiyah:book:'+x.title.trim().toLowerCase().replace(/\s+/g,'-')),title:x.title,author:x.author||null,literary_category:x.literary_category||x.category||null,era:x.era||null,cover_url:x.cover_url||null,file_url:x.file_url||null,description:x.description||null,is_featured:!!x.is_featured}:null));
+document.getElementById('importArticlesButton')?.addEventListener('click',()=>document.getElementById('articlesImportInput').click());
+document.getElementById('articlesImportInput')?.addEventListener('change',e=>imp(e.target.files[0],'articles','articles',x=>x?.title?{catalog_id:x.catalog_id||('qafiyah:article:'+x.title.trim().toLowerCase().replace(/\s+/g,'-')),title:x.title,author:x.author||null,category:x.category||null,summary:x.summary||null,content:x.content||'',image_url:x.image_url||null,is_featured:!!x.is_featured}:null));
+async function editLegal(key){if(!['owner','manager'].includes(currentAdmin?.role)){showToast('هذه الصلاحية للمالك والمدير فقط.','error');return}const r=await supabaseClient.from('site_settings').select('title,content').eq('key',key).maybeSingle();const content=prompt(key==='copyright'?'حقوق الطبع والنشر':'سياسة الخصوصية',r.data?.content||'');if(content===null)return;const u=await supabaseClient.from('site_settings').upsert({key,title:key==='copyright'?'حقوق الطبع والنشر':'سياسة الخصوصية',content,updated_by:currentUser.id},{onConflict:'key'});if(u.error)showToast(u.error.message,'error');else showToast('تم الحفظ.','success')}
+document.getElementById('editCopyright')?.addEventListener('click',()=>editLegal('copyright'));document.getElementById('editPrivacy')?.addEventListener('click',()=>editLegal('privacy'));
+window.loadQAnalytics=async function loadQAnalytics(){try{if(!['owner','manager'].includes(currentAdmin?.role))return;const r=await supabaseClient.rpc('qafiyah_analytics_summary');if(r.error)throw r.error;const d=Array.isArray(r.data)?r.data[0]:r.data;if(!d)return;const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=Number(v||0).toLocaleString('ar-SA')};set('statVisitsAll',d.total_visits);set('statDevicesAll',d.unique_devices);set('statAccountsAll',d.unique_accounts);set('statActiveNow',d.active_now);set('statVisitsToday',d.today);set('statVisits7',d.last_7_days);set('statVisits30',d.last_30_days);set('statVisitsMonth',d.this_month);set('statVisits365',d.last_365_days);set('statVisitsYear',d.this_year);
+ const yearHost=document.getElementById('analyticsYears'),monthHost=document.getElementById('analyticsMonths');
+ if(yearHost){const years=Array.isArray(d.years)?d.years:[];yearHost.innerHTML=years.length?`<div class="analytics-list">${years.slice().reverse().map(x=>`<div><span>${esc(x.year)}</span><strong>${Number(x.visits||0).toLocaleString('ar-SA')}</strong></div>`).join('')}</div>`:'لا توجد بيانات بعد.'}
+ if(monthHost){const months=Array.isArray(d.months)?d.months:[], names=['','يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];monthHost.innerHTML=months.length?`<div class="analytics-list">${months.slice().reverse().map(x=>`<div><span>${esc(names[Number(x.month)]||x.month)} ${esc(x.year)}</span><strong>${Number(x.visits||0).toLocaleString('ar-SA')}</strong></div>`).join('')}</div>`:'لا توجد بيانات بعد.'}
+}catch(e){console.error('analytics',e)}};
+document.addEventListener('DOMContentLoaded',loadQAnalytics);setInterval(loadQAnalytics,60000);
+})();
+</script>
+
 </body>
 </html>

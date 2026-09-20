@@ -12,14 +12,15 @@
 .q-fav-tools{display:grid;grid-template-columns:minmax(0,2fr) minmax(150px,1fr) minmax(150px,1fr);gap:10px;margin:0 0 22px}.q-fav-tools input,.q-fav-tools select{width:100%;min-height:46px;border:1px solid var(--q-border);border-radius:14px;background:var(--q-surface);color:var(--q-text);padding:0 14px;font:inherit}.q-fav-status{font-size:.9rem;opacity:.65;margin:-8px 0 18px}.q-fav-card small{display:block;opacity:.66;margin-top:6px}.q-fav-card mark{background:transparent;color:inherit}
 @media(max-width:700px){.q-fav-tools{grid-template-columns:1fr}.q-fav-tools input,.q-fav-tools select{font-size:16px}}
 </style>
-<style id="q-no-chrome-page">body>header,body>footer,.site-header,.site-footer,.side-menu,.side-menu-overlay,.menu-overlay,.menu-toggle,.hamburger,.hamburger-btn,.menu-btn{display:none!important}</style>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
+<link rel="stylesheet" href="qafiyah-v2.css?v=revolution-1">
 </head>
 <body>
 <script>(function(){try{var t=localStorage.getItem('qafiyah_theme')||'natural';if(t==='light')t='evening';if(!/^(natural|dark|morning|evening|night)$/.test(t))t='natural';document.documentElement.setAttribute('data-q-theme',t);document.body.setAttribute('data-q-theme',t)}catch(e){}})();</script>
 <main class="q-page-shell">
-<a class="q-page-return" href="index.html">العودة للصفحة الرئيسية ←</a>
+
 <h1 class="q-page-title">المفضلة</h1>
 <p class="q-page-lead">كل ما حفظته من مقالات وقصائد وشعراء في مكان واحد.</p>
 <div class="q-tabs" id="favoriteTabs">
@@ -115,5 +116,6 @@ document.addEventListener('qafiyah:favorites-changed',hydrate);
 hydrate();
 })();
 </script>
+<script src="qafiyah-v2.js?v=revolution-1"></script>
 </body>
 </html>

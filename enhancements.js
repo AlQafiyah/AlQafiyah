@@ -89,6 +89,7 @@ function qFooterHTML(){
         <a href="Poems.html">القصائد</a>
         <a href="poets.html">الشعراء</a>
         <a href="articles.html">المقالات</a>
+        <a href="books.html">الكتب</a>
         <a href="about.html">نبذة عن القافية</a>
       </div>
       <div class="footer-links">
@@ -117,17 +118,14 @@ function qSideFooterHTML(){
     </div>
     <p>© القافية</p>`;
 }
-function ensureUnifiedFooterAndContact(){
-  const currentPage=(location.pathname.split('/').pop()||'').toLowerCase();
-  const noChromePages=new Set(['favorites.html','settings.html']);
-  if(noChromePages.has(currentPage)){
-    // المفضلة والإعدادات فقط: بلا رأس، بلا ذيل، وبلا القائمة الجانبية.
-    // زر «العودة للصفحة الرئيسية» داخل محتوى الصفحة لا يُمس.
-    document.querySelectorAll('body > header, body > footer, .site-header, .site-footer, .side-menu, .side-menu-overlay, .menu-overlay, .menu-toggle, .hamburger, .hamburger-btn, .menu-btn').forEach(el=>el.remove());
-    return;
-  }
+window.QafiyahEnhancements.footerHTML=qFooterHTML;
+window.QafiyahEnhancements.sideFooterHTML=qSideFooterHTML;
 
-  if(currentPage==='profile.html'){
+function ensureUnifiedFooterAndContact(){
+  const currentPage=(location.pathname.split('/').pop()||'').toLowerCase().replace(/\.html$/,'');
+  // الإعدادات والمفضلة صفحات عادية كاملة مثل بقية الموقع.
+
+  if(currentPage==='profile'){
     // الملف الشخصي فقط: بلا رأس وبلا ذيل، مع الإبقاء على قائمة الثلاث خطوط.
     document.querySelectorAll('body > header, body > footer, .site-header, .site-footer').forEach(el=>el.remove());
     // مهم: لا نعرض ذيل/تواصل معنا داخل قائمة الملف الشخصي.

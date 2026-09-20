@@ -1,0 +1,14 @@
+{
+  "articles": [
+    {
+      "catalog_id": "qafiyah:article:example-001",
+      "title": "عنوان المقال",
+      "author": "اسم الكاتب",
+      "category": "سير وأعلام",
+      "summary": "نبذة مختصرة اختيارية",
+      "content": "محتوى المقال كاملًا",
+      "image_url": null,
+      "is_featured": false
+    }
+  ]
+}

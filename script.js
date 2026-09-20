@@ -547,7 +547,7 @@
 
                 } else if (
                     text.includes(
-                        "وحدة الإدارة"
+                        "لوحة الإدارة"
                     )
                 ) {
                     name =
@@ -2045,7 +2045,7 @@
                 </span>
 
                 <span>
-                    وحدة الإدارة
+                    لوحة الإدارة
                 </span>
             `;
 
@@ -2116,8 +2116,10 @@
                     !error &&
                     admin?.is_active === true &&
                     [
-                        "admin",
-                        "super_admin"
+                        "owner",
+                        "manager",
+                        "supervisor",
+                        "writer"
                     ].includes(
                         admin?.role
                     );

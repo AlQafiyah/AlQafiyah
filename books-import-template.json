@@ -1,0 +1,15 @@
+{
+  "books": [
+    {
+      "catalog_id": "qafiyah:book:example-001",
+      "title": "اسم الكتاب",
+      "author": "اسم المؤلف",
+      "era": "العصر الحديث",
+      "literary_category": "نثري",
+      "description": "نبذة اختيارية",
+      "cover_url": "https://example.com/cover.jpg",
+      "file_url": "https://example.com/book.pdf",
+      "is_featured": false
+    }
+  ]
+}

@@ -25,8 +25,6 @@ body[data-q-theme='night']{--q-bg:#0f1720;--q-surface:#16212d;--q-text:#edf3f8;-
 .qafiyah-card-image{width:auto!important;max-width:min(170px,36vw)!important;max-height:180px!important;margin:0!important;aspect-ratio:auto!important;flex:0 0 auto!important}
 .qafiyah-detail-image{width:auto!important;max-width:min(92%,920px)!important;max-height:72vh!important;margin:24px auto 0!important}
 .qafiyah-poet-detail-image{width:auto!important;max-width:min(320px,90%)!important;max-height:520px!important;aspect-ratio:auto!important}
-.qafiyah-image-placeholder{background:transparent!important;border:1px dashed var(--q-border)!important;border-radius:18px!important}
-
 /* توحيد القصائد مع المقالات والشعراء */
 .qafiyah-poem-index-card{display:flex!important;align-items:center!important;gap:clamp(14px,2.5vw,24px)!important;min-height:150px!important;padding:12px!important;border-radius:20px!important;overflow:visible!important;position:relative!important}
 .qafiyah-poem-index-card .qafiyah-card-body{flex:1 1 auto!important;min-width:0!important;padding:14px 4px 14px 16px!important}
@@ -298,7 +296,7 @@ body[data-q-theme]:not([data-q-theme='natural']) :where(
 body[data-q-theme]:not([data-q-theme='natural']) :where(.qafiyah-back-link,.qafiyah-read-more){color:var(--q-accent)!important}
 
 /* الصور وحالات عدم وجود صورة */
-body[data-q-theme]:not([data-q-theme='natural']) :where(.qafiyah-image-placeholder,.article-card-image,.poet-card-image){
+body[data-q-theme]:not([data-q-theme='natural']) :where(.article-card-image,.poet-card-image){
   background:var(--q-surface-2)!important;
   color:var(--q-muted)!important;
   border-color:var(--q-border)!important;
