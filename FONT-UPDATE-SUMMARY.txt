@@ -1,0 +1,13 @@
+Qafiyah Fonts Update — 50 fonts
+
+Changes in this build:
+- Renamed: السعودي العريض -> السعودي
+- Renamed: نسخ عثمان طه العريض -> عثمان طه
+- Renamed: بغداد نسخ -> بغداد
+- Renamed: عام الإبل -> الإبل
+- Added: ثمانية (thmanyah serif text Black)
+- Added: النسيب (Alnaseeb)
+- Added: الأول العريض (Al-AwwalWeb-Bold)
+- Existing الأول remains unchanged.
+- Existing الكوفي المربع and الكوفي remain unchanged.
+- Total font choices in Settings: 50

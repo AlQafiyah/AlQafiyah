@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa+Ink:wght@400;700&family=Cairo:wght@400;600;700&family=Changa:wght@400;600;700&family=El+Messiri:wght@400;600;700&family=Harmattan:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Katibeh&family=Lateef:wght@400;700&family=Mada:wght@400;600;700&family=Noto+Kufi+Arabic:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&family=Reem+Kufi:wght@400;600;700&family=Scheherazade+New:wght@400;700&family=Tajawal:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa+Ink:wght@400;700&family=Cairo:wght@400;600;700&family=El+Messiri:wght@400;600;700&family=Harmattan:wght@400;700&family=Katibeh&family=Lateef:wght@400;700&family=Mada:wght@400;600;700&family=Noto+Kufi+Arabic:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&family=Reem+Kufi:wght@400;600;700&family=Scheherazade+New:wght@400;700&family=Tajawal:wght@400;500;700&display=swap');
 @font-face{font-family:'Qafiyah Saudi';src:url('assets/fonts/Saudi-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:'Qafiyah Saudi';src:url('assets/fonts/Saudi-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
 @font-face{font-family:'Expo Arabic';src:url('assets/fonts/ExpoArabic-Book.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
@@ -6,6 +6,47 @@
 @font-face{font-family:'Expo Arabic';src:url('assets/fonts/ExpoArabic-SemiBold.ttf') format('truetype');font-weight:600;font-style:normal;font-display:swap}
 @font-face{font-family:'Expo Arabic';src:url('assets/fonts/ExpoArabic-Bold.otf') format('opentype');font-weight:700;font-style:normal;font-display:swap}
 @font-face{font-family:'Expo Arabic Light';src:url('assets/fonts/ExpoArabic-Light.ttf') format('truetype');font-weight:300;font-style:normal;font-display:swap}
+
+/* خطوط قافية المحلية — ملفات المستخدم */
+@font-face{font-family:'QF Ruqaa Regular';src:url('assets/fonts/custom/ruqaa-regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Ruqaa Bold';src:url('assets/fonts/custom/ruqaa-bold.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Ruqaa Thin';src:url('assets/fonts/custom/ruqaa-thin.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Kufi Square';src:url('assets/fonts/custom/kufi-square.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Kufi Stylistic';src:url('assets/fonts/custom/kufi-stylistic.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Andalus';src:url('assets/fonts/custom/andalus.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Thuluth';src:url('assets/fonts/custom/thuluth.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Ummi';src:url('assets/fonts/custom/ummi.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Ummi Swash';src:url('assets/fonts/custom/ummi-swash.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Ummi Solid';src:url('assets/fonts/custom/ummi-solid.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Sponge';src:url('assets/fonts/custom/sponge-arabic.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Adabi';src:url('assets/fonts/custom/adabi.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Sultan';src:url('assets/fonts/custom/sultan.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Sahra';src:url('assets/fonts/custom/sahra.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Quran Qalam';src:url('assets/fonts/custom/quran-qalam.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Quran Amiri';src:url('assets/fonts/custom/quran-amiri.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Quran Saleem';src:url('assets/fonts/custom/quran-saleem.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Mushaf';src:url('assets/fonts/custom/mushaf.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Naskh Tahrir';src:url('assets/fonts/custom/naskh-tahrir.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Helal';src:url('assets/fonts/custom/helal.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Baghdad Naskh';src:url('assets/fonts/custom/baghdad-naskh.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Topaz';src:url('assets/fonts/custom/topaz.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Thuluth Madd';src:url('assets/fonts/custom/thuluth-madd.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Diwani One';src:url('assets/fonts/custom/diwani-1.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Diwani Two';src:url('assets/fonts/custom/diwani-2.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Palestine';src:url('assets/fonts/custom/palestine.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Uthman Taha Bold';src:url('assets/fonts/custom/uthman-taha-bold.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Uthmani';src:url('assets/fonts/custom/uthmani.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Al Awwal';src:url('assets/fonts/custom/al-awwal-regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Al Awwal';src:url('assets/fonts/custom/al-awwal-bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Arabic Poetry';src:url('assets/fonts/custom/arabic-poetry.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Masmak';src:url('assets/fonts/custom/masmak.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Year Camel';src:url('assets/fonts/custom/year-camel-regular.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Year Camel';src:url('assets/fonts/custom/year-camel-bold.otf') format('opentype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Watad';src:url('assets/fonts/custom/watad.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+
+@font-face{font-family:'QF Thmanyah';src:url('assets/fonts/custom/thmanyah-serif-black.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Alnaseeb';src:url('assets/fonts/custom/alnaseeb.woff') format('woff');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'QF Al Awwal Bold Web';src:url('assets/fonts/custom/al-awwal-web-bold.woff') format('woff');font-weight:400;font-style:normal;font-display:swap}
 
 :root{
   --qafiyah-font-family:'Qafiyah Saudi','Saudi',Tahoma,Arial,sans-serif;

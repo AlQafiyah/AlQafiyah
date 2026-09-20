@@ -7,20 +7,52 @@ const fonts={
   expo:"'Expo Arabic','Qafiyah Saudi',sans-serif",
   expoLight:"'Expo Arabic Light','Expo Arabic','Qafiyah Saudi',sans-serif",
   amiri:"'Amiri','Qafiyah Saudi',serif",
-  aref:"'Aref Ruqaa Ink','Amiri','Qafiyah Saudi',serif",
-  cairo:"'Cairo','Qafiyah Saudi',sans-serif",
-  changa:"'Changa','Qafiyah Saudi',sans-serif",
-  messiri:"'El Messiri','Qafiyah Saudi',sans-serif",
-  harmattan:"'Harmattan','Qafiyah Saudi',sans-serif",
-  ibm:"'IBM Plex Sans Arabic','Qafiyah Saudi',sans-serif",
-  katibeh:"'Katibeh','Amiri','Qafiyah Saudi',serif",
-  lateef:"'Lateef','Amiri','Qafiyah Saudi',serif",
-  mada:"'Mada','Qafiyah Saudi',sans-serif",
-  kufi:"'Noto Kufi Arabic','Reem Kufi','Qafiyah Saudi',sans-serif",
   naskh:"'Noto Naskh Arabic','Amiri','Qafiyah Saudi',serif",
-  reem:"'Reem Kufi','Noto Kufi Arabic','Qafiyah Saudi',sans-serif",
-  scheherazade:"'Scheherazade New','Amiri','Qafiyah Saudi',serif",
-  tajawal:"'Tajawal','Qafiyah Saudi',sans-serif"
+  ruqaaRegular:"'QF Ruqaa Regular','Qafiyah Saudi',serif",
+  ruqaaBold:"'QF Ruqaa Bold','Qafiyah Saudi',serif",
+  ruqaaThin:"'QF Ruqaa Thin','Qafiyah Saudi',serif",
+  kufi:"'QF Kufi Square','Qafiyah Saudi',sans-serif",
+  kufiStylistic:"'QF Kufi Stylistic','Qafiyah Saudi',sans-serif",
+  andalus:"'QF Andalus','Qafiyah Saudi',serif",
+  reem:"'Reem Kufi','Qafiyah Saudi',sans-serif",
+  cairo:"'Cairo','Qafiyah Saudi',sans-serif",
+  tajawal:"'Tajawal','Qafiyah Saudi',sans-serif",
+  messiri:"'El Messiri','Qafiyah Saudi',sans-serif",
+  mada:"'Mada','Qafiyah Saudi',sans-serif",
+  harmattan:"'Harmattan','Qafiyah Saudi',sans-serif",
+  scheherazade:"'Scheherazade New','Qafiyah Saudi',serif",
+  lateef:"'Lateef','Qafiyah Saudi',serif",
+  katibeh:"'Katibeh','Qafiyah Saudi',serif",
+  thuluth:"'QF Thuluth','Qafiyah Saudi',serif",
+  ummi:"'QF Ummi','Qafiyah Saudi',serif",
+  ummiSwash:"'QF Ummi Swash','Qafiyah Saudi',serif",
+  ummiSolid:"'QF Ummi Solid','Qafiyah Saudi',serif",
+  sponge:"'QF Sponge','Qafiyah Saudi',sans-serif",
+  adabi:"'QF Adabi','Qafiyah Saudi',serif",
+  sultan:"'QF Sultan','Qafiyah Saudi',serif",
+  sahra:"'QF Sahra','Qafiyah Saudi',serif",
+  quranQalam:"'QF Quran Qalam','Qafiyah Saudi',serif",
+  quranAmiri:"'QF Quran Amiri','Qafiyah Saudi',serif",
+  quranSaleem:"'QF Quran Saleem','Qafiyah Saudi',serif",
+  mushaf:"'QF Mushaf','Qafiyah Saudi',serif",
+  naskhTahrir:"'QF Naskh Tahrir','Qafiyah Saudi',serif",
+  helal:"'QF Helal','Qafiyah Saudi',serif",
+  baghdadNaskh:"'QF Baghdad Naskh','Qafiyah Saudi',serif",
+  topaz:"'QF Topaz','Qafiyah Saudi',serif",
+  thuluthMadd:"'QF Thuluth Madd','Qafiyah Saudi',serif",
+  diwani1:"'QF Diwani One','Qafiyah Saudi',serif",
+  diwani2:"'QF Diwani Two','Qafiyah Saudi',serif",
+  palestine:"'QF Palestine','Qafiyah Saudi',serif",
+  uthmanBold:"'QF Uthman Taha Bold','Qafiyah Saudi',serif",
+  uthmani:"'QF Uthmani','Qafiyah Saudi',serif",
+  alAwwal:"'QF Al Awwal','Qafiyah Saudi',sans-serif",
+  arabicPoetry:"'QF Arabic Poetry','Qafiyah Saudi',serif",
+  masmak:"'QF Masmak','Qafiyah Saudi',sans-serif",
+  yearCamel:"'QF Year Camel','Qafiyah Saudi',sans-serif",
+  watad:"'QF Watad','Qafiyah Saudi',sans-serif",
+  thmanyah:"'QF Thmanyah','Qafiyah Saudi',serif",
+  alnaseeb:"'QF Alnaseeb','Qafiyah Saudi',serif",
+  alAwwalBold:"'QF Al Awwal Bold Web','Qafiyah Saudi',sans-serif"
 };
 const allowedThemes=new Set(['natural','dark','morning','evening','night']);
 function normalizeTheme(theme){return theme==='light'?'evening':(allowedThemes.has(theme)?theme:'natural')}
@@ -39,7 +71,7 @@ function applyTheme(theme){
 window.QafiyahEnhancements={fonts,applyTheme,normalizeTheme};
 function getJSON(k,f){try{return JSON.parse(localStorage.getItem(k)||'')||f}catch{return f}}
 function setJSON(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function applyPrefs(){const fk=localStorage.getItem(LS.font)||'saudi';document.documentElement.style.setProperty('--qafiyah-font-family',fonts[fk]||fonts.saudi);applyTheme(localStorage.getItem(LS.theme)||'natural')}
+function applyPrefs(){let fk=localStorage.getItem(LS.font)||'saudi';if(fk==='aref'){fk='ruqaaRegular';localStorage.setItem(LS.font,fk)}document.documentElement.style.setProperty('--qafiyah-font-family',fonts[fk]||fonts.saudi);applyTheme(localStorage.getItem(LS.theme)||'natural')}
 if(document.body)applyPrefs();else document.addEventListener('DOMContentLoaded',applyPrefs);
 
 function typeFromHref(href){if(!href)return null; if(/article\.html\?id=/.test(href))return'article';if(/poet\.html\?id=/.test(href))return'poet';if(/poem\.html\?id=/.test(href))return'poem';return null}
