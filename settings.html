@@ -1,14 +1,284 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#3E2723"><title>الإعدادات | القافية</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="enhancements.css?v=revolution-1"><link rel="stylesheet" href="qafiyah-v2.css?v=revolution-1"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script></head><body><script>(function(){try{var t=localStorage.getItem('qafiyah_theme')||'natural';if(t==='light')t='evening';if(!/^(natural|dark|morning|evening|night)$/.test(t))t='natural';document.documentElement.setAttribute('data-q-theme',t);document.body.setAttribute('data-q-theme',t)}catch(e){}})();</script>
-<main class="q-page-shell"><h1 class="q-page-title">الإعدادات</h1><p class="q-page-lead">خصّص القافية كما تحب. تحفظ اختيارات الخط والمظهر تلقائيًا على هذا الجهاز.</p>
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><meta content="#3E2723" name="theme-color"/><title>الإعدادات | القافية</title><link href="style.css" rel="stylesheet"/><link href="enhancements.css?v=final-fix-2" rel="stylesheet"/><link href="qafiyah-v2.css?v=final-fix-2" rel="stylesheet"/><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script><script defer="" src="script.js"></script></head><body><script>(function(){try{var t=localStorage.getItem('qafiyah_theme')||'natural';if(t==='light')t='evening';if(!/^(natural|dark|morning|evening|night)$/.test(t))t='natural';document.documentElement.setAttribute('data-q-theme',t);document.body.setAttribute('data-q-theme',t)}catch(e){}})();</script>
+<header class="site-header">
+<div class="header-container">
+<button aria-controls="sideMenu" aria-expanded="false" aria-label="فتح القائمة" class="menu-button" id="menuButton" type="button">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<a aria-label="قافية - الصفحة الرئيسية" class="site-logo" href="index.html">
+                قافية
+            </a>
+<div class="header-actions">
+<button aria-label="الإشعارات" class="notification-button" id="notificationButton" type="button">
+<svg aria-hidden="true" class="notification-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9">
+</path>
+<path d="M10 21h4"></path>
+</svg>
+<span class="notification-count" id="notificationCount">
+                        0
+                    </span>
+</button>
+<button class="login-button" id="loginButton" type="button">
+                    تسجيل الدخول
+                </button>
+</div>
+</div>
+</header><div class="menu-overlay" id="menuOverlay"></div><aside aria-hidden="true" class="side-menu" id="sideMenu">
+<div class="side-menu-header">
+<h2>
+                قافية
+            </h2>
+<button aria-label="إغلاق القائمة" class="close-menu-button" id="closeMenuButton" type="button">
+                ×
+            </button>
+</div>
+<div class="user-section">
+<div class="user-avatar">
+                👤
+            </div>
+<div class="user-info">
+<strong id="menuUserName">
+                    مرحبًا بك
+                </strong>
+<span id="menuUserEmail">
+                    سجّل الدخول للوصول إلى حسابك
+                </span>
+</div>
+</div>
+<nav aria-label="القائمة الرئيسية" class="side-navigation">
+<a href="index.html">
+<span>⌂</span>
+<span>الرئيسية</span>
+</a>
+<a href="Poems.html">
+<span>📜</span>
+<span>القصائد</span>
+</a>
+<a href="poets.html">
+<span>✒</span>
+<span>الشعراء</span>
+</a>
+<a class="active" href="articles.html">
+<span>📝</span>
+<span>المقالات</span>
+</a>
+<a href="profile.html" id="profileLink">
+<span>👤</span>
+<span>الملف الشخصي</span>
+</a>
+<a href="favorites.html" id="favoritesLink">
+<span>⭐</span>
+<span>المفضلة</span>
+</a>
+<a href="settings.html" id="settingsLink">
+<span>⚙️</span>
+<span>الإعدادات</span>
+</a>
+<a href="about.html">
+<span>ℹ️</span>
+<span>نبذة عن قافية</span>
+</a>
+</nav>
+<div class="side-menu-footer">
+<a aria-label="البريد الإلكتروني" class="q-side-email" data-q-email-placeholder="" href="#">البريد الإلكتروني</a>
+<div class="side-menu-socials q-contact-socials">
+<a aria-label="X" data-q-social-placeholder="x" href="#" title="X"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.38L6.49 22H3.38l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.52h1.73L8.29 4.34H6.43L17.8 19.52Z"></path></svg></a>
+<a aria-label="TikTok" data-q-social-placeholder="tiktok" href="#" title="TikTok"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M14.5 3c.4 2.4 1.8 3.9 4.2 4.3v3.2c-1.6 0-3-.5-4.2-1.4v6.2a6.3 6.3 0 1 1-5.4-6.2v3.3a3.1 3.1 0 1 0 2.2 3V3h3.2Z"></path></svg></a>
+<a aria-label="Instagram" data-q-social-placeholder="instagram" href="#" title="Instagram"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><rect height="18" rx="5" width="18" x="3" y="3"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg></a>
+<a aria-label="Threads" data-q-social-placeholder="threads" href="#" title="Threads"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M17.8 8.4c-1.2-2-3.2-3.1-5.7-3.1-4.3 0-7 2.7-7 6.7 0 4.1 2.8 6.8 7.1 6.8 3.6 0 6.1-1.9 6.1-4.7 0-2.5-2-4.1-5-4.1-2.7 0-4.5 1.3-4.5 3.2 0 1.6 1.3 2.7 3.2 2.7 2.6 0 4.4-1.8 4.4-4.6 0-1.6-.4-3-1.2-4.2"></path></svg></a>
+<a aria-label="Facebook" data-q-social-placeholder="facebook" href="#" title="Facebook"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M13.8 22v-8h2.7l.4-3.1h-3.1V9c0-.9.3-1.5 1.6-1.5H17V4.7c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2H7.5V14h2.8v8h3.5Z"></path></svg></a>
+<a aria-label="WhatsApp" data-q-social-placeholder="whatsapp" href="#" title="WhatsApp"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M20.5 11.8a8.4 8.4 0 0 1-12.4 7.4L3 20.6l1.4-4.9A8.4 8.4 0 1 1 20.5 11.8Z"></path><path d="M8.2 7.8c.3-.5.6-.5.9-.5h.5c.2 0 .4.1.5.4l.8 1.9c.1.3 0 .5-.1.7l-.6.8c-.2.2-.2.4 0 .7.5.9 1.2 1.6 2 2.2.9.6 1.7.9 2.1 1 .3.1.5 0 .7-.2l.9-1.1c.2-.2.4-.3.7-.2l2 .9c.3.1.4.3.4.5 0 .4-.2 1.3-.7 1.8-.6.6-1.5.9-2.4.9-1 0-2.3-.3-3.9-1.1-1.2-.6-2.5-1.5-3.7-2.8-1.1-1.2-1.9-2.5-2.3-3.6-.4-1-.4-1.8.2-2.3Z"></path></svg></a>
+<a aria-label="Telegram" data-q-social-placeholder="telegram" href="#" title="Telegram"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M21.5 4.2 18.3 19c-.2 1-1 1.2-1.8.7l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L5.9 12.6 1 11.1c-1-.3-1.1-1 .2-1.5l19.1-7.4c.9-.3 1.7.2 1.2 2Z"></path></svg></a>
+</div>
+<p>
+                © قافية
+            </p>
+</div>
+</aside><div aria-hidden="true" class="notification-panel" id="notificationPanel">
+<div class="notification-header">
+<h3>
+                الإشعارات
+            </h3>
+<button aria-label="إغلاق الإشعارات" id="closeNotificationButton" type="button">
+                ×
+            </button>
+</div>
+<div class="notification-content" id="notificationContent">
+<p>
+                لا توجد إشعارات جديدة.
+            </p>
+</div>
+</div><main class="q-page-shell"><h1 class="q-page-title">الإعدادات</h1><p class="q-page-lead">خصّص القافية كما تحب. تحفظ اختيارات الخط والمظهر تلقائيًا على هذا الجهاز.</p>
 <div class="q-settings-grid">
 <section class="q-setting-disclosure" id="fontDisclosure"><button class="q-setting-trigger" type="button"><span><strong>الخطوط</strong><small id="fontCurrent">الأساسي</small></span><span class="q-setting-chevron">⌄</span></button><div class="q-setting-options" id="fontChoices"></div></section>
 <section class="q-setting-disclosure" id="themeDisclosure"><button class="q-setting-trigger" type="button"><span><strong>المظهر</strong><small id="themeCurrent">الطبيعية</small></span><span class="q-setting-chevron">⌄</span></button><div class="q-setting-options" id="themeChoices"></div></section>
 <section class="q-setting-disclosure" id="languageDisclosure"><button class="q-setting-trigger" id="languageButton" type="button"><span><strong>اللغة</strong><small>العربية</small></span><span class="q-setting-chevron">⌄</span></button></section>
-<section class="q-setting-disclosure q-setting-legal" data-setting-key="copyright"><button class="q-setting-trigger" type="button"><span><strong>حقوق الطبع والنشر</strong><small>معلومات حقوق المحتوى واستخدامه</small></span><span class="q-setting-chevron">⌄</span></button><div class="q-setting-options"><div class="q-setting-legal-content" id="copyrightContent">جاري التحميل...</div></div></section>
-<section class="q-setting-disclosure q-setting-legal" data-setting-key="privacy"><button class="q-setting-trigger" type="button"><span><strong>سياسة الخصوصية</strong><small>طريقة التعامل مع البيانات والخصوصية</small></span><span class="q-setting-chevron">⌄</span></button><div class="q-setting-options"><div class="q-setting-legal-content" id="privacyContent">جاري التحميل...</div></div></section>
-</div></main>
-<div class="q-modal" id="languageModal" aria-hidden="true"><div class="q-modal-card"><button class="q-modal-close" id="closeLanguageModal" type="button" aria-label="إغلاق">×</button><p>هل صدّقت؟ إنها موسوعة أدب وشعر عربي، وتريد لغة أخرى؟</p></div></div>
-<script src="enhancements.js?v=revolution-1"></script><script src="qafiyah-v2.js?v=revolution-1"></script><script>
+<section class="q-setting-disclosure q-setting-legal" data-setting-key="copyright"><button class="q-setting-trigger" type="button"><span><strong>حقوق الطبع والنشر</strong><small>معلومات حقوق المحتوى واستخدامه</small></span><span class="q-setting-chevron">⌄</span></button><div class="q-setting-options"><div class="q-setting-legal-content" id="copyrightContent"></div></div></section>
+<section class="q-setting-disclosure q-setting-legal" data-setting-key="privacy"><button class="q-setting-trigger" type="button"><span><strong>سياسة الخصوصية</strong><small>طريقة التعامل مع البيانات والخصوصية</small></span><span class="q-setting-chevron">⌄</span></button><div class="q-setting-options"><div class="q-setting-legal-content" id="privacyContent"></div></div></section>
+</div></main><div aria-hidden="true" class="login-modal" id="loginModal">
+<div class="login-box">
+<button aria-label="إغلاق" class="close-login-button" id="closeLoginButton" type="button">
+                ×
+            </button>
+<div id="loginForm">
+<h2>
+                    تسجيل الدخول
+                </h2>
+<p>
+                    سجّل دخولك إلى حسابك في قافية
+                </p>
+<div class="login-divider">
+<span>أو</span>
+</div>
+<label for="emailLogin">
+                    البريد الإلكتروني
+                </label>
+<input autocomplete="email" id="emailLogin" placeholder="أدخل بريدك الإلكتروني" type="email"/>
+<label for="passwordLogin">
+                    كلمة المرور
+                </label>
+<input autocomplete="current-password" id="passwordLogin" placeholder="أدخل كلمة المرور" type="password"/>
+<button class="login-submit" id="emailLoginButton" type="button">
+                    تسجيل الدخول
+                </button>
+<button class="login-register" id="showRegisterButton" type="button">
+                    إنشاء حساب جديد
+                </button>
+</div>
+<div id="registerForm" style="display:none;">
+<h2>
+                    إنشاء حساب
+                </h2>
+<p>
+                    أنشئ حسابك في قافية
+                </p>
+<label for="firstName">
+                    الاسم الأول
+                </label>
+<input autocomplete="given-name" id="firstName" placeholder="الاسم الأول" type="text"/>
+<label for="lastName">
+                    الاسم الأخير
+                    <span>(اختياري)</span>
+</label>
+<input autocomplete="family-name" id="lastName" placeholder="الاسم الأخير" type="text"/>
+<label>
+                    تاريخ الميلاد
+                </label>
+<div class="birth-date-fields">
+<select id="birthDay">
+<option value="">اليوم</option>
+</select>
+<select id="birthMonth">
+<option value="">الشهر</option>
+<option value="1">يناير</option>
+<option value="2">فبراير</option>
+<option value="3">مارس</option>
+<option value="4">أبريل</option>
+<option value="5">مايو</option>
+<option value="6">يونيو</option>
+<option value="7">يوليو</option>
+<option value="8">أغسطس</option>
+<option value="9">سبتمبر</option>
+<option value="10">أكتوبر</option>
+<option value="11">نوفمبر</option>
+<option value="12">ديسمبر</option>
+</select>
+<select id="birthYear">
+<option value="">السنة</option>
+</select>
+</div>
+<label for="gender">
+                    الجنس
+                </label>
+<select id="gender">
+<option value="">اختر الجنس</option>
+<option value="male">ذكر</option>
+<option value="female">أنثى</option>
+</select>
+<label for="emailRegister">
+                    البريد الإلكتروني
+                </label>
+<input autocomplete="email" id="emailRegister" placeholder="أدخل بريدك الإلكتروني" type="email"/>
+<label for="passwordRegister">
+                    كلمة المرور
+                </label>
+<input autocomplete="new-password" id="passwordRegister" placeholder="6 أحرف على الأقل" type="password"/>
+<label for="confirmPasswordRegister">
+                    تأكيد كلمة المرور
+                </label>
+<input autocomplete="new-password" id="confirmPasswordRegister" placeholder="أعد كتابة كلمة المرور" type="password"/>
+<button class="login-submit" id="registerSubmitButton" type="button">
+                    إنشاء الحساب
+                </button>
+<button class="login-register" id="showLoginButton" type="button">
+                    لدي حساب بالفعل
+                </button>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="q-modal" id="languageModal"><div class="q-modal-card"><button aria-label="إغلاق" class="q-modal-close" id="closeLanguageModal" type="button">×</button><p>هل صدّقت؟ إنها موسوعة أدب وشعر عربي، وتريد لغة أخرى؟</p></div></div>
+<footer class="site-footer">
+<div class="footer-container">
+<div class="footer-brand">
+<a class="footer-logo" href="index.html">
+                    قافية
+                </a>
+<p>
+                    موسوعة عربية مختصة في الشعر والأدب العربي،
+                    تجمع القصائد والشعراء والمقالات في مكان واحد.
+                </p>
+</div>
+<div class="footer-links">
+<h3>
+                    استكشف
+                </h3>
+<a href="Poems.html">القصائد</a>
+<a href="poets.html">الشعراء</a>
+<a href="articles.html">المقالات</a>
+<a href="about.html">نبذة عن قافية</a>
+</div>
+<div class="footer-links">
+<h3>
+                    الحساب
+                </h3>
+<a href="profile.html">
+                    الملف الشخصي
+                </a>
+<a href="favorites.html" id="footerFavoritesLink">
+                    المفضلة
+                </a>
+<a href="settings.html" id="footerSettingsLink">
+                    الإعدادات
+                </a>
+</div>
+<div class="footer-contact">
+<h3>
+                    تواصل معنا
+                </h3>
+<a aria-label="البريد الإلكتروني" class="q-contact-email" data-q-email-placeholder="" href="#">البريد الإلكتروني</a>
+<div class="footer-socials q-contact-socials">
+<a aria-label="X" data-q-social-placeholder="x" href="#" title="X"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.38L6.49 22H3.38l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.52h1.73L8.29 4.34H6.43L17.8 19.52Z"></path></svg></a>
+<a aria-label="TikTok" data-q-social-placeholder="tiktok" href="#" title="TikTok"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M14.5 3c.4 2.4 1.8 3.9 4.2 4.3v3.2c-1.6 0-3-.5-4.2-1.4v6.2a6.3 6.3 0 1 1-5.4-6.2v3.3a3.1 3.1 0 1 0 2.2 3V3h3.2Z"></path></svg></a>
+<a aria-label="Instagram" data-q-social-placeholder="instagram" href="#" title="Instagram"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><rect height="18" rx="5" width="18" x="3" y="3"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg></a>
+<a aria-label="Threads" data-q-social-placeholder="threads" href="#" title="Threads"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M17.8 8.4c-1.2-2-3.2-3.1-5.7-3.1-4.3 0-7 2.7-7 6.7 0 4.1 2.8 6.8 7.1 6.8 3.6 0 6.1-1.9 6.1-4.7 0-2.5-2-4.1-5-4.1-2.7 0-4.5 1.3-4.5 3.2 0 1.6 1.3 2.7 3.2 2.7 2.6 0 4.4-1.8 4.4-4.6 0-1.6-.4-3-1.2-4.2"></path></svg></a>
+<a aria-label="Facebook" data-q-social-placeholder="facebook" href="#" title="Facebook"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M13.8 22v-8h2.7l.4-3.1h-3.1V9c0-.9.3-1.5 1.6-1.5H17V4.7c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2H7.5V14h2.8v8h3.5Z"></path></svg></a>
+<a aria-label="WhatsApp" data-q-social-placeholder="whatsapp" href="#" title="WhatsApp"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M20.5 11.8a8.4 8.4 0 0 1-12.4 7.4L3 20.6l1.4-4.9A8.4 8.4 0 1 1 20.5 11.8Z"></path><path d="M8.2 7.8c.3-.5.6-.5.9-.5h.5c.2 0 .4.1.5.4l.8 1.9c.1.3 0 .5-.1.7l-.6.8c-.2.2-.2.4 0 .7.5.9 1.2 1.6 2 2.2.9.6 1.7.9 2.1 1 .3.1.5 0 .7-.2l.9-1.1c.2-.2.4-.3.7-.2l2 .9c.3.1.4.3.4.5 0 .4-.2 1.3-.7 1.8-.6.6-1.5.9-2.4.9-1 0-2.3-.3-3.9-1.1-1.2-.6-2.5-1.5-3.7-2.8-1.1-1.2-1.9-2.5-2.3-3.6-.4-1-.4-1.8.2-2.3Z"></path></svg></a>
+<a aria-label="Telegram" data-q-social-placeholder="telegram" href="#" title="Telegram"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M21.5 4.2 18.3 19c-.2 1-1 1.2-1.8.7l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L5.9 12.6 1 11.1c-1-.3-1.1-1 .2-1.5l19.1-7.4c.9-.3 1.7.2 1.2 2Z"></path></svg></a>
+</div>
+</div>
+</div>
+<div class="footer-bottom">
+<p>
+                © 2026 قافية — جميع الحقوق محفوظة
+            </p>
+<span>
+                موسوعة الشعر والأدب العربي
+            </span>
+</div>
+</footer><script src="enhancements.js?v=final-fix-2"></script><script src="qafiyah-v2.js?v=final-fix-2"></script><script>
 (function(){
 const E=window.QafiyahEnhancements||{},fonts=E.fonts||{};
 const names=[['saudi','السعودي العريض','(الأساسي)'],['expo','إكسبو عربي','فاخر'],['expoLight','إكسبو عربي خفيف','خفيف'],['amiri','أميري','نسخ كلاسيكي'],['naskh','النسخ','Noto Naskh Arabic'],['aref','الرقعة','Aref Ruqaa Ink'],['kufi','الكوفي','Noto Kufi Arabic'],['reem','ريم كوفي','كوفي حديث'],['cairo','كايرو','حديث'],['tajawal','تجوال','حديث'],['messiri','المسيري','أنيق'],['changa','تشانغا','مميز'],['ibm','IBM Plex عربي','معاصر'],['mada','مدى','هادئ'],['harmattan','هارماتان','تراثي'],['scheherazade','شهرزاد','نسخ فاخر'],['lateef','لطيف','تراثي'],['katibeh','كتيبة','زخرفي']];
@@ -17,6 +287,6 @@ function drawFonts(){const current=localStorage.getItem('qafiyah_font')||'saudi'
 const themes=[['natural','الطبيعية','المظهر الأصلي لقافية'],['morning','صباحية','دافئة ومشرقة'],['evening','مسائية','درجات غروب هادئة'],['night','ليلية','أزرق ليلي هادئ'],['dark','داكنة','داكنة دافئة عالية الوضوح']],th=document.getElementById('themeChoices'),themeCur=document.getElementById('themeCurrent');function drawThemes(){const cur=E.normalizeTheme?E.normalizeTheme(localStorage.getItem('qafiyah_theme')||'natural'):(localStorage.getItem('qafiyah_theme')||'natural');th.innerHTML='';themes.forEach(([key,name,note])=>{const b=document.createElement('button');b.type='button';b.className='q-choice'+(key===cur?' active':'');b.innerHTML='<strong>'+name+'</strong><small>'+note+'</small>';b.onclick=()=>{E.applyTheme?E.applyTheme(key):(localStorage.setItem('qafiyah_theme',key),document.documentElement.setAttribute('data-q-theme',key),document.body.setAttribute('data-q-theme',key));drawThemes()};th.appendChild(b)});themeCur.textContent=(themes.find(x=>x[0]===cur)||themes[0])[1]}drawThemes();
 document.querySelectorAll('.q-setting-disclosure:not(#languageDisclosure)').forEach(box=>box.querySelector('.q-setting-trigger')?.addEventListener('click',()=>box.classList.toggle('open')));
 const m=document.getElementById('languageModal');document.getElementById('languageButton').onclick=()=>{m.classList.add('open');m.setAttribute('aria-hidden','false')};const close=()=>{m.classList.remove('open');m.setAttribute('aria-hidden','true')};document.getElementById('closeLanguageModal').onclick=close;m.addEventListener('click',e=>{if(e.target===m)close()});document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
-async function legal(){try{const {data,error}=await supabaseClient.from('site_settings').select('key,content').in('key',['copyright','privacy']);if(error)throw error;const map=new Map((data||[]).map(x=>[x.key,x.content]));document.getElementById('copyrightContent').textContent=map.get('copyright')||'لم تُضف معلومات حقوق الطبع والنشر بعد.';document.getElementById('privacyContent').textContent=map.get('privacy')||'لم تُضف سياسة الخصوصية بعد.'}catch(e){document.getElementById('copyrightContent').textContent='شغّل ملف SQL الجديد لتفعيل هذا القسم.';document.getElementById('privacyContent').textContent='شغّل ملف SQL الجديد لتفعيل هذا القسم.'}}legal();
+async function legal(){try{const {data,error}=await supabaseClient.from('site_settings').select('key,content').in('key',['copyright','privacy']);if(error)throw error;const map=new Map((data||[]).map(x=>[x.key,x.content]));document.getElementById('copyrightContent').textContent=map.get('copyright')||'';document.getElementById('privacyContent').textContent=map.get('privacy')||''}catch(e){document.getElementById('copyrightContent').textContent='';document.getElementById('privacyContent').textContent=''}}legal();
 })();
 </script></body></html>

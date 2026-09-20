@@ -10,7 +10,7 @@ content="width=device-width, initial-scale=1.0"
 name="theme-color"
 content="#3E2723"
 >
-<title>لوحة إدارة قافية</title>
+<title>لوحة إدارة القافية</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tus-js-client@4.3.1/dist/tus.min.js"></script>
 <script src="supabase.js"></script>
@@ -823,7 +823,7 @@ gap: 6px;
 <div class="denied-screen" id="deniedScreen" style="display:none;">
 <div class="denied-card">
 <h2>غير مصرح بالدخول</h2>
-<p>لا تملك صلاحية الوصول إلى لوحة إدارة قافية.</p>
+<p>لا تملك صلاحية الوصول إلى لوحة إدارة القافية.</p>
 <button
 class="btn btn-primary"
 type="button"
@@ -837,7 +837,7 @@ onclick="window.location.href='index.html'"
 <div class="admin-layout">
 <aside class="admin-sidebar" id="adminSidebar">
 <div class="sidebar-brand">
-<div class="sidebar-brand-title">قافية</div>
+<div class="sidebar-brand-title">القافية</div>
 <div class="sidebar-brand-subtitle">لوحة الإدارة</div>
 </div>
 <div class="sidebar-nav">
@@ -885,7 +885,7 @@ onclick="window.location.href='index.html'"
 </button>
 <button class="nav-item" data-section="admins" id="adminsNav" type="button">
 <span class="nav-icon" data-admin-icon="shield"></span>
-<span>المديرون والصلاحيات</span>
+<span>الصلاحيات</span>
 </button>
 </div>
 <div class="sidebar-bottom">
@@ -912,7 +912,7 @@ onclick="window.location.href='index.html'"
 </button>
 <div class="page-heading">
 <h1 id="pageTitle">لوحة التحكم</h1>
-<p id="pageDescription">نظرة عامة على منصة قافية</p>
+<p id="pageDescription">نظرة عامة على منصة القافية</p>
 </div>
 </div>
 <div class="admin-account">
@@ -927,7 +927,7 @@ onclick="window.location.href='index.html'"
 <section class="admin-section active" id="section-dashboard">
 <div class="welcome-card">
 <h2 id="welcomeTitle">مرحبًا بك في لوحة الإدارة</h2>
-<p>إدارة موسوعة قافية من مكان واحد.</p>
+<p>إدارة موسوعة القافية من مكان واحد.</p>
 </div>
 <div class="stats-grid">
 <div class="stat-card">
@@ -1266,7 +1266,7 @@ onclick="window.location.href='index.html'"
 <div class="card-header">
 <div>
 <h3>المستخدمون</h3>
-<p>جميع الحسابات المسجلة في قافية وبيانات ملفاتهم الشخصية.</p>
+<p>جميع الحسابات المسجلة في القافية وبيانات ملفاتهم الشخصية.</p>
 </div>
 </div>
 <div class="toolbar">
@@ -1295,10 +1295,10 @@ onclick="window.location.href='index.html'"
 <div class="content-card">
 <div class="card-header">
 <div>
-<h3>المديرون والصلاحيات</h3>
+<h3>الصلاحيات</h3>
 <p>إدارة حسابات الإدارة.</p>
 </div>
-<button class="btn btn-primary" id="addAdminButton" type="button">+ إضافة مدير</button>
+<button class="btn btn-primary" id="addAdminButton" type="button">إضافة</button>
 </div>
 <div class="table-wrapper">
 <table class="data-table">
@@ -2572,13 +2572,20 @@ roleLabel(
 currentAdmin.role
 );
 
-if(["supervisor","writer"].includes(currentAdmin.role)) document.querySelector('[data-section="dashboard"]')?.style.setProperty("display","none");
+if(["supervisor","writer"].includes(currentAdmin.role)) {
+document.querySelector('[data-section="dashboard"]')?.style.setProperty("display","none");
+document.querySelector('[data-section="categories"]')?.style.setProperty("display","none");
+}
 if(currentAdmin.role==="writer"){
 document.querySelector('[data-section="notifications"]')?.style.setProperty("display","none");
 document.querySelector('[data-section="meters"]')?.style.setProperty("display","none");
 document.querySelector('[data-section="rhymes"]')?.style.setProperty("display","none");
 document.getElementById("adminsNav")?.style.setProperty("display","none");
 ["importPoetsButton","importPoemsButton","importArticlesButton","importBooksButton"].forEach(id=>document.getElementById(id)?.style.setProperty("display","none"));
+}
+if(currentAdmin.role !== "owner") {
+document.querySelector('[data-section="users"]')?.style.setProperty("display","none");
+document.getElementById("statUsers")?.closest(".stat-card")?.style.setProperty("display","none");
 }
 if(!["owner","manager"].includes(currentAdmin.role)) document.getElementById("legalNav")?.style.setProperty("display","none");
 
@@ -2633,6 +2640,7 @@ return count || 0;
 }
 
 async function getUsersCount() {
+if (currentAdmin?.role !== "owner") return 0;
 const {
 data,
 error
@@ -2873,10 +2881,10 @@ document
 <strong>${videoCount}</strong>
 </div>
 
-<div class="quick-item">
+${currentAdmin?.role === "owner" ? `<div class="quick-item">
 <span>المستخدمون</span>
 <strong id="summaryUsersCount">${userCount}</strong>
-</div>
+</div>` : ""}
 `;
 
 document
@@ -4268,6 +4276,7 @@ item => item.category
 }
 
 async function loadUsers() {
+if (currentAdmin?.role !== "owner") return;
 const tbody =
 document.getElementById(
 "usersTableBody"
@@ -4463,7 +4472,7 @@ console.error(error);
 setEmptyRow(
 tbody,
 5,
-"تعذر تحميل المديرين."
+"تعذر تحميل الصلاحيات."
 );
 
 return;
@@ -4477,7 +4486,7 @@ if (!adminsCache.length) {
 setEmptyRow(
 tbody,
 5,
-"لا يوجد مديرون."
+"لا توجد صلاحيات."
 );
 
 return;
@@ -4575,7 +4584,7 @@ const SECTION_INFO = {
 
 dashboard: [
 "لوحة التحكم",
-"نظرة عامة على منصة قافية",
+"نظرة عامة على منصة القافية",
 loadDashboard
 ],
 
@@ -4646,13 +4655,16 @@ loadUsers
 ],
 
 admins: [
-"المديرون والصلاحيات",
+"الصلاحيات",
 "إدارة صلاحيات الإدارة",
 loadAdmins
 ]
 };
 
 function openSection(section) {
+
+if (section === "users" && currentAdmin?.role !== "owner") return;
+if (section === "categories" && !["owner","manager"].includes(currentAdmin?.role)) return;
 
 if (
 section === "admins" &&
@@ -5755,8 +5767,8 @@ item
 
 admin:
 item
-? "تعديل المدير"
-: "إضافة مدير"
+? "تعديل الصلاحية"
+: "إضافة"
 };
 
 modalTitle.textContent =
@@ -6915,7 +6927,7 @@ return deleteRecord(
 
 id,
 
-"هل أنت متأكد من حذف هذا المدير؟",
+"هل أنت متأكد من حذف هذه الصلاحية؟",
 
 loadAdmins,
 
@@ -7532,7 +7544,7 @@ openSection(
 ["owner","manager"].includes(currentAdmin?.role) ? "dashboard" : "poets"
 );
 
-startUsersCountAutoRefresh();
+if (currentAdmin?.role === "owner") startUsersCountAutoRefresh();
 
 })();
 
@@ -7571,10 +7583,10 @@ document.getElementById('importArticlesButton')?.addEventListener('click',()=>do
 document.getElementById('articlesImportInput')?.addEventListener('change',e=>imp(e.target.files[0],'articles','articles',x=>x?.title?{catalog_id:x.catalog_id||('qafiyah:article:'+x.title.trim().toLowerCase().replace(/\s+/g,'-')),title:x.title,author:x.author||null,category:x.category||null,summary:x.summary||null,content:x.content||'',image_url:x.image_url||null,is_featured:!!x.is_featured}:null));
 async function editLegal(key){if(!['owner','manager'].includes(currentAdmin?.role)){showToast('هذه الصلاحية للمالك والمدير فقط.','error');return}const r=await supabaseClient.from('site_settings').select('title,content').eq('key',key).maybeSingle();const content=prompt(key==='copyright'?'حقوق الطبع والنشر':'سياسة الخصوصية',r.data?.content||'');if(content===null)return;const u=await supabaseClient.from('site_settings').upsert({key,title:key==='copyright'?'حقوق الطبع والنشر':'سياسة الخصوصية',content,updated_by:currentUser.id},{onConflict:'key'});if(u.error)showToast(u.error.message,'error');else showToast('تم الحفظ.','success')}
 document.getElementById('editCopyright')?.addEventListener('click',()=>editLegal('copyright'));document.getElementById('editPrivacy')?.addEventListener('click',()=>editLegal('privacy'));
-window.loadQAnalytics=async function loadQAnalytics(){try{if(!['owner','manager'].includes(currentAdmin?.role))return;const r=await supabaseClient.rpc('qafiyah_analytics_summary');if(r.error)throw r.error;const d=Array.isArray(r.data)?r.data[0]:r.data;if(!d)return;const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=Number(v||0).toLocaleString('ar-SA')};set('statVisitsAll',d.total_visits);set('statDevicesAll',d.unique_devices);set('statAccountsAll',d.unique_accounts);set('statActiveNow',d.active_now);set('statVisitsToday',d.today);set('statVisits7',d.last_7_days);set('statVisits30',d.last_30_days);set('statVisitsMonth',d.this_month);set('statVisits365',d.last_365_days);set('statVisitsYear',d.this_year);
+window.loadQAnalytics=async function loadQAnalytics(){try{if(!['owner','manager'].includes(currentAdmin?.role))return;const r=await supabaseClient.rpc('qafiyah_analytics_summary');if(r.error)throw r.error;const d=Array.isArray(r.data)?r.data[0]:r.data;if(!d)return;const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=Number(v||0).toLocaleString('en-US')};set('statVisitsAll',d.total_visits);set('statDevicesAll',d.unique_devices);set('statAccountsAll',d.unique_accounts);set('statActiveNow',d.active_now);set('statVisitsToday',d.today);set('statVisits7',d.last_7_days);set('statVisits30',d.last_30_days);set('statVisitsMonth',d.this_month);set('statVisits365',d.last_365_days);set('statVisitsYear',d.this_year);
  const yearHost=document.getElementById('analyticsYears'),monthHost=document.getElementById('analyticsMonths');
- if(yearHost){const years=Array.isArray(d.years)?d.years:[];yearHost.innerHTML=years.length?`<div class="analytics-list">${years.slice().reverse().map(x=>`<div><span>${esc(x.year)}</span><strong>${Number(x.visits||0).toLocaleString('ar-SA')}</strong></div>`).join('')}</div>`:'لا توجد بيانات بعد.'}
- if(monthHost){const months=Array.isArray(d.months)?d.months:[], names=['','يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];monthHost.innerHTML=months.length?`<div class="analytics-list">${months.slice().reverse().map(x=>`<div><span>${esc(names[Number(x.month)]||x.month)} ${esc(x.year)}</span><strong>${Number(x.visits||0).toLocaleString('ar-SA')}</strong></div>`).join('')}</div>`:'لا توجد بيانات بعد.'}
+ if(yearHost){const years=Array.isArray(d.years)?d.years:[];yearHost.innerHTML=years.length?`<div class="analytics-list">${years.slice().reverse().map(x=>`<div><span>${Number(x.year||0).toLocaleString('en-US',{useGrouping:false})}</span><strong>${Number(x.visits||0).toLocaleString('en-US')}</strong></div>`).join('')}</div>`:'لا توجد بيانات بعد.'}
+ if(monthHost){const months=Array.isArray(d.months)?d.months:[], names=['','يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];monthHost.innerHTML=months.length?`<div class="analytics-list">${months.slice().reverse().map(x=>`<div><span>${esc(names[Number(x.month)]||x.month)} ${Number(x.year||0).toLocaleString('en-US',{useGrouping:false})}</span><strong>${Number(x.visits||0).toLocaleString('en-US')}</strong></div>`).join('')}</div>`:'لا توجد بيانات بعد.'}
 }catch(e){console.error('analytics',e)}};
 document.addEventListener('DOMContentLoaded',loadQAnalytics);setInterval(loadQAnalytics,60000);
 })();
