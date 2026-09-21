@@ -810,6 +810,16 @@ gap: 6px;
 }
 
 .analytics-detail{margin-top:18px}.analytics-period-grid{margin-bottom:18px}.analytics-list{display:grid;gap:8px}.analytics-list>div{display:flex;justify-content:space-between;gap:18px;padding:10px 0;border-bottom:1px solid var(--border)}.analytics-list>div:last-child{border-bottom:0}.analytics-list strong{font-variant-numeric:tabular-nums}.analytics-breakdown{margin-top:0}
+
+/* التحديد والحذف الجماعي */
+.bulk-select-col{width:52px;text-align:center!important}
+.bulk-row-check{width:19px;height:19px;accent-color:var(--brown);cursor:pointer;vertical-align:middle}
+.bulk-toolbar{display:none;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 22px;border-bottom:1px solid var(--border);background:#fffaf7}
+.bulk-toolbar.active{display:flex}
+.bulk-toolbar .bulk-count{margin-inline-start:auto;font-family:Arial,sans-serif;font-size:12px}
+.bulk-selected-row{background:#fff8f2}
+.bulk-toggle-active{background:var(--brown)!important;color:#fff!important;border-color:var(--brown)!important}
+@media(max-width:600px){.bulk-toolbar .btn{flex:1 1 auto}.bulk-toolbar .bulk-count{width:100%;margin-inline-start:0;text-align:center}}
 </style>
 </head>
 <body>
@@ -993,10 +1003,18 @@ onclick="window.location.href='index.html'"
 <p>إضافة الشاعر واسمه المشهور وسيرته وعصره وربط قصائده به.</p>
 </div>
 <div class="table-actions">
+<button class="btn btn-secondary" id="poetsSelectToggle" type="button">تحديد</button>
 <button class="btn btn-secondary" id="importPoetsButton" type="button">استيراد شعراء</button>
 <button class="btn btn-primary" id="addPoetButton" type="button">+ إضافة شاعر</button>
 <input id="poetsImportInput" type="file" accept="application/json,.json" hidden>
 </div>
+</div>
+<div class="bulk-toolbar" id="poetsBulkToolbar">
+<button class="btn btn-secondary btn-small" type="button" data-bulk-visible="poets">تحديد الصفحة</button>
+<button class="btn btn-secondary btn-small" type="button" data-bulk-all="poets">تحديد الكل</button>
+<button class="btn btn-secondary btn-small" type="button" data-bulk-clear="poets">إلغاء التحديد</button>
+<button class="btn btn-danger btn-small" type="button" data-bulk-delete="poets">حذف المحدد (0)</button>
+<span class="badge bulk-count" id="poetsBulkCount">0 محدد</span>
 </div>
 <div class="toolbar">
 <div class="search-box">
@@ -1012,6 +1030,7 @@ onclick="window.location.href='index.html'"
 <table class="data-table">
 <thead>
 <tr>
+<th class="bulk-select-col">تحديد</th>
 <th>الصورة</th>
 <th>الاسم</th>
 <th>اللقب</th>
@@ -1041,10 +1060,18 @@ onclick="window.location.href='index.html'"
 <p>إدارة القصائد وربطها بالشعراء والبحور والقوافي وتصنيفها حسب العصر والموضوع.</p>
 </div>
 <div class="table-actions">
+<button class="btn btn-secondary" id="poemsSelectToggle" type="button">تحديد</button>
 <button class="btn btn-secondary" id="importPoemsButton" type="button">استيراد قصائد</button>
 <button class="btn btn-primary" id="addPoemButton" type="button">+ إضافة قصيدة</button>
 <input id="poemsImportInput" type="file" accept="application/json,.json" hidden>
 </div>
+</div>
+<div class="bulk-toolbar" id="poemsBulkToolbar">
+<button class="btn btn-secondary btn-small" type="button" data-bulk-visible="poems">تحديد الصفحة</button>
+<button class="btn btn-secondary btn-small" type="button" data-bulk-all="poems">تحديد الكل</button>
+<button class="btn btn-secondary btn-small" type="button" data-bulk-clear="poems">إلغاء التحديد</button>
+<button class="btn btn-danger btn-small" type="button" data-bulk-delete="poems">حذف المحدد (0)</button>
+<span class="badge bulk-count" id="poemsBulkCount">0 محدد</span>
 </div>
 <div class="toolbar">
 <div class="search-box">
@@ -1075,6 +1102,7 @@ onclick="window.location.href='index.html'"
 <table class="data-table">
 <thead>
 <tr>
+<th class="bulk-select-col">تحديد</th>
 <th>العنوان</th>
 <th>الشاعر</th>
 <th>العصر</th>
@@ -1164,7 +1192,14 @@ onclick="window.location.href='index.html'"
 <h3>إدارة المقالات</h3>
 <p>العنوان والنبذة المختصرة والمقال الكامل والتصنيف والكاتب.</p>
 </div>
-<div class="table-actions"><button class="btn btn-secondary" id="importArticlesButton" type="button">استيراد مقالات</button><button class="btn btn-primary" id="addArticleButton" type="button">+ إضافة مقال</button><input id="articlesImportInput" type="file" accept="application/json,.json" hidden></div>
+<div class="table-actions"><button class="btn btn-secondary" id="articlesSelectToggle" type="button">تحديد</button><button class="btn btn-secondary" id="importArticlesButton" type="button">استيراد مقالات</button><button class="btn btn-primary" id="addArticleButton" type="button">+ إضافة مقال</button><input id="articlesImportInput" type="file" accept="application/json,.json" hidden></div>
+</div>
+<div class="bulk-toolbar" id="articlesBulkToolbar">
+<button class="btn btn-secondary btn-small" type="button" data-bulk-visible="articles">تحديد الظاهر</button>
+<button class="btn btn-secondary btn-small" type="button" data-bulk-all="articles">تحديد الكل</button>
+<button class="btn btn-secondary btn-small" type="button" data-bulk-clear="articles">إلغاء التحديد</button>
+<button class="btn btn-danger btn-small" type="button" data-bulk-delete="articles">حذف المحدد (0)</button>
+<span class="badge bulk-count" id="articlesBulkCount">0 محدد</span>
 </div>
 <div class="toolbar">
 <div class="search-box">
@@ -1180,6 +1215,7 @@ onclick="window.location.href='index.html'"
 <table class="data-table">
 <thead>
 <tr>
+<th class="bulk-select-col">تحديد</th>
 <th>العنوان</th>
 <th>النبذة</th>
 <th>الكاتب</th>
@@ -1193,7 +1229,7 @@ onclick="window.location.href='index.html'"
 </div>
 </div>
 </section>
-<section class="admin-section" id="section-books"><div class="content-card"><div class="card-header"><div><h3>إدارة الكتب</h3><p>إضافة الكتب وأغلفتها وملفات PDF ومعلوماتها.</p></div><div class="table-actions"><button class="btn btn-secondary" id="importBooksButton" type="button">استيراد كتب</button><button class="btn btn-primary" id="addBookButton" type="button">+ إضافة كتاب</button><input id="booksImportInput" type="file" accept="application/json,.json" hidden></div></div><div class="toolbar"><div class="search-box"><input class="search-input" id="bookSearch" type="search" placeholder="ابحث باسم الكتاب أو المؤلف..."></div></div><div class="table-wrapper"><table class="data-table"><thead><tr><th>الكتاب</th><th>المؤلف</th><th>الفئة</th><th>العصر</th><th>الإجراءات</th></tr></thead><tbody id="booksTableBody"></tbody></table></div></div></section>
+<section class="admin-section" id="section-books"><div class="content-card"><div class="card-header"><div><h3>إدارة الكتب</h3><p>إضافة الكتب وأغلفتها وملفات PDF ومعلوماتها.</p></div><div class="table-actions"><button class="btn btn-secondary" id="booksSelectToggle" type="button">تحديد</button><button class="btn btn-secondary" id="importBooksButton" type="button">استيراد كتب</button><button class="btn btn-primary" id="addBookButton" type="button">+ إضافة كتاب</button><input id="booksImportInput" type="file" accept="application/json,.json" hidden></div></div><div class="bulk-toolbar" id="booksBulkToolbar"><button class="btn btn-secondary btn-small" type="button" data-bulk-visible="books">تحديد الظاهر</button><button class="btn btn-secondary btn-small" type="button" data-bulk-all="books">تحديد الكل</button><button class="btn btn-secondary btn-small" type="button" data-bulk-clear="books">إلغاء التحديد</button><button class="btn btn-danger btn-small" type="button" data-bulk-delete="books">حذف المحدد (0)</button><span class="badge bulk-count" id="booksBulkCount">0 محدد</span></div><div class="toolbar"><div class="search-box"><input class="search-input" id="bookSearch" type="search" placeholder="ابحث باسم الكتاب أو المؤلف..."></div></div><div class="table-wrapper"><table class="data-table"><thead><tr><th class="bulk-select-col">تحديد</th><th>الكتاب</th><th>المؤلف</th><th>الفئة</th><th>العصر</th><th>الإجراءات</th></tr></thead><tbody id="booksTableBody"></tbody></table></div></div></section>
 <section class="admin-section" id="section-videos">
 <div class="content-card">
 <div class="card-header">
@@ -1405,6 +1441,14 @@ let usersCache = [];
 let adminsCache = [];
 let userCountRefreshTimer = null;
 
+const bulkSelectState = {
+poets:{active:false,ids:new Set()},
+poems:{active:false,ids:new Set()},
+articles:{active:false,ids:new Set()},
+books:{active:false,ids:new Set()}
+};
+const bulkVisibleItems = {poets:[],poems:[],articles:[],books:[]};
+
 const checkingScreen = document.getElementById("checkingScreen");
 const deniedScreen = document.getElementById("deniedScreen");
 const adminApp = document.getElementById("adminApp");
@@ -1498,6 +1542,134 @@ toast.textContent = message;
 container.appendChild(toast);
 
 setTimeout(() => toast.remove(), 4000);
+}
+
+function bulkState(type){ return bulkSelectState[type]; }
+function bulkIsActive(type){ return !!bulkState(type)?.active; }
+function bulkIsSelected(type,id){ return bulkState(type)?.ids.has(String(id)); }
+function bulkEditableItems(type,items){ return (items||[]).filter(item=>canEditContentItem(item)); }
+function bulkCheckboxCell(type,item){
+if(!bulkIsActive(type)) return '<td class="bulk-select-col"></td>';
+const id=String(item.id);
+return `<td class="bulk-select-col"><input class="bulk-row-check" type="checkbox" data-bulk-check="${type}" data-bulk-id="${escapeHtml(id)}" ${bulkIsSelected(type,id)?'checked':''} aria-label="تحديد"></td>`;
+}
+function bulkRowClass(type,id){ return bulkIsSelected(type,id)?' class="bulk-selected-row"':''; }
+function updateBulkUi(type){
+const st=bulkState(type); if(!st)return;
+const toolbar=document.getElementById(type+'BulkToolbar');
+const toggle=document.getElementById(type+'SelectToggle');
+const count=document.getElementById(type+'BulkCount');
+const del=document.querySelector(`[data-bulk-delete="${type}"]`);
+if(toolbar) toolbar.classList.toggle('active',st.active);
+if(toggle){toggle.classList.toggle('bulk-toggle-active',st.active);toggle.textContent=st.active?'إنهاء التحديد':'تحديد';}
+if(count) count.textContent=`${st.ids.size.toLocaleString('en-US')} محدد`;
+if(del){del.textContent=`حذف المحدد (${st.ids.size.toLocaleString('en-US')})`;del.disabled=st.ids.size===0;}
+const section=document.getElementById('section-'+type);
+section?.querySelectorAll('.bulk-select-col').forEach(el=>{el.style.display=st.active?'':'none';});
+}
+function renderBulkType(type){
+if(type==='poets') renderPoets(poetsCache);
+else if(type==='poems') renderPoems(poemsCache);
+else if(type==='articles') filterArticles();
+else if(type==='books') renderBooksAdmin(window.__qBooks||[]);
+updateBulkUi(type);
+}
+function toggleBulkMode(type){
+const st=bulkState(type); if(!st)return;
+st.active=!st.active;
+if(!st.active) st.ids.clear();
+renderBulkType(type);
+}
+function selectBulkVisible(type){
+const st=bulkState(type); if(!st)return;
+bulkEditableItems(type,bulkVisibleItems[type]).forEach(item=>st.ids.add(String(item.id)));
+renderBulkType(type);
+}
+function clearBulk(type){const st=bulkState(type);if(!st)return;st.ids.clear();renderBulkType(type);}
+async function fetchAllInChunks(buildQuery,chunk=1000){
+let out=[];
+for(let from=0;;from+=chunk){
+const r=await buildQuery(from,from+chunk-1);
+if(r.error) throw r.error;
+const part=r.data||[]; out.push(...part);
+if(part.length<chunk) break;
+}
+return out;
+}
+async function getBulkAllItems(type){
+if(type==='poets'){
+const search=normalize(document.getElementById('poetSearch')?.value), era=document.getElementById('poetEraFilter')?.value||'';
+let useLegacy=false;
+const build=async(from,to)=>{
+let q=supabaseClient.from('poets').select('id,name,nickname,era,bio,image_url,created_by').order('id',{ascending:true}).range(from,to);
+if(search) q=q.ilike('search_text',`%${search}%`); if(era)q=q.eq('era',era);
+return await q;
+};
+let rows=await fetchAllInChunks(build).catch(async err=>{if(!/search_text/i.test(String(err?.message||'')))throw err;useLegacy=true;return await fetchAllInChunks(async(from,to)=>await supabaseClient.from('poets').select('id,name,nickname,era,bio,image_url,created_by').order('id',{ascending:true}).range(from,to));});
+if(useLegacy&&search)rows=rows.filter(x=>normalize([x.name,x.nickname,x.bio,x.era].filter(Boolean).join(' ')).includes(search));
+if(useLegacy&&era)rows=rows.filter(x=>x.era===era);
+return rows;
+}
+if(type==='poems'){
+const search=normalize(document.getElementById('poemSearch')?.value),era=document.getElementById('poemEraFilter')?.value||'',topic=document.getElementById('poemTopicFilter')?.value||'',meterName=document.getElementById('poemMeterFilter')?.value||'',rhymeName=document.getElementById('poemRhymeFilter')?.value||'';
+const meter=metersCache.find(x=>x.name===meterName),rhyme=rhymesCache.find(x=>x.name===rhymeName);
+return await fetchAllInChunks(async(from,to)=>{let q=supabaseClient.from('poems').select('id,created_by,image_url,video_url,audio_url').order('id',{ascending:true}).range(from,to);if(search)q=q.ilike('search_text',`%${search}%`);if(era)q=q.eq('era',era);if(topic)q=q.eq('category',topic);if(meterName)q=meter?q.eq('meter_id',meter.id):q.eq('meter_id',-1);if(rhymeName)q=rhyme?q.eq('rhyme_id',rhyme.id):q.eq('rhyme_id',-1);return await q;});
+}
+if(type==='articles'){
+const search=normalize(document.getElementById('articleSearch')?.value),category=document.getElementById('articleCategoryFilter')?.value||'';
+let rows=await fetchAllInChunks(async(from,to)=>{let q=supabaseClient.from('articles').select('id,title,summary,content,author,category,created_by,image_url').order('id',{ascending:true}).range(from,to);if(category)q=q.eq('category',category);return await q;});
+if(search)rows=rows.filter(x=>normalize([x.title,x.summary,x.content,x.author,x.category].filter(Boolean).join(' ')).includes(search));
+return rows;
+}
+if(type==='books'){
+const search=normalize(document.getElementById('bookSearch')?.value);
+let rows=await fetchAllInChunks(async(from,to)=>await supabaseClient.from('books').select('id,title,author,created_by,cover_url,file_url').order('id',{ascending:true}).range(from,to));
+if(search)rows=rows.filter(x=>normalize([x.title,x.author].filter(Boolean).join(' ')).includes(search));
+return rows;
+}
+return [];
+}
+async function selectBulkAll(type){
+const st=bulkState(type);if(!st)return;
+const button=document.querySelector(`[data-bulk-all="${type}"]`);const old=button?.textContent;
+try{if(button){button.disabled=true;button.textContent='جارٍ التحديد...';}const rows=bulkEditableItems(type,await getBulkAllItems(type));rows.forEach(x=>st.ids.add(String(x.id)));renderBulkType(type);showToast(`تم تحديد ${rows.length.toLocaleString('en-US')} عنصرًا.`,'success');}
+catch(e){console.error(e);showToast(e?.message||'تعذر تحديد الكل.','error');}
+finally{if(button){button.disabled=false;button.textContent=old||'تحديد الكل';}}
+}
+function bulkMediaFields(type){return type==='poets'?['image_url']:type==='poems'?['image_url','video_url','audio_url']:type==='articles'?['image_url']:type==='books'?['cover_url','file_url']:[];}
+async function deleteBulkSelected(type){
+const st=bulkState(type);if(!st||!st.ids.size)return;
+const labels={poets:'شاعرًا',poems:'قصيدة',articles:'مقالًا',books:'كتابًا'};
+const count=st.ids.size;
+if(!confirm(`أنت على وشك حذف ${count.toLocaleString('en-US')} ${labels[type]||'عنصرًا'} نهائيًا. هل أنت متأكد؟`))return;
+if(!confirm('تأكيد أخير: لا يمكن التراجع عن الحذف بعد تنفيذه. متابعة؟'))return;
+const btn=document.querySelector(`[data-bulk-delete="${type}"]`);const old=btn?.textContent;
+try{
+if(btn){btn.disabled=true;btn.textContent='جارٍ الحذف...';}
+const all=await getBulkAllItems(type);const map=new Map(all.map(x=>[String(x.id),x]));const ids=[...st.ids];
+for(let i=0;i<ids.length;i+=200){const r=await supabaseClient.from(type).delete().in('id',ids.slice(i,i+200));if(r.error)throw r.error;}
+const fields=bulkMediaFields(type),paths=[];
+for(const id of ids){const item=map.get(String(id));for(const field of fields){const path=storagePathFromPublicUrl(item?.[field]);if(path)paths.push(path);}}
+for(let i=0;i<paths.length;i+=100){try{await removeMediaPaths(paths.slice(i,i+100));}catch(e){console.error('bulk media cleanup',e);}}
+st.ids.clear();st.active=false;
+if(type==='poets'){poetsAdminPage=0;await Promise.all([loadPoets(),loadPoems()]);}
+else if(type==='poems'){poemsAdminPage=0;await Promise.all([loadPoems(),loadPoets()]);}
+else if(type==='articles')await loadArticles();
+else if(type==='books')await loadBooks();
+await loadDashboard();updateBulkUi(type);showToast(`تم حذف ${count.toLocaleString('en-US')} بنجاح.`,'success');
+}catch(e){console.error(e);showToast(e?.message||'تعذر تنفيذ الحذف الجماعي.','error');}
+finally{if(btn){btn.disabled=false;btn.textContent=old||'حذف المحدد';}updateBulkUi(type);}
+}
+function setupBulkSelection(){
+['poets','poems','articles','books'].forEach(type=>{
+document.getElementById(type+'SelectToggle')?.addEventListener('click',()=>toggleBulkMode(type));
+document.querySelector(`[data-bulk-visible="${type}"]`)?.addEventListener('click',()=>selectBulkVisible(type));
+document.querySelector(`[data-bulk-all="${type}"]`)?.addEventListener('click',()=>selectBulkAll(type));
+document.querySelector(`[data-bulk-clear="${type}"]`)?.addEventListener('click',()=>clearBulk(type));
+document.querySelector(`[data-bulk-delete="${type}"]`)?.addEventListener('click',()=>deleteBulkSelected(type));
+updateBulkUi(type);
+});
+document.addEventListener('change',e=>{const box=e.target.closest?.('[data-bulk-check]');if(!box)return;const type=box.dataset.bulkCheck,id=String(box.dataset.bulkId),st=bulkState(type);if(!st)return;if(box.checked)st.ids.add(id);else st.ids.delete(id);box.closest('tr')?.classList.toggle('bulk-selected-row',box.checked);updateBulkUi(type);});
 }
 
 function setLoadingRow(tbody, colspan) {
@@ -3010,7 +3182,7 @@ String(id)
 
 async function loadPoets() {
 const tbody = document.getElementById("poetsTableBody");
-setLoadingRow(tbody, 7);
+setLoadingRow(tbody, 8);
 
 try {
 const search = normalize(document.getElementById("poetSearch").value);
@@ -3053,7 +3225,7 @@ renderPoets(poetsCache);
 updatePoetsPager();
 } catch (error) {
 console.error(error);
-setEmptyRow(tbody,7,"تعذر تحميل الشعراء.");
+setEmptyRow(tbody,8,"تعذر تحميل الشعراء.");
 }
 }
 
@@ -3077,6 +3249,7 @@ if (next) next.disabled = (poetsAdminPage + 1) >= pages;
 }
 
 function renderPoets(items) {
+bulkVisibleItems.poets = items || [];
 const tbody =
 document.getElementById(
 "poetsTableBody"
@@ -3086,7 +3259,7 @@ if (!items.length) {
 
 setEmptyRow(
 tbody,
-7,
+8,
 "لا يوجد شعراء مطابقون."
 );
 
@@ -3096,8 +3269,8 @@ return;
 tbody.innerHTML =
 items.map(
 poet => `
-<tr>
-
+<tr${bulkRowClass("poets",poet.id)}>
+${bulkCheckboxCell("poets",poet)}
 <td>
 ${poet.image_url ? `
 <img class="poet-photo" src="${escapeHtml(poet.image_url)}" alt="">
@@ -3472,7 +3645,7 @@ type="button"
 
 async function loadPoems() {
 const tbody = document.getElementById("poemsTableBody");
-setLoadingRow(tbody,8);
+setLoadingRow(tbody,9);
 try {
 await Promise.all([fetchMeters(), fetchRhymes()]);
 const search = normalize(document.getElementById("poemSearch").value);
@@ -3512,7 +3685,7 @@ renderPoems(poemsCache);
 updatePoemsPager();
 } catch (error) {
 console.error(error);
-setEmptyRow(tbody,8,"تعذر تحميل القصائد.");
+setEmptyRow(tbody,9,"تعذر تحميل القصائد.");
 }
 }
 
@@ -3536,6 +3709,7 @@ if (next) next.disabled = (poemsAdminPage + 1) >= pages;
 }
 
 function renderPoems(items) {
+bulkVisibleItems.poems = items || [];
 const tbody =
 document.getElementById(
 "poemsTableBody"
@@ -3545,7 +3719,7 @@ if (!items.length) {
 
 setEmptyRow(
 tbody,
-8,
+9,
 "لا توجد قصائد مطابقة."
 );
 
@@ -3572,8 +3746,8 @@ poem.rhyme_id
 );
 
 return `
-<tr>
-
+<tr${bulkRowClass("poems",poem.id)}>
+${bulkCheckboxCell("poems",poem)}
 <td>
 <div class="table-title">
 ${escapeHtml(poem.title)}
@@ -3666,7 +3840,7 @@ document.getElementById(
 
 setLoadingRow(
 tbody,
-6
+7
 );
 
 const {
@@ -3695,7 +3869,7 @@ console.error(error);
 
 setEmptyRow(
 tbody,
-6,
+7,
 "تعذر تحميل المقالات."
 );
 
@@ -3763,6 +3937,7 @@ article.category === category)
 }
 
 function renderArticles(items) {
+bulkVisibleItems.articles = items || [];
 const tbody =
 document.getElementById(
 "articlesTableBody"
@@ -3772,7 +3947,7 @@ if (!items.length) {
 
 setEmptyRow(
 tbody,
-6,
+7,
 "لا توجد مقالات مطابقة."
 );
 
@@ -3782,8 +3957,8 @@ return;
 tbody.innerHTML =
 items.map(
 article => `
-<tr>
-
+<tr${bulkRowClass("articles",article.id)}>
+${bulkCheckboxCell("articles",article)}
 <td>
 <div class="table-title">
 ${escapeHtml(
@@ -7565,13 +7740,16 @@ setTimeout(() => document.getElementById("poemAudioManager")?.scrollIntoView({be
 }
 (function(){
 const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+window.renderBooksAdmin=function renderBooksAdmin(items){
+ const b=document.getElementById('booksTableBody');if(!b)return;bulkVisibleItems.books=items||[];
+ b.innerHTML=(items||[]).map(x=>`<tr${bulkRowClass('books',x.id)}>${bulkCheckboxCell('books',x)}<td>${esc(x.title)}</td><td>${esc(x.author||'—')}</td><td>${esc(x.literary_category||'—')}</td><td>${esc(x.era||'—')}</td><td>${canEditContentItem(x)?`<button class="btn btn-secondary btn-small" data-edit-book="${x.id}">تعديل</button> <button class="btn btn-danger btn-small" data-del-book="${x.id}">حذف</button>`:`<span class="table-muted">عرض فقط</span>`}</td></tr>`).join('')||'<tr><td colspan="6">لا توجد كتب.</td></tr>';
+};
 window.loadBooks=async function loadBooks(){
  const b=document.getElementById('booksTableBody');if(!b)return;
  let q=supabaseClient.from('books').select('*').order('created_at',{ascending:false}).limit(500),term=document.getElementById('bookSearch')?.value.trim();
  if(term)q=q.or(`title.ilike.%${term.replace(/[,()]/g,' ')}%,author.ilike.%${term.replace(/[,()]/g,' ')}%`);
- const r=await q;if(r.error){b.innerHTML=`<tr><td colspan="5">${esc(r.error.message)}</td></tr>`;return}
- window.__qBooks=r.data||[];
- b.innerHTML=window.__qBooks.map(x=>`<tr><td>${esc(x.title)}</td><td>${esc(x.author||'—')}</td><td>${esc(x.literary_category||'—')}</td><td>${esc(x.era||'—')}</td><td>${canEditContentItem(x)?`<button class="btn btn-secondary btn-small" data-edit-book="${x.id}">تعديل</button> <button class="btn btn-danger btn-small" data-del-book="${x.id}">حذف</button>`:`<span class="table-muted">عرض فقط</span>`}</td></tr>`).join('')||'<tr><td colspan="5">لا توجد كتب.</td></tr>';
+ const r=await q;if(r.error){b.innerHTML=`<tr><td colspan="6">${esc(r.error.message)}</td></tr>`;return}
+ window.__qBooks=r.data||[];renderBooksAdmin(window.__qBooks);
 };
 document.getElementById('addBookButton')?.addEventListener('click',()=>openEditor('book'));
 document.getElementById('booksTableBody')?.addEventListener('click',async e=>{const eb=e.target.closest('[data-edit-book]'),db=e.target.closest('[data-del-book]');if(eb)openEditor('book',(window.__qBooks||[]).find(x=>String(x.id)===eb.dataset.editBook));if(db&&confirm('حذف الكتاب؟')){const r=await supabaseClient.from('books').delete().eq('id',db.dataset.delBook);if(r.error)showToast(r.error.message,'error');else loadBooks()}});
@@ -7588,7 +7766,7 @@ window.loadQAnalytics=async function loadQAnalytics(){try{if(!['owner','manager'
  if(yearHost){const years=Array.isArray(d.years)?d.years:[];yearHost.innerHTML=years.length?`<div class="analytics-list">${years.slice().reverse().map(x=>`<div><span>${Number(x.year||0).toLocaleString('en-US',{useGrouping:false})}</span><strong>${Number(x.visits||0).toLocaleString('en-US')}</strong></div>`).join('')}</div>`:'لا توجد بيانات بعد.'}
  if(monthHost){const months=Array.isArray(d.months)?d.months:[], names=['','يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];monthHost.innerHTML=months.length?`<div class="analytics-list">${months.slice().reverse().map(x=>`<div><span>${esc(names[Number(x.month)]||x.month)} ${Number(x.year||0).toLocaleString('en-US',{useGrouping:false})}</span><strong>${Number(x.visits||0).toLocaleString('en-US')}</strong></div>`).join('')}</div>`:'لا توجد بيانات بعد.'}
 }catch(e){console.error('analytics',e)}};
-document.addEventListener('DOMContentLoaded',loadQAnalytics);setInterval(loadQAnalytics,60000);
+document.addEventListener('DOMContentLoaded',()=>{loadQAnalytics();setupBulkSelection();});setInterval(loadQAnalytics,60000);
 })();
 </script>
 
