@@ -1229,7 +1229,7 @@ onclick="window.location.href='index.html'"
 </div>
 </div>
 </section>
-<section class="admin-section" id="section-books"><div class="content-card"><div class="card-header"><div><h3>إدارة الكتب</h3><p>إضافة الكتب وأغلفتها وملفات PDF ومعلوماتها.</p></div><div class="table-actions"><button class="btn btn-secondary" id="booksSelectToggle" type="button">تحديد</button><button class="btn btn-secondary" id="importBooksButton" type="button">استيراد كتب</button><button class="btn btn-primary" id="addBookButton" type="button">+ إضافة كتاب</button><input id="booksImportInput" type="file" accept="application/json,.json" hidden></div></div><div class="bulk-toolbar" id="booksBulkToolbar"><button class="btn btn-secondary btn-small" type="button" data-bulk-visible="books">تحديد الظاهر</button><button class="btn btn-secondary btn-small" type="button" data-bulk-all="books">تحديد الكل</button><button class="btn btn-secondary btn-small" type="button" data-bulk-clear="books">إلغاء التحديد</button><button class="btn btn-danger btn-small" type="button" data-bulk-delete="books">حذف المحدد (0)</button><span class="badge bulk-count" id="booksBulkCount">0 محدد</span></div><div class="toolbar"><div class="search-box"><input class="search-input" id="bookSearch" type="search" placeholder="ابحث باسم الكتاب أو المؤلف..."></div></div><div class="table-wrapper"><table class="data-table"><thead><tr><th class="bulk-select-col">تحديد</th><th>الكتاب</th><th>المؤلف</th><th>الفئة</th><th>العصر</th><th>الإجراءات</th></tr></thead><tbody id="booksTableBody"></tbody></table></div></div></section>
+<section class="admin-section" id="section-books"><div class="content-card"><div class="card-header"><div><h3>إدارة الكتب</h3><p>إضافة الكتب وأغلفتها وملفات PDF وEPUB ومعلوماتها.</p></div><div class="table-actions"><button class="btn btn-secondary" id="booksSelectToggle" type="button">تحديد</button><button class="btn btn-secondary" id="importBooksButton" type="button">استيراد كتب</button><button class="btn btn-primary" id="addBookButton" type="button">+ إضافة كتاب</button><input id="booksImportInput" type="file" accept="application/json,.json" hidden></div></div><div class="bulk-toolbar" id="booksBulkToolbar"><button class="btn btn-secondary btn-small" type="button" data-bulk-visible="books">تحديد الظاهر</button><button class="btn btn-secondary btn-small" type="button" data-bulk-all="books">تحديد الكل</button><button class="btn btn-secondary btn-small" type="button" data-bulk-clear="books">إلغاء التحديد</button><button class="btn btn-danger btn-small" type="button" data-bulk-delete="books">حذف المحدد (0)</button><span class="badge bulk-count" id="booksBulkCount">0 محدد</span></div><div class="toolbar"><div class="search-box"><input class="search-input" id="bookSearch" type="search" placeholder="ابحث باسم الكتاب أو المؤلف..."></div></div><div class="table-wrapper"><table class="data-table"><thead><tr><th class="bulk-select-col">تحديد</th><th>الكتاب</th><th>المؤلف</th><th>الفئة</th><th>العصر</th><th>الإجراءات</th></tr></thead><tbody id="booksTableBody"></tbody></table></div></div></section>
 <section class="admin-section" id="section-videos">
 <div class="content-card">
 <div class="card-header">
@@ -1812,6 +1812,20 @@ if (file.type === "audio/ogg") return "ogg";
 return "mp4";
 }
 
+function normalizedUploadContentType(file) {
+const name = String(file?.name || "").toLowerCase();
+
+if (/\.pdf$/i.test(name)) {
+return "application/pdf";
+}
+
+if (/\.epub$/i.test(name)) {
+return "application/epub+zip";
+}
+
+return file?.type || "application/octet-stream";
+}
+
 function mediaPublicUrl(path) {
 const { data } =
 supabaseClient
@@ -1967,9 +1981,17 @@ throw new Error(
 }
 
 if (kind === "pdf") {
-const pdfOk = file.type === "application/pdf" || /\.pdf$/i.test(file.name || "");
-if (!pdfOk) throw new Error("ملف الكتاب يجب أن يكون PDF.");
-if (file.size > PDF_MAX_BYTES) throw new Error("حجم ملف PDF كبير جدًا. الحد 150MB.");
+const fileName = String(file.name || "");
+const isPdf = /\.pdf$/i.test(fileName);
+const isEpub = /\.epub$/i.test(fileName);
+
+if (!isPdf && !isEpub) {
+throw new Error("ملف الكتاب يجب أن يكون بصيغة PDF أو EPUB.");
+}
+
+if (file.size > PDF_MAX_BYTES) {
+throw new Error("حجم ملف الكتاب كبير جدًا. الحد 150MB.");
+}
 }
 
 if (kind === "audio") {
@@ -2108,8 +2130,7 @@ objectName:
 path,
 
 contentType:
-file.type ||
-"application/octet-stream",
+normalizedUploadContentType(file),
 
 cacheControl:
 "3600"
@@ -2180,7 +2201,7 @@ file,
 {
 cacheControl: "3600",
 contentType:
-file.type || undefined,
+normalizedUploadContentType(file),
 upsert: false
 }
 );
@@ -2262,7 +2283,7 @@ if (kind === "audio") {
 return `<div class="media-existing"><audio controls preload="metadata" src="${safe}"></audio></div>`;
 }
 if (kind === "pdf") {
-return `<div class="media-existing"><a href="${safe}" target="_blank" rel="noopener">فتح ملف PDF الحالي</a></div>`;
+return `<div class="media-existing"><a href="${safe}" target="_blank" rel="noopener">فتح ملف الكتاب الحالي</a></div>`;
 }
 
 return `
@@ -2288,7 +2309,7 @@ kind === "video"
 : kind === "audio"
 ? "audio/mpeg,audio/mp4,audio/x-m4a,audio/aac,audio/wav,audio/x-wav,audio/ogg,.mp3,.m4a,.aac,.wav,.ogg"
 : kind === "pdf"
-? "application/pdf,.pdf"
+? "application/pdf,application/epub+zip,.pdf,.epub"
 : "image/jpeg,image/png,image/webp,image/avif,image/gif";
 
 return `
@@ -5590,7 +5611,7 @@ return `
 <div class="form-group"><label>العصر</label><select class="form-control" name="era">${eraOptions(item.era)}</select></div>
 <div class="form-group full"><label>وصف مختصر</label><textarea class="form-control" name="description">${fieldValue(item,"description")}</textarea></div>
 ${mediaPicker("cover_url","غلاف الكتاب",item.cover_url,"image","books/covers")}
-${mediaPicker("file_url","ملف الكتاب PDF",item.file_url,"pdf","books/files")}
+${mediaPicker("file_url","ملف الكتاب PDF أو EPUB",item.file_url,"pdf","books/files")}
 <div class="form-group full"><label class="checkbox-row"><input type="checkbox" name="is_featured" ${item.is_featured ? "checked" : ""}> كتاب مميز</label></div>
 `;
 }
