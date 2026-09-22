@@ -1,0 +1,60 @@
+القافية — خطوات التفعيل النهائية
+================================
+
+أولاً: Supabase SQL
+1) افتح Supabase > SQL Editor.
+2) افتح الملف QAFIYAH-AUTH-STATS-FINAL.sql الموجود داخل المشروع.
+3) انسخ الملف كاملًا وشغّله Run مرة واحدة.
+4) في آخر التنفيذ سيظهر SELECT بأعداد الشعراء/القصائد/المقالات/الزيارات للتأكد أن الجداول تعمل.
+
+ثانياً: تأكيد البريد بالكود OTP بدل رابط التأكيد
+1) Supabase > Authentication > Email Templates > Confirm signup.
+2) اجعل الرسالة تعرض الرمز {{ .Token }} بدل زر/رابط {{ .ConfirmationURL }}.
+   مثال: رمز التحقق الخاص بك في القافية: {{ .Token }}
+3) Authentication > Email Templates > Change email address:
+   اجعل الرسالة تعرض {{ .Token }} أيضًا، لأن الملف الشخصي أصبح يطلب الرمز داخل الموقع.
+4) Authentication > Providers > Email: أبقِ Confirm email مفعلاً.
+
+ثالثاً: الجوال العالمي
+- تمت إضافة زر «الدخول برقم الجوال» ولوحة إدخال الدولة والرقم ورمز OTP داخل نافذة الدخول نفسها.
+1) Supabase > Authentication > Providers > Phone = Enabled.
+2) اربط مزود SMS فعليًا (Twilio / Vonage / MessageBird أو المزود المتاح في حسابك).
+3) من إعدادات Geo/Permissions لدى مزود SMS اسمح بالدول التي تريدها عالميًا.
+4) واجهة القافية تعرض الدول المدعومة دوليًا، تستبعد IL/+972، وتُبقي فلسطين PS/+970.
+5) الأرقام المحلية تُحوّل إلى E.164 تلقائيًا بحسب البلد المختار؛ السعودية تقبل مثل 05xxxxxxxx و5xxxxxxxx و9665xxxxxxxx و+9665xxxxxxxx.
+
+رابعاً: Cloudflare Turnstile (أنا جهزت الكود؛ أنت تضع المفتاحين فقط)
+1) Cloudflare > Turnstile > Add site > alqafiyah.com.
+2) انسخ Site Key العام.
+3) افتح supabase.js وابحث عن QAFIYAH_TURNSTILE_SITE_KEY وضع Site Key بين علامتي الاقتباس.
+4) انسخ Secret Key من Cloudflare.
+5) Supabase > Authentication > Bot and Abuse Protection > CAPTCHA > Cloudflare Turnstile.
+6) فعّل CAPTCHA وضع Secret Key ثم Save.
+7) التحقق يظهر في إنشاء الحساب، تسجيل الدخول بالبريد، وإرسال كود الجوال.
+
+خامساً: شعار الموقع في Google واختصارات الهاتف
+تمت إضافة:
+- favicon.ico
+- favicon-48.png
+- apple-touch-icon.png
+- icon-192.png
+- icon-512.png
+- qafiyah-logo.png
+- site.webmanifest
+- WebSite + Organization structured data مع شعار 1024x1024 في الصفحة الرئيسية.
+بعد النشر اطلب فهرسة https://alqafiyah.com/ من Google Search Console. ظهور الأيقونة يعتمد على إعادة زحف Google وقد لا يكون فوريًا.
+
+سادساً: النشر عبر Git
+من داخل مجلد Qafiyah شغّل:
+
+git status
+git remote set-url origin https://github.com/AlQafiyah/AlQafiyah.git
+git add .
+git commit -m "Finalize Qafiyah auth stats favicon"
+git push origin main
+
+إذا ظهر nothing to commit فهذا يعني أن الملفات نفسها سبق رفعها.
+
+مهم:
+- لا تضع Turnstile Secret Key داخل ملفات الموقع إطلاقًا؛ السر يذهب إلى Supabase فقط.
+- بعد تشغيل SQL ورفع الملفات، اعمل تحديث قوي/امسح Cache إن كان Cloudflare يعرض نسخة قديمة.

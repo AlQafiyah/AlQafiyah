@@ -16,3 +16,6 @@ const supabaseClient =
 
 // إتاحته لجميع ملفات الموقع
 window.supabaseClient = supabaseClient;
+
+// ضع هنا Cloudflare Turnstile Site Key العام (ليس Secret Key).
+window.QAFIYAH_TURNSTILE_SITE_KEY = window.QAFIYAH_TURNSTILE_SITE_KEY || "";

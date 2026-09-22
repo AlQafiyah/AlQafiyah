@@ -39,8 +39,9 @@ async function track(){
   let device=localStorage.getItem('qafiyah_device_id'); if(!device){device=randomId();localStorage.setItem('qafiyah_device_id',device)}
   const sessionKey='qafiyah_visit_recorded'; const record=!sessionStorage.getItem(sessionKey); if(record)sessionStorage.setItem(sessionKey,'1');
   try{await window.supabaseClient.rpc('qafiyah_track_visit',{p_device_id:device,p_record_visit:record})}catch{}
-  setInterval(()=>window.supabaseClient?.rpc('qafiyah_track_visit',{p_device_id:device,p_record_visit:false}).catch(()=>{}),60000);
-  window.supabaseClient.auth?.onAuthStateChange?.(()=>window.supabaseClient.rpc('qafiyah_track_visit',{p_device_id:device,p_record_visit:false}).catch(()=>{}));
+  const heartbeat=async()=>{try{await window.supabaseClient?.rpc('qafiyah_track_visit',{p_device_id:device,p_record_visit:false})}catch{}};
+  setInterval(heartbeat,60000);
+  window.supabaseClient.auth?.onAuthStateChange?.(()=>{heartbeat()});
 }
 function boot(){createChromeIfNeeded();profileCleanup();renameAdmin();setTimeout(injectBooksLinks,0);setTimeout(injectBooksLinks,250);track()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();

@@ -821,6 +821,13 @@ gap: 6px;
 .bulk-toggle-active{background:var(--brown)!important;color:#fff!important;border-color:var(--brown)!important}
 @media(max-width:600px){.bulk-toolbar .btn{flex:1 1 auto}.bulk-toolbar .bulk-count{width:100%;margin-inline-start:0;text-align:center}}
 </style>
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="application-name" content="القافية">
+<link rel="stylesheet" href="qafiyah-auth-final.css?v=20260922">
 </head>
 <body>
 <div class="checking-screen" id="checkingScreen">
@@ -2959,162 +2966,14 @@ return count || 0;
 }
 
 async function loadDashboard() {
-const [
-poetCount,
-poemCount,
-articleCount,
-meterCount,
-rhymeCount,
-videoCount,
-userCount,
-featuredPoets,
-featuredPoems,
-featuredArticles,
-featuredMeters,
-featuredRhymes,
-featuredVideos
-] =
-await Promise.all([
-getExactCount("poets"),
-getExactCount("poems"),
-getExactCount("articles"),
-getExactCount("meters"),
-getExactCount("rhymes"),
-getExactCount("videos"),
-getUsersCount(),
-getFeaturedCount("poets"),
-getFeaturedCount("poems"),
-getFeaturedCount("articles"),
-getFeaturedCount("meters"),
-getFeaturedCount("rhymes"),
-getFeaturedCount("videos")
-]);
-
-document
-.getElementById(
-"statPoets"
-)
-.textContent =
-poetCount;
-
-document
-.getElementById(
-"statPoems"
-)
-.textContent =
-poemCount;
-
-document
-.getElementById(
-"statArticles"
-)
-.textContent =
-articleCount;
-
-document
-.getElementById(
-"statMeters"
-)
-.textContent =
-meterCount;
-
-document
-.getElementById(
-"statRhymes"
-)
-.textContent =
-rhymeCount;
-
-document
-.getElementById(
-"statVideos"
-)
-.textContent =
-videoCount;
-
-document
-.getElementById(
-"statUsers"
-)
-.textContent =
-userCount;
-
-document
-.getElementById(
-"dashboardSummary"
-)
-.innerHTML = `
-<div class="quick-item">
-<span>الشعراء</span>
-<strong>${poetCount}</strong>
-</div>
-
-<div class="quick-item">
-<span>القصائد</span>
-<strong>${poemCount}</strong>
-</div>
-
-<div class="quick-item">
-<span>المقالات</span>
-<strong>${articleCount}</strong>
-</div>
-
-<div class="quick-item">
-<span>البحور</span>
-<strong>${meterCount}</strong>
-</div>
-
-<div class="quick-item">
-<span>القوافي</span>
-<strong>${rhymeCount}</strong>
-</div>
-
-<div class="quick-item">
-<span>الفيديوهات</span>
-<strong>${videoCount}</strong>
-</div>
-
-${currentAdmin?.role === "owner" ? `<div class="quick-item">
-<span>المستخدمون</span>
-<strong id="summaryUsersCount">${userCount}</strong>
-</div>` : ""}
-`;
-
-document
-.getElementById(
-"featuredSummary"
-)
-.innerHTML = `
-<div class="quick-item">
-<span>شعراء مميزون</span>
-<strong>${featuredPoets}</strong>
-</div>
-
-<div class="quick-item">
-<span>قصائد مميزة</span>
-<strong>${featuredPoems}</strong>
-</div>
-
-<div class="quick-item">
-<span>مقالات مميزة</span>
-<strong>${featuredArticles}</strong>
-</div>
-
-<div class="quick-item">
-<span>بحور مميزة</span>
-<strong>${featuredMeters}</strong>
-</div>
-
-<div class="quick-item">
-<span>قوافٍ مميزة</span>
-<strong>${featuredRhymes}</strong>
-</div>
-
-<div class="quick-item">
-<span>فيديوهات مميزة</span>
-<strong>${featuredVideos}</strong>
-</div>
-`;
+let d=null;
+try{const r=await supabaseClient.rpc("qafiyah_admin_dashboard_summary");if(!r.error&&r.data)d=Array.isArray(r.data)?r.data[0]:r.data;}catch(e){console.warn("dashboard rpc",e)}
+if(!d){const a=await Promise.all([getExactCount("poets"),getExactCount("poems"),getExactCount("articles"),getExactCount("meters"),getExactCount("rhymes"),getExactCount("videos"),getUsersCount(),getFeaturedCount("poets"),getFeaturedCount("poems"),getFeaturedCount("articles"),getFeaturedCount("meters"),getFeaturedCount("rhymes"),getFeaturedCount("videos")]);d={poets:a[0],poems:a[1],articles:a[2],meters:a[3],rhymes:a[4],videos:a[5],users:a[6],featured_poets:a[7],featured_poems:a[8],featured_articles:a[9],featured_meters:a[10],featured_rhymes:a[11],featured_videos:a[12]};}
+const n=v=>Number(v||0),set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=n(v).toLocaleString("en-US")};
+set("statPoets",d.poets);set("statPoems",d.poems);set("statArticles",d.articles);set("statMeters",d.meters);set("statRhymes",d.rhymes);set("statVideos",d.videos);set("statUsers",d.users);
+const ds=document.getElementById("dashboardSummary");if(ds)ds.innerHTML=`<div class="quick-item"><span>الشعراء</span><strong>${n(d.poets).toLocaleString('en-US')}</strong></div><div class="quick-item"><span>القصائد</span><strong>${n(d.poems).toLocaleString('en-US')}</strong></div><div class="quick-item"><span>المقالات</span><strong>${n(d.articles).toLocaleString('en-US')}</strong></div><div class="quick-item"><span>البحور</span><strong>${n(d.meters).toLocaleString('en-US')}</strong></div><div class="quick-item"><span>القوافي</span><strong>${n(d.rhymes).toLocaleString('en-US')}</strong></div><div class="quick-item"><span>الفيديوهات</span><strong>${n(d.videos).toLocaleString('en-US')}</strong></div>${currentAdmin?.role==="owner"?`<div class="quick-item"><span>المستخدمون</span><strong id="summaryUsersCount">${n(d.users).toLocaleString('en-US')}</strong></div>`:""}`;
+const fs=document.getElementById("featuredSummary");if(fs)fs.innerHTML=`<div class="quick-item"><span>شعراء مميزون</span><strong>${n(d.featured_poets).toLocaleString('en-US')}</strong></div><div class="quick-item"><span>قصائد مميزة</span><strong>${n(d.featured_poems).toLocaleString('en-US')}</strong></div><div class="quick-item"><span>مقالات مميزة</span><strong>${n(d.featured_articles).toLocaleString('en-US')}</strong></div><div class="quick-item"><span>بحور مميزة</span><strong>${n(d.featured_meters).toLocaleString('en-US')}</strong></div><div class="quick-item"><span>قوافٍ مميزة</span><strong>${n(d.featured_rhymes).toLocaleString('en-US')}</strong></div><div class="quick-item"><span>فيديوهات مميزة</span><strong>${n(d.featured_videos).toLocaleString('en-US')}</strong></div>`;
+if(d.total_visits!==undefined){set('statVisitsAll',d.total_visits);set('statDevicesAll',d.unique_devices);set('statAccountsAll',d.unique_accounts);set('statActiveNow',d.active_now);set('statVisitsToday',d.today);set('statVisits7',d.last_7_days);set('statVisits30',d.last_30_days);set('statVisitsMonth',d.this_month);set('statVisits365',d.last_365_days);set('statVisitsYear',d.this_year);const yh=document.getElementById('analyticsYears'),mh=document.getElementById('analyticsMonths'),names=['','يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];if(yh){const a=Array.isArray(d.years)?d.years:[];yh.innerHTML=a.length?`<div class="analytics-list">${a.slice().reverse().map(x=>`<div><span>${Number(x.year||0).toLocaleString('en-US',{useGrouping:false})}</span><strong>${n(x.visits).toLocaleString('en-US')}</strong></div>`).join('')}</div>`:'لا توجد بيانات بعد.'}if(mh){const a=Array.isArray(d.months)?d.months:[];mh.innerHTML=a.length?`<div class="analytics-list">${a.slice().reverse().map(x=>`<div><span>${names[Number(x.month)]||x.month} ${Number(x.year||0).toLocaleString('en-US',{useGrouping:false})}</span><strong>${n(x.visits).toLocaleString('en-US')}</strong></div>`).join('')}</div>`:'لا توجد بيانات بعد.'}}
 }
 
 async function fetchPoets() {
