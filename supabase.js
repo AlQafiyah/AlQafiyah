@@ -11,7 +11,14 @@ const SUPABASE_PUBLISHABLE_KEY =
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth: {
+                autoRefreshToken: true,
+                persistSession: true,
+                detectSessionInUrl: true
+            }
+        }
     );
 
 // إتاحته لجميع ملفات الموقع

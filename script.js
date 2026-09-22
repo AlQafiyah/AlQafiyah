@@ -680,31 +680,9 @@
     }
 
     function oauthRedirectUrl() {
-        const url =
-            new URL(
-                location.href
-            );
-
-        url.hash =
-            "";
-
-        [
-            "code",
-            "state",
-            "error",
-            "error_code",
-            "error_description"
-        ].forEach(
-            function (key) {
-                url
-                    .searchParams
-                    .delete(
-                        key
-                    );
-            }
-        );
-
-        return url.toString();
+        // Always return OAuth users to the canonical home page.
+        // Supabase then detects the OAuth grant in the URL and persists the session.
+        return "https://alqafiyah.com/";
     }
 
     function normalizePhone(value) {
@@ -808,132 +786,10 @@
         google.innerHTML =
             `${googleIcon()}<span>تسجيل الدخول باستخدام Google</span>`;
 
-        let phone =
-            $("phoneLoginButton");
-
-        if (!phone) {
-            phone =
-                document.createElement(
-                    "button"
-                );
-
-            phone.type =
-                "button";
-
-            phone.id =
-                "phoneLoginButton";
-
-            phone.className =
-                "login-method alqafiyah-auth-method";
-
-            if (divider) {
-                loginForm.insertBefore(
-                    phone,
-                    divider
-                );
-            } else {
-                loginForm.appendChild(
-                    phone
-                );
-            }
-        }
-
-        phone.classList.add(
-            "alqafiyah-auth-method"
-        );
-
-        phone.innerHTML =
-            `${phoneIcon()}<span>تسجيل الدخول برقم الجوال</span>`;
-
-        if (
-            !$("phoneAuthPanel")
-        ) {
-            const panel =
-                document.createElement(
-                    "div"
-                );
-
-            panel.id =
-                "phoneAuthPanel";
-
-            panel.className =
-                "alqafiyah-phone-panel";
-
-            panel.innerHTML = `
-                <label for="phoneAuthNumber">
-                    رقم الجوال
-                </label>
-
-                <input
-                    type="tel"
-                    id="phoneAuthNumber"
-                    dir="ltr"
-                    inputmode="tel"
-                    autocomplete="tel"
-                    placeholder="05XXXXXXXX">
-
-                <div class="alqafiyah-phone-actions">
-
-                    <button
-                        type="button"
-                        class="login-submit"
-                        id="sendPhoneOtpButton">
-
-                        إرسال رمز التحقق
-
-                    </button>
-
-                </div>
-
-                <div
-                    id="phoneOtpFields"
-                    style="display:none">
-
-                    <label
-                        for="phoneOtpCode"
-                        style="margin-top:12px">
-
-                        رمز التحقق
-
-                    </label>
-
-                    <input
-                        type="text"
-                        id="phoneOtpCode"
-                        dir="ltr"
-                        inputmode="numeric"
-                        autocomplete="one-time-code"
-                        maxlength="8"
-                        placeholder="أدخل الرمز">
-
-                    <div class="alqafiyah-phone-actions">
-
-                        <button
-                            type="button"
-                            class="login-submit"
-                            id="verifyPhoneOtpButton">
-
-                            تأكيد الرمز
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <p
-                    id="phoneAuthStatus"
-                    class="alqafiyah-phone-status"
-                    aria-live="polite">
-                </p>
-            `;
-
-            phone
-                .insertAdjacentElement(
-                    "afterend",
-                    panel
-                );
-        }
+        // تسجيل الدخول برقم الهاتف ملغى نهائيًا.
+        // إزالة أي عناصر قديمة لو كانت الصفحة مخزنة في الكاش.
+        $("phoneLoginButton")?.remove();
+        $("phoneAuthPanel")?.remove();
     }
 
     function setPhoneStatus(

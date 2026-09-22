@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><meta content="#3E2723" name="theme-color"/><title>الإعدادات | القافية</title><link href="style.css" rel="stylesheet"/><link href="enhancements.css?v=fonts-50-final" rel="stylesheet"/><link href="qafiyah-v2.css?v=final-fix-2" rel="stylesheet"/><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script><script defer="" src="script.js"></script>
+<html dir="rtl" lang="ar"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><meta content="#3E2723" name="theme-color"/><title>الإعدادات | القافية</title><link href="style.css" rel="stylesheet"/><link href="enhancements.css?v=fonts-50-final" rel="stylesheet"/><link href="qafiyah-v2.css?v=final-fix-2" rel="stylesheet"/><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js?v=20260922-2"></script><script defer="" src="script.js?v=20260922-2"></script>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -296,5 +296,5 @@ document.querySelectorAll('.q-setting-disclosure:not(#languageDisclosure)').forE
 const m=document.getElementById('languageModal');document.getElementById('languageButton').onclick=()=>{m.classList.add('open');m.setAttribute('aria-hidden','false')};const close=()=>{m.classList.remove('open');m.setAttribute('aria-hidden','true')};document.getElementById('closeLanguageModal').onclick=close;m.addEventListener('click',e=>{if(e.target===m)close()});document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
 async function legal(){try{const {data,error}=await supabaseClient.from('site_settings').select('key,content').in('key',['copyright','privacy']);if(error)throw error;const map=new Map((data||[]).map(x=>[x.key,x.content]));document.getElementById('copyrightContent').textContent=map.get('copyright')||'';document.getElementById('privacyContent').textContent=map.get('privacy')||''}catch(e){document.getElementById('copyrightContent').textContent='';document.getElementById('privacyContent').textContent=''}}legal();
 })();
-</script><script src="qafiyah-auth-final.js?v=20260922"></script>
+</script><script src="qafiyah-auth-final.js?v=20260922-2"></script>
 </body></html>
