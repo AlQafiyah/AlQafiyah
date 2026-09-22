@@ -2544,6 +2544,15 @@
             button.disabled =
                 true;
 
+            if (provider === "google") {
+                try {
+                    localStorage.setItem(
+                        "qafiyah_google_oauth_pending",
+                        String(Date.now())
+                    );
+                } catch (_) {}
+            }
+
             try {
                 const {
                     error
@@ -2566,6 +2575,14 @@
                 }
 
             } catch (error) {
+                if (provider === "google") {
+                    try {
+                        localStorage.removeItem(
+                            "qafiyah_google_oauth_pending"
+                        );
+                    } catch (_) {}
+                }
+
                 alert(
                     error?.message ||
                     "تعذر تسجيل الدخول باستخدام Google."
