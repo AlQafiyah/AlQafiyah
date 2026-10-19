@@ -1306,15 +1306,45 @@ onclick="window.location.href='index.html'"
 </div>
 </section>
 <section class="admin-section" id="section-legal"><div class="content-card"><div class="card-header"><div><h3>حقوق الطبع والنشر وسياسة الخصوصية</h3><p>يمكن للمالك والمدير فقط تعديل هذين النصين.</p></div></div><div class="table-actions"><button class="btn btn-primary" id="editCopyright" type="button">تعديل حقوق الطبع والنشر</button><button class="btn btn-secondary" id="editPrivacy" type="button">تعديل سياسة الخصوصية</button></div></div></section>
-<section class="admin-section" id="section-mujeeb">
- <div class="content-card"><div class="card-header"><div><h3>إعدادات «مُجيب»</h3><p>إدارة المساعد الأدبي. هذا القسم للمالك والمدير فقط.</p></div><a href="mujeeb.html" target="_blank" rel="noopener" class="btn btn-secondary">عرض مُجيب ↗</a></div>
- <form id="mujeebAdminForm" class="form-grid" style="padding:20px">
- <div class="form-group"><label>الاسم</label><input class="form-control" name="title" maxlength="70" required></div>
- <div class="form-group"><label>حالة المساعد</label><select class="form-control" name="enabled"><option value="true">مفعّل</option><option value="false">متوقف</option></select></div>
- <div class="form-group" style="grid-column:1/-1"><label>رسالة الترحيب</label><textarea class="form-control" name="greeting" rows="2" maxlength="1000"></textarea></div>
- <div class="form-group" style="grid-column:1/-1"><label>تعليمات المساعد الأدبي (الشخصية والسياسة المعرفية)</label><textarea class="form-control" name="system_prompt" rows="9" maxlength="4000" required></textarea></div>
- <div class="form-actions"><button class="btn btn-primary" type="submit">حفظ إعدادات مُجيب</button></div></form>
- <p style="padding:0 20px 20px">يعمل المُجيب بواسطة Cloudflare Workers AI بعد تفعيل الربط. تعليمات النظام ليست بديلاً عن التحقق من الأوزان والمراجع الأدبية.</p></div>
+<style>
+#section-mujeeb .mu-admin-media small{display:block;color:var(--color-gray,#8a7770);font-size:12px;margin:6px 0 9px}
+#section-mujeeb .mu-admin-asset{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:7px 0 11px;min-width:0}
+#section-mujeeb .mu-admin-asset>div:last-child{flex:1;min-width:min(100%,180px)}
+#section-mujeeb .mu-admin-asset input{max-width:100%;font-size:13px}
+#section-mujeeb .mu-admin-asset-preview{flex:none;background-position:center;background-repeat:no-repeat;background-size:cover;border:1px solid rgba(147,111,87,.42);overflow:hidden}
+#section-mujeeb .mu-admin-portrait{width:82px;height:82px;border-radius:50%;background:rgba(116,93,75,.18);display:grid;place-items:center;color:#bca58f}
+#section-mujeeb .mu-admin-portrait img{width:100%;height:100%;object-fit:cover}
+#section-mujeeb .mu-admin-portrait svg{width:44px;height:44px;fill:none;stroke:currentColor;stroke-width:1.4}
+#section-mujeeb .mu-admin-wall{height:132px;aspect-ratio:9/16;border-radius:12px}
+#section-mujeeb .mu-admin-night{background-image:url('mujeeb-night.jpg');background-color:#131416}
+#section-mujeeb .mu-admin-day{background-image:url('mujeeb-day.jpg');background-color:#fffaf6}
+#section-mujeeb [data-mu-remove]{white-space:normal;text-align:right;margin:4px 0}
+#section-mujeeb #muAdminStatus{font-size:13px}
+</style>
+<section class="admin-section" id="section-mujeeb" aria-label="تخصيص مُجيب — للمالك فقط">
+ <div class="content-card">
+  <div class="card-header"><div><h3>مظهر وإعدادات «مُجيب»</h3><p>هذه الإعدادات لا تظهر ولا تتاح للتعديل إلا لمالك الموقع. التغييرات تظهر للزوار عند فتح مُجيب أو تحديث المحادثة.</p></div><a href="mujeeb.html" target="_blank" rel="noopener" class="btn btn-secondary">معاينة مُجيب ↗</a></div>
+  <form id="mujeebAdminForm" class="form-grid" style="padding:20px">
+   <div class="form-group"><label for="muAdminName">اسم المُساعد الظاهر للجميع</label><input class="form-control" id="muAdminName" name="title" maxlength="70" required value="مُجيب"></div>
+   <div class="form-group"><label for="muAdminDesc">الوصف القصير تحت الاسم</label><input class="form-control" id="muAdminDesc" name="short_description" maxlength="120" required value="مساعد القافية الأدبي"></div>
+   <div class="form-group mu-admin-media" style="grid-column:1/-1"><label for="muAdminAvatar">الصورة الشخصية لمُجيب</label>
+    <div class="mu-admin-asset"><div class="mu-admin-asset-preview mu-admin-portrait" id="muAdminAvatarPreview" aria-label="معاينة الصورة الشخصية"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7"/></svg></div>
+    <div><input class="form-control" id="muAdminAvatar" name="mu_avatar" type="file" accept="image/jpeg,image/png,image/webp"><small>JPG أو PNG أو WebP، حتى 2 ميجابايت.</small><button type="button" class="btn btn-secondary btn-small" data-mu-remove="avatar_url">إزالة الصورة والعودة للصورة الافتراضية</button></div></div>
+   </div>
+   <div class="form-group mu-admin-media"><label for="muAdminNight">خلفية المحادثة الليلية</label>
+    <div class="mu-admin-asset mu-admin-wall-asset"><div class="mu-admin-asset-preview mu-admin-wall mu-admin-night" id="muAdminNightPreview" aria-label="معاينة الخلفية الليلية"></div>
+    <div><input class="form-control" id="muAdminNight" name="mu_night" type="file" accept="image/jpeg,image/png,image/webp"><small>JPG أو PNG أو WebP، حتى 6 ميجابايت. تتكيف مع الجوال والحاسوب.</small><button type="button" class="btn btn-secondary btn-small" data-mu-remove="background_dark_url">استعادة الخلفية الليلية الأصلية</button></div></div>
+   </div>
+   <div class="form-group mu-admin-media"><label for="muAdminDay">خلفية المحادثة النهارية</label>
+    <div class="mu-admin-asset mu-admin-wall-asset"><div class="mu-admin-asset-preview mu-admin-wall mu-admin-day" id="muAdminDayPreview" aria-label="معاينة الخلفية النهارية"></div>
+    <div><input class="form-control" id="muAdminDay" name="mu_day" type="file" accept="image/jpeg,image/png,image/webp"><small>JPG أو PNG أو WebP، حتى 6 ميجابايت.</small><button type="button" class="btn btn-secondary btn-small" data-mu-remove="background_light_url">استعادة الخلفية النهارية الأصلية</button></div></div>
+   </div>
+   <div class="form-group"><label>حالة المساعد</label><select class="form-control" name="enabled"><option value="true">مفعّل</option><option value="false">متوقف</option></select></div>
+   <div class="form-group" style="grid-column:1/-1"><label>رسالة الترحيب المُعدّة للنظام</label><textarea class="form-control" name="greeting" rows="2" maxlength="1000"></textarea><small>رسالة الواجهة الترحيبية العامة ثابتة وفق تصميم مُجيب؛ لا تتغير عند تخصيص النص الداخلي.</small></div>
+   <div class="form-group" style="grid-column:1/-1"><label>تعليمات المساعد الأدبي</label><textarea class="form-control" name="system_prompt" rows="8" maxlength="4000" required></textarea></div>
+   <div class="form-actions"><button class="btn btn-primary" type="submit" id="muAdminSave">حفظ ونشر التغييرات</button><span id="muAdminStatus" role="status" aria-live="polite" style="padding:8px 10px"></span></div>
+  </form>
+ </div>
 </section>
 <section class="admin-section" id="section-midmar">
  <div class="content-card"><div class="card-header"><div><h3>إدارة مِضمار</h3><p>أنشئ المسابقات والأسئلة ونظّم الفرق والنتائج. التعديل للمالك والمدير حصراً.</p></div><a href="midmar.html" class="btn btn-secondary" target="_blank" rel="noopener">عرض مِضمار ↗</a></div>
@@ -2823,7 +2853,8 @@ if(currentAdmin.role !== "owner") {
 document.querySelector('[data-section="users"]')?.style.setProperty("display","none");
 document.getElementById("statUsers")?.closest(".stat-card")?.style.setProperty("display","none");
 }
-if(["owner","manager"].includes(currentAdmin.role)) {document.getElementById("mujeebAdminNav")?.style.removeProperty("display");document.getElementById("midmarAdminNav")?.style.removeProperty("display");} else {document.getElementById("mujeebAdminNav")?.style.setProperty("display","none");document.getElementById("midmarAdminNav")?.style.setProperty("display","none");}
+if(currentAdmin.role==="owner") document.getElementById("mujeebAdminNav")?.style.removeProperty("display"); else document.getElementById("mujeebAdminNav")?.style.setProperty("display","none");
+if(["owner","manager"].includes(currentAdmin.role)) document.getElementById("midmarAdminNav")?.style.removeProperty("display"); else document.getElementById("midmarAdminNav")?.style.setProperty("display","none");
 if(!["owner","manager"].includes(currentAdmin.role)) document.getElementById("legalNav")?.style.setProperty("display","none");
 
 if (
@@ -4755,7 +4786,8 @@ loadAdmins
 
 function openSection(section) {
 
-if (["mujeeb","midmar"].includes(section) && !["owner","manager"].includes(currentAdmin?.role)) return;
+if (section === "mujeeb" && currentAdmin?.role !== "owner") return;
+if (section === "midmar" && !["owner","manager"].includes(currentAdmin?.role)) return;
 if (section === "users" && currentAdmin?.role !== "owner") return;
 if (section === "categories" && !["owner","manager"].includes(currentAdmin?.role)) return;
 
@@ -7690,6 +7722,6 @@ document.addEventListener('DOMContentLoaded',()=>{loadQAnalytics();setupBulkSele
 })();
 </script>
 
-<script src="admin-extras.js?v=2"></script>
+<script src="admin-extras.js?v=mu-owner-3"></script>
 </body>
 </html>

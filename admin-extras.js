@@ -2,14 +2,83 @@
 // فروع الإدارة الجديدة: صلاحيات العرض محمية أيضاً بسياسات RLS في SQL.
 (() => {
  const db=window.supabaseClient,$=id=>document.getElementById(id);
- let director=false,challengeRows=[],questionRows=[],teamRows=[];
+ let director=false,owner=false,challengeRows=[],questionRows=[],teamRows=[];
  const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const toast=(s,err=false)=>typeof showToast==='function'?showToast(s,err?'error':'success'):alert(s);
  function guard(){if(!director){toast('هذه الخاصية مخصصة للمالك والمدير فقط.',true);return false;}return true;}
  const dataFrom=f=>Object.fromEntries(new FormData(f).entries());
  function clearForm(f){f.reset();f.elements.namedItem('id').value='';}
- async function loadMujeeb(){if(!guard())return;const {data,error}=await db.from('qafiyah_mujeeb_settings').select('*').eq('id',1).maybeSingle();if(error)return toast('تعذر جلب إعدادات مُجيب: '+error.message,true);const form=$('mujeebAdminForm');if(!data)return;for(const k of ['title','greeting','system_prompt'])form.elements[k].value=data[k]??'';form.elements.enabled.value=String(data.enabled);}
- $('mujeebAdminForm')?.addEventListener('submit',async e=>{e.preventDefault();if(!guard())return;const d=dataFrom(e.currentTarget);if(!d.system_prompt.trim())return toast('أدخل تعليمات المساعد.',true);const {error}=await db.from('qafiyah_mujeeb_settings').upsert({id:1,title:d.title.trim(),greeting:d.greeting.trim(),system_prompt:d.system_prompt.trim(),enabled:d.enabled==='true',updated_at:new Date().toISOString()},{onConflict:'id'});toast(error?.message||'تم حفظ إعدادات مُجيب.',!!error);});
+ // لا تُفتح إعدادات مُجيب إلا للمالك؛ سياسات RLS وStorage تمنع المدير كذلك.
+ const muAssetKeys={avatar_url:{id:'muAdminAvatar',preview:'muAdminAvatarPreview',folder:'avatar',max:2*1024*1024},background_dark_url:{id:'muAdminNight',preview:'muAdminNightPreview',folder:'night',max:6*1024*1024},background_light_url:{id:'muAdminDay',preview:'muAdminDayPreview',folder:'day',max:6*1024*1024}};
+ const defaultPerson='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7"/></svg>';
+ let muAssets={avatar_url:null,background_dark_url:null,background_light_url:null};
+ const muRemoved=new Set(),muLocalPreviews=new Map();
+ function muStatus(message,isError){const el=$('muAdminStatus');if(el){el.textContent=message||'';el.style.color=isError?'#cf7777':'';} }
+ function muSafeUrl(value){try{const u=new URL(String(value||''),location.href);return (u.protocol==='https:'&&(u.hostname.endsWith('.supabase.co')||u.origin===location.origin))?u.href:null;}catch{return null;}}
+ function muPreview(key){const spec=muAssetKeys[key],box=$(spec.preview),file=$(spec.id)?.files?.[0];if(!box)return;
+  const previous=muLocalPreviews.get(key);if(previous){URL.revokeObjectURL(previous);muLocalPreviews.delete(key);}
+  const custom= !muRemoved.has(key) && (file?URL.createObjectURL(file):muSafeUrl(muAssets[key]));
+  if(file&&custom)muLocalPreviews.set(key,custom);
+  if(key==='avatar_url'){
+    box.replaceChildren();if(custom){const im=document.createElement('img');im.alt='معاينة صورة مُجيب';im.src=custom;box.appendChild(im);}else box.innerHTML=defaultPerson;
+  }else{box.style.backgroundImage=custom?`url("${custom}")`:'';}
+ }
+ function muAllPreviews(){Object.keys(muAssetKeys).forEach(muPreview);}
+ Object.entries(muAssetKeys).forEach(([key,spec])=>$(spec.id)?.addEventListener('change',()=>{muRemoved.delete(key);muPreview(key);}));
+ document.querySelectorAll('#section-mujeeb [data-mu-remove]').forEach(button=>button.addEventListener('click',()=>{
+   const key=button.dataset.muRemove,conf=muAssetKeys[key];if(!owner||!conf)return;
+   $(conf.id).value='';muRemoved.add(key);muPreview(key);muStatus('اضغط «حفظ ونشر التغييرات» لتطبيق الإزالة للزوار.');
+ }));
+ async function loadMujeeb(){if(!owner)return;
+  const {data,error}=await db.from('qafiyah_mujeeb_settings').select('*').eq('id',1).maybeSingle();
+  if(error){muStatus('تعذر تحميل إعدادات مُجيب؛ تأكد من تنفيذ ملف SQL الجديد: '+error.message,true);return;}
+  if(!data)return;
+  const form=$('mujeebAdminForm');for(const k of ['title','short_description','greeting','system_prompt'])form.elements[k].value=data[k]??(k==='short_description'?'مساعد القافية الأدبي':'');
+  form.elements.enabled.value=String(data.enabled);
+  for(const k of Object.keys(muAssetKeys)){muAssets[k]=data[k]||null;$(muAssetKeys[k].id).value='';}
+  muRemoved.clear();muAllPreviews();muStatus('');
+ }
+ function muPreviousStoragePath(url){try{const u=new URL(url),tag='/storage/v1/object/public/mujeeb-assets/';const i=u.pathname.indexOf(tag);return i>=0?decodeURIComponent(u.pathname.slice(i+tag.length)):null;}catch{return null;}}
+ async function muUpload(key,file){
+  const spec=muAssetKeys[key];if(!file)return null;
+  const ext={'image/jpeg':'jpg','image/png':'png','image/webp':'webp'}[file.type];
+  if(!ext)throw new Error('صيغة الصورة غير مدعومة: '+file.name);
+  if(file.size>spec.max)throw new Error('الصورة كبيرة: '+file.name);
+  if(file.size<100)throw new Error('الملف ليس صورة صالحة: '+file.name);
+  const name=`${spec.folder}/${Date.now()}-${Math.random().toString(36).slice(2,12)}.${ext}`;
+  const result=await db.storage.from('mujeeb-assets').upload(name,file,{contentType:file.type,upsert:false,cacheControl:'3600'});
+  if(result.error)throw new Error(result.error.message);
+  const publicUrl=db.storage.from('mujeeb-assets').getPublicUrl(name).data?.publicUrl;
+  if(!publicUrl)throw new Error('تعذر الحصول على رابط الصورة');
+  return {url:publicUrl,path:name};
+ }
+ $('mujeebAdminForm')?.addEventListener('submit',async e=>{
+  e.preventDefault();if(!owner){muStatus('التخصيص متاح للمالك وحده.',true);return;}
+  const form=e.currentTarget,d=dataFrom(form),button=$('muAdminSave');
+  if(!d.title.trim()||!d.short_description.trim()||!d.system_prompt.trim()){muStatus('أكمل الاسم والوصف وتعليمات المساعد.',true);return;}
+  const values={id:1,title:d.title.trim(),short_description:d.short_description.trim(),greeting:d.greeting.trim(),system_prompt:d.system_prompt.trim(),enabled:d.enabled==='true',updated_at:new Date().toISOString()};
+  const uploaded=[];
+  button.disabled=true;muStatus('جارٍ رفع الصور وحفظ الإعدادات…');
+  try{
+   for(const [key,spec] of Object.entries(muAssetKeys)){
+    const chosen=$(spec.id)?.files?.[0];
+    if(chosen){const result=await muUpload(key,chosen);values[key]=result.url;uploaded.push(result.path);}
+    else values[key]=muRemoved.has(key)?null:muAssets[key];
+   }
+   const {error}=await db.from('qafiyah_mujeeb_settings').update(values).eq('id',1);
+   if(error)throw new Error(error.message);
+   const old=[];
+   for(const key of Object.keys(muAssetKeys))if(muAssets[key]&&muAssets[key]!==values[key]){
+     const path=muPreviousStoragePath(muAssets[key]);if(path)old.push(path);
+   }
+   muAssets={avatar_url:values.avatar_url,background_dark_url:values.background_dark_url,background_light_url:values.background_light_url};
+   muRemoved.clear();Object.values(muAssetKeys).forEach(spec=>$(spec.id).value='');
+   muAllPreviews();muStatus('تم حفظ مظهر مُجيب ونشره للزوار.');toast('تم تحديث مُجيب.');
+   // Cleaning older images is best-effort; the DB update is already committed.
+   if(old.length)db.storage.from('mujeeb-assets').remove(old).catch(()=>{});
+  }catch(err){if(uploaded.length)db.storage.from('mujeeb-assets').remove(uploaded).catch(()=>{});muStatus('تعذر حفظ التغييرات: '+(err?.message||'خطأ غير متوقع'),true);}
+  finally{button.disabled=false;}
+ });
  async function loadMidmar(){if(!guard())return;
  const [c,q,t]=await Promise.all([db.from('qafiyah_challenges').select('*').order('created_at',{ascending:false}),db.from('qafiyah_game_questions').select('*').order('position'),db.from('qafiyah_game_teams').select('id,name,captain').order('created_at',{ascending:false})]);
  if(c.error||q.error||t.error)return toast('تعذر قراءة بيانات مِضمار. تأكد من تشغيل ملف SQL المرفق. '+(c.error||q.error||t.error).message,true);
@@ -27,8 +96,8 @@
  $('questionsAdminRows')?.addEventListener('click',async e=>{if(!guard())return;const edit=e.target.closest('[data-question-edit]'),del=e.target.closest('[data-question-delete]');if(edit){const x=questionRows.find(v=>v.id===edit.dataset.questionEdit),f=$('questionAdminForm');if(!x)return;for(const k of ['id','challenge_id','question_text','points','position','explanation'])f.elements[k].value=x[k]??'';f.elements.options.value=(x.options||[]).join('\n');f.elements.correct_number.value=x.answer_index+1;f.scrollIntoView({behavior:'smooth',block:'center'});}if(del&&confirm('حذف السؤال ونتائجه السابقة؟')){const r=await db.from('qafiyah_game_questions').delete().eq('id',del.dataset.questionDelete);toast(r.error?.message||'حُذف السؤال.',!!r.error);loadMidmar();}});
  $('teamsAdminRows')?.addEventListener('click',async e=>{if(!guard())return;const del=e.target.closest('[data-team-delete]');if(del&&confirm('حذف الفريق وإلغاء عضوية لاعبيه؟')){const r=await db.from('qafiyah_game_teams').delete().eq('id',del.dataset.teamDelete);toast(r.error?.message||'حُذف الفريق.',!!r.error);loadMidmar();}});
  // نسجل الأقسام الجديدة في نفس نظام التنقل الموجود دون تغيير الأقسام القديمة.
- if(typeof SECTION_INFO!=='undefined'){SECTION_INFO.mujeeb=['مُجيب','إعدادات المساعد الأدبي — المالك والمدير فقط',loadMujeeb];SECTION_INFO.midmar=['مِضمار','المسابقات والأسئلة والفرق — المالك والمدير فقط',loadMidmar];}
- (async()=>{try{const r=await db.rpc('get_my_admin_role');const role=r.data?.[0];director=!!role?.is_active&&['owner','manager'].includes(role.role);if(!director){$('mujeebAdminNav')?.style.setProperty('display','none');$('midmarAdminNav')?.style.setProperty('display','none');}else{$('mujeebAdminNav')?.style.removeProperty('display');$('midmarAdminNav')?.style.removeProperty('display');}}catch{director=false;}})();
+ if(typeof SECTION_INFO!=='undefined'){SECTION_INFO.mujeeb=['مُجيب','تخصيص المُساعد للمالك فقط',loadMujeeb];SECTION_INFO.midmar=['مِضمار','المسابقات والأسئلة والفرق — المالك والمدير فقط',loadMidmar];}
+ (async()=>{try{const r=await db.rpc('get_my_admin_role');const role=r.data?.[0];owner=!!role?.is_active&&role.role==='owner';director=!!role?.is_active&&['owner','manager'].includes(role.role);if(owner)$('mujeebAdminNav')?.style.removeProperty('display');else{$('mujeebAdminNav')?.style.setProperty('display','none');$('section-mujeeb')?.style.setProperty('display','none');}if(director)$('midmarAdminNav')?.style.removeProperty('display');else $('midmarAdminNav')?.style.setProperty('display','none');}catch{director=false;}})();
  // قائمة الشعراء الأصلية تبقى قائمة اختيار فعلية؛ حقل البحث يصفّي القائمة فقط.
  window.setupQafiyahPoetSearch = async function(select, initialId){
   if(!select || select.dataset.enhanced === 'true') return;

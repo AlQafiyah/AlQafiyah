@@ -4,8 +4,51 @@ document.addEventListener('DOMContentLoaded', async () => {
   const chat = $('muChat'), input = $('muInput'), action = $('muAction'), actionIcon = $('muActionIcon');
   const overlay = $('muArchiveOverlay'), archiveList = $('muArchiveList');
   const micIcon='<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5m-4 0h8"/>';
-  const sendIcon='<path d="m21 3-7.5 18-3.8-7.7L2 9.5 21 3Z"/><path d="M21 3 9.7 13.3"/>';
+  const sendIcon='<path d="M5 12h14m-7-7 7 7-7 7"/>';
   let session = null, sessions = [], pendingFile = null, busy = false, disabled = false, recognizer = null;
+  // Appearance is independent from the site's theme; the typeface is NOT independent.
+  const sunIcon='<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>';
+  const moonIcon='<path d="M20.4 15.3A8.7 8.7 0 0 1 8.7 3.6a8.7 8.7 0 1 0 11.7 11.7Z"/>';
+  const fallbackPerson='<svg class="mu-person" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7"/></svg>';
+  let appearance = {avatar_url:null,background_dark_url:null,background_light_url:null};
+  function safeImageUrl(input){try{const u=new URL(String(input||''),location.href);return ['https:','http:'].includes(u.protocol) && (u.origin===location.origin||u.hostname.endsWith('.supabase.co'))?u.href:null;}catch{return null;}}
+  function setAvatar(host,src){if(!host)return;host.replaceChildren();const url=safeImageUrl(src);if(!url){host.innerHTML=fallbackPerson;return;}const im=document.createElement('img');im.alt='';im.src=url;im.loading='eager';im.addEventListener('error',()=>{host.replaceChildren();host.innerHTML=fallbackPerson;},{once:true});host.appendChild(im);}
+  function themeCurrent(){return document.documentElement.dataset.muTheme==='day'?'day':'night';}
+  function useTheme(mode){const d=mode==='day'?'day':'night';document.documentElement.dataset.muTheme=d;const btn=$('muTheme');btn.setAttribute('aria-label',d==='night'?'التبديل للوضع النهاري':'التبديل للوضع الليلي');btn.title=btn.getAttribute('aria-label');btn.setAttribute('aria-pressed',String(d==='day'));$('muThemeIcon').innerHTML=d==='night'?sunIcon:moonIcon;document.querySelector('meta[name="theme-color"]')?.setAttribute('content',d==='night'?'#19191c':'#fffaf5');const url=safeImageUrl(d==='night'?appearance.background_dark_url:appearance.background_light_url);document.documentElement.style.setProperty('--mu-wall-custom',url?`url("${url}")`:'var(--mu-wall-default)');}
+  $('muTheme').addEventListener('click',()=>{const next=themeCurrent()==='night'?'day':'night';try{localStorage.setItem('qafiyah_mujeeb_theme',next);}catch{}useTheme(next);});
+  const fontFamilies={
+    saudi:"'Qafiyah Saudi','Saudi',Tahoma,Arial,sans-serif",expo:"'Expo Arabic','Qafiyah Saudi',sans-serif",expoLight:"'Expo Arabic Light','Expo Arabic','Qafiyah Saudi',sans-serif",amiri:"'Amiri','Qafiyah Saudi',serif",naskh:"'Noto Naskh Arabic','Amiri','Qafiyah Saudi',serif",ruqaaRegular:"'QF Ruqaa Regular','Qafiyah Saudi',serif",ruqaaBold:"'QF Ruqaa Bold','Qafiyah Saudi',serif",ruqaaThin:"'QF Ruqaa Thin','Qafiyah Saudi',serif",kufi:"'QF Kufi Square','Qafiyah Saudi',sans-serif",kufiStylistic:"'QF Kufi Stylistic','Qafiyah Saudi',sans-serif",andalus:"'QF Andalus','Qafiyah Saudi',serif",reem:"'Reem Kufi','Qafiyah Saudi',sans-serif",cairo:"'Cairo','Qafiyah Saudi',sans-serif",tajawal:"'Tajawal','Qafiyah Saudi',sans-serif",messiri:"'El Messiri','Qafiyah Saudi',sans-serif",mada:"'Mada','Qafiyah Saudi',sans-serif",harmattan:"'Harmattan','Qafiyah Saudi',sans-serif",scheherazade:"'Scheherazade New','Qafiyah Saudi',serif",lateef:"'Lateef','Qafiyah Saudi',serif",katibeh:"'Katibeh','Qafiyah Saudi',serif",thuluth:"'QF Thuluth','Qafiyah Saudi',serif",ummi:"'QF Ummi','Qafiyah Saudi',serif",ummiSwash:"'QF Ummi Swash','Qafiyah Saudi',serif",ummiSolid:"'QF Ummi Solid','Qafiyah Saudi',serif",sponge:"'QF Sponge','Qafiyah Saudi',sans-serif",adabi:"'QF Adabi','Qafiyah Saudi',serif",sultan:"'QF Sultan','Qafiyah Saudi',serif",sahra:"'QF Sahra','Qafiyah Saudi',serif",quranQalam:"'QF Quran Qalam','Qafiyah Saudi',serif",quranAmiri:"'QF Quran Amiri','Qafiyah Saudi',serif",quranSaleem:"'QF Quran Saleem','Qafiyah Saudi',serif",mushaf:"'QF Mushaf','Qafiyah Saudi',serif",naskhTahrir:"'QF Naskh Tahrir','Qafiyah Saudi',serif",helal:"'QF Helal','Qafiyah Saudi',serif",baghdadNaskh:"'QF Baghdad Naskh','Qafiyah Saudi',serif",topaz:"'QF Topaz','Qafiyah Saudi',serif",thuluthMadd:"'QF Thuluth Madd','Qafiyah Saudi',serif",diwani1:"'QF Diwani One','Qafiyah Saudi',serif",diwani2:"'QF Diwani Two','Qafiyah Saudi',serif",palestine:"'QF Palestine','Qafiyah Saudi',serif",uthmanBold:"'QF Uthman Taha Bold','Qafiyah Saudi',serif",uthmani:"'QF Uthmani','Qafiyah Saudi',serif",alAwwal:"'QF Al Awwal','Qafiyah Saudi',sans-serif",arabicPoetry:"'QF Arabic Poetry','Qafiyah Saudi',serif",masmak:"'QF Masmak','Qafiyah Saudi',sans-serif",yearCamel:"'QF Year Camel','Qafiyah Saudi',sans-serif",watad:"'QF Watad','Qafiyah Saudi',sans-serif",thmanyah:"'QF Thmanyah','Qafiyah Saudi',serif",alnaseeb:"'QF Alnaseeb','Qafiyah Saudi',serif",alAwwalBold:"'QF Al Awwal Bold Web','Qafiyah Saudi',sans-serif"
+  };
+  function applySiteFont(){let key='saudi';try{key=localStorage.getItem('qafiyah_font')||'saudi';}catch{}if(key==='aref')key='ruqaaRegular';document.documentElement.style.setProperty('--qafiyah-font-family',fontFamilies[key]||fontFamilies.saudi);}
+  applySiteFont();useTheme(themeCurrent());
+  // Keep the composer above soft keyboards on browsers with visualViewport (including mobile Safari).
+  function syncViewport(){
+    const v=window.visualViewport;
+    if(!v)return;
+    const height=Math.max(240,Math.round(v.height));
+    document.documentElement.style.setProperty('--mu-viewport-height',height+'px');
+  }
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize',syncViewport,{passive:true});
+    window.visualViewport.addEventListener('scroll',syncViewport,{passive:true});
+    window.addEventListener('orientationchange',()=>setTimeout(syncViewport,200),{passive:true});
+    syncViewport();
+  }
+
+  window.addEventListener('storage',e=>{if(e.key==='qafiyah_font')applySiteFont();if(e.key==='qafiyah_mujeeb_theme')useTheme(e.newValue);});
+  window.addEventListener('pageshow',applySiteFont);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)applySiteFont();});
+  async function refreshAppearance(){
+    try{const db=window.supabaseClient;if(!db)return;const {data,error}=await db.from('qafiyah_mujeeb_settings').select('enabled,title,short_description,avatar_url,background_dark_url,background_light_url').eq('id',1).maybeSingle();if(error)throw error;if(!data)return;
+      appearance=data;
+      $('muName').textContent=String(data.title||'مُجيب').slice(0,70);
+      $('muSubtitle').textContent=String(data.short_description||'مساعد القافية الأدبي').slice(0,120);
+      setAvatar($('muAvatar'),data.avatar_url);setAvatar(document.querySelector('.mu-welcome-avatar'),data.avatar_url);
+      useTheme(themeCurrent());
+      disabled=(data.enabled===false);updateAction();
+    }catch{/* SQL not yet migrated or temporary network issue: keep default accessible UI. */}
+  }
+
   let storageKey = 'alqafiyah-mujeeb-v2-guest';
   // Account-scoped on this browser. Not cloud sync; do not save sensitive data on shared devices.
   try {
@@ -22,21 +65,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loaded = JSON.parse(localStorage.getItem(storageKey)||'[]');
     if(Array.isArray(loaded)) sessions=loaded.filter(x=>x&&typeof x.id==='string'&&Array.isArray(x.messages)).slice(0,50).map(x=>({id:x.id,title:clean(x.title).slice(0,100),updated:Number(x.updated)||Date.now(),messages:x.messages.filter(m=>m&&['user','assistant'].includes(m.role)&&typeof m.text==='string').slice(-80)}));
   } catch { sessions=[]; }
-  function toast(message){$('muToast').textContent=message;$('muToast').hidden=!message;}
+  let toastTimer;function toast(message){const el=$('muToast');clearTimeout(toastTimer);el.textContent=message;el.hidden=!message;if(message)toastTimer=setTimeout(()=>{el.hidden=true;el.textContent='';},5000);}
   function makeSession(){return {id:uid(),title:'محادثة جديدة',updated:Date.now(),messages:[]};}
-  function newChat(){session=makeSession();pendingFile=null;showAttachment();input.value='';updateAction();render();overlay.hidden=true;input.focus();}
+  function newChat(focusInput=false){session=makeSession();pendingFile=null;showAttachment();input.value='';updateAction();render();overlay.hidden=true;if(focusInput)input.focus();}
   function scrollBottom(){chat.scrollTop=chat.scrollHeight;}
-  function bubble(text,role,fileName){const node=document.createElement('div');node.className=`mu-bubble ${role}`;node.textContent=text;if(fileName){const tag=document.createElement('span');tag.className='mu-fileline';tag.textContent='مرفق: '+fileName;node.appendChild(tag);}chat.appendChild(node);scrollBottom();return node;}
-  function render(){chat.replaceChildren();if(!session.messages.length){const welcome=document.createElement('div');welcome.className='mu-welcome';welcome.id='muWelcome';const icon=document.createElement('span');icon.className='mu-welcome-mark';icon.textContent='م';const title=document.createElement('h1');title.textContent='مرحباً، كيف يمكنني مساعدتك؟';welcome.append(icon,title);chat.appendChild(welcome);}else{session.messages.forEach(m=>bubble(m.text,m.role,m.fileName));}scrollBottom();}
+  function bubble(text,role,fileName){const line=document.createElement('div');line.className=`mu-line ${role}`;const node=document.createElement('div');node.className='mu-bubble';node.textContent=text;if(fileName){const tag=document.createElement('span');tag.className='mu-fileline';tag.textContent='مرفق: '+fileName;node.appendChild(tag);}line.appendChild(node);chat.appendChild(line);scrollBottom();return node;}
+  function render(){chat.replaceChildren();if(!session.messages.length){const welcome=document.createElement('div');welcome.className='mu-welcome';welcome.id='muWelcome';const icon=document.createElement('span');icon.className='mu-welcome-avatar';setAvatar(icon,appearance.avatar_url);const title=document.createElement('h1');title.textContent='مرحباً، كيف يمكنني مساعدتك؟';welcome.append(icon,title);chat.appendChild(welcome);}else{session.messages.forEach(m=>bubble(m.text,m.role,m.fileName));}scrollBottom();}
   function persist(){session.updated=Date.now();const at=sessions.findIndex(x=>x.id===session.id);if(at>=0)sessions.splice(at,1);sessions.unshift(session);sessions.sort((a,b)=>b.updated-a.updated);save();}
   function archive(){archiveList.replaceChildren();if(!sessions.length){const empty=document.createElement('p');empty.className='mu-empty';empty.textContent='لا توجد محادثات سابقة';archiveList.appendChild(empty);return;}sessions.forEach(s=>{const row=document.createElement('div');row.className='mu-entry'+(session?.id===s.id?' active':'');const open=document.createElement('button');open.type='button';open.className='mu-entry-open';const title=document.createElement('strong');title.textContent=s.title||'محادثة';const date=document.createElement('small');date.textContent=new Date(s.updated).toLocaleDateString('ar-SA');open.append(title,date);open.addEventListener('click',()=>{if(busy){toast('انتظر حتى تكتمل الإجابة.');return;}session=s;render();overlay.hidden=true;toast('');});const del=document.createElement('button');del.type='button';del.className='mu-icon mu-entry-delete';del.title='حذف المحادثة';del.setAttribute('aria-label','حذف '+s.title);del.textContent='×';del.addEventListener('click',()=>{if(busy){toast('انتظر حتى تكتمل الإجابة.');return;}if(!confirm('حذف هذه المحادثة نهائياً من هذا الجهاز؟'))return;sessions=sessions.filter(x=>x.id!==s.id);save();if(session.id===s.id)newChat();archive();});row.append(open,del);archiveList.appendChild(row);});}
   $('muArchive').addEventListener('click',()=>{archive();overlay.hidden=false;});
   $('muCloseArchive').addEventListener('click',()=>overlay.hidden=true);
   overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.hidden=true;});
   window.addEventListener('keydown',e=>{if(e.key==='Escape')overlay.hidden=true;});
-  $('muNew').addEventListener('click',()=>{if(busy)return;newChat();toast('');});
+  $('muNew').addEventListener('click',()=>{if(busy)return;newChat(true);toast('');});
   $('muBack').addEventListener('click',()=>{try{const ref=new URL(document.referrer);if(ref.origin===location.origin && !ref.pathname.endsWith('/mujeeb.html')){location.href=ref.href;return;}}catch{}location.href='index.html';});
-  function updateAction(){const hasText=!!input.value.trim()||!!pendingFile;actionIcon.innerHTML=hasText?sendIcon:micIcon;action.setAttribute('aria-label',hasText?'إرسال الرسالة':'الإملاء الصوتي');action.title=hasText?'إرسال':'الإملاء الصوتي';action.disabled=busy||disabled;input.style.height='auto';input.style.height=Math.min(input.scrollHeight,170)+'px';}
+  function updateAction(){const hasText=!!input.value.trim()||!!pendingFile;actionIcon.innerHTML=hasText?sendIcon:micIcon;action.classList.toggle('is-send',hasText);action.setAttribute('aria-label',hasText?'إرسال الرسالة':'الإملاء الصوتي');action.title=hasText?'إرسال':'الإملاء الصوتي';action.disabled=busy||disabled;input.style.height='auto';input.style.height=Math.min(input.scrollHeight,170)+'px';}
   input.addEventListener('input',()=>{updateAction();toast('');});
   input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();submit();}});
   const maxImage=1024*1024,maxText=120*1024;
@@ -69,7 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if(recognizer){recognizer.stop();return;}
     try{const rec=new Speech();recognizer=rec;rec.lang='ar-SA';rec.interimResults=false;rec.continuous=false;toast('أستمع إليك الآن…');rec.onresult=e=>{const words=Array.from(e.results).map(r=>r[0]?.transcript||'').join(' ');input.value=(input.value?input.value+' ':'')+words;updateAction();toast('');};rec.onerror=()=>toast('تعذر التعرف على الصوت. جرّب الكتابة.');rec.onend=()=>{recognizer=null;if($('muToast').textContent==='أستمع إليك الآن…')toast('');};rec.start();}catch{recognizer=null;toast('تعذر تشغيل الميكروفون.');}
   }
-  // Settings only affect availability, not the required public welcome text.
-  try{if(window.supabaseClient){const {data}=await window.supabaseClient.from('qafiyah_mujeeb_settings').select('enabled').eq('id',1).maybeSingle();if(data?.enabled===false){disabled=true;toast('مُجيب غير متاح حالياً.');}}}catch{}
-  newChat();updateAction();
+  newChat();updateAction();await refreshAppearance();
+  // A change by the owner also propagates to long-open conversations.
+  setInterval(()=>{if(document.visibilityState==='visible')refreshAppearance();},60000);
 });
