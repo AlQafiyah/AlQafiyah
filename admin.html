@@ -853,7 +853,24 @@ gap: 6px;
 #section-sijal .sj-admin-card-inputs>label:has(input[type=file]){grid-column:1/-1}
 #section-sijal .sj-admin-card-item:focus-within{border-color:var(--primary-color,#6e4739)}
 @media(max-width:780px){#section-sijal .sj-admin-visual-grid{grid-template-columns:minmax(0,1fr)}#section-sijal .sj-admin-card-item{grid-template-columns:minmax(0,1fr)}#section-sijal .sj-admin-game-cover{height:185px}#section-sijal .sj-admin-card-inputs{grid-template-columns:minmax(0,1fr)}#section-sijal .sj-admin-count-row{grid-template-columns:minmax(0,1fr)}}
-</style></head>
+</style>
+<style id="sijal-admin-last-touches">
+#section-sijal .sj-admin-size-control{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;white-space:nowrap;font-size:.91rem;font-weight:600;color:var(--text-primary,var(--brown,#432a24));}
+#section-sijal .sj-admin-size-control .form-control{width:auto;min-width:77px;margin:0;padding-inline:9px;}
+#section-sijal .sj-admin-pagination{display:flex;align-items:center;justify-content:center;gap:17px;flex-wrap:wrap;margin-top:18px;}
+#section-sijal .sj-admin-pagination>span{font-size:.92rem;font-weight:600;}
+#section-sijal .sj-admin-pagination button:disabled{opacity:.45;cursor:not-allowed;}
+#section-sijal .sj-admin-games-save{display:flex;justify-content:flex-start;margin-top:18px;}
+#section-sijal .sj-admin-pending{border-inline-start:3px solid var(--brown,#56382d);}
+#section-sijal .sj-admin-player-action-panel{border:1px solid var(--border,#dbcfc5);border-radius:14px;padding:16px;margin-top:14px;max-width:760px;}
+#section-sijal .sj-admin-player-action-panel form{display:grid;gap:12px;}
+#section-sijal .sj-admin-player-action-panel label{display:grid;gap:6px;min-width:0;}
+#section-sijal .sj-admin-player-action-panel .sj-admin-action-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+#section-sijal .sj-admin-player-action-panel .form-control{width:100%;min-width:0;box-sizing:border-box;}
+#section-sijal .sj-admin-player-action-panel .sj-admin-card-actions{display:flex;flex-wrap:wrap;gap:10px;}
+@media(max-width:600px){#section-sijal .sj-admin-toolbar{flex-wrap:wrap}#section-sijal .sj-admin-size-control{width:100%;}#section-sijal .sj-admin-player-action-panel .sj-admin-action-fields{grid-template-columns:1fr}}
+</style>
+</head>
 <body>
 <div class="checking-screen" id="checkingScreen">
 <div class="checking-card">
@@ -1372,7 +1389,7 @@ onclick="window.location.href='index.html'"
  </div>
 </section>
 <section class="admin-section" id="section-sijal">
-  <div class="content-card"><div class="card-header"><div><h3>إدارة سِجال</h3><p>الإعدادات والألعاب والأسئلة والتصنيف — للمالك والمدير حصراً.</p></div><a class="btn btn-secondary" href="sijal.html" target="_blank" rel="noopener">عرض سِجال ↗</a></div>
+  <div class="content-card"><div class="card-header"><div><h3>إدارة سِجال</h3><p>الإعدادات والألعاب والأسئلة والتصنيف — للمالك والمدير حصراً.</p></div><a class="btn btn-secondary" href="sijal.html" target="_blank" rel="noopener">عرض سِجال <svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M14 4h6v6M20 4l-9 9"/><path d="M19 13v6H5V5h6"/></svg></a></div>
   <div class="sj-admin">
     <div id="sjAdminNotice" class="sj-admin-notice" role="status" aria-live="polite" hidden></div>
     <div class="sj-admin-stats"><div><strong id="sjAdminGames">—</strong><span>الألعاب</span></div><div><strong id="sjAdminQuestions">—</strong><span>الأسئلة</span></div><div><strong id="sjAdminPlayers">—</strong><span>المتسابقون المسجلون بالنقاط</span></div></div>
@@ -1388,16 +1405,10 @@ onclick="window.location.href='index.html'"
       <p class="sj-admin-help" id="sjAdminVisualStatus" aria-live="polite">الحد الأقصى لكل صورة 8 ميجابايت. لا تتغير الصور المنشورة حتى تضغط حفظ.</p>
     </div>
     <div class="sj-admin-box"><div class="sj-admin-head"><div><h3>تخصيص بطاقات الألعاب</h3><p>تظهر كل لعبة في بطاقة مستقلة. غيّر صورتها وعنوانها ووصفها والتصنيف المكتوب بجوار عدد الأسئلة؛ واختر عدداً تلقائياً أو نصاً تكتبه بنفسك.</p></div></div><div class="sj-admin-card-list" id="sjAdminCardList"></div></div>
-    <div class="sj-admin-box"><div class="sj-admin-head"><div><h3>إدارة الألعاب والتصنيفات</h3><p>إضافة لعبة جديدة أو إخفاؤها وإظهارها أو تعديلها وحذفها. التصنيف قابل للكتابة بحرية.</p></div></div>
-      <form id="sjAdminGameForm" class="form-grid"><input type="hidden" name="id">
-      <div class="form-group"><label>اسم اللعبة</label><input class="form-control" name="title" maxlength="160" minlength="3" required></div>
-      <div class="form-group"><label>نوع اللعبة</label><select class="form-control" name="kind"><option value="complete">أكمل البيت</option><option value="guesspoet">خمن الشاعر</option><option value="speaker">من القائل</option><option value="truefalse">صح أو خطأ</option><option value="riddle">ألغاز القافية</option></select></div>
-      <div class="form-group"><label>التصنيف الأدبي</label><input class="form-control" name="category" maxlength="80" value="الشعر والأدب" list="sjAdminCategories" required><datalist id="sjAdminCategories"></datalist></div>
-      <div class="form-group"><label>حالة اللعبة</label><select class="form-control" name="published"><option value="true">منشورة</option><option value="false">مخفية مؤقتاً</option></select></div>
-      <div class="form-group" style="grid-column:1/-1"><label>وصف اللعبة</label><textarea class="form-control" name="description" rows="2" maxlength="1500"></textarea></div>
-      <div class="form-actions"><button class="btn btn-primary" type="submit">حفظ اللعبة</button><button id="sjAdminResetGame" class="btn btn-secondary" type="button">لعبة جديدة</button></div></form>
-      <div class="sj-admin-toolbar"><input type="search" class="form-control" id="sjAdminGameSearch" placeholder="ابحث في الألعاب أو التصنيفات..."></div>
+    <div class="sj-admin-box"><h3>إدارة الألعاب</h3>
+      <div class="sj-admin-toolbar"><input type="search" class="form-control" id="sjAdminGameSearch" placeholder="ابحث في الألعاب" aria-label="ابحث في الألعاب"></div>
       <div class="table-wrapper"><table class="data-table"><thead><tr><th>اسم اللعبة</th><th>التصنيف</th><th>الأسئلة</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody id="sjAdminGameRows"></tbody></table></div>
+      <div class="form-actions sj-admin-games-save"><button id="sjAdminSaveGames" class="btn btn-primary" type="button">حفظ</button></div>
     </div>
     <div class="sj-admin-box"><h3>الأسئلة والمرفقات</h3><p>أضف أسئلة اختيار من متعدد أو صح وخطأ، وأرفق صورة أو تسجيلاً صوتياً أو فيديو (حد 10 ميجابايت).</p>
       <form id="sjAdminQuestionForm" class="form-grid"><input type="hidden" name="id">
@@ -1412,14 +1423,15 @@ onclick="window.location.href='index.html'"
       <div class="form-group" style="grid-column:1/-1"><label>أو رابط HTTPS لمرفق جاهز</label><input class="form-control" name="media_url" type="url" placeholder="https://..."></div>
       <div class="form-group" style="grid-column:1/-1"><label>وصف المرفق</label><input class="form-control" name="media_caption" maxlength="300"></div>
       <div class="form-actions"><button class="btn btn-primary" type="submit">حفظ السؤال</button><button id="sjAdminResetQuestion" class="btn btn-secondary" type="button">سؤال جديد</button></div></form>
-      <div class="sj-admin-toolbar"><input class="form-control" id="sjAdminQuestionSearch" type="search" placeholder="ابحث عن سؤال..."><select class="form-control" id="sjAdminQuestionFilter"><option value="">كل الألعاب</option></select></div>
+      <div class="sj-admin-toolbar"><input class="form-control" id="sjAdminQuestionSearch" type="search" placeholder="ابحث عن سؤال..."><select class="form-control" id="sjAdminQuestionFilter"><option value="">كل الألعاب</option></select><label class="sj-admin-size-control" for="sjAdminQuestionPageSize">عرض <select class="form-control" id="sjAdminQuestionPageSize" aria-label="عدد الأسئلة في الصفحة"><option value="10" selected>10</option><option value="50">50</option><option value="100">100</option></select> سؤال في الصفحة</label></div>
       <div class="table-wrapper"><table class="data-table"><thead><tr><th>السؤال</th><th>اللعبة</th><th>مرفق</th><th>الإجراءات</th></tr></thead><tbody id="sjAdminQuestionRows"></tbody></table></div>
+      <div class="sj-admin-pagination" role="navigation" aria-label="صفحات أسئلة سِجال"><button id="sjAdminQuestionPrev" class="btn btn-secondary btn-small" type="button">السابق</button><span id="sjAdminQuestionPageInfo" aria-live="polite">الصفحة 1 من 1</span><button id="sjAdminQuestionNext" class="btn btn-secondary btn-small" type="button">التالي</button></div>
     </div>
-    <div class="sj-admin-box"><h3>استيراد أسئلة بالجملة</h3><p>استورد ملف JSON أو CSV، يحتوي على الأسئلة وخياراتها، وحدّد اللعبة المستهدفة. الاستيراد المتكرر لن يضاعف الأسئلة المتطابقة.</p>
+    <div class="sj-admin-box"><h3>استيراد الأسئلة</h3><p>استورد ملف JSON أو CSV، يحتوي على الأسئلة وخياراتها، وحدّد اللعبة المستهدفة. الاستيراد المتكرر لن يضاعف الأسئلة المتطابقة.</p>
       <div class="sj-admin-toolbar"><select id="sjAdminImportGame" class="form-control" aria-label="اللعبة المستهدفة للاستيراد"></select><input id="sjAdminImportFile" class="form-control" type="file" accept=".json,.csv,application/json,text/csv"><button class="btn btn-primary" type="button" id="sjAdminImport">استيراد الأسئلة</button><button class="btn btn-secondary" type="button" id="sjAdminDownloadTemplate">تحميل نموذج الاستيراد</button></div>
       <p class="sj-admin-help">JSON: مصفوفة من كائنات question_text, options, answer_index (يبدأ من 0), explanation, points, position. CSV: question_text وoptions مفصولة بالرمز | وcorrect_number (يبدأ من 1).</p>
     </div>
-    <div class="sj-admin-box"><h3>اللاعبون والتصنيف العام</h3><p>اطّلع على الاسم والبريد وإحصاء الإجابات والنقاط وآخر نشاط. يمكنك إخفاء اللاعب من التصنيف أو تصفير نقاطه بعد التأكيد، دون حذف حسابه بالموقع.</p>
+    <div class="sj-admin-box"><h3>اللاعبون والتصنيف العام</h3><p>اطّلع على الاسم والبريد وإحصاء الإجابات والنقاط وآخر نشاط. يمكنك إخفاء اللاعب، وتعديل إحصاءاته أو تصفير المؤشر الذي تختاره دون حذف حسابه بالموقع.</p>
      <div class="sj-admin-toolbar"><input class="form-control" type="search" id="sjAdminPlayerSearch" placeholder="بحث باسم المتسابق أو بريده..."><button class="btn btn-secondary" type="button" id="sjAdminRefreshPlayers">تحديث النتائج</button></div>
      <div class="table-wrapper"><table class="data-table"><thead><tr><th>المتسابق</th><th>الجولات</th><th>الإجابات</th><th>الصحيحة</th><th>النقاط</th><th>آخر نشاط</th><th>التحكم</th></tr></thead><tbody id="sjAdminPlayerRows"></tbody></table></div>
     </div>
@@ -7778,6 +7790,6 @@ document.addEventListener('DOMContentLoaded',()=>{loadQAnalytics();setupBulkSele
 })();
 </script>
 
-<script src="admin-extras.js?v=sijal-20261019-r4"></script>
+<script src="admin-extras.js?v=sijal-20261020-admin-r1"></script>
 </body>
 </html>

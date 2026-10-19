@@ -81,6 +81,7 @@
  });
  // «سِجال»: إدارة المالك والمدير فقط. تفحص RLS الصلاحية أيضاً داخل Supabase.
  let sijalGames=[],sijalQuestions=[],sijalPlayers=[],sijalLoading=false;
+ const sjPendingGames=new Map();let sjQuestionPage=1,sjQuestionSize=10,sjActivePlayer=null,sjActivePlayerMode=null;
  const sjTypes={quiz:'أسئلة الأدب',complete:'أكمل البيت',guesspoet:'خمن الشاعر',speaker:'من القائل',truefalse:'صح أو خطأ',riddle:'ألغاز القافية'};
  const sjButton=(label,attr,id,variant='secondary')=>`<button class="btn btn-${variant} btn-small" type="button" data-${attr}="${escape(id)}">${label}</button>`;
  const sjDate=value=>value?new Date(value).toLocaleString('ar-SA'):'—';
@@ -155,18 +156,40 @@
   const host=$('sjAdminGameRows');if(!host)return;
   const term=String($('sjAdminGameSearch')?.value||'').trim().toLocaleLowerCase('ar');
   const filtered=sijalGames.filter(g=>`${g.title} ${g.kind} ${g.category} ${g.description}`.toLocaleLowerCase('ar').includes(term));
-  host.innerHTML=filtered.map(g=>`<tr><td><strong>${escape(g.title)}</strong><small style="display:block">${escape(sjTypes[g.kind]||g.kind)}</small></td><td>${escape(g.category||'—')}</td><td>${sijalQuestions.filter(q=>q.challenge_id===g.id).length}</td><td>${g.published?'منشورة':'مخفية'}</td><td>${sjButton('تعديل','sj-game-edit',g.id)} ${sjButton(g.published?'إخفاء':'نشر','sj-game-toggle',g.id)} ${sjButton('حذف','sj-game-delete',g.id,'danger')}</td></tr>`).join('')||'<tr><td colspan="5">لا توجد ألعاب مطابقة.</td></tr>';
+  host.innerHTML=filtered.map(g=>{const published=sjPendingGames.has(g.id)?sjPendingGames.get(g.id):g.published;
+   return `<tr class="${sjPendingGames.has(g.id)?'sj-admin-pending':''}"><td><strong>${escape(g.title)}</strong><small style="display:block">${escape(sjTypes[g.kind]||g.kind)}</small></td><td>${escape(g.category||'—')}</td><td>${sijalQuestions.filter(q=>q.challenge_id===g.id).length}</td><td>${published?'منشورة':'مخفية'}</td><td>${sjButton(published?'إخفاء':'نشر','sj-game-toggle',g.id)} ${sjButton('حذف','sj-game-delete',g.id,'danger')}</td></tr>`;
+  }).join('')||'<tr><td colspan="5">لا توجد ألعاب مطابقة.</td></tr>';
  }
- function sjRenderQuestions(){
+ function sjRenderQuestions(resetPage=false){
   const host=$('sjAdminQuestionRows');if(!host)return;
+  if(resetPage)sjQuestionPage=1;
   const term=String($('sjAdminQuestionSearch')?.value||'').trim().toLocaleLowerCase('ar'),filter=$('sjAdminQuestionFilter')?.value||'';
   const filtered=sijalQuestions.filter(q=>(!filter||q.challenge_id===filter)&&`${q.question_text} ${q.explanation}`.toLocaleLowerCase('ar').includes(term));
-  host.innerHTML=filtered.map(q=>`<tr><td>${escape(q.question_text.slice(0,110))}</td><td>${escape(sijalGames.find(g=>g.id===q.challenge_id)?.title||'—')}</td><td>${q.media_url?escape(q.media_type||'مرفق'):'—'}</td><td>${sjButton('تعديل','sj-question-edit',q.id)} ${sjButton('حذف','sj-question-delete',q.id,'danger')}</td></tr>`).join('')||'<tr><td colspan="4">لا توجد أسئلة مطابقة.</td></tr>';
+  const pageSize=sjQuestionSize,totalPages=Math.max(1,Math.ceil(filtered.length/pageSize));
+  sjQuestionPage=Math.max(1,Math.min(sjQuestionPage,totalPages));
+  const first=(sjQuestionPage-1)*pageSize;
+  host.innerHTML=filtered.slice(first,first+pageSize).map(q=>`<tr><td>${escape(q.question_text.slice(0,110))}</td><td>${escape(sijalGames.find(g=>g.id===q.challenge_id)?.title||'—')}</td><td>${q.media_url?escape(q.media_type||'مرفق'):'—'}</td><td>${sjButton('تعديل','sj-question-edit',q.id)} ${sjButton('حذف','sj-question-delete',q.id,'danger')}</td></tr>`).join('')||'<tr><td colspan="4">لا توجد أسئلة مطابقة.</td></tr>';
+  const info=$('sjAdminQuestionPageInfo');if(info)info.textContent=`الصفحة ${sjQuestionPage} من ${totalPages} — ${filtered.length} سؤال`;
+  const prev=$('sjAdminQuestionPrev'),next=$('sjAdminQuestionNext');if(prev)prev.disabled=sjQuestionPage<=1;if(next)next.disabled=sjQuestionPage>=totalPages;
  }
  function sjRenderPlayers(){const host=$('sjAdminPlayerRows');if(!host)return;
   const term=String($('sjAdminPlayerSearch')?.value||'').trim().toLocaleLowerCase('ar');
   const found=sijalPlayers.filter(p=>`${p.player} ${p.email}`.toLocaleLowerCase('ar').includes(term));
-  host.innerHTML=found.map(p=>`<tr><td><strong>${escape(p.player||'متسابق')}</strong><small style="display:block">${escape(p.email||'')}</small>${p.hidden?'<small>مخفي من الترتيب</small>':''}</td><td>${Number(p.rounds||0)}</td><td>${Number(p.answers||0)}</td><td>${Number(p.correct||0)}</td><td>${Number(p.points||0).toLocaleString('ar-SA')}</td><td>${sjDate(p.last_played)}</td><td>${sjButton('التفاصيل','sj-player-detail',p.user_id)} ${sjButton(p.hidden?'إظهاره':'إخفاؤه','sj-player-hide',p.user_id)} ${sjButton('تصفير','sj-player-reset',p.user_id,'danger')}</td></tr>`).join('')||'<tr><td colspan="7">لا يوجد متنافسون مطابقون.</td></tr>';
+  host.innerHTML=found.map(p=>`<tr><td><strong>${escape(p.player||'متسابق')}</strong><small style="display:block">${escape(p.email||'')}</small>${p.hidden?'<small>مخفي من الترتيب</small>':''}</td><td>${Number(p.rounds||0)}</td><td>${Number(p.answers||0)}</td><td>${Number(p.correct||0)}</td><td>${Number(p.points||0).toLocaleString('ar-SA')}</td><td>${sjDate(p.last_played)}</td><td>${sjButton('التفاصيل','sj-player-detail',p.user_id)} ${sjButton('تعديل','sj-player-update',p.user_id)} ${sjButton(p.hidden?'إظهاره':'إخفاؤه','sj-player-hide',p.user_id)} ${sjButton('تصفير','sj-player-reset',p.user_id,'danger')}</td></tr>`).join('')||'<tr><td colspan="7">لا يوجد متنافسون مطابقون.</td></tr>';
+ }
+ // Supabase may cap each REST response at 1000 rows. Fetch in batches so question
+ // paging, searching, editing and import de-duplication work for more than 1000 questions.
+ async function sjLoadAllQuestions(){
+  const all=[],size=500;
+  for(let offset=0;;offset+=size){
+   const batch=await sjRun(db.from('qafiyah_game_questions').select('*')
+     .order('position',{ascending:true}).order('id',{ascending:true})
+     .range(offset,offset+size-1));
+   all.push(...(batch||[]));
+   if(!batch||batch.length<size)break;
+   if(offset>=49500)throw Error('تجاوز عدد الأسئلة حد 50,000. تواصل مع الدعم لتفعيل تقسيم الخادم.');
+  }
+  return all;
  }
  async function loadSijal(){
   if(!director||sijalLoading)return;
@@ -174,7 +197,7 @@
   try{
    const [games,questions,settings,players]=await Promise.all([
     sjRun(db.from('qafiyah_challenges').select('*').order('created_at',{ascending:false}).limit(1000)),
-    sjRun(db.from('qafiyah_game_questions').select('*').order('position',{ascending:true}).limit(5000)),
+    sjLoadAllQuestions(),
     sjRun(db.from('qafiyah_sijal_settings').select('*').eq('id',1).single()),
     sjRun(db.rpc('qafiyah_sijal_admin_players'))
    ]);
@@ -193,27 +216,28 @@
   try{await sjRun(db.from('qafiyah_sijal_settings').update({enabled:$('sjAdminEnabled').checked,leaderboard_enabled:$('sjAdminLeaderboard').checked,updated_at:new Date().toISOString()}).eq('id',1));sjMsg('حُفظت إعدادات ظهور سِجال والتصنيف.');toast('تم الحفظ.');}
   catch(ex){sjMsg(ex.message,true);toast(ex.message,true);}finally{sjWorking(b,false);}
  });
- $('sjAdminGameForm')?.addEventListener('submit',async e=>{
-  e.preventDefault();if(!guard())return;const f=e.currentTarget,d=dataFrom(f),b=f.querySelector('[type=submit]');sjWorking(b,true);
-  try{
-   const data={title:String(d.title||'').trim(),kind:d.kind,category:String(d.category||'').trim(),description:String(d.description||'').trim(),published:d.published==='true',updated_at:new Date().toISOString()};
-   if(data.title.length<3||!data.category)throw Error('اكتب اسم اللعبة والتصنيف الأدبي.');
-   if(!sjTypes[data.kind])throw Error('اختر نوع لعبة صحيحاً.');
-   await sjRun(d.id?db.from('qafiyah_challenges').update(data).eq('id',d.id):db.from('qafiyah_challenges').insert(data));
-   f.reset();f.elements.namedItem('id').value='';f.elements.namedItem('kind').querySelector('option[value="quiz"]')?.remove();toast('تم حفظ اللعبة.');await loadSijal();
-  }catch(ex){toast(ex.message,true);}finally{sjWorking(b,false);}
- });
- $('sjAdminResetGame')?.addEventListener('click',()=>{const f=$('sjAdminGameForm');clearForm(f);f.elements.namedItem('kind').querySelector('option[value="quiz"]')?.remove();});
  $('sjAdminGameSearch')?.addEventListener('input',sjRenderGames);
  $('sjAdminGameRows')?.addEventListener('click',async e=>{
-  if(!guard())return;const button=e.target.closest('[data-sj-game-edit],[data-sj-game-delete],[data-sj-game-toggle]');if(!button)return;
-  const id=button.dataset.sjGameEdit||button.dataset.sjGameDelete||button.dataset.sjGameToggle;
+  if(!guard())return;const button=e.target.closest('[data-sj-game-delete],[data-sj-game-toggle]');if(!button)return;
+  const id=button.dataset.sjGameDelete||button.dataset.sjGameToggle;
   const game=sijalGames.find(g=>g.id===id);if(!game)return;
-  if(button.dataset.sjGameEdit){const f=$('sjAdminGameForm');const kind=f.elements.namedItem('kind');kind.querySelector('option[value="quiz"]')?.remove();if(game.kind==='quiz')kind.add(new Option('أسئلة الأدب (نوع موجود سابقاً)','quiz'),0);for(const key of ['id','title','description','kind','category'])f.elements.namedItem(key).value=game[key]||'';f.elements.namedItem('published').value=String(game.published);f.scrollIntoView({behavior:'smooth',block:'center'});return;}
-  if(button.dataset.sjGameDelete&&!confirm(`حذف «${game.title}» وجميع أسئلته ونتائجه نهائياً؟`))return;
+  if(button.dataset.sjGameToggle){const value=sjPendingGames.has(id)?sjPendingGames.get(id):game.published;
+   if(value===game.published)sjPendingGames.set(id,!game.published);else sjPendingGames.delete(id);
+   sjRenderGames();return;
+  }
+  if(!confirm(`حذف «${game.title}» وجميع أسئلته ونتائجه نهائياً؟ لا يمكن التراجع عن هذا الإجراء.`))return;
   sjWorking(button,true);
-  try{await sjRun(button.dataset.sjGameToggle?db.from('qafiyah_challenges').update({published:!game.published}).eq('id',id):db.from('qafiyah_challenges').delete().eq('id',id));toast('تم تحديث اللعبة.');await loadSijal();}
+  try{await sjRun(db.from('qafiyah_challenges').delete().eq('id',id));sjPendingGames.delete(id);toast('حُذفت اللعبة.');await loadSijal();}
   catch(ex){toast(ex.message,true);}finally{sjWorking(button,false);}
+ });
+ $('sjAdminSaveGames')?.addEventListener('click',async e=>{
+  if(!guard())return;const button=e.currentTarget;const changes=[...sjPendingGames];
+  if(!changes.length){toast('لا توجد تغييرات للحفظ.');return;}
+  sjWorking(button,true);try{
+   for(const [id,published] of changes){await sjRun(db.from('qafiyah_challenges').update({published,updated_at:new Date().toISOString()}).eq('id',id));sjPendingGames.delete(id);}
+   toast('حُفظت حالة الألعاب.');await loadSijal();
+  }catch(err){sjMsg('لم تكتمل جميع التغييرات: '+err.message,true);toast(err.message,true);await loadSijal();}
+  finally{sjWorking(button,false);}
  });
  const sjMimeTypes={image:['image/jpeg','image/png','image/webp','image/gif'],audio:['audio/mpeg','audio/mp4','audio/ogg','audio/wav','audio/webm'],video:['video/mp4','video/webm']};
  const sjMimeKind=mime=>Object.entries(sjMimeTypes).find(([,types])=>types.includes(mime))?.[0]||null;
@@ -277,8 +301,11 @@
   finally{sjWorking(b,false);}
  });
  $('sjAdminResetQuestion')?.addEventListener('click',()=>{clearForm($('sjAdminQuestionForm'));sjSetAnswers();$('sjAdminMediaFile').value='';});
- $('sjAdminQuestionSearch')?.addEventListener('input',sjRenderQuestions);
- $('sjAdminQuestionFilter')?.addEventListener('change',sjRenderQuestions);
+ $('sjAdminQuestionSearch')?.addEventListener('input',()=>sjRenderQuestions(true));
+ $('sjAdminQuestionFilter')?.addEventListener('change',()=>sjRenderQuestions(true));
+ $('sjAdminQuestionPageSize')?.addEventListener('change',e=>{sjQuestionSize=Number(e.target.value)||10;sjRenderQuestions(true);});
+ $('sjAdminQuestionPrev')?.addEventListener('click',()=>{if(sjQuestionPage>1){sjQuestionPage--;sjRenderQuestions();}});
+ $('sjAdminQuestionNext')?.addEventListener('click',()=>{sjQuestionPage++;sjRenderQuestions();});
  $('sjAdminQuestionRows')?.addEventListener('click',async e=>{
   if(!guard())return;const button=e.target.closest('[data-sj-question-edit],[data-sj-question-delete]');if(!button)return;
   const id=button.dataset.sjQuestionEdit||button.dataset.sjQuestionDelete;const q=sijalQuestions.find(q=>q.id===id);if(!q)return;
@@ -289,21 +316,62 @@
  });
  $('sjAdminPlayerSearch')?.addEventListener('input',sjRenderPlayers);
  $('sjAdminRefreshPlayers')?.addEventListener('click',loadSijal);
+ const sjPlayerMetrics={points:'النقاط',rounds:'الجولات',answers:'الإجابات',correct:'الإجابات الصحيحة'};
+ function sjClosePlayer(){const box=$('sjAdminPlayerDetails');if(box){box.hidden=true;box.replaceChildren();}sjActivePlayer=null;sjActivePlayerMode=null;}
+ function sjMakePlayerSummary(box,p){
+  const h=document.createElement('h3');h.textContent='سجل مشاركة '+p.player;box.append(h);
+  const summary=document.createElement('p');summary.textContent=`${Number(p.rounds||0)} جولات مكتملة، ${Number(p.answers||0)} إجابة، ${Number(p.correct||0)} صحيحة، ${Number(p.points||0)} نقطة. آخر نشاط: ${sjDate(p.last_played)}.`;box.append(summary);
+ }
+ function sjPlayerActionEditor(box,p,mode){
+  const panel=document.createElement('div');panel.className='sj-admin-player-action-panel';
+  const title=document.createElement('h4');title.textContent=(mode==='reset'?'تصفير':'تعديل')+' بيانات '+p.player;panel.append(title);
+  const form=document.createElement('form');const fields=document.createElement('div');fields.className='sj-admin-action-fields';
+  const metricLabel=document.createElement('label');metricLabel.textContent='المؤشر';const metric=document.createElement('select');metric.className='form-control';metric.name='metric';metric.required=true;
+  Object.entries(sjPlayerMetrics).forEach(([key,name])=>metric.append(new Option(name,key)));
+  if(mode==='reset')metric.append(new Option('جميع المؤشرات','all'));
+  metricLabel.append(metric);fields.append(metricLabel);
+  let action=null,value=null;
+  if(mode==='update'){
+   const actionLabel=document.createElement('label');actionLabel.textContent='نوع التعديل';action=document.createElement('select');action.className='form-control';action.name='direction';action.append(new Option('إضافة','add'),new Option('خصم','subtract'));actionLabel.append(action);fields.append(actionLabel);
+   const valueLabel=document.createElement('label');valueLabel.textContent='القيمة';value=document.createElement('input');value.className='form-control';value.type='number';value.name='amount';value.min='1';value.step='1';value.max='1000000000';value.required=true;value.placeholder='أدخل عدداً صحيحاً';valueLabel.append(value);fields.append(valueLabel);
+  }
+  form.append(fields);
+  const actions=document.createElement('div');actions.className='sj-admin-card-actions';
+  const submit=document.createElement('button');submit.type='submit';submit.className='btn '+(mode==='reset'?'btn-danger':'btn-primary');submit.textContent=mode==='reset'?'تأكيد التصفير':'حفظ التعديل';
+  const cancel=document.createElement('button');cancel.type='button';cancel.className='btn btn-secondary';cancel.textContent='إغلاق';cancel.addEventListener('click',sjClosePlayer);actions.append(submit,cancel);form.append(actions);panel.append(form);box.append(panel);
+  form.addEventListener('submit',async e=>{
+   e.preventDefault();if(!guard())return;
+   const metricName=metric.value,amount=mode==='reset'?0:Number(value?.value);
+   if(mode==='update'&&(!Number.isSafeInteger(amount)||amount<1||amount>1000000000)){toast('أدخل قيمة صحيحة بين 1 ومليار.',true);return;}
+   const newValue=mode==='update'?(action.value==='subtract'?-amount:amount):0;
+   const actionText=mode==='reset'?`تصفير ${metricName==='all'?'جميع مؤشرات اللاعب':sjPlayerMetrics[metricName]} لـ«${p.player}»؟`:`${newValue>0?'إضافة':'خصم'} ${amount} من ${sjPlayerMetrics[metricName]} لـ«${p.player}»؟`;
+   if(!confirm(actionText))return;
+   submit.disabled=true;
+   try{await sjRun(db.rpc('qafiyah_sijal_adjust_player',{p_user:p.user_id,p_metric:metricName,p_action:mode==='reset'?'reset':'adjust',p_value:newValue}));toast('تم تحديث إحصاءات اللاعب.');sjClosePlayer();await loadSijal();}
+   catch(err){toast(err.message,true);submit.disabled=false;}
+  });
+ }
  $('sjAdminPlayerRows')?.addEventListener('click',async e=>{
-  if(!guard())return;const b=e.target.closest('[data-sj-player-detail],[data-sj-player-hide],[data-sj-player-reset]');if(!b)return;
-  const id=b.dataset.sjPlayerDetail||b.dataset.sjPlayerHide||b.dataset.sjPlayerReset;
+  if(!guard())return;const b=e.target.closest('[data-sj-player-detail],[data-sj-player-hide],[data-sj-player-reset],[data-sj-player-update]');if(!b)return;
+  const id=b.dataset.sjPlayerDetail||b.dataset.sjPlayerHide||b.dataset.sjPlayerReset||b.dataset.sjPlayerUpdate;
   const p=sijalPlayers.find(x=>x.user_id===id);if(!p)return;
-  if(b.dataset.sjPlayerDetail){const box=$('sjAdminPlayerDetails');box.hidden=false;box.replaceChildren();const h=document.createElement('h3');h.textContent='سجل مشاركة '+p.player;box.append(h);
-   const summary=document.createElement('p');summary.textContent=`${Number(p.rounds||0)} جولات مكتملة، ${Number(p.answers||0)} إجابة، ${Number(p.correct||0)} صحيحة، ${Number(p.points||0)} نقطة. آخر نشاط: ${sjDate(p.last_played)}.`;box.append(summary);
+  const mode=b.dataset.sjPlayerDetail?'detail':b.dataset.sjPlayerReset?'reset':b.dataset.sjPlayerUpdate?'update':null;
+  if(mode){
+   if(sjActivePlayer===id&&sjActivePlayerMode===mode&&!$('sjAdminPlayerDetails').hidden){sjClosePlayer();return;}
+   sjActivePlayer=id;sjActivePlayerMode=mode;
+   const box=$('sjAdminPlayerDetails');box.hidden=false;box.replaceChildren();sjMakePlayerSummary(box,p);
+   if(mode!=='detail'){sjPlayerActionEditor(box,p,mode);box.scrollIntoView({behavior:'smooth',block:'nearest'});return;}
+   const loading=document.createElement('p');loading.textContent='جارٍ تحميل آخر الإجابات…';box.append(loading);
    try{const answers=await sjRun(db.from('qafiyah_game_answers').select('question_id,is_correct,points,answered_at').eq('user_id',id).order('answered_at',{ascending:false}).limit(100));
+    if(sjActivePlayer!==id||sjActivePlayerMode!==mode)return;loading.remove();
     const perGame=new Map();for(const a of answers){const q=sijalQuestions.find(x=>x.id===a.question_id),key=sijalGames.find(g=>g.id===q?.challenge_id)?.title||'لعبة غير معروفة';const record=perGame.get(key)||{count:0,points:0};record.count++;record.points+=Number(a.points)||0;perGame.set(key,record);}
     for(const [name,v] of perGame){const row=document.createElement('p');row.textContent=`${name}: ${v.count} إجابات، ${v.points} نقطة (آخر 100 إجابة).`;box.append(row);}
     for(const a of answers.slice(0,10)){const row=document.createElement('p');row.textContent=`${sjDate(a.answered_at)} — ${a.is_correct?'صحيحة':'خاطئة'} — ${a.points} نقطة`;box.append(row);}
-   }catch(err){sjMsg(err.message,true);}box.scrollIntoView({behavior:'smooth',block:'nearest'});return;
+   }catch(err){loading.textContent='تعذر تحميل تفاصيل الإجابات.';sjMsg(err.message,true);}
+   box.scrollIntoView({behavior:'smooth',block:'nearest'});return;
   }
-  if(b.dataset.sjPlayerReset&&!confirm(`تصفير نقاط «${p.player}» وحذف سجل إجاباته نهائياً؟`))return;
-  if(b.dataset.sjPlayerHide&&!confirm(p.hidden?'إعادته إلى التصنيف العام؟':'إخفاؤه من التصنيف العام دون حذف حسابه؟'))return;
-  sjWorking(b,true);try{await sjRun(b.dataset.sjPlayerReset?db.rpc('qafiyah_sijal_reset_points',{p_user:id}):db.rpc('qafiyah_sijal_set_hidden',{p_user:id,p_hidden:!p.hidden}));toast('تم تحديث بيانات المتسابق.');await loadSijal();}catch(ex){toast(ex.message,true);}finally{sjWorking(b,false);}
+  if(!confirm(p.hidden?'إعادته إلى التصنيف العام؟':'إخفاؤه من التصنيف العام دون حذف حسابه؟'))return;
+  sjWorking(b,true);try{await sjRun(db.rpc('qafiyah_sijal_set_hidden',{p_user:id,p_hidden:!p.hidden}));toast('تم تحديث بيانات المتسابق.');sjClosePlayer();await loadSijal();}catch(ex){toast(ex.message,true);}finally{sjWorking(b,false);}
  });
  function sjParseCsv(raw){const rows=[];let row=[],cell='',quote=false;
   for(let i=0;i<raw.length;i++){const ch=raw[i];if(ch==='"'){if(quote&&raw[i+1]==='"'){cell+='"';i++;}else quote=!quote;}
