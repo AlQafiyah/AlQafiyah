@@ -29,21 +29,106 @@
  // نسجل الأقسام الجديدة في نفس نظام التنقل الموجود دون تغيير الأقسام القديمة.
  if(typeof SECTION_INFO!=='undefined'){SECTION_INFO.mujeeb=['مُجيب','إعدادات المساعد الأدبي — المالك والمدير فقط',loadMujeeb];SECTION_INFO.midmar=['مِضمار','المسابقات والأسئلة والفرق — المالك والمدير فقط',loadMidmar];}
  (async()=>{try{const r=await db.rpc('get_my_admin_role');const role=r.data?.[0];director=!!role?.is_active&&['owner','manager'].includes(role.role);if(!director){$('mujeebAdminNav')?.style.setProperty('display','none');$('midmarAdminNav')?.style.setProperty('display','none');}else{$('mujeebAdminNav')?.style.removeProperty('display');$('midmarAdminNav')?.style.removeProperty('display');}}catch{director=false;}})();
- // تحويل القائمة الطويلة للشعراء إلى حقل بحث ذكي دون تغيير poet_id المرسَل للخادم.
- window.setupQafiyahPoetSearch = async function(select,initialId){
-  if(!select||select.dataset.enhanced==='true')return;select.dataset.enhanced='true';
-  select.style.display='none';select.required=false;
-  const box=document.createElement('div');box.style.cssText='position:relative;max-width:100%;';
-  const inp=document.createElement('input');inp.type='search';inp.className='form-control';inp.placeholder='ابحث باسم الشاعر أو لقبه...';inp.autocomplete='off';inp.required=true;inp.setAttribute('aria-label','البحث عن الشاعر');
-  const results=document.createElement('div');results.style.cssText='position:absolute;z-index:1000;top:100%;right:0;left:0;max-height:230px;overflow:auto;background:#fff;color:#3e2723;border:1px solid #b9a397;border-radius:10px;box-shadow:0 12px 25px #0002;display:none';box.append(inp,results);select.insertAdjacentElement('beforebegin',box);
-  const choose=p=>{select.replaceChildren(new Option(p.name||'الشاعر',String(p.id)));select.value=String(p.id);inp.value=(p.name||'')+(p.nickname?' — '+p.nickname:'');select.dispatchEvent(new Event('change',{bubbles:true}));results.style.display='none';};
-  const show=arr=>{results.replaceChildren();if(!arr.length){results.textContent='لم يعثر على شاعر مطابق';}for(const p of arr){const b=document.createElement('button');b.type='button';b.textContent=(p.name||'')+(p.nickname?' — '+p.nickname:'');b.style.cssText='display:block;width:100%;padding:9px 13px;text-align:right;border:0;border-bottom:1px solid #eee;background:#fff;cursor:pointer;color:#3e2723';b.addEventListener('click',()=>choose(p));results.append(b);}results.style.display='block';};
-  async function remote(term){const safe=term.replace(/[,().%*]/g,' ').trim();if(!safe)return[];let q=db.from('poets').select('id,name,nickname,era,aliases').or(`name.ilike.%${safe}%,nickname.ilike.%${safe}%,search_text.ilike.%${safe}%`).order('name').limit(20);let r=await q;if(r.error){r=await db.from('poets').select('id,name,nickname,era').or(`name.ilike.%${safe}%,nickname.ilike.%${safe}%`).order('name').limit(20);}return r.data||[];}
-  let generation=0,timer;
-  inp.addEventListener('input',()=>{select.replaceChildren(new Option('',''));inp.setCustomValidity('اختر شاعراً من النتائج');clearTimeout(timer);const tick=++generation;timer=setTimeout(async()=>{if(inp.value.trim().length<2){results.style.display='none';return;}const list=await remote(inp.value.trim());if(tick===generation)show(list);},220);});
-  inp.addEventListener('blur',()=>setTimeout(()=>{results.style.display='none';},200));
-  inp.addEventListener('focus',()=>{if(results.childNodes.length)results.style.display='block';});
-  select.addEventListener('change',()=>{inp.setCustomValidity(select.value?'':'اختر شاعراً من النتائج');});
-  if(initialId){const inOptions=Array.from(select.options).find(v=>String(v.value)===String(initialId));if(inOptions)inp.value=inOptions.textContent.trim();const r=await db.from('poets').select('id,name,nickname,era').eq('id',initialId).maybeSingle();if(r.data)choose(r.data);else if(inOptions)select.value=initialId;}
+ // قائمة الشعراء الأصلية تبقى قائمة اختيار فعلية؛ حقل البحث يصفّي القائمة فقط.
+ window.setupQafiyahPoetSearch = async function(select, initialId){
+  if(!select || select.dataset.enhanced === 'true') return;
+  select.dataset.enhanced = 'true';
+  select.style.display = '';
+  select.required = true;
+  select.setAttribute('aria-label', 'اختر الشاعر من القائمة');
+
+  const search = document.createElement('input');
+  search.type = 'search';
+  search.className = 'form-control';
+  search.placeholder = 'ابحث داخل قائمة الشعراء بالاسم أو اللقب...';
+  search.autocomplete = 'off';
+  search.setAttribute('aria-label', 'البحث داخل قائمة الشعراء');
+  search.style.marginBottom = '8px';
+  const status = document.createElement('div');
+  status.setAttribute('aria-live','polite');
+  status.style.cssText = 'font-size:12px;opacity:.7;margin-top:5px;';
+  select.insertAdjacentElement('beforebegin',search);
+  select.insertAdjacentElement('afterend',status);
+
+  // النسخة القديمة من لوحة الإدارة قد تجلب أول 1000 شاعر فقط.
+  // نكمل تحميل الشعراء على دفعات مع إبقاء معرّف الشاعر الأصلي.
+  const byId = new Map();
+  if(typeof poetsCache !== 'undefined') {
+   for(const poet of poetsCache) if(poet?.id != null) byId.set(String(poet.id),poet);
+  }
+  for(const option of Array.from(select.options)) {
+   if(option.value && !byId.has(String(option.value))) {
+    byId.set(String(option.value),{id:option.value,name:option.textContent.trim(),nickname:''});
+   }
+  }
+  const chosenId = String(initialId ?? select.value ?? '');
+  let selectedId = chosenId;
+  let queryText = '';
+  let loading = true;
+  const normalize = v => String(v ?? '')
+    .normalize('NFKC')
+    .replace(/[\u064B-\u065F\u0670\u0640]/g,'')
+    .replace(/[أإآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ؤ/g,'و').replace(/ئ/g,'ي')
+    .toLocaleLowerCase('ar').trim();
+
+  function redraw(){
+   const previous = selectedId;
+   const needle = normalize(queryText);
+   const all = Array.from(byId.values()).sort((a,b)=>String(a.name||'').localeCompare(String(b.name||''),'ar'));
+   const matching = needle ? all.filter(p=>normalize(`${p.name||''} ${p.nickname||''} ${(Array.isArray(p.aliases)?p.aliases.join(' '):p.aliases)||''}`).includes(needle)) : all;
+   const options = [new Option('اختر الشاعر', '')];
+   for(const poet of matching){
+    options.push(new Option(`${poet.name||'شاعر بلا اسم'}${poet.nickname?' — '+poet.nickname:''}`,String(poet.id)));
+   }
+   // نُبقي الشاعر المختار ظاهراً عند البحث حتى لا نفقد علاقة القصيدة به.
+   if(previous && byId.has(previous) && !matching.some(p=>String(p.id)===previous)){
+    const poet = byId.get(previous);
+    options.splice(1,0,new Option(`${poet.name||'الشاعر المحدد'}${poet.nickname?' — '+poet.nickname:''} (المختار حالياً)`,previous));
+   }
+   select.replaceChildren(...options);
+   select.value = previous && byId.has(previous) ? previous : '';
+   status.textContent = loading ? `جارٍ استكمال تحميل الشعراء… (${all.length})` :
+      needle ? `نتائج البحث: ${matching.length} شاعر${previous&&!matching.some(p=>String(p.id)===previous)?'، بالإضافة إلى الشاعر المختار':''}` : `عدد الشعراء في القائمة: ${all.length}`;
+  }
+
+  search.addEventListener('input',()=>{queryText=search.value;redraw();});
+  select.addEventListener('change',()=>{
+   selectedId=select.value;
+   const poet=byId.get(selectedId);
+   if(poet && typeof poetsCache !== 'undefined' && !poetsCache.some(p=>String(p.id)===selectedId)){
+    poetsCache.push(poet);
+   }
+  });
+  redraw();
+  try {
+   const pageSize = 500;
+   // لا نعتمد على حدّ Supabase الافتراضي البالغ 1000 سجل.
+   for(let from=0; from<100000; from+=pageSize){
+    const {data,error}=await db.from('poets')
+     .select('id,name,nickname,era').order('id',{ascending:true})
+     .range(from,from+pageSize-1);
+    if(error) throw error;
+    const batch=data||[];
+    for(const poet of batch){
+     byId.set(String(poet.id),poet);
+     if(typeof poetsCache !== 'undefined' && !poetsCache.some(p=>String(p.id)===String(poet.id))){
+      poetsCache.push(poet);
+     }
+    }
+    if(batch.length<pageSize)break;
+   }
+   if(chosenId && !byId.has(chosenId)){
+    const {data}=await db.from('poets').select('id,name,nickname,era').eq('id',chosenId).maybeSingle();
+    if(data){byId.set(String(data.id),data);if(typeof poetsCache !== 'undefined' && !poetsCache.some(p=>String(p.id)===String(data.id))) poetsCache.push(data);}
+   }
+  } catch(err) {
+   console.warn('تعذر تحميل القائمة الكاملة للشعراء؛ ستظل القائمة الحالية صالحة للاستخدام:',err);
+   status.textContent='تعذر استكمال القائمة؛ يمكنك الاختيار من الشعراء المحمّلين.';
+  } finally {
+   loading=false;
+   // قد يُغلق المستخدم النافذة قبل اكتمال جلب البيانات.
+   if(select.isConnected)redraw();
+  }
  };
+
 })();

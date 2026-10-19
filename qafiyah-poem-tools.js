@@ -1,71 +1,128 @@
+/* أدوات القراءة والمشاركة | القافية | نسخة 2
+   ترتبط بمحتوى الصفحة الحالي دون تعديل البيانات أو خط الموقع العام. */
+(()=>{
 'use strict';
-// شريط إعدادات مستقل في صفحة القصيدة، دون تعديل قالب القصائد الحالي أو قاعدة بياناتها.
-(() => {
- const STORAGE='qafiyah-poem-view-v1';
- const defaults={style:'original',size:24};
- let preferences=defaults;
- try{preferences={...defaults,...JSON.parse(localStorage.getItem(STORAGE)||'{}')}}catch{}
- const save=()=>{try{localStorage.setItem(STORAGE,JSON.stringify(preferences))}catch{}};
- let host=null,lines=null,rawHTML=null,rawLines=[],controls=null,exportOpen=false;
- const sampleText=()=>rawLines.filter(Boolean);
- const poemTitle=()=>host?.querySelector('h1')?.textContent?.trim()||'قصيدة';
- const poetName=()=>host?.querySelector('.qafiyah-detail-poet')?.textContent?.replace(/\s+/g,' ').trim()||'القافية';
- function reformat(){if(!lines)return;lines.classList.remove('q-diwani','q-plain','q-modern','q-settings');lines.style.removeProperty('--q-poem-size');
- if(preferences.style==='original'&&Number(preferences.size)===defaults.size){lines.innerHTML=rawHTML;return;}
- lines.classList.add('q-settings');lines.style.setProperty('--q-poem-size',`${Math.min(42,Math.max(16,Number(preferences.size)||24))}px`);
- if(preferences.style==='original'){lines.innerHTML=rawHTML;return;}
- lines.replaceChildren();
- const cleaned=rawLines.filter(s=>s!==null);
- if(preferences.style==='diwani'){
- lines.classList.add('q-diwani');
- const chunks=[];
- for(let i=0;i<cleaned.length;i++){
-  const raw=cleaned[i];if(!raw){chunks.push(null);continue;}
-  // إن وُجد فاصل شطرين صريح يُستخدم، وإلا يُنسّق كل سطرين متجاورين كشطرين.
-  const halves=raw.split(/\s*(?:\*{2,}|…|\.\.\.|\s\/\s)\s*/).filter(Boolean);
-  if(halves.length>=2)chunks.push(halves.slice(0,2));
-  else{const next=cleaned[i+1];if(next && !/\s*(?:\*{2,}|…|\.\.\.)\s*/.test(next)){chunks.push([raw,next]);i++;}else chunks.push([raw,'']);}
+const FORMATS={original:'البيت في سطر',diwan:'عرض الديوان'};
+const FONT_LABELS={saudi:'السعودي (الأساسي)',expo:'المعرض العربي',expoLight:'المعرض العربي الخفيف',amiri:'أميري',naskh:'النسخ',ruqaaRegular:'الرقعة العادي',ruqaaBold:'الرقعة العريض',ruqaaThin:'الرقعة الرفيع',kufi:'الكوفي المربع',kufiStylistic:'الكوفي',andalus:'الأندلسي',reem:'ريم كوفي',cairo:'القاهرة',tajawal:'تجوال',messiri:'المسيري',mada:'مدى',harmattan:'هارماتان',scheherazade:'شهرزاد',lateef:'لطيف',katibeh:'كتيبة',thuluth:'الثلث',ummi:'أمّي',ummiSwash:'أمّي المزخرف',ummiSolid:'أمّي المصمت',sponge:'الإسفنجي العربي',adabi:'الأدبي',sultan:'السلطان',sahra:'الصحراء',quranQalam:'قرآن القلم',quranAmiri:'قرآن أميري',quranSaleem:'قرآن سليم',mushaf:'المصحف',naskhTahrir:'نسخ تحرير',helal:'الهلال',baghdadNaskh:'بغداد',topaz:'توباز',thuluthMadd:'الثلث بالمد',diwani1:'الديواني الأول',diwani2:'الديواني الثاني',palestine:'فلسطين',uthmanBold:'عثمان طه',uthmani:'النسخ العثماني',alAwwal:'الأول',arabicPoetry:'الشعر العربي',masmak:'المصمك',yearCamel:'الإبل',watad:'وتد',thmanyah:'ثمانية',alnaseeb:'النسيب',alAwwalBold:'الأول العريض'};
+const ICONS={plus:'<path d="M12 5v14M5 12h14"/>',minus:'<path d="M5 12h14"/>',font:'<path d="m4 19 7-14 7 14M6 15h10"/><path d="M20 8v11"/>',space:'<path d="M8 4h12M8 20h12M4 7v10m-2-8 2-2 2 2m-4 6 2 2 2-2"/>',share:'<path d="M18 8a3 3 0 1 0-2.9-3.8L8.9 8.4a3 3 0 1 0 0 7.2l6.2 4.2a3 3 0 1 0 1.1-2.4L10 13.2M10 10.8l6.2-4.2"/>',image:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>',copy:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 11v7m-3-3 3 3 3-3"/>',link:'<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',chev:'<path d="m6 9 6 6 6-6"/>',close:'<path d="M18 6 6 18M6 6l12 12"/>'};
+const svg=(name)=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]||''}</svg>`;
+const $=(parent,selector)=>parent.querySelector(selector);
+const pageType=()=>document.body?.dataset.qafiyahDetail|| (location.pathname.toLowerCase().endsWith('poem.html')?'poem':location.pathname.toLowerCase().endsWith('article.html')?'article':location.pathname.toLowerCase().endsWith('poet.html')?'poet':null);
+const max=(a,b,c)=>Math.min(c,Math.max(b,a));
+let active=null;
+function button(icon,label,fn){const b=document.createElement('button');b.type='button';b.className='q-reader-icon';b.innerHTML=svg(icon);b.title=label;b.setAttribute('aria-label',label);b.addEventListener('click',fn);return b;}
+function splitCouplet(text){
+ // نفصل فقط عند وجود فاصل شطرين صريح، دون المساس بالعلامات داخل أي شطر.
+ const segments=String(text).trim().split(/\s*(?:\*\*\*+|\*\*|\s+\.\.\.\s+|\s+…\s+|\s+[|¦]\s+|\s+\/\s+)\s*/).filter(Boolean);
+ return segments.length===2?segments:null;
+}
+function parseVerses(raw){
+ const output=[];let group=[];
+ const flush=()=>{if(!group.length)return;
+  // تدل مجموعات السطرين القصيرين على شطرين؛ والأسطر الطويلة تعدّ أبياتاً مكتملة.
+  const compact=group.map(x=>({t:x,parts:splitCouplet(x)}));
+  const avg=group.reduce((a,s)=>a+s.length,0)/group.length;
+  const allShort=avg<43&&group.length%2===0&&group.length>=2;
+  for(let i=0;i<compact.length;i++){
+   const c=compact[i];if(c.parts){output.push({first:c.parts[0],second:c.parts[1]});continue;}
+   if(allShort&&i+1<compact.length&&!compact[i+1].parts){output.push({first:c.t,second:compact[i+1].t});i++;continue;}
+   output.push({first:c.t,second:''});
+  }group=[];
+ };
+ for(const item of raw){if(!item){flush();output.push(null);}else group.push(item);}flush();
+ return output;
+}
+function extractLines(target,type){if(type==='poem')return [...target.children].map(n=>n.classList.contains('qafiyah-poem-gap')?null:n.textContent.trim());return target.innerText.split(/\n+/).map(x=>x.trim()).filter(Boolean);}
+function effectiveFont(s){const fonts=window.QafiyahEnhancements?.fonts||{};return s.font==='default'?getComputedStyle(document.body).fontFamily:(fonts[s.font]||getComputedStyle(document.body).fontFamily);}
+function apply(s){
+ const {target,type,settings}=s;target.classList.add('q-reader-content');target.style.setProperty('--q-reader-size',`${settings.size}px`);target.style.setProperty('--q-reader-gap',`${settings.gap}px`);target.style.setProperty('--q-reader-font',effectiveFont(settings));
+ if(type!=='poem')return;
+ target.classList.toggle('q-poem-original',settings.mode==='original');target.classList.toggle('q-poem-diwan',settings.mode==='diwan');
+ target.replaceChildren();
+ for(const verse of s.verses){if(!verse){const gap=document.createElement('div');gap.className='qafiyah-poem-gap';target.append(gap);continue;}
+  const p=document.createElement('p');p.className='qafiyah-poem-line q-reader-verse';
+  if(settings.mode==='original'){
+   // في العرض الأصلي كل بيت في سطر واحد، لا نصفان متجاوران.
+   p.textContent=verse.first+(verse.second?'    ···    '+verse.second:'');
+  }else{
+   const first=document.createElement('span');first.className='q-reader-first';first.textContent=verse.first;p.append(first);
+   if(verse.second){const second=document.createElement('span');second.className='q-reader-second';second.textContent=verse.second;p.append(second);}
+  }target.append(p);
  }
- for(const couplet of chunks){if(!couplet){const gap=document.createElement('div');gap.className='qafiyah-poem-gap';lines.append(gap);continue;}const p=document.createElement('p');p.className='qafiyah-poem-line';for(const half of couplet){const s=document.createElement('span');s.className='q-hemistich';s.textContent=half;p.append(s);}lines.append(p);}
+}
+function notice(s,msg){const el=s.message;el.textContent=msg;clearTimeout(s.msgTimer);s.msgTimer=setTimeout(()=>{el.textContent='';},3500);}
+function addToolbar(s){const tool=document.createElement('div');tool.className='q-reader-toolbar';tool.setAttribute('role','toolbar');tool.setAttribute('aria-label','إعدادات القراءة والمشاركة');
+ const d=document.createElement('div');d.className='q-reader-group';
+ d.append(button('minus','تصغير الخط 2 بكسل',()=>{s.settings.size=max(s.settings.size-2,12,60);apply(s);notice(s,`حجم الخط ${s.settings.size} بكسل`);}),button('plus','تكبير الخط 2 بكسل',()=>{s.settings.size=max(s.settings.size+2,12,60);apply(s);notice(s,`حجم الخط ${s.settings.size} بكسل`);}));
+ const sizeTitle=document.createElement('span');sizeTitle.className='q-reader-hint';sizeTitle.textContent='حجم الخط';d.prepend(sizeTitle);tool.append(d);
+ const gap=document.createElement('div');gap.className='q-reader-group';gap.append(button('minus','تقليل التباعد بين الأسطر',()=>{s.settings.gap=max(s.settings.gap-2,0,48);apply(s);notice(s,`التباعد ${s.settings.gap} بكسل`);}),button('space','زيادة التباعد بين الأسطر',()=>{s.settings.gap=max(s.settings.gap+2,0,48);apply(s);notice(s,`التباعد ${s.settings.gap} بكسل`);}));
+ gap.prepend(Object.assign(document.createElement('span'),{className:'q-reader-hint',textContent:'التباعد'}));tool.append(gap);
+ if(s.type==='poem'){
+  const group=document.createElement('div');group.className='q-reader-group';const label=document.createElement('label');label.className='q-reader-hint';label.textContent='العرض';const sel=document.createElement('select');sel.className='q-reader-select';sel.setAttribute('aria-label','طريقة عرض القصيدة');for(const [key,name] of Object.entries(FORMATS))sel.add(new Option(name,key));sel.value=s.settings.mode;sel.addEventListener('change',()=>{s.settings.mode=sel.value;apply(s);});group.append(label,sel);tool.append(group);
+ }
+ const fontsGroup=document.createElement('div');fontsGroup.className='q-reader-group';const fontsLabel=document.createElement('label');fontsLabel.className='q-reader-hint';fontsLabel.textContent='الخط';const fontSelect=document.createElement('select');fontSelect.className='q-reader-select q-reader-font-select';fontSelect.setAttribute('aria-label','تغيير خط المحتوى فقط');fontSelect.add(new Option('خط الموقع','default'));const available=window.QafiyahEnhancements?.fonts||{};Object.keys(available).forEach(key=>fontSelect.add(new Option(FONT_LABELS[key]||key,key)));fontSelect.value='default';fontSelect.addEventListener('change',()=>{s.settings.font=fontSelect.value;apply(s);});fontsGroup.append(fontsLabel,fontSelect);tool.append(fontsGroup);
+ const share=button('share','المشاركة',()=>showSharing(s));share.classList.add('q-reader-share');share.insertAdjacentText('beforeend','مشاركة');tool.append(share);
+ const msg=document.createElement('div');msg.className='q-reader-status';msg.setAttribute('aria-live','polite');s.message=msg;
+ s.target.before(tool,msg);s.toolbar=tool;
+}
+function url(){const u=new URL(location.href);u.hash='';return u.href;}
+async function copyText(s,value){try{await navigator.clipboard.writeText(value);notice(s,'تم النسخ بنجاح');}catch{const input=document.createElement('textarea');input.value=value;document.body.append(input);input.select();const ok=document.execCommand('copy');input.remove();notice(s,ok?'تم النسخ':'تعذّر النسخ، انسخ الرابط من شريط العنوان');}}
+function excerpt(s){return s.type==='poem'?s.verses.filter(Boolean).map(v=>v.first+(v.second?'    ···    '+v.second:'')).join('\n'):s.target.innerText.trim();}
+function closeDialog(box){box.remove();}
+function dialog(s,heading){const overlay=document.createElement('div');overlay.className='q-reader-overlay';overlay.setAttribute('role','presentation');const sheet=document.createElement('section');sheet.className='q-reader-dialog';sheet.setAttribute('role','dialog');sheet.setAttribute('aria-modal','true');sheet.setAttribute('aria-label',heading);
+ const header=document.createElement('div');header.className='q-reader-dialog-title';const h=document.createElement('h3');h.textContent=heading;header.append(h,button('close','إغلاق',()=>closeDialog(overlay)));sheet.append(header);overlay.append(sheet);document.body.append(overlay);overlay.addEventListener('click',e=>{if(e.target===overlay)closeDialog(overlay);});const esc=e=>{if(e.key==='Escape'){closeDialog(overlay);document.removeEventListener('keydown',esc);}};document.addEventListener('keydown',esc);return{overlay,sheet};}
+function menuAction(icon,title,click){const b=document.createElement('button');b.type='button';b.className='q-reader-menu-option';b.innerHTML=svg(icon);b.append(document.createTextNode(title));b.addEventListener('click',click);return b;}
+async function nativeShare(s,shareImage){try{
+ if(!navigator.share){notice(s,'المشاركة المباشرة غير مدعومة؛ يمكنك نسخ الرابط');return;}
+ if(shareImage){const blob=await makeImage(s,0);const file=new File([blob],`القافية-${s.type}.png`,{type:'image/png'});
+ if(navigator.canShare?.({files:[file]})){await navigator.share({title:s.title,text:'من القافية',files:[file],url:url()});return;}}
+ await navigator.share({title:s.title,text:`${s.title} — القافية`,url:url()});
+ }catch(e){if(e?.name!=='AbortError')notice(s,'تعذّرت المشاركة من هذا المتصفح');}}
+function showSharing(s){const {overlay,sheet}=dialog(s,'مشاركة '+(s.type==='poem'?'القصيدة':s.type==='poet'?'سيرة الشاعر':'المقال'));const options=document.createElement('div');options.className='q-reader-menu';const close=()=>closeDialog(overlay);
+ options.append(menuAction('copy','نسخ النص',()=>{copyText(s,excerpt(s));close();}),menuAction('link','نسخ رابط الصفحة',()=>{copyText(s,url());close();}),menuAction('image','حفظ كصورة',()=>{close();showImage(s);}),menuAction('file','حفظ في الملفات',()=>{close();saveToFiles(s);}),menuAction('share','مشاركة عبر التطبيقات',()=>{close();nativeShare(s,false);}));sheet.append(options);
+}
+function drawWrap(ctx,str,maxWidth){const items=[];const words=String(str).trim().split(/\s+/);let line='';for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width>maxWidth&&line){items.push(line);line=word;}else line=next;}
+ if(line)items.push(line);return items.length?items:[''];}
+async function renderPages(s){let family=effectiveFont(s.settings);const face=family.split(',')[0].trim().replace(/^['"]|['"]$/g,'');try{await document.fonts.load(`${s.settings.size}px "${face}"`);}catch{}
+ const wrapCanvas=document.createElement('canvas');const measure=wrapCanvas.getContext('2d');const w=1120,margin=95,font=Math.max(26,Math.min(48,s.settings.size+7));measure.font=`${font}px ${family}`;measure.direction='rtl';
+ const entries=[];
+ if(s.type==='poem'){
+  for(const v of s.verses){if(!v){entries.push({gap:1});continue;}
+   if(s.settings.mode==='diwan'&&v.second){for(const row of drawWrap(measure,v.first,w-2*margin))entries.push({text:row,side:'right'});for(const row of drawWrap(measure,v.second,w-2*margin))entries.push({text:row,side:'left'});entries.push({gap:1});}
+   else {for(const row of drawWrap(measure,v.first+(v.second?'   ···   '+v.second:''),w-2*margin))entries.push({text:row,side:'center'});entries.push({gap:1});}
+  }
  }else{
- lines.classList.add(preferences.style==='modern'?'q-modern':'q-plain');
- for(const text of cleaned){if(!text){const gap=document.createElement('div');gap.className='qafiyah-poem-gap';lines.append(gap);continue;}const p=document.createElement('p');p.className='qafiyah-poem-line';p.textContent=preferences.style==='plain'?text.replace(/\s*(?:\*{2,}|…|\.\.\.)\s*/g,' ... '):text;lines.append(p);}
+  const rows=excerpt(s).split('\n').filter(Boolean);for(const line of rows){for(const row of drawWrap(measure,line,w-2*margin))entries.push({text:row,side:'right'});entries.push({gap:1});}
  }
- }
- function makeButton(label,onClick){const b=document.createElement('button');b.type='button';b.textContent=label;b.addEventListener('click',onClick);return b;}
- function addControls(){if(controls||!lines)return;controls=document.createElement('div');controls.className='q-poem-actions';controls.setAttribute('aria-label','خيارات عرض القصيدة');
- const label=document.createElement('label');label.textContent='العرض:';const mode=document.createElement('select');mode.setAttribute('aria-label','طريقة عرض الأبيات');for(const [val,title]of [['original','العرض الأصلي'],['plain','سطر بعد سطر'],['diwani','شطران كالديوان'],['modern','نثري متدرج']]){const o=new Option(title,val);mode.add(o);}mode.value=preferences.style;
- const sizeLabel=document.createElement('label');sizeLabel.textContent='الخط:';const size=document.createElement('select');size.setAttribute('aria-label','حجم الخط');for(const val of [16,18,20,22,24,26,28,30,34,38,42])size.add(new Option(val+' بكسل',val));size.value=String(preferences.size);
- mode.addEventListener('change',()=>{preferences.style=mode.value;save();reformat();});size.addEventListener('change',()=>{preferences.size=+size.value;save();reformat();});
- controls.append(label,mode,sizeLabel,size,makeButton('📸 صورة القصيدة',openExport));
- lines.before(controls);reformat();
- }
- // تجهيز صور عالية الدقة لكل صفحة من أبيات القصيدة باستعمال Canvas محلياً بلا خدمات خارجية.
- async function renderImage(pageIndex){const texts=sampleText(),perPage=18,total=Math.max(1,Math.ceil(texts.length/perPage)),page=Math.min(pageIndex,total-1),chosen=texts.slice(page*perPage,(page+1)*perPage);
- try{await document.fonts.load('bold 32px Saudi')}catch{}
- const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');const w=1200,pad=100,fontPx=37,lineHeight=82;
- ctx.font=`${fontPx}px Saudi, Arial, sans-serif`;
- const entries=[];for(const text of chosen){let buffer='';for(const word of text.split(/\s+/)){const check=buffer?buffer+' '+word:word;if(ctx.measureText(check).width>w-2*pad && buffer){entries.push(buffer);buffer=word;}else buffer=check;}entries.push(buffer||' ');}
- const height=Math.max(630,400+entries.length*lineHeight);canvas.width=w;canvas.height=height;
- const gradient=ctx.createLinearGradient(0,0,w,height);gradient.addColorStop(0,'#fffaf5');gradient.addColorStop(1,'#f5eadd');ctx.fillStyle=gradient;ctx.fillRect(0,0,w,height);
- ctx.strokeStyle='#986e54';ctx.lineWidth=7;ctx.strokeRect(26,26,w-52,height-52);ctx.lineWidth=2;ctx.strokeRect(43,43,w-86,height-86);
- ctx.textAlign='center';ctx.direction='rtl';ctx.fillStyle='#5b382c';ctx.font='bold 37px Saudi,Arial,sans-serif';ctx.fillText('القافية | موسوعة الشعر والأدب العربي',w/2,110);
- ctx.font='bold 49px Saudi,Arial,sans-serif';ctx.fillText(poemTitle().slice(0,55),w/2,194);
- ctx.fillStyle='#8b6250';ctx.font='28px Saudi,Arial,sans-serif';ctx.fillText(poetName().slice(0,55),w/2,247);
- ctx.strokeStyle='#bfa28d';ctx.beginPath();ctx.moveTo(pad,285);ctx.lineTo(w-pad,285);ctx.stroke();
- ctx.fillStyle='#39291f';ctx.font=`${fontPx}px Saudi,Arial,sans-serif`;entries.forEach((t,i)=>ctx.fillText(t,w/2,340+i*lineHeight));
- ctx.fillStyle='#977260';ctx.font='23px Saudi,Arial,sans-serif';ctx.fillText(`alqafiyah.com  —  ${page+1} / ${total}`,w/2,height-86);
- return canvas.toDataURL('image/png');
- }
- async function openExport(){if(exportOpen)return;exportOpen=true;const dialog=document.createElement('div');dialog.className='q-poem-export';dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');dialog.setAttribute('aria-label','حفظ صورة القصيدة');const pane=document.createElement('div');dialog.append(pane);document.body.append(dialog);const title=document.createElement('h3');title.textContent='صورة جاهزة للنشر';const img=document.createElement('img');img.alt='صورة القصيدة بإطار القافية';const actions=document.createElement('div');actions.className='q-toolbar';pane.append(title,img,actions);let page=0;const pages=Math.max(1,Math.ceil(sampleText().length/18));
- const close=()=>{dialog.remove();exportOpen=false;};
- const prev=makeButton('السابق',async()=>{page=Math.max(0,page-1);await update();}),next=makeButton('التالي',async()=>{page=Math.min(pages-1,page+1);await update();}),info=document.createElement('span');
- const saveBtn=makeButton('⬇ حفظ الصورة',()=>{const a=document.createElement('a');a.href=img.src;a.download=`القافية-${page+1}.png`;document.body.append(a);a.click();a.remove();});
- const shareBtn=makeButton('↗ مشاركة الصورة',async()=>{try{const blob=await(await fetch(img.src)).blob();const file=new File([blob],`القافية-${page+1}.png`,{type:'image/png'});if(navigator.canShare?.({files:[file]})){await navigator.share({title:poemTitle(),files:[file]});}else if(navigator.share){await navigator.share({title:poemTitle(),url:location.href});}else{saveBtn.click();}}catch(e){if(e.name!=='AbortError')alert('تعذرت المشاركة من هذا الجهاز. اختر حفظ الصورة.');}});
- actions.append(prev,info,next,saveBtn,shareBtn,makeButton('إغلاق',close));dialog.addEventListener('click',e=>{if(e.target===dialog)close();});
- async function update(){img.alt='صورة القصيدة — الصفحة '+(page+1);img.src=await renderImage(page);info.textContent=`${page+1} من ${pages}`;prev.disabled=page===0;next.disabled=page===pages-1;}
- try{await update();}catch(err){pane.append('تعذر إنشاء الصورة على هذا المتصفح: '+err.message);}
- }
- function findPoem(){const pane=document.querySelector('#poemDetail .qafiyah-poem-lines');if(!pane||pane===lines)return;host=document.querySelector('#poemDetail');lines=pane;rawHTML=pane.innerHTML;rawLines=[...pane.children].map(n=>n.classList.contains('qafiyah-poem-gap')?null:n.textContent.trim());addControls();}
- document.addEventListener('DOMContentLoaded',()=>{findPoem();const target=document.getElementById('poemDetail');if(target){new MutationObserver(()=>findPoem()).observe(target,{childList:true,subtree:false});}});
+ const perPage=15,pages=[];let page=[];for(const x of entries){if(page.length>=perPage){pages.push(page);page=[];}page.push(x);}if(page.length||!pages.length)pages.push(page);
+ const yStep=font*1.75;
+ return pages.map((rows,idx)=>{
+ const height=Math.max(510,Math.ceil(272+rows.reduce((total,item)=>total+(item.gap?Math.min(22,5+s.settings.gap):yStep),0)+115));
+ const canvas=document.createElement('canvas');canvas.width=w*2;canvas.height=height*2;const ctx=canvas.getContext('2d');ctx.scale(2,2);const bg=ctx.createLinearGradient(0,0,w,height);bg.addColorStop(0,'#fffaf5');bg.addColorStop(1,'#f3e8dd');ctx.fillStyle=bg;ctx.fillRect(0,0,w,height);ctx.strokeStyle='#96765d';ctx.lineWidth=5;ctx.strokeRect(22,22,w-44,height-44);ctx.lineWidth=1.5;ctx.strokeRect(38,38,w-76,height-76);
+ ctx.direction='rtl';ctx.textAlign='center';ctx.fillStyle='#76513c';ctx.font='bold 28px "Qafiyah Saudi",Arial';ctx.fillText('القافية  |  موسوعة الشعر والأدب العربي',w/2,104);
+ ctx.fillStyle='#4b3328';ctx.font='bold 39px "Qafiyah Saudi",Arial';let title=s.title;if(ctx.measureText(title).width>w-2*margin){title=title.slice(0,40)+'…';}ctx.fillText(title,w/2,169);
+ ctx.strokeStyle='#b79a81';ctx.beginPath();ctx.moveTo(margin,204);ctx.lineTo(w-margin,204);ctx.stroke();ctx.fillStyle='#362820';ctx.font=`${font}px ${family}`;let y=272;
+ for(const item of rows){if(item.gap){y+=Math.min(22,5+s.settings.gap);continue;}ctx.textAlign=item.side==='right'?'right':item.side==='left'?'left':'center';ctx.fillText(item.text,item.side==='right'?w-margin:item.side==='left'?margin:w/2,y);y+=yStep;}
+ ctx.textAlign='center';ctx.font='23px "Qafiyah Saudi",Arial';ctx.fillStyle='#937b69';ctx.fillText(`alqafiyah.com   •   ${idx+1} / ${pages.length}`,w/2,height-75);return canvas;
+ });
+}
+async function toBlob(canvas){return new Promise((res,rej)=>canvas.toBlob(b=>b?res(b):rej(new Error('تعذّر إنشاء الصورة')),'image/png'));}
+async function makeImage(s,index=0){const pages=await renderPages(s);return toBlob(pages[Math.min(index,pages.length-1)]);}
+function download(blob,filename){const addr=URL.createObjectURL(blob),a=document.createElement('a');a.href=addr;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(addr),2000);}
+async function saveToFiles(s){try{const blob=await makeImage(s,0);if(window.showSaveFilePicker){try{const handle=await showSaveFilePicker({suggestedName:`القافية-${s.type}.png`,types:[{description:'صورة PNG',accept:{'image/png':['.png']}}]});const writable=await handle.createWritable();await writable.write(blob);await writable.close();notice(s,'تم حفظ الصورة في الملفات');return;}catch(e){if(e?.name==='AbortError')return;}}
+ download(blob,`القافية-${s.type}.png`);notice(s,'نُزّلت الصورة؛ يمكن نقلها إلى الملفات');}catch(e){notice(s,'تعذّر حفظ الصورة');}}
+async function showImage(s){const {sheet}=dialog(s,'صورة جاهزة للحفظ والمشاركة');const img=document.createElement('img');img.className='q-reader-preview';img.alt='معاينة صورة المحتوى';const nav=document.createElement('div');nav.className='q-reader-preview-nav';const note=document.createElement('span');note.textContent='جارٍ إعداد الصورة…';sheet.append(img,nav);let page=0,canvases=[],activeUrl='';
+ try{canvases=await renderPages(s);}catch(e){note.textContent='تعذّر إنشاء الصورة';nav.append(note);return;}
+ const update=async()=>{if(activeUrl)URL.revokeObjectURL(activeUrl);const b=await toBlob(canvases[page]);activeUrl=URL.createObjectURL(b);img.src=activeUrl;note.textContent=`${page+1} من ${canvases.length}`;prev.disabled=page===0;next.disabled=page===canvases.length-1;};
+ const prev=button('minus','الصورة السابقة',()=>{page--;update();});const next=button('plus','الصورة التالية',()=>{page++;update();});const save=menuAction('image','حفظ الصورة',async()=>download(await toBlob(canvases[page]),`القافية-${page+1}.png`));const share=menuAction('share','إرسال الصورة للتطبيقات',async()=>{try{const b=await toBlob(canvases[page]);const f=new File([b],`القافية-${page+1}.png`,{type:'image/png'});if(navigator.canShare?.({files:[f]})){await navigator.share({title:s.title,url:url(),files:[f]});}else await nativeShare(s,false);}catch(e){if(e?.name!=='AbortError')notice(s,'تعذّرت المشاركة');}});
+ nav.append(prev,note,next,save,share);await update();new MutationObserver(()=>{if(!img.isConnected&&activeUrl)URL.revokeObjectURL(activeUrl);}).observe(document.body,{childList:true});
+}
+function enhance(){const type=pageType();if(!type)return;const root=document.getElementById(type==='poem'?'poemDetail':type==='article'?'articleDetail':'poetDetail');if(!root)return;
+ const target=$(root,type==='poem'?'.qafiyah-poem-lines':'.qafiyah-article-body');if(!target||!target.textContent.trim()||active?.target===target)return;
+ const title=$(root,'h1')?.textContent?.trim()||document.title;
+ const settings={size:type==='poem'?24:18,gap:10,mode:'original',font:'default'};
+ const s={target,root,type,title,settings,verses:type==='poem'?parseVerses(extractLines(target,type)):[],message:null};active=s;addToolbar(s);apply(s);
+}
+function init(){enhance();const type=pageType();if(!type)return;const root=document.getElementById(type==='poem'?'poemDetail':type==='article'?'articleDetail':'poetDetail');if(!root)return;new MutationObserver(()=>enhance()).observe(root,{childList:true,subtree:false});}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
