@@ -63,6 +63,22 @@ document.addEventListener('DOMContentLoaded', () => {
   updateSelection();
  }
  const countFor=id=>questions.filter(q=>q.challenge_id===id).length;
+ // URLs come from the director-controlled Supabase bucket. Do not inject arbitrary URL schemes into CSS.
+ function imageUrl(value){
+  if(typeof value!=='string'||!value)return '';
+  try{const url=new URL(value,location.href);return url.protocol==='https:'||url.origin===location.origin?url.href:'';}catch{return '';}
+ }
+ function applyHeroVisuals(cfg){
+  const hero=document.querySelector('.sj-stage-hero'),badge=$('sjHeroBadge');
+  if(!hero||!badge)return;
+  const cover=imageUrl(cfg.hero_background_url),logo=imageUrl(cfg.hero_logo_url);
+  hero.classList.toggle('sj-has-cover',!!cover);
+  if(cover)hero.style.setProperty('--sj-cover-image',`url(${JSON.stringify(cover)})`);
+  else hero.style.removeProperty('--sj-cover-image');
+  if(logo){const img=make('img');img.src=logo;img.alt='';img.loading='eager';badge.replaceChildren(img);}
+  else badge.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="m8 13-2 8 6-3 6 3-2-8"/></svg>';
+ }
+
  function updateSelection(){const selected=games.filter(g=>chosen.has(g.id)&&countFor(g.id));$('sjSelectedSummary').textContent=selected.length?`اخترت ${selected.length.toLocaleString('ar-SA')} ${selected.length===1?'لعبة':'ألعاب'} · يمكنك التغيير قبل البدء.`:'اختر لعبة واحدة على الأقل للمتابعة.';
   const available=games.filter(g=>countFor(g.id)),all=available.length&&available.every(g=>chosen.has(g.id));$('sjSelectAll').textContent=all?'إلغاء التحديد':'تحديد الكل';$('sjStart').disabled=!selected.length;
  }
@@ -72,7 +88,10 @@ document.addEventListener('DOMContentLoaded', () => {
    const label=make('label','sj-game sj-art-'+(g.kind in icons?g.kind:'quiz')),
     input=make('input'),card=make('span','sj-game-card'),art=make('span','sj-game-art'),graphic=make('span','sj-art-graphic'),
     tick=make('span','sj-tick');input.type='checkbox';input.checked=chosen.has(g.id);input.disabled=count===0;tick.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg>';graphic.innerHTML=artSvg(g.kind);art.append(graphic,tick);
-   const words=make('span','sj-game-words');words.append(make('strong','sj-game-title',g.title),make('span','sj-game-desc',g.description||types[g.kind]||'الشعر والأدب'),make('span','sj-game-meta',`${count} سؤال · ${g.category||'الأدب العربي'}`));
+   const customImage=imageUrl(g.card_image_url);
+   if(customImage){const photo=make('img','sj-card-photo');photo.src=customImage;photo.alt='';photo.loading='lazy';graphic.replaceChildren(photo);art.classList.add('sj-art-custom');}
+   const words=make('span','sj-game-words');const countLabel=(g.card_count_text||'').trim()||`${count} سؤال`;
+   words.append(make('strong','sj-game-title',g.title),make('span','sj-game-desc',g.description||types[g.kind]||'الشعر والأدب'),make('span','sj-game-meta',`${countLabel} · ${g.category||'الأدب العربي'}`));
    card.append(art,words);label.append(input,card);input.addEventListener('change',()=>{if(input.checked)chosen.add(g.id);else chosen.delete(g.id);updateSelection();});box.append(label);
   }
   if(!box.childElementCount)box.append(make('p','sj-small-note','لا توجد ألعاب مطابقة لبحثك.'));
@@ -212,10 +231,10 @@ document.addEventListener('DOMContentLoaded', () => {
  }
  async function loadPage(){if(!db)return info('تعذر الاتصال بخدمة القافية حالياً.',true);
   try{const auth=await db.auth.getUser();user=auth.data?.user||null;loadHistory();
-   const cfg=await db.from('qafiyah_sijal_settings').select('enabled,leaderboard_enabled').eq('id',1).single();if(cfg.error)throw Error('تعذر تحميل إعدادات سِجال.');settings=cfg.data;
+   const cfg=await db.from('qafiyah_sijal_settings').select('enabled,leaderboard_enabled,hero_background_url,hero_logo_url').eq('id',1).single();if(cfg.error)throw Error('تعذر تحميل إعدادات سِجال.');settings=cfg.data;applyHeroVisuals(settings);
    if(!settings.enabled){show('sjUnavailable',true);return;}
    const [gamesRes,questionsRes]=await Promise.all([
-    db.from('qafiyah_challenges').select('id,title,description,kind,category').eq('published',true).order('created_at',{ascending:true}),
+    db.from('qafiyah_challenges').select('id,title,description,kind,category,card_image_url,card_count_text').eq('published',true).order('created_at',{ascending:true}),
     db.from('qafiyah_game_questions_public').select('id,challenge_id,question_text,options,points,position,media_url,media_type,media_caption').limit(5000)
    ]);
    if(gamesRes.error||questionsRes.error)throw Error(gamesRes.error?.message||questionsRes.error.message);

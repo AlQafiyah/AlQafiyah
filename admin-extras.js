@@ -87,6 +87,64 @@
  const sjMsg=(text,error=false)=>{const el=$('sjAdminNotice');if(!el)return;el.textContent=text||'';el.hidden=!text;el.style.color=error?'#ba4141':'';};
  async function sjRun(query){const {data,error}=await query;if(error)throw new Error(error.message);return data;}
  const sjWorking=(element,working)=>{if(element)element.disabled=working;};
+
+ // صورة سِجال العامة وبطاقات الألعاب منفصلة عن ملفات مُجيب وبقية الموقع.
+ const sjHeroKeys={hero_background_url:{input:'sjAdminHeroCover',preview:'sjAdminHeroCoverPreview',folder:'appearance/background'},hero_logo_url:{input:'sjAdminHeroLogo',preview:'sjAdminHeroLogoPreview',folder:'appearance/logo'}};
+ let sjVisuals={hero_background_url:null,hero_logo_url:null},sjHeroRemoved=new Set();
+ const sjLocalPreviews=new Map();
+ function sjSafeImage(value){try{const url=new URL(value,location.href);return url.protocol==='https:'||url.origin===location.origin?url.href:'';}catch{return '';}}
+ function sjTempUrl(key,file){const prev=sjLocalPreviews.get(key);if(prev){URL.revokeObjectURL(prev);sjLocalPreviews.delete(key);}if(!file)return '';const src=URL.createObjectURL(file);sjLocalPreviews.set(key,src);return src;}
+ const sjDefaultLogo='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="m8 13-2 8 6-3 6 3-2-8"/></svg>';
+ function sjHeroPreview(key){const spec=sjHeroKeys[key],el=$(spec.preview);if(!el)return;
+  const file=$(spec.input)?.files?.[0];const url=file?sjTempUrl('hero-'+key,file):sjSafeImage(sjHeroRemoved.has(key)?'':sjVisuals[key]);
+  if(key==='hero_logo_url'){el.replaceChildren();if(url){const img=new Image();img.src=url;img.alt='معاينة شعار سِجال';el.append(img);}else el.innerHTML=sjDefaultLogo;}
+  else{el.style.backgroundImage=url?`linear-gradient(120deg,rgba(38,23,18,.35),rgba(38,23,18,.08)),url(${JSON.stringify(url)})`:'';el.replaceChildren();if(!url){const span=document.createElement('span');span.textContent='الخلفية الافتراضية لسِجال';el.append(span);}}
+ }
+ Object.keys(sjHeroKeys).forEach(key=>$(sjHeroKeys[key].input)?.addEventListener('change',()=>{sjHeroRemoved.delete(key);sjHeroPreview(key);}));
+ document.querySelectorAll('[data-sj-hero-remove]').forEach(button=>button.addEventListener('click',()=>{if(!guard())return;const key=button.dataset.sjHeroRemove;$(sjHeroKeys[key].input).value='';sjHeroRemoved.add(key);sjHeroPreview(key);}));
+ async function sjUploadImage(file,folder){if(!file)throw Error('اختر صورة أولاً.');const extensions={'image/jpeg':'jpg','image/png':'png','image/webp':'webp'};
+  if(!extensions[file.type])throw Error('استخدم صور JPG أو PNG أو WEBP فقط.');if(file.size>8*1024*1024)throw Error('حجم الصورة أكبر من 8 ميجابايت.');if(file.size<100)throw Error('ملف الصورة غير صالح.');
+  const path=`${folder}/${crypto.randomUUID()}.${extensions[file.type]}`;
+  await sjRun(db.storage.from('sijal-media').upload(path,file,{contentType:file.type,cacheControl:'3600',upsert:false}));
+  const url=db.storage.from('sijal-media').getPublicUrl(path).data?.publicUrl;if(!url)throw Error('تعذر استخراج رابط الصورة.');return {path,url};
+ }
+ function sjLocalAssetPath(url){try{const path=new URL(url).pathname,tag='/storage/v1/object/public/sijal-media/';const pos=path.indexOf(tag);return pos===-1?'':decodeURIComponent(path.slice(pos+tag.length));}catch{return '';}}
+ function sjCleanupOld(before,after){if(before&&before!==after){const path=sjLocalAssetPath(before);if(path)db.storage.from('sijal-media').remove([path]).catch(()=>{});}}
+ $('sjAdminSaveAppearance')?.addEventListener('click',async e=>{if(!guard())return;const button=e.currentTarget,uploaded=[],updates={updated_at:new Date().toISOString()};button.disabled=true;
+  const status=$('sjAdminVisualStatus');status.textContent='جارٍ حفظ الخلفية والشعار…';
+  try{for(const [key,spec] of Object.entries(sjHeroKeys)){const file=$(spec.input).files?.[0];
+    if(file){const uploadedImage=await sjUploadImage(file,spec.folder);uploaded.push(uploadedImage.path);updates[key]=uploadedImage.url;}
+    else updates[key]=sjHeroRemoved.has(key)?null:sjVisuals[key];}
+    await sjRun(db.from('qafiyah_sijal_settings').update(updates).eq('id',1));
+    for(const key of Object.keys(sjHeroKeys)){sjCleanupOld(sjVisuals[key],updates[key]);sjVisuals[key]=updates[key];$(sjHeroKeys[key].input).value='';sjHeroPreview(key);}
+    sjHeroRemoved.clear();status.textContent='تم حفظ المظهر، وسيظهر للزوار عند تحديث الصفحة.';toast('تم حفظ مظهر سِجال.');
+  }catch(err){if(uploaded.length)db.storage.from('sijal-media').remove(uploaded).catch(()=>{});status.textContent='تعذر حفظ المظهر: '+err.message;toast(err.message,true);}finally{button.disabled=false;}
+ });
+ function sjRenderCardSettings(){const host=$('sjAdminCardList');if(!host)return;host.replaceChildren();
+  for(const game of sijalGames){const form=document.createElement('form');form.className='sj-admin-card-item';form.dataset.sjCardId=game.id;
+   // No interpolated HTML from a database record, including titles and descriptions.
+   const photo=document.createElement('div');photo.className='sj-admin-game-cover';const image=sjSafeImage(game.card_image_url);
+   if(image){const img=new Image();img.src=image;img.alt='صورة بطاقة '+game.title;photo.append(img);}else{const span=document.createElement('span');span.textContent='بدون صورة مخصصة';photo.append(span);}
+   const content=document.createElement('div');content.className='sj-admin-card-inputs';
+   function field(title,name,value,opts={}){const label=document.createElement('label');label.textContent=title;const input=opts.multiline?document.createElement('textarea'):document.createElement('input');input.className='form-control';input.name=name;if(!opts.multiline)input.type='text';input.value=value||'';input.maxLength=opts.max||150;if(opts.required)input.required=true;label.append(input);content.append(label);return input;}
+   field('عنوان البطاقة','title',game.title,{required:true,max:160});field('الوصف المختصر','description',game.description,{multiline:true,max:1500});field('التصنيف المكتوب بجانب عدد الأسئلة','category',game.category,{required:true,max:80});
+   const countRow=document.createElement('div');countRow.className='sj-admin-count-row';const selectLabel=document.createElement('label');selectLabel.textContent='عدد الأسئلة';const choice=document.createElement('select');choice.className='form-control';choice.name='count_mode';choice.append(new Option('تلقائي من الأسئلة المنشورة','auto'),new Option('نص مخصص','custom'));choice.value=game.card_count_text?'custom':'auto';selectLabel.append(choice);
+   const countLabel=document.createElement('label');countLabel.textContent='العدد المكتوب';const custom=document.createElement('input');custom.type='text';custom.maxLength=60;custom.name='card_count_text';custom.className='form-control';custom.placeholder='مثال: 1000+ سؤال';custom.value=game.card_count_text||'';custom.disabled=choice.value!=='custom';choice.addEventListener('change',()=>{custom.disabled=choice.value!=='custom';if(!custom.disabled)custom.focus();});countLabel.append(custom);countRow.append(selectLabel,countLabel);content.append(countRow);
+   const fileLabel=document.createElement('label');fileLabel.textContent='صورة البطاقة';const imageFile=document.createElement('input');imageFile.className='form-control';imageFile.type='file';imageFile.accept='image/png,image/jpeg,image/webp';imageFile.name='card_image';fileLabel.append(imageFile);content.append(fileLabel);
+   const actions=document.createElement('div');actions.className='sj-admin-card-actions';const remove=document.createElement('button');remove.type='button';remove.className='btn btn-secondary';remove.textContent='إرجاع الصورة الافتراضية';remove.dataset.sjRemoveImage='true';remove.addEventListener('click',()=>{imageFile.value='';form.dataset.sjImageRemoved='true';photo.replaceChildren();const txt=document.createElement('span');txt.textContent='الصورة الافتراضية';photo.append(txt);});
+   imageFile.addEventListener('change',()=>{form.dataset.sjImageRemoved='false';const file=imageFile.files?.[0];if(!file)return;const url=sjTempUrl('card-'+game.id,file);photo.replaceChildren();const img=new Image();img.src=url;img.alt='معاينة صورة البطاقة';photo.append(img);});
+   const save=document.createElement('button');save.type='submit';save.className='btn btn-primary';save.textContent='حفظ البطاقة';actions.append(save,remove);content.append(actions);form.append(photo,content);host.append(form);
+   form.addEventListener('submit',async e=>{e.preventDefault();if(!guard())return;save.disabled=true;const uploaded=[];try{
+     const data={title:form.elements.title.value.trim(),description:form.elements.description.value.trim(),category:form.elements.category.value.trim(),card_count_text:choice.value==='custom'?custom.value.trim()||null:null,card_image_url:game.card_image_url||null,updated_at:new Date().toISOString()};
+     if(data.title.length<3||!data.category)throw Error('اكتب اسم اللعبة وتصنيفها.');if(choice.value==='custom'&&!data.card_count_text)throw Error('اكتب نص عدد الأسئلة المخصص أو اختر تلقائي.');
+     const file=imageFile.files?.[0];if(file){const out=await sjUploadImage(file,`cards/${game.id}`);uploaded.push(out.path);data.card_image_url=out.url;}
+     else if(form.dataset.sjImageRemoved==='true')data.card_image_url=null;
+     await sjRun(db.from('qafiyah_challenges').update(data).eq('id',game.id));sjCleanupOld(game.card_image_url,data.card_image_url);toast('تم حفظ بطاقة '+data.title);await loadSijal();
+    }catch(ex){if(uploaded.length)db.storage.from('sijal-media').remove(uploaded).catch(()=>{});toast(ex.message,true);}finally{save.disabled=false;}
+   });
+  }
+ }
+
  function sjOptions(selectId,firstText,selected=''){
   const el=$(selectId);if(!el)return;
   const old=selected||el.value;
@@ -122,10 +180,11 @@
    ]);
    sijalGames=games||[];sijalQuestions=questions||[];sijalPlayers=players||[];
    $('sjAdminEnabled').checked=!!settings.enabled;$('sjAdminLeaderboard').checked=!!settings.leaderboard_enabled;
+   sjVisuals={hero_background_url:settings.hero_background_url||null,hero_logo_url:settings.hero_logo_url||null};sjHeroRemoved.clear();for(const k of Object.keys(sjHeroKeys))sjHeroPreview(k);
    $('sjAdminGames').textContent=sijalGames.length;$('sjAdminQuestions').textContent=sijalQuestions.length;$('sjAdminPlayers').textContent=sijalPlayers.length;
    sjOptions('sjAdminQuestionGame','اختر اللعبة');sjOptions('sjAdminImportGame','اختر اللعبة');sjOptions('sjAdminQuestionFilter','جميع الألعاب');
    const categoryList=$('sjAdminCategories');if(categoryList)categoryList.replaceChildren(...[...new Set(sijalGames.map(g=>g.category).filter(Boolean))].map(c=>{const e=document.createElement('option');e.value=c;return e;}));
-   sjRenderGames();sjRenderQuestions();sjRenderPlayers();
+   sjRenderGames();sjRenderCardSettings();sjRenderQuestions();sjRenderPlayers();
   }catch(e){sjMsg('تعذر تحميل إدارة سِجال: '+e.message+'. تأكد من تنفيذ QAFIYAH-SIJAL-UPGRADE.sql',true);}
   finally{sijalLoading=false;}
  }

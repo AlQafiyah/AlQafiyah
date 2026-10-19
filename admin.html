@@ -829,7 +829,31 @@ gap: 6px;
 <link rel="manifest" href="/site.webmanifest">
 <meta name="application-name" content="القافية">
 <link rel="stylesheet" href="qafiyah-auth-final.css?v=20260922">
-</head>
+<style id="sijal-visual-admin-styles">
+#section-sijal .sj-admin-visual-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin:20px 0}
+#section-sijal .sj-admin-image-field{display:grid;gap:10px;min-width:0;align-content:start}
+#section-sijal .sj-admin-image-field>label{font-weight:700}
+#section-sijal .sj-admin-image-preview{height:180px;overflow:hidden;border-radius:17px;display:grid;place-items:center;border:1px solid var(--border-color,#c3b5a5);background:linear-gradient(145deg,#d7bca9,#422721);background-size:cover;background-position:center;color:#f5e8db}
+#section-sijal .sj-admin-image-preview img{max-width:100%;height:100%;width:100%;object-fit:cover;display:block}
+#section-sijal .sj-admin-logo-preview{height:155px;width:155px;max-width:100%;border-radius:100%;background:color-mix(in srgb,var(--primary-color,#65382b) 14%,#f8f2eb);color:var(--primary-color,#65382b)}
+#section-sijal .sj-admin-logo-preview img{border-radius:50%;object-fit:contain}
+#section-sijal .sj-admin-logo-preview svg{width:70px;height:70px}
+#section-sijal .sj-admin-visual-box .form-actions{margin-top:18px}
+#section-sijal .sj-admin-card-list{display:grid;gap:18px;margin-top:18px}
+#section-sijal .sj-admin-card-item{display:grid;grid-template-columns:minmax(180px,260px) minmax(0,1fr);align-items:start;gap:20px;padding:17px;border:1px solid var(--border-color,#d1c2b6);border-radius:20px;min-width:0}
+#section-sijal .sj-admin-game-cover{display:grid;place-items:center;border-radius:15px;min-height:190px;overflow:hidden;background:linear-gradient(135deg,#d1b4a1,#6e4739);color:white;text-align:center}
+#section-sijal .sj-admin-game-cover img{width:100%;height:190px;object-fit:cover;display:block}
+#section-sijal .sj-admin-card-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0}
+#section-sijal .sj-admin-card-inputs>label{display:grid;gap:6px;min-width:0;font-size:.93rem}
+#section-sijal .sj-admin-card-inputs .form-control{min-width:0;width:100%;max-width:100%;box-sizing:border-box}
+#section-sijal .sj-admin-card-inputs textarea{min-height:78px;resize:vertical}
+#section-sijal .sj-admin-count-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;grid-column:1/-1;min-width:0}
+#section-sijal .sj-admin-count-row>label{display:grid;gap:7px;min-width:0}
+#section-sijal .sj-admin-card-actions{display:flex;gap:10px;flex-wrap:wrap;grid-column:1/-1;justify-content:start}
+#section-sijal .sj-admin-card-inputs>label:has(input[type=file]){grid-column:1/-1}
+#section-sijal .sj-admin-card-item:focus-within{border-color:var(--primary-color,#6e4739)}
+@media(max-width:780px){#section-sijal .sj-admin-visual-grid{grid-template-columns:minmax(0,1fr)}#section-sijal .sj-admin-card-item{grid-template-columns:minmax(0,1fr)}#section-sijal .sj-admin-game-cover{height:185px}#section-sijal .sj-admin-card-inputs{grid-template-columns:minmax(0,1fr)}#section-sijal .sj-admin-count-row{grid-template-columns:minmax(0,1fr)}}
+</style></head>
 <body>
 <div class="checking-screen" id="checkingScreen">
 <div class="checking-card">
@@ -1355,6 +1379,15 @@ onclick="window.location.href='index.html'"
     <div class="sj-admin-box"><h3>التحكم بظهور القسم</h3><p>إيقاف سِجال يخفي اللعب وجميع الأسئلة عن الزوار مؤقتاً دون حذف البيانات.</p>
       <div class="sj-admin-controls"><label><input type="checkbox" id="sjAdminEnabled"> إتاحة سِجال للزوار</label><label><input type="checkbox" id="sjAdminLeaderboard"> إظهار التصنيف العام</label><button type="button" class="btn btn-primary" id="sjAdminSaveSettings">حفظ حالة القسم</button></div>
     </div>
+    <div class="sj-admin-box sj-admin-visual-box">
+      <div class="sj-admin-head"><div><h3>مظهر واجهة سِجال</h3><p>غيّر خلفية بطاقة البداية والشعار الأوسط لكل زوار سِجال. عند عدم وضع صورة، يظهر المظهر الكلاسيكي الافتراضي للقافية.</p></div></div>
+      <div class="sj-admin-visual-grid">
+        <div class="sj-admin-image-field"><label for="sjAdminHeroCover">خلفية بطاقة البداية</label><div id="sjAdminHeroCoverPreview" class="sj-admin-image-preview sj-admin-hero-preview"><span>الخلفية الافتراضية لسِجال</span></div><input class="form-control" id="sjAdminHeroCover" type="file" accept="image/png,image/jpeg,image/webp"><button type="button" class="btn btn-secondary" data-sj-hero-remove="hero_background_url">استخدام الخلفية الافتراضية</button></div>
+        <div class="sj-admin-image-field"><label for="sjAdminHeroLogo">الشعار الأوسط</label><div id="sjAdminHeroLogoPreview" class="sj-admin-image-preview sj-admin-logo-preview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="m8 13-2 8 6-3 6 3-2-8"/></svg></div><input class="form-control" id="sjAdminHeroLogo" type="file" accept="image/png,image/jpeg,image/webp"><button type="button" class="btn btn-secondary" data-sj-hero-remove="hero_logo_url">استخدام الشعار الكلاسيكي</button></div>
+      </div><div class="form-actions"><button id="sjAdminSaveAppearance" class="btn btn-primary" type="button">حفظ مظهر سِجال ونشره</button></div>
+      <p class="sj-admin-help" id="sjAdminVisualStatus" aria-live="polite">الحد الأقصى لكل صورة 8 ميجابايت. لا تتغير الصور المنشورة حتى تضغط حفظ.</p>
+    </div>
+    <div class="sj-admin-box"><div class="sj-admin-head"><div><h3>تخصيص بطاقات الألعاب</h3><p>تظهر كل لعبة في بطاقة مستقلة. غيّر صورتها وعنوانها ووصفها والتصنيف المكتوب بجوار عدد الأسئلة؛ واختر عدداً تلقائياً أو نصاً تكتبه بنفسك.</p></div></div><div class="sj-admin-card-list" id="sjAdminCardList"></div></div>
     <div class="sj-admin-box"><div class="sj-admin-head"><div><h3>إدارة الألعاب والتصنيفات</h3><p>إضافة لعبة جديدة أو إخفاؤها وإظهارها أو تعديلها وحذفها. التصنيف قابل للكتابة بحرية.</p></div></div>
       <form id="sjAdminGameForm" class="form-grid"><input type="hidden" name="id">
       <div class="form-group"><label>اسم اللعبة</label><input class="form-control" name="title" maxlength="160" minlength="3" required></div>
@@ -7745,6 +7778,6 @@ document.addEventListener('DOMContentLoaded',()=>{loadQAnalytics();setupBulkSele
 })();
 </script>
 
-<script src="admin-extras.js?v=sijal-20261019-r2"></script>
+<script src="admin-extras.js?v=sijal-20261019-r4"></script>
 </body>
 </html>

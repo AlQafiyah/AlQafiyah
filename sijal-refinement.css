@@ -101,3 +101,82 @@ body.sijal-page[data-sj-mode="solo"] #sjModeSetup .sj-start-row{border:0;margin:
 /* اللعب الفردي لا يحتاج إلى إعدادات فرق أو مؤشرات إضافية: زر البدء وحده. */
 body.sijal-page[data-sj-mode="solo"] #sjSelectedSummary{display:none}
 body.sijal-page[data-sj-mode="solo"] #sjModeSetup .sj-start-row{justify-content:center}
+
+/* 2026-10-19 · تخصيص الهوية وإصلاح التفاف حقول إعداد الفرق والبطولة */
+.sijal-page .sj-shell .sj-prep-panel{min-width:0;max-width:100%;overflow:hidden}
+.sijal-page .sj-shell .sj-form-line.sj-prep-controls{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:14px;width:100%;max-width:100%;min-width:0;margin:0;padding:4px 0 12px}
+.sijal-page .sj-shell .sj-prep-controls>label,.sijal-page .sj-shell .sj-prep-controls>label.sj-check{min-width:0!important;width:100%!important;max-width:100%;margin:0;flex:initial;box-sizing:border-box;overflow-wrap:anywhere}
+.sijal-page .sj-shell .sj-prep-controls>label.sj-check{display:flex;justify-content:flex-start;align-items:center;align-self:end;min-height:47px;padding:8px 4px;gap:9px;line-height:1.6}
+.sijal-page .sj-shell .sj-prep-controls .sj-field{box-sizing:border-box;width:100%;max-width:100%;min-width:0!important;display:block}
+.sijal-page .sj-shell .sj-prep-controls .sj-check input{flex:0 0 auto}
+.sijal-page .sj-shell .sj-team-fields,.sijal-page .sj-shell .sj-tournament-fields{width:100%;max-width:100%;min-width:0;grid-template-columns:repeat(2,minmax(0,1fr))}
+.sijal-page .sj-shell .sj-team-unit,.sijal-page .sj-shell .sj-tournament-team{width:100%;min-width:0;max-width:100%;box-sizing:border-box;overflow:hidden}
+.sijal-page .sj-shell .sj-team-unit>label,.sijal-page .sj-shell .sj-tournament-team{min-width:0;max-width:100%;box-sizing:border-box}
+.sijal-page .sj-shell :is(.sj-team-name,.sj-tournament-name,.sj-player-input){width:100%!important;max-width:100%;min-width:0!important;box-sizing:border-box}
+.sijal-page .sj-shell .sj-player-list{min-width:0}
+.sijal-page .sj-shell .sj-player-row{max-width:100%;min-width:0}
+.sj-stage-hero.sj-has-cover::before{content:"";position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;border:0;border-radius:inherit;box-shadow:none;z-index:0;background-image:linear-gradient(135deg,color-mix(in srgb,var(--sj-panel) 52%,transparent),color-mix(in srgb,var(--sj-panel) 64%,transparent)),var(--sj-cover-image);background-size:cover;background-position:center;pointer-events:none;opacity:1}
+.sj-stage-hero.sj-has-cover::after{display:none}
+.sj-stage-hero.sj-has-cover .sj-hero-glow{opacity:.08}
+.sj-herald>img{width:100%;height:100%;object-fit:contain;display:block;border-radius:50%;padding:6px;box-sizing:border-box}
+.sj-herald>svg{width:53px!important;height:53px!important}
+.sj-game-art.sj-art-custom{background:var(--sj-panel2)}
+.sj-game-art.sj-art-custom::before,.sj-game-art.sj-art-custom::after{display:none}
+.sj-game-art.sj-art-custom .sj-art-graphic{width:100%;height:100%;position:absolute;inset:0;filter:none;display:block;z-index:0}
+.sj-game-art .sj-card-photo{width:100%;height:100%;object-fit:cover;display:block}
+.sj-game-art.sj-art-custom .sj-tick{z-index:3}
+@media(max-width:850px){.sijal-page .sj-shell .sj-form-line.sj-prep-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){
+ .sijal-page .sj-shell .sj-form-line.sj-prep-controls{grid-template-columns:1fr!important;gap:12px}
+ .sijal-page .sj-shell .sj-team-fields,.sijal-page .sj-shell .sj-tournament-fields{grid-template-columns:1fr!important;gap:12px}
+ .sijal-page .sj-shell .sj-prep-panel{padding:19px 14px}
+ .sijal-page .sj-shell .sj-team-unit,.sijal-page .sj-shell .sj-tournament-team{padding:14px}
+}
+
+/* 2026-10-19 | بطاقة الفرق والبطولة: إصلاح تجاوز الحقول على الشاشات الصغيرة والكبيرة. */
+.sijal-page .sj-shell :is(.sj-prep-panel,.sj-prep-controls,.sj-team-fields,.sj-tournament-fields,.sj-team-unit,.sj-tournament-team){box-sizing:border-box;min-width:0;max-width:100%}
+.sijal-page .sj-shell :is(.sj-team-unit,.sj-tournament-team) :is(input,select,textarea,.sj-field){box-sizing:border-box;width:100%!important;max-width:100%!important;min-width:0!important}
+.sijal-page .sj-shell :is(.sj-team-unit,.sj-tournament-team)>label{min-width:0;width:100%;max-width:100%;display:grid;grid-template-columns:minmax(0,1fr);gap:9px;overflow-wrap:anywhere}
+.sijal-page .sj-shell .sj-form-line.sj-prep-controls{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.sijal-page .sj-shell .sj-form-line.sj-prep-controls>label{min-width:0!important;max-width:100%;width:100%!important}
+.sijal-page .sj-shell .sj-form-line.sj-prep-controls .sj-field{min-width:0!important;max-width:100%!important;width:100%!important;box-sizing:border-box;display:block}
+.sijal-page .sj-shell .sj-form-line.sj-prep-controls>label.sj-check{display:flex;align-items:center;gap:9px;line-height:1.6}
+.sijal-page .sj-shell .sj-form-line.sj-prep-controls>label.sj-check input{width:auto!important;flex:0 0 auto}
+.sijal-page .sj-shell .sj-team-fields,.sijal-page .sj-shell .sj-tournament-fields{grid-template-columns:repeat(2,minmax(0,1fr));width:100%;max-width:100%}
+.sijal-page .sj-shell .sj-prep-panel{overflow:hidden;max-width:100%}
+.sijal-page .sj-shell .sj-player-list,.sijal-page .sj-shell .sj-player-row{min-width:0;max-width:100%;box-sizing:border-box}
+.sijal-page .sj-shell .sj-player-row .sj-player-input{min-width:0;max-width:100%;box-sizing:border-box;flex:1 1 0}
+/* خلفية اختيارية: تحفظ تفاصيل الشكل القديم عند عدم رفع صورة جديدة. */
+.sijal-page .sj-stage-hero.sj-has-cover{background-image:linear-gradient(135deg,color-mix(in srgb,var(--sj-panel) 64%,transparent),color-mix(in srgb,var(--sj-panel2) 78%,transparent)),var(--sj-cover-image);background-size:cover,cover;background-repeat:no-repeat;background-position:center center}
+.sijal-page .sj-stage-hero.sj-has-cover::before,.sijal-page .sj-stage-hero.sj-has-cover::after{opacity:.09}
+.sijal-page .sj-herald>img{object-fit:contain;width:100%;height:100%;border-radius:50%;display:block}
+.sijal-page .sj-game-art.sj-art-custom{overflow:hidden}
+.sijal-page .sj-game-art.sj-art-custom .sj-art-graphic{inset:0;width:100%;height:100%;position:absolute;display:block}
+.sijal-page .sj-game-art.sj-art-custom .sj-art-graphic .sj-card-photo{width:100%;height:100%;display:block;object-fit:cover}
+@media (max-width:850px) and (min-width:601px){.sijal-page .sj-shell .sj-form-line.sj-prep-controls{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:600px){
+ .sijal-page .sj-shell .sj-form-line.sj-prep-controls{grid-template-columns:minmax(0,1fr)!important;gap:12px!important}
+ .sijal-page .sj-shell .sj-team-fields,.sijal-page .sj-shell .sj-tournament-fields{grid-template-columns:minmax(0,1fr)!important}
+ .sijal-page .sj-shell .sj-prep-panel{padding:20px 15px!important}
+ .sijal-page .sj-shell .sj-team-unit,.sijal-page .sj-shell .sj-tournament-team{padding:15px 13px!important}
+}
+
+/* اللعب الفردي يبدأ مباشرة بعد اختيار الألعاب، دون خطوة ثانية. */
+body.sijal-page[data-sj-mode="solo"] #sjModeSetup .sj-section-head{display:none!important}
+
+/* عندما يختار الزائر اللعب الفردي، لا تظهر خطوة ثانية؛ زر البدء فقط. */
+body.sijal-page[data-sj-mode="solo"] #sjModeSetup .sj-section-head,
+body.sijal-page[data-sj-mode="solo"] #sjModeSetup #sjSelectedSummary{display:none!important}
+body.sijal-page[data-sj-mode="solo"] #sjModeSetup{padding:16px!important}
+body.sijal-page[data-sj-mode="solo"] #sjModeSetup .sj-start-row{padding:0;margin:0;justify-content:center}
+
+/* صورة خلفية يختارها المدير تظهر بوضوح بدل الزخرفة الافتراضية، مع غطاء خفيف لتحسين مقروئية النص. */
+.sijal-page .sj-stage-hero.sj-has-cover{
+ background-image:linear-gradient(120deg,rgba(38,25,21,.36),rgba(38,25,21,.43)),var(--sj-cover-image)!important;
+ background-size:cover,cover!important;
+ background-position:center center!important;
+ background-repeat:no-repeat!important;
+}
+.sijal-page .sj-stage-hero.sj-has-cover::before,
+.sijal-page .sj-stage-hero.sj-has-cover::after{display:none!important}
+.sijal-page .sj-stage-hero.sj-has-cover .sj-hero-glow{opacity:.06}
