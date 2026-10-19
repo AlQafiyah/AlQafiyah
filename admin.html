@@ -11,7 +11,7 @@ name="theme-color"
 content="#3E2723"
 >
 <title>لوحة إدارة القافية</title>
-<link rel="stylesheet" href="qafiyah-new.css?v=sijal-1">
+<link rel="stylesheet" href="qafiyah-new.css?v=sijal-2">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tus-js-client@4.3.1/dist/tus.min.js"></script>
 <script src="supabase.js?v=20260922-2"></script>
@@ -1358,7 +1358,7 @@ onclick="window.location.href='index.html'"
     <div class="sj-admin-box"><div class="sj-admin-head"><div><h3>إدارة الألعاب والتصنيفات</h3><p>إضافة لعبة جديدة أو إخفاؤها وإظهارها أو تعديلها وحذفها. التصنيف قابل للكتابة بحرية.</p></div></div>
       <form id="sjAdminGameForm" class="form-grid"><input type="hidden" name="id">
       <div class="form-group"><label>اسم اللعبة</label><input class="form-control" name="title" maxlength="160" minlength="3" required></div>
-      <div class="form-group"><label>نوع اللعبة</label><select class="form-control" name="kind"><option value="quiz">أسئلة واختيارات (أسلوب سين جيم)</option><option value="complete">أكمل البيت</option><option value="guesspoet">خمن الشاعر</option><option value="speaker">من القائل</option><option value="truefalse">صح أو خطأ</option><option value="riddle">ألغاز القافية</option></select></div>
+      <div class="form-group"><label>نوع اللعبة</label><select class="form-control" name="kind"><option value="complete">أكمل البيت</option><option value="guesspoet">خمن الشاعر</option><option value="speaker">من القائل</option><option value="truefalse">صح أو خطأ</option><option value="riddle">ألغاز القافية</option></select></div>
       <div class="form-group"><label>التصنيف الأدبي</label><input class="form-control" name="category" maxlength="80" value="الشعر والأدب" list="sjAdminCategories" required><datalist id="sjAdminCategories"></datalist></div>
       <div class="form-group"><label>حالة اللعبة</label><select class="form-control" name="published"><option value="true">منشورة</option><option value="false">مخفية مؤقتاً</option></select></div>
       <div class="form-group" style="grid-column:1/-1"><label>وصف اللعبة</label><textarea class="form-control" name="description" rows="2" maxlength="1500"></textarea></div>
@@ -1371,8 +1371,8 @@ onclick="window.location.href='index.html'"
       <div class="form-group"><label>اللعبة</label><select class="form-control" name="challenge_id" id="sjAdminQuestionGame" required></select></div>
       <div class="form-group"><label>ترتيب السؤال</label><input class="form-control" type="number" name="position" min="0" value="0"></div>
       <div class="form-group" style="grid-column:1/-1"><label>السؤال</label><textarea class="form-control" name="question_text" rows="3" minlength="3" maxlength="1500" required></textarea></div>
-      <div class="form-group"><label>الإجابات (سطر لكل خيار، من 2 إلى 6)</label><textarea class="form-control" name="options" rows="5" required></textarea></div>
-      <div class="form-group"><label>رقم الإجابة الصحيحة</label><input class="form-control" name="correct_number" type="number" min="1" max="6" value="1" required><label>النقاط</label><input class="form-control" name="points" type="number" min="1" max="100" value="10" required></div>
+      <div class="form-group sj-admin-answer-editor" style="grid-column:1/-1"><label>خيارات الإجابة (من خيارين إلى ستة خيارات)</label><div id="sjAdminAnswerOptions" class="sj-admin-answer-list"></div><button class="btn btn-secondary sj-admin-add-answer" id="sjAdminAddOption" type="button"><span aria-hidden="true">＋</span> إضافة خيار</button><p class="sj-admin-help">حدد الإجابة الصحيحة من المربع أمام خيارها، وأضف الخيارات عبر زر الإضافة.</p></div>
+      <div class="form-group"><label>النقاط</label><input class="form-control" name="points" type="number" min="1" max="100" value="10" required></div>
       <div class="form-group" style="grid-column:1/-1"><label>شرح الإجابة</label><textarea class="form-control" name="explanation" rows="2"></textarea></div>
       <div class="form-group"><label>نوع المرفق</label><select class="form-control" name="media_type"><option value="none">بدون مرفق</option><option value="image">صورة</option><option value="audio">صوت</option><option value="video">فيديو</option></select></div>
       <div class="form-group"><label>رفع ملف من الجهاز</label><input class="form-control" id="sjAdminMediaFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif,audio/mpeg,audio/mp4,audio/ogg,audio/wav,audio/webm,video/mp4,video/webm"></div>
@@ -1391,9 +1391,6 @@ onclick="window.location.href='index.html'"
      <div class="table-wrapper"><table class="data-table"><thead><tr><th>المتسابق</th><th>الجولات</th><th>الإجابات</th><th>الصحيحة</th><th>النقاط</th><th>آخر نشاط</th><th>التحكم</th></tr></thead><tbody id="sjAdminPlayerRows"></tbody></table></div>
     </div>
     <div id="sjAdminPlayerDetails" class="sj-admin-box sj-admin-details" hidden aria-live="polite"></div>
-    <div class="sj-admin-box"><h3>الفرق المسجلة سابقاً</h3><p>فرق الجولات الجديدة تُنشأ داخل اللعبة دون أن تتطلب عضوية مسجلة. يمكن إدارة الفرق الدائمة الموجودة سابقاً هنا.</p>
-     <div class="table-wrapper"><table class="data-table"><thead><tr><th>الفريق</th><th>المعرّف</th><th>التحكم</th></tr></thead><tbody id="sjAdminTeamRows"></tbody></table></div>
-    </div>
   </div></div>
 </section>
 <section class="admin-section" id="section-users">
@@ -7748,6 +7745,6 @@ document.addEventListener('DOMContentLoaded',()=>{loadQAnalytics();setupBulkSele
 })();
 </script>
 
-<script src="admin-extras.js?v=sijal-20261019"></script>
+<script src="admin-extras.js?v=sijal-20261019-r2"></script>
 </body>
 </html>

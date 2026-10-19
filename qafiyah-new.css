@@ -84,3 +84,15 @@
 #section-sijal .sj-admin-notice{padding:15px 18px;border:1px solid var(--q-border);border-radius:13px;background:var(--q-surface-2)}
 #section-sijal .sj-admin-help{font-size:.85rem;line-height:1.9;opacity:.75}
 @media(max-width:650px){#section-sijal .sj-admin{padding:12px;gap:15px}#section-sijal .sj-admin-box{padding:15px}#section-sijal .sj-admin-stats{grid-template-columns:1fr 1fr 1fr;gap:6px}#section-sijal .sj-admin-stats>div{padding:10px;font-size:.75rem}#section-sijal .sj-admin-stats strong{font-size:1.3rem}#section-sijal .sj-admin-toolbar{flex-direction:column;align-items:stretch}#section-sijal .sj-admin-toolbar>.form-control{width:100%}}
+/* سِجال: خيارات منفصلة مع تحديد الإجابة الصحيحة دون ترقيم يدوي. */
+#section-sijal .sj-admin-answer-list{display:grid;gap:10px;margin:12px 0}
+#section-sijal .sj-admin-option{display:flex;align-items:center;gap:9px;min-width:0}
+#section-sijal .sj-admin-option .form-control{flex:1;min-width:0}
+#section-sijal .sj-admin-correct-wrap{flex:0 0 36px;width:36px;height:38px;display:grid;place-items:center;border:1px solid var(--q-border,rgba(100,65,50,.2));border-radius:10px;background:var(--q-surface-2,#f7f2ee);cursor:pointer}
+#section-sijal .sj-admin-option-correct{appearance:none;width:18px;height:18px;border:1.7px solid var(--q-muted,#8b7b70);border-radius:4px;background:transparent;cursor:pointer;position:relative}
+#section-sijal .sj-admin-option-correct:checked{background:var(--q-accent,#9e7564);border-color:var(--q-accent,#9e7564)}
+#section-sijal .sj-admin-option-correct:checked:after{content:'✓';position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:14px;font-family:Arial,sans-serif}
+#section-sijal :is(.sj-admin-option-add,.sj-admin-option-remove){width:37px;height:38px;flex:0 0 37px;display:grid;place-items:center;border:1px solid var(--q-border,rgba(100,65,50,.2));border-radius:10px;background:var(--q-surface-2,#f7f2ee);color:var(--q-text,#3e2723);cursor:pointer;font-family:Arial,sans-serif;font-size:21px}
+#section-sijal :is(.sj-admin-option-add,.sj-admin-option-remove):hover{border-color:var(--q-accent,#9e7564)}
+#section-sijal .sj-admin-add-answer{margin-top:4px}
+@media(max-width:550px){#section-sijal .sj-admin-option{gap:5px}#section-sijal .sj-admin-correct-wrap{width:30px;flex-basis:30px}#section-sijal :is(.sj-admin-option-add,.sj-admin-option-remove){width:31px;flex-basis:31px}#section-sijal .sj-admin-option .form-control{padding-inline:8px}}

@@ -1,0 +1,103 @@
+/* سِجال | تجديد بصري معزول: يستعمل ألوان وخطوط القافية في مظاهرها الخمسة. */
+.sijal-page .sj-shell{--sj-focus-ring:color-mix(in srgb,var(--sj-accent) 40%,transparent);width:min(1210px,calc(100% - 44px));padding-top:31px;}
+.sj-stage-hero{position:relative;min-height:445px;border-radius:29px;overflow:hidden;border:1px solid var(--sj-border);background:radial-gradient(ellipse 63% 83% at 91% 4%,color-mix(in srgb,var(--sj-accent) 25%,transparent),transparent 80%),radial-gradient(ellipse 44% 70% at -15% 90%,color-mix(in srgb,var(--sj-accent) 17%,transparent),transparent 80%),linear-gradient(125deg,var(--sj-panel),var(--sj-panel2));box-shadow:0 20px 56px color-mix(in srgb,var(--q-shadow,rgba(0,0,0,.2)) 38%,transparent)}
+.sj-stage-hero::before,.sj-stage-hero::after{pointer-events:none;z-index:-1}
+.sj-stage-hero::before{width:490px;top:-310px;right:-130px;border-width:2px;opacity:.85;box-shadow:0 0 0 39px color-mix(in srgb,var(--sj-accent) 6%,transparent),0 0 0 75px color-mix(in srgb,var(--sj-accent) 4%,transparent)}
+.sj-stage-hero::after{width:380px;bottom:-305px;left:-105px;box-shadow:0 0 0 39px color-mix(in srgb,var(--sj-accent) 6%,transparent),0 0 0 81px color-mix(in srgb,var(--sj-accent) 4%,transparent)}
+.sj-hero-inner{position:relative;z-index:1;max-width:1040px;margin:auto;padding:31px 34px 38px;text-align:center}
+.sj-stage-kicker{display:inline-flex;gap:11px;align-items:center;justify-content:center;font-size:.88rem;font-weight:650;letter-spacing:0;color:var(--sj-muted);border:1px solid var(--sj-border);border-radius:999px;padding:5px 17px;background:color-mix(in srgb,var(--sj-panel) 65%,transparent)}
+.sj-herald{width:100px;height:100px;margin:16px auto 1px;border:1px solid color-mix(in srgb,var(--sj-accent) 45%,transparent);border-radius:100%;display:grid;place-items:center;background:radial-gradient(circle at 45% 23%,color-mix(in srgb,var(--sj-accent) 20%,transparent),transparent 75%),color-mix(in srgb,var(--sj-panel2) 70%,transparent);box-shadow:0 0 0 8px color-mix(in srgb,var(--sj-accent) 6%,transparent)}
+.sj-herald svg{width:73px;height:73px;color:var(--sj-accent)}
+.sj-stage-hero h1{font-size:clamp(3.2rem,6vw,5.7rem);line-height:1.13;letter-spacing:-.035em;margin:8px 0 8px;color:var(--sj-fg)}
+.sj-stage-hero p{font-size:clamp(.94rem,1.35vw,1.14rem);line-height:1.85;margin:0 auto 25px;max-width:660px;color:var(--sj-muted)}
+.sj-entry-modes{grid-template-columns:repeat(3,minmax(0,1fr));max-width:810px;gap:14px;align-items:stretch}
+.sijal-page .sj-shell .sj-entry{min-height:128px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:17px 11px;border-radius:18px;background:color-mix(in srgb,var(--sj-bg) 25%,var(--sj-panel));border:1px solid color-mix(in srgb,var(--sj-accent) 23%,var(--sj-border));box-shadow:0 8px 30px rgba(0,0,0,.07);transition:transform .16s ease,box-shadow .16s,border-color .16s}
+.sijal-page .sj-shell .sj-entry.active{border-color:var(--sj-accent);background:color-mix(in srgb,var(--sj-accent) 16%,var(--sj-panel));box-shadow:inset 0 0 0 1px var(--sj-accent),0 10px 29px color-mix(in srgb,var(--sj-accent) 13%,transparent)}
+.sijal-page .sj-shell .sj-entry:active{transform:scale(.98)}
+.sj-entry-icon{width:43px;height:43px;display:grid;place-items:center;color:var(--sj-accent);background:color-mix(in srgb,var(--sj-accent) 13%,transparent);border:1px solid color-mix(in srgb,var(--sj-accent) 25%,transparent);border-radius:50%;padding:10px}
+.sj-entry-icon svg{width:100%;height:100%;stroke-width:1.75}
+.sj-entry>span:nth-child(2){font-size:1.07rem;line-height:1.5;font-weight:800;color:var(--sj-fg)}
+.sj-entry small{font-size:.8rem;line-height:1.35;color:var(--sj-muted)}
+.sj-tabs{justify-content:center;gap:8px;margin:26px 0 24px;padding-bottom:16px}
+.sj-tab{border:1px solid transparent;border-radius:999px;padding:10px 25px;font-size:.94rem}
+.sj-tab.active{border-color:var(--sj-border);box-shadow:0 3px 15px color-mix(in srgb,var(--q-shadow,rgba(0,0,0,.2)) 11%,transparent)}
+.sj-choose-panel{padding:8px 3px 21px}
+.sj-section-head{margin-bottom:20px}
+.sj-section-head h2{letter-spacing:-.02em;font-size:clamp(1.7rem,2.7vw,2.35rem)}
+.sj-eyebrow{font-size:.82rem;font-weight:700}
+.sj-section-head p{color:var(--sj-muted)}
+.sj-filter-row{max-width:720px;gap:11px;margin-bottom:23px}
+.sj-search{background:var(--sj-panel);border-radius:15px}
+.sijal-page .sj-shell :is(.sj-search input,.sj-field){background:var(--sj-panel)!important;border-radius:13px}
+.sj-games{grid-template-columns:repeat(3,minmax(0,1fr));gap:19px}
+.sj-game-card{border-radius:21px;overflow:hidden;border:1px solid var(--sj-border);background:var(--sj-panel);gap:0;transition:box-shadow .18s ease,transform .18s ease,border-color .18s ease;box-shadow:0 10px 25px color-mix(in srgb,var(--q-shadow,rgba(0,0,0,.2)) 10%,transparent)}
+.sj-game-card:hover{box-shadow:0 18px 37px color-mix(in srgb,var(--q-shadow,rgba(0,0,0,.2)) 17%,transparent);transform:translateY(-3px)}
+.sj-game input:checked+.sj-game-card{border-color:var(--sj-accent);box-shadow:0 0 0 2px var(--sj-accent),0 17px 35px color-mix(in srgb,var(--q-shadow,rgba(0,0,0,.2)) 15%,transparent)}
+.sj-game-art{min-height:180px;display:grid;place-items:center;position:relative;isolation:isolate;border:0;border-bottom:1px solid var(--sj-border);background:radial-gradient(circle at 62% 43%,color-mix(in srgb,var(--sj-accent) 25%,var(--sj-panel2)),transparent 73%),linear-gradient(141deg,color-mix(in srgb,var(--sj-accent) 18%,var(--sj-panel2)),var(--sj-panel));overflow:hidden}
+.sj-game-art:before{width:190px;height:190px;border-radius:50%;border:1px solid color-mix(in srgb,var(--sj-accent) 30%,transparent);box-shadow:0 0 0 23px color-mix(in srgb,var(--sj-accent) 5%,transparent),0 0 0 49px color-mix(in srgb,var(--sj-accent) 5%,transparent);z-index:-1}
+.sj-game-art:after{inset:13px;border-radius:14px;border:1px solid color-mix(in srgb,var(--sj-accent) 20%,transparent)}
+.sj-art-graphic{background:none;width:100%;height:100%;border-radius:0;filter:none;transform:none!important;display:grid;place-items:center}
+.sj-art-graphic svg{width:min(86%,250px);height:163px;stroke-width:3.6;color:var(--sj-accent);filter:drop-shadow(0 9px 11px color-mix(in srgb,var(--sj-accent) 15%,transparent))}
+.sj-game-words{min-height:136px;display:flex;flex-direction:column;gap:5px;padding:17px 19px 18px;text-align:right}
+.sj-game-title{font-size:1.21rem;color:var(--sj-fg);font-weight:800}
+.sj-game-desc{font-size:.87rem;line-height:1.6;color:var(--sj-muted)}
+.sj-game-meta{font-size:.77rem;color:var(--sj-accent);margin-top:auto;padding-top:7px}
+.sj-tick{top:14px;left:14px;width:35px;height:35px;display:grid;place-items:center;border-radius:50%;color:transparent;background:var(--sj-panel);border:1px solid var(--sj-border);z-index:3}
+.sj-game input:checked+.sj-game-card .sj-tick{background:var(--sj-accent);color:var(--sj-panel)}
+.sj-tick svg{width:19px;height:19px}
+.sj-prep-panel{background:linear-gradient(155deg,color-mix(in srgb,var(--sj-panel2) 72%,var(--sj-panel)),var(--sj-panel));border-radius:25px;padding:29px 30px 27px;box-shadow:0 12px 30px color-mix(in srgb,var(--q-shadow,rgba(0,0,0,.2)) 7%,transparent)}
+.sj-team-unit,.sj-tournament-team{border-radius:16px;background:var(--sj-panel);border:1px solid var(--sj-border)}
+.sj-team-fields,.sj-tournament-fields{margin-top:19px;gap:13px}
+.sj-main-start{min-width:205px;min-height:55px;border-radius:16px;font-weight:800;transition:filter .16s,transform .16s}
+.sj-main-start:hover:not(:disabled){filter:brightness(1.06);transform:translateY(-1px)}
+.sj-main-start:disabled{opacity:.55}
+.sj-choose-panel,.sj-prep-panel,.sj-result,.sj-round{scroll-margin-top:25px}
+.sj-option{border-radius:17px;transition:background .15s,border-color .15s}
+.sj-question-card h2{font-size:clamp(1.3rem,3vw,2rem);line-height:1.9}
+.sj-question-media{display:block;max-width:100%;height:auto;max-height:380px;object-fit:contain;border:1px solid var(--sj-border);border-radius:24px;padding:4px;background:var(--sj-panel2)}
+.sj-result,.sj-question-card{max-width:920px}
+.sj-selected-summary{font-weight:650}
+body.sijal-page[data-sj-mode="solo"] #sjModeSetup>.sj-section-head{display:none}
+body.sijal-page[data-sj-mode="solo"] #sjModeSetup{padding:16px 24px}
+body.sijal-page[data-sj-mode="solo"] #sjModeSetup .sj-start-row{border:0;margin:0;padding:0}
+/* فرص تركيز وتباين واضحة في الوضع الفاتح والداكن */
+.sijal-page .sj-shell :is(button,input,select):focus-visible{outline:3px solid var(--sj-accent);outline-offset:3px}
+@media(max-width:850px){.sj-games{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.sj-hero-inner{padding:30px 22px 32px}.sj-game-art{min-height:160px}.sj-art-graphic svg{height:143px}}
+@media(max-width:600px){
+ .sijal-page .sj-shell{width:calc(100% - 24px);padding:15px 0 55px}
+ .sj-stage-hero{min-height:0;border-radius:22px}.sj-hero-inner{padding:21px 12px 23px}
+ .sj-stage-kicker{font-size:.68rem;padding:6px 11px;gap:6px}
+ .sj-herald{height:68px;width:68px;margin:14px auto 3px}.sj-herald svg{width:52px;height:52px}
+ .sj-stage-hero h1{font-size:3.2rem;margin:8px 0 5px}
+ .sj-stage-hero p{font-size:.82rem;line-height:1.85;margin-bottom:19px;padding:0 5px}
+ .sj-entry-modes{gap:7px}
+ .sijal-page .sj-shell .sj-entry{padding:12px 4px;min-height:109px;gap:5px;border-radius:14px}
+ .sj-entry-icon{width:35px;height:35px;padding:7px}
+ .sj-entry>span:nth-child(2){font-size:.79rem;font-weight:750}
+ .sj-entry small{font-size:.6rem}
+ .sj-tabs{margin:17px 0 14px;padding-bottom:9px;gap:2px;justify-content:space-around}
+ .sj-tab{font-size:.78rem;padding:8px 10px}
+ .sj-section-head h2{font-size:1.55rem}
+ .sj-section-head p{font-size:.81rem}
+ .sj-section-head{align-items:flex-start}
+ .sj-games{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .sj-game-card{border-radius:15px}.sj-game-art{min-height:118px}
+ .sj-game-art:before{width:107px;height:107px}.sj-game-art:after{inset:7px;border-radius:10px}
+ .sj-art-graphic svg{width:94%;height:110px;stroke-width:4.2}
+ .sj-game-words{padding:11px 11px 12px;min-height:119px;gap:4px}
+ .sj-game-title{font-size:.94rem;line-height:1.35}
+ .sj-game-desc{font-size:.7rem;line-height:1.55}
+ .sj-game-meta{font-size:.66rem}
+ .sj-tick{width:28px;height:28px;top:7px;left:7px}.sj-tick svg{width:16px;height:16px}
+ .sj-prep-panel{padding:19px 14px 21px}.sj-team-fields,.sj-tournament-fields{grid-template-columns:1fr}
+ .sj-start-row{gap:9px}.sj-start-row .sj-main-start{width:100%}
+ body.sijal-page[data-sj-mode="solo"] #sjModeSetup{padding:15px}
+ .sj-question-media{border-radius:17px}
+ .sj-team-unit,.sj-tournament-team{padding:12px}
+}
+@media(max-width:340px){.sj-entry small{display:none}.sijal-page .sj-shell .sj-entry{min-height:83px}.sj-games{gap:7px}.sj-game-title{font-size:.87rem}}
+@media(prefers-reduced-motion:reduce){.sijal-page .sj-shell *, .sijal-page .sj-shell *::before,.sijal-page .sj-shell *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* اللعب الفردي لا يحتاج إلى إعدادات فرق أو مؤشرات إضافية: زر البدء وحده. */
+body.sijal-page[data-sj-mode="solo"] #sjSelectedSummary{display:none}
+body.sijal-page[data-sj-mode="solo"] #sjModeSetup .sj-start-row{justify-content:center}
