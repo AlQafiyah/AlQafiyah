@@ -1,1 +1,35 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>مُجيب | القافية</title><link rel="icon" href="favicon.ico"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="qafiyah-new.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script><script src="mujeeb.js" defer></script></head><body><header class="site-header"><div class="header-container"><a href="index.html" style="font-size:25px;font-weight:bold">القافية</a><nav style="display:flex;gap:15px;align-items:center;flex-wrap:wrap"><a href="Poems.html">القصائد</a><a href="midmar.html">مِضمار</a><a href="index.html">الرئيسية</a></nav></div></header><main class="q-app"><h1>✦ مُجيب</h1><p class="q-subtitle">رفيقك الذكي في عالم الشعر والأدب العربي</p><section class="q-panel"><div id="muChat" class="q-chat" role="log" aria-live="polite"><div class="q-message bot">مرحباً! أنا مُجيب، رفيقك في الشعر والأدب العربي. اسألني عن قصيدة أو شاعر أو بحر أو قافية.</div></div><form id="muForm" class="q-toolbar" style="margin-top:15px"><textarea id="muInput" class="q-input" rows="2" maxlength="1500" style="flex:1;min-width:200px" placeholder="اكتب سؤالك الأدبي هنا..." required aria-label="سؤالك لمجيب"></textarea><button class="q-button" id="muSend" type="submit">إرسال ↖</button><button class="q-button secondary" id="muClear" type="button">محادثة جديدة</button></form><div id="muStatus" class="q-note" role="status">قد يخطئ مُجيب في نسبة الأبيات أو الأوزان؛ تحقق من المصادر، خاصة عند الاقتباس.</div></section><section class="q-panel"><h2>أدوات سريعة</h2><div class="q-toolbar"><button class="q-button secondary mu-sample" data-question="اشرح لي بحور الشعر العربي وأشهر تفعيلاتها">بحور الشعر</button><button class="q-button secondary mu-sample" data-question="كيف أكتب قصيدة فصيحة موزونة على بحر الكامل؟">تأليف القصائد</button><button class="q-button secondary mu-sample" data-question="ما الفرق بين القافية وحرف الروي؟">القافية والروي</button><button class="q-button secondary mu-sample" data-question="كيف أحلل الصور البيانية في بيت شعري؟">النقد والبلاغة</button></div><label for="rhymeInput">تحليل أولي لحرف الروي (تقريبي ولا يغني عن علم القافية)</label><div class="q-toolbar"><input id="rhymeInput" class="q-input" style="flex:1" placeholder="اكتب بيتاً أو نهاية بيت"><button id="rhymeBtn" class="q-button secondary" type="button">حلّل</button></div><p id="rhymeResult" class="q-note"></p></section></main></body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#19191c">
+<title>مُجيب | القافية</title><link rel="icon" href="favicon.ico"><link rel="stylesheet" href="mujeeb-chat.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script><script src="mujeeb.js" defer></script>
+</head>
+<body>
+<div class="mu-app">
+ <header class="mu-head">
+  <button class="mu-icon mu-back" id="muBack" type="button" aria-label="رجوع" title="رجوع"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
+  <div class="mu-avatar" aria-hidden="true">م</div>
+  <div class="mu-identity"><strong>مُجيب</strong><span>مساعد القافية الأدبي</span></div>
+  <div class="mu-head-actions">
+   <button class="mu-icon" id="muNew" type="button" title="محادثة جديدة" aria-label="محادثة جديدة"><svg viewBox="0 0 24 24"><path d="M12 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/><path d="m14 5 5 5M10 14l9-9a2.12 2.12 0 0 1 3 3l-9 9-5 1z"/></svg></button>
+   <button class="mu-icon" id="muArchive" type="button" title="المحادثات السابقة" aria-label="المحادثات السابقة"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8M10 12h4"/></svg></button>
+  </div>
+ </header>
+ <main class="mu-chat" id="muChat" role="log" aria-live="polite" aria-label="رسائل المحادثة"><div class="mu-welcome" id="muWelcome"><span class="mu-welcome-mark">م</span><h1>مرحباً، كيف يمكنني مساعدتك؟</h1></div></main>
+ <div class="mu-bottom">
+  <div id="muAttachments" class="mu-attachments" hidden></div>
+  <div id="muToast" class="mu-toast" role="status" aria-live="polite" hidden></div>
+  <form id="muForm" class="mu-compose">
+   <button id="muPlus" class="mu-icon mu-plus" type="button" aria-label="إرفاق صورة أو ملف" title="إرفاق صورة أو ملف"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+   <textarea id="muInput" rows="1" maxlength="1500" aria-label="اكتب سؤالك" placeholder="اكتب سؤالك"></textarea>
+   <button class="mu-send" id="muAction" type="button" aria-label="الإملاء الصوتي" title="الإملاء الصوتي"><svg viewBox="0 0 24 24" id="muActionIcon"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5m-4 0h8"/></svg></button>
+   <input type="file" id="muFile" accept="image/png,image/jpeg,image/webp,text/plain,text/markdown,text/csv,application/json,.txt,.md,.csv,.json" hidden>
+  </form>
+  <p class="mu-disclaimer">قد يخطئ مُجيب؛ تحقّق من المعلومات الأدبية المهمة.</p>
+ </div>
+</div>
+<div id="muArchiveOverlay" class="mu-overlay" hidden>
+ <div class="mu-panel" role="dialog" aria-modal="true" aria-labelledby="muArchiveTitle"><div class="mu-panel-head"><strong id="muArchiveTitle">المحادثات السابقة</strong><button type="button" class="mu-icon" id="muCloseArchive" aria-label="إغلاق"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div><div id="muArchiveList" class="mu-archive-list"></div></div>
+</div>
+</body></html>
