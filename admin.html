@@ -11,6 +11,7 @@ name="theme-color"
 content="#3E2723"
 >
 <title>لوحة إدارة القافية</title>
+<link rel="stylesheet" href="qafiyah-new.css?v=sijal-1">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tus-js-client@4.3.1/dist/tus.min.js"></script>
 <script src="supabase.js?v=20260922-2"></script>
@@ -901,7 +902,7 @@ onclick="window.location.href='index.html'"
 <span>المستخدمون</span>
 </button>
 <button class="nav-item" data-section="mujeeb" id="mujeebAdminNav" type="button" style="display:none"><span class="nav-icon" data-admin-icon="quote"></span><span>مُجيب</span></button>
-<button class="nav-item" data-section="midmar" id="midmarAdminNav" type="button" style="display:none"><span class="nav-icon" data-admin-icon="grid"></span><span>مِضمار</span></button>
+<button class="nav-item" data-section="sijal" id="sijalAdminNav" type="button" style="display:none"><span class="nav-icon" data-admin-icon="grid"></span><span>سِجال</span></button>
 <button class="nav-item" data-section="admins" id="adminsNav" type="button">
 <span class="nav-icon" data-admin-icon="shield"></span>
 <span>الصلاحيات</span>
@@ -1346,29 +1347,54 @@ onclick="window.location.href='index.html'"
   </form>
  </div>
 </section>
-<section class="admin-section" id="section-midmar">
- <div class="content-card"><div class="card-header"><div><h3>إدارة مِضمار</h3><p>أنشئ المسابقات والأسئلة ونظّم الفرق والنتائج. التعديل للمالك والمدير حصراً.</p></div><a href="midmar.html" class="btn btn-secondary" target="_blank" rel="noopener">عرض مِضمار ↗</a></div>
- <div style="padding:18px">
- <h3>المسابقات والتحديات</h3><form id="challengeAdminForm" class="form-grid">
- <input type="hidden" name="id"><div class="form-group"><label>العنوان</label><input class="form-control" name="title" maxlength="160" required></div>
- <div class="form-group"><label>نوع اللعبة</label><select class="form-control" name="kind"><option value="quiz">أسئلة واختيارات</option><option value="riddle">لغز أدبي</option><option value="complete">أكمل البيت</option><option value="truefalse">صح أو خطأ</option></select></div>
- <div class="form-group"><label>التصنيف</label><input class="form-control" name="category" value="الشعر والأدب" required></div>
- <div class="form-group"><label>النشر</label><select class="form-control" name="published"><option value="false">مسودة</option><option value="true">منشورة</option></select></div>
- <div class="form-group" style="grid-column:1/-1"><label>وصف المسابقة</label><textarea class="form-control" name="description" rows="2"></textarea></div>
- <div class="form-actions"><button class="btn btn-primary" type="submit">حفظ المسابقة</button><button class="btn btn-secondary" id="resetChallengeForm" type="button">مسابقة جديدة</button></div></form>
- <div class="table-wrapper"><table class="data-table"><thead><tr><th>اسم التحدي</th><th>النوع</th><th>الحالة</th><th>التحكم</th></tr></thead><tbody id="challengeAdminRows"></tbody></table></div>
- <h3>الأسئلة</h3><p>اختر المسابقة وأدخل خياراتها في أسطر منفصلة ثم رقم الإجابة الصحيحة.</p>
- <form id="questionAdminForm" class="form-grid"><input type="hidden" name="id">
- <div class="form-group"><label>المسابقة</label><select class="form-control" id="questionChallenge" name="challenge_id" required></select></div>
- <div class="form-group"><label>ترتيب السؤال</label><input type="number" class="form-control" name="position" value="0" min="0"></div>
- <div class="form-group" style="grid-column:1/-1"><label>نص السؤال</label><textarea class="form-control" name="question_text" rows="3" required></textarea></div>
- <div class="form-group"><label>الخيارات (سطر لكل خيار، من 2 إلى 6)</label><textarea class="form-control" name="options" rows="5" required placeholder="الأول&#10;الثاني&#10;الثالث"></textarea></div>
- <div class="form-group"><label>رقم الإجابة الصحيحة (1 إلى 6)</label><input class="form-control" name="correct_number" type="number" min="1" max="6" value="1" required><label>النقاط</label><input class="form-control" name="points" type="number" min="1" max="100" value="10" required></div>
- <div class="form-group" style="grid-column:1/-1"><label>شرح الإجابة بعد الحل</label><textarea class="form-control" name="explanation" rows="2"></textarea></div>
- <div class="form-actions"><button class="btn btn-primary" type="submit">حفظ السؤال</button><button class="btn btn-secondary" type="button" id="resetQuestionForm">سؤال جديد</button></div></form>
- <div class="table-wrapper"><table class="data-table"><thead><tr><th>السؤال</th><th>المسابقة</th><th>الإجراءات</th></tr></thead><tbody id="questionsAdminRows"></tbody></table></div>
- <h3>إدارة الفرق</h3><div class="table-wrapper"><table class="data-table"><thead><tr><th>الفريق</th><th>الإجراءات</th></tr></thead><tbody id="teamsAdminRows"></tbody></table></div>
- </div></div>
+<section class="admin-section" id="section-sijal">
+  <div class="content-card"><div class="card-header"><div><h3>إدارة سِجال</h3><p>الإعدادات والألعاب والأسئلة والتصنيف — للمالك والمدير حصراً.</p></div><a class="btn btn-secondary" href="sijal.html" target="_blank" rel="noopener">عرض سِجال ↗</a></div>
+  <div class="sj-admin">
+    <div id="sjAdminNotice" class="sj-admin-notice" role="status" aria-live="polite" hidden></div>
+    <div class="sj-admin-stats"><div><strong id="sjAdminGames">—</strong><span>الألعاب</span></div><div><strong id="sjAdminQuestions">—</strong><span>الأسئلة</span></div><div><strong id="sjAdminPlayers">—</strong><span>المتسابقون المسجلون بالنقاط</span></div></div>
+    <div class="sj-admin-box"><h3>التحكم بظهور القسم</h3><p>إيقاف سِجال يخفي اللعب وجميع الأسئلة عن الزوار مؤقتاً دون حذف البيانات.</p>
+      <div class="sj-admin-controls"><label><input type="checkbox" id="sjAdminEnabled"> إتاحة سِجال للزوار</label><label><input type="checkbox" id="sjAdminLeaderboard"> إظهار التصنيف العام</label><button type="button" class="btn btn-primary" id="sjAdminSaveSettings">حفظ حالة القسم</button></div>
+    </div>
+    <div class="sj-admin-box"><div class="sj-admin-head"><div><h3>إدارة الألعاب والتصنيفات</h3><p>إضافة لعبة جديدة أو إخفاؤها وإظهارها أو تعديلها وحذفها. التصنيف قابل للكتابة بحرية.</p></div></div>
+      <form id="sjAdminGameForm" class="form-grid"><input type="hidden" name="id">
+      <div class="form-group"><label>اسم اللعبة</label><input class="form-control" name="title" maxlength="160" minlength="3" required></div>
+      <div class="form-group"><label>نوع اللعبة</label><select class="form-control" name="kind"><option value="quiz">أسئلة واختيارات (أسلوب سين جيم)</option><option value="complete">أكمل البيت</option><option value="guesspoet">خمن الشاعر</option><option value="speaker">من القائل</option><option value="truefalse">صح أو خطأ</option><option value="riddle">ألغاز القافية</option></select></div>
+      <div class="form-group"><label>التصنيف الأدبي</label><input class="form-control" name="category" maxlength="80" value="الشعر والأدب" list="sjAdminCategories" required><datalist id="sjAdminCategories"></datalist></div>
+      <div class="form-group"><label>حالة اللعبة</label><select class="form-control" name="published"><option value="true">منشورة</option><option value="false">مخفية مؤقتاً</option></select></div>
+      <div class="form-group" style="grid-column:1/-1"><label>وصف اللعبة</label><textarea class="form-control" name="description" rows="2" maxlength="1500"></textarea></div>
+      <div class="form-actions"><button class="btn btn-primary" type="submit">حفظ اللعبة</button><button id="sjAdminResetGame" class="btn btn-secondary" type="button">لعبة جديدة</button></div></form>
+      <div class="sj-admin-toolbar"><input type="search" class="form-control" id="sjAdminGameSearch" placeholder="ابحث في الألعاب أو التصنيفات..."></div>
+      <div class="table-wrapper"><table class="data-table"><thead><tr><th>اسم اللعبة</th><th>التصنيف</th><th>الأسئلة</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody id="sjAdminGameRows"></tbody></table></div>
+    </div>
+    <div class="sj-admin-box"><h3>الأسئلة والمرفقات</h3><p>أضف أسئلة اختيار من متعدد أو صح وخطأ، وأرفق صورة أو تسجيلاً صوتياً أو فيديو (حد 10 ميجابايت).</p>
+      <form id="sjAdminQuestionForm" class="form-grid"><input type="hidden" name="id">
+      <div class="form-group"><label>اللعبة</label><select class="form-control" name="challenge_id" id="sjAdminQuestionGame" required></select></div>
+      <div class="form-group"><label>ترتيب السؤال</label><input class="form-control" type="number" name="position" min="0" value="0"></div>
+      <div class="form-group" style="grid-column:1/-1"><label>السؤال</label><textarea class="form-control" name="question_text" rows="3" minlength="3" maxlength="1500" required></textarea></div>
+      <div class="form-group"><label>الإجابات (سطر لكل خيار، من 2 إلى 6)</label><textarea class="form-control" name="options" rows="5" required></textarea></div>
+      <div class="form-group"><label>رقم الإجابة الصحيحة</label><input class="form-control" name="correct_number" type="number" min="1" max="6" value="1" required><label>النقاط</label><input class="form-control" name="points" type="number" min="1" max="100" value="10" required></div>
+      <div class="form-group" style="grid-column:1/-1"><label>شرح الإجابة</label><textarea class="form-control" name="explanation" rows="2"></textarea></div>
+      <div class="form-group"><label>نوع المرفق</label><select class="form-control" name="media_type"><option value="none">بدون مرفق</option><option value="image">صورة</option><option value="audio">صوت</option><option value="video">فيديو</option></select></div>
+      <div class="form-group"><label>رفع ملف من الجهاز</label><input class="form-control" id="sjAdminMediaFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif,audio/mpeg,audio/mp4,audio/ogg,audio/wav,audio/webm,video/mp4,video/webm"></div>
+      <div class="form-group" style="grid-column:1/-1"><label>أو رابط HTTPS لمرفق جاهز</label><input class="form-control" name="media_url" type="url" placeholder="https://..."></div>
+      <div class="form-group" style="grid-column:1/-1"><label>وصف المرفق</label><input class="form-control" name="media_caption" maxlength="300"></div>
+      <div class="form-actions"><button class="btn btn-primary" type="submit">حفظ السؤال</button><button id="sjAdminResetQuestion" class="btn btn-secondary" type="button">سؤال جديد</button></div></form>
+      <div class="sj-admin-toolbar"><input class="form-control" id="sjAdminQuestionSearch" type="search" placeholder="ابحث عن سؤال..."><select class="form-control" id="sjAdminQuestionFilter"><option value="">كل الألعاب</option></select></div>
+      <div class="table-wrapper"><table class="data-table"><thead><tr><th>السؤال</th><th>اللعبة</th><th>مرفق</th><th>الإجراءات</th></tr></thead><tbody id="sjAdminQuestionRows"></tbody></table></div>
+    </div>
+    <div class="sj-admin-box"><h3>استيراد أسئلة بالجملة</h3><p>استورد ملف JSON أو CSV، يحتوي على الأسئلة وخياراتها، وحدّد اللعبة المستهدفة. الاستيراد المتكرر لن يضاعف الأسئلة المتطابقة.</p>
+      <div class="sj-admin-toolbar"><select id="sjAdminImportGame" class="form-control" aria-label="اللعبة المستهدفة للاستيراد"></select><input id="sjAdminImportFile" class="form-control" type="file" accept=".json,.csv,application/json,text/csv"><button class="btn btn-primary" type="button" id="sjAdminImport">استيراد الأسئلة</button><button class="btn btn-secondary" type="button" id="sjAdminDownloadTemplate">تحميل نموذج الاستيراد</button></div>
+      <p class="sj-admin-help">JSON: مصفوفة من كائنات question_text, options, answer_index (يبدأ من 0), explanation, points, position. CSV: question_text وoptions مفصولة بالرمز | وcorrect_number (يبدأ من 1).</p>
+    </div>
+    <div class="sj-admin-box"><h3>اللاعبون والتصنيف العام</h3><p>اطّلع على الاسم والبريد وإحصاء الإجابات والنقاط وآخر نشاط. يمكنك إخفاء اللاعب من التصنيف أو تصفير نقاطه بعد التأكيد، دون حذف حسابه بالموقع.</p>
+     <div class="sj-admin-toolbar"><input class="form-control" type="search" id="sjAdminPlayerSearch" placeholder="بحث باسم المتسابق أو بريده..."><button class="btn btn-secondary" type="button" id="sjAdminRefreshPlayers">تحديث النتائج</button></div>
+     <div class="table-wrapper"><table class="data-table"><thead><tr><th>المتسابق</th><th>الجولات</th><th>الإجابات</th><th>الصحيحة</th><th>النقاط</th><th>آخر نشاط</th><th>التحكم</th></tr></thead><tbody id="sjAdminPlayerRows"></tbody></table></div>
+    </div>
+    <div id="sjAdminPlayerDetails" class="sj-admin-box sj-admin-details" hidden aria-live="polite"></div>
+    <div class="sj-admin-box"><h3>الفرق المسجلة سابقاً</h3><p>فرق الجولات الجديدة تُنشأ داخل اللعبة دون أن تتطلب عضوية مسجلة. يمكن إدارة الفرق الدائمة الموجودة سابقاً هنا.</p>
+     <div class="table-wrapper"><table class="data-table"><thead><tr><th>الفريق</th><th>المعرّف</th><th>التحكم</th></tr></thead><tbody id="sjAdminTeamRows"></tbody></table></div>
+    </div>
+  </div></div>
 </section>
 <section class="admin-section" id="section-users">
 <div class="content-card">
@@ -2854,7 +2880,7 @@ document.querySelector('[data-section="users"]')?.style.setProperty("display","n
 document.getElementById("statUsers")?.closest(".stat-card")?.style.setProperty("display","none");
 }
 if(currentAdmin.role==="owner") document.getElementById("mujeebAdminNav")?.style.removeProperty("display"); else document.getElementById("mujeebAdminNav")?.style.setProperty("display","none");
-if(["owner","manager"].includes(currentAdmin.role)) document.getElementById("midmarAdminNav")?.style.removeProperty("display"); else document.getElementById("midmarAdminNav")?.style.setProperty("display","none");
+if(["owner","manager"].includes(currentAdmin.role)) document.getElementById("sijalAdminNav")?.style.removeProperty("display"); else document.getElementById("sijalAdminNav")?.style.setProperty("display","none");
 if(!["owner","manager"].includes(currentAdmin.role)) document.getElementById("legalNav")?.style.setProperty("display","none");
 
 if (
@@ -4787,7 +4813,7 @@ loadAdmins
 function openSection(section) {
 
 if (section === "mujeeb" && currentAdmin?.role !== "owner") return;
-if (section === "midmar" && !["owner","manager"].includes(currentAdmin?.role)) return;
+if (section === "sijal" && !["owner","manager"].includes(currentAdmin?.role)) return;
 if (section === "users" && currentAdmin?.role !== "owner") return;
 if (section === "categories" && !["owner","manager"].includes(currentAdmin?.role)) return;
 
@@ -7722,6 +7748,6 @@ document.addEventListener('DOMContentLoaded',()=>{loadQAnalytics();setupBulkSele
 })();
 </script>
 
-<script src="admin-extras.js?v=mu-owner-3"></script>
+<script src="admin-extras.js?v=sijal-20261019"></script>
 </body>
 </html>

@@ -64,3 +64,23 @@
 .q-reader-preview-nav{display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap}
 .q-reader-preview-nav .q-reader-menu-option{border:1px solid rgba(145,102,75,.2);padding:7px;font-size:12px}
 @media(max-width:540px){.q-reader-toolbar{gap:5px;padding:7px 3px}.q-reader-group{gap:3px}.q-reader-hint{font-size:11px}.q-reader-select{max-width:108px}.q-reader-font-select{max-width:100px}.q-reader-content.qafiyah-poem-lines{padding-inline:10px}.q-reader-content.qafiyah-poem-lines .qafiyah-poem-line{line-height:1.8!important}}
+
+/* أيقونة سِجال الخطية داخل القائمة الأصلية */
+.q-new-symbol svg{width:20px;height:20px;display:block;stroke:currentColor;fill:none}
+/* لوحة تحكم سِجال محصورة في قسمه، بغير تغيير للأقسام الأخرى. */
+#section-sijal .sj-admin{padding:22px;display:grid;gap:24px}
+#section-sijal .sj-admin-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+#section-sijal .sj-admin-stats>div{background:var(--q-surface-2,#f7f2ee);border:1px solid var(--q-border,rgba(100,65,50,.15));border-radius:15px;padding:20px;display:flex;flex-direction:column;gap:8px}
+#section-sijal .sj-admin-stats strong{font-size:1.9rem;color:var(--q-accent,#aa725b)}
+#section-sijal .sj-admin-box{border:1px solid var(--q-border,rgba(100,65,50,.18));border-radius:17px;padding:22px;background:var(--q-surface,#fff);min-width:0}
+#section-sijal .sj-admin-box h3{margin-top:0}
+#section-sijal .sj-admin-box>p{line-height:1.85;opacity:.8;margin:6px 0 17px}
+#section-sijal .sj-admin-controls,#section-sijal .sj-admin-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:16px 0}
+#section-sijal .sj-admin-controls label{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+#section-sijal .sj-admin-toolbar .form-control{flex:1;min-width:min(100%,190px)}
+#section-sijal .sj-admin .data-table td{vertical-align:middle;line-height:1.7;overflow-wrap:anywhere}
+#section-sijal .sj-admin .data-table td:last-child{min-width:220px}
+#section-sijal .sj-admin-details[hidden],#section-sijal .sj-admin-notice[hidden]{display:none!important}
+#section-sijal .sj-admin-notice{padding:15px 18px;border:1px solid var(--q-border);border-radius:13px;background:var(--q-surface-2)}
+#section-sijal .sj-admin-help{font-size:.85rem;line-height:1.9;opacity:.75}
+@media(max-width:650px){#section-sijal .sj-admin{padding:12px;gap:15px}#section-sijal .sj-admin-box{padding:15px}#section-sijal .sj-admin-stats{grid-template-columns:1fr 1fr 1fr;gap:6px}#section-sijal .sj-admin-stats>div{padding:10px;font-size:.75rem}#section-sijal .sj-admin-stats strong{font-size:1.3rem}#section-sijal .sj-admin-toolbar{flex-direction:column;align-items:stretch}#section-sijal .sj-admin-toolbar>.form-control{width:100%}}

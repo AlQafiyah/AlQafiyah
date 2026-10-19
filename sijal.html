@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><meta content="#3E2723" name="theme-color"/><meta content="سِجال من القافية: ألعاب وتحديات في الشعر والأدب العربي للأفراد والفرق." name="description"/><title>سِجال | القافية</title><link href="favicon.ico" rel="icon"/><link href="style.css" rel="stylesheet"/><link href="enhancements.css" rel="stylesheet"/><link href="qafiyah-v2.css" rel="stylesheet"/><link href="qafiyah-auth-final.css" rel="stylesheet"/><link href="qafiyah-new.css" rel="stylesheet"/><link href="sijal.css?v=4" rel="stylesheet"/><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script defer="" src="supabase.js"></script><script defer="" src="script.js"></script></head><body class="sijal-page"><script>(function(){try{var t=localStorage.getItem('qafiyah_theme')||'natural';if(t==='evening')t='light';if(!/^(natural|light|dark|morning|night)$/.test(t))t='natural';document.documentElement.setAttribute('data-q-theme',t);document.body.setAttribute('data-q-theme',t)}catch(e){}})();</script><header class="site-header">
+<div class="header-container">
+<button aria-controls="sideMenu" aria-expanded="false" aria-label="فتح القائمة" class="menu-button" id="menuButton" type="button">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<a aria-label="القافية - الصفحة الرئيسية" class="site-logo" href="index.html">
+
+                القافية
+
+            </a>
+<div class="header-actions">
+<button aria-label="الإشعارات" class="notification-button" id="notificationButton" type="button">
+<svg aria-hidden="true" class="notification-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9">
+</path>
+<path d="M10 21h4">
+</path>
+</svg>
+<span class="notification-count" id="notificationCount">
+
+                        0
+
+                    </span>
+</button>
+<button class="login-button" id="loginButton" type="button">
+
+                    تسجيل الدخول
+
+                </button>
+</div>
+</div>
+</header>
+<div class="menu-overlay" id="menuOverlay">
+</div>
+<aside aria-hidden="true" class="side-menu" id="sideMenu">
+<div class="side-menu-header">
+<h2>
+                القافية
+            </h2>
+<button aria-label="إغلاق القائمة" class="close-menu-button" id="closeMenuButton" type="button">
+
+                ×
+
+            </button>
+</div>
+<div class="user-section">
+<div class="user-avatar">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24">
+<circle cx="12" cy="8" r="4">
+</circle>
+<path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
+</path>
+</svg>
+</div>
+<div class="user-info">
+<strong id="menuUserName">
+                    مرحبًا بك
+                </strong>
+<span id="menuUserEmail">
+                    سجّل الدخول للوصول إلى حسابك
+                </span>
+</div>
+</div>
+<nav aria-label="القائمة الرئيسية" class="side-navigation">
+<a class="active" href="index.html">
+<span aria-hidden="true" class="menu-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M3 11.5 12 4l9 7.5">
+</path>
+<path d="M5 10.5V20h5v-6h4v6h5v-9.5">
+</path>
+</svg>
+</span>
+<span>
+                    الرئيسية
+                </span>
+</a>
+<a href="Poems.html">
+<span aria-hidden="true" class="menu-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z">
+</path>
+<path d="M8 7h8"></path>
+<path d="M8 11h8"></path>
+<path d="M8 15h5"></path>
+</svg>
+</span>
+<span>
+                    القصائد
+                </span>
+</a>
+<a href="poets.html">
+<span aria-hidden="true" class="menu-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M4 20h6"></path>
+<path d="M14.5 4.5a2.12 2.12 0 0 1 3 3L9 16l-4 1 1-4Z">
+</path>
+</svg>
+</span>
+<span>
+                    الشعراء
+                </span>
+</a>
+<a href="articles.html">
+<span aria-hidden="true" class="menu-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M6 3h9l3 3v15H6Z"></path>
+<path d="M14 3v4h4"></path>
+<path d="M9 11h6"></path>
+<path d="M9 15h6"></path>
+</svg>
+</span>
+<span>
+                    المقالات
+                </span>
+</a>
+<a href="favorites.html" id="favoritesLink">
+<span aria-hidden="true" class="menu-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2 7.5 14 3 9.6l6.2-.9Z">
+</path>
+</svg>
+</span>
+<span>
+                    المفضلة
+                </span>
+</a>
+<a href="settings.html" id="settingsLink">
+<span aria-hidden="true" class="menu-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="3">
+</circle>
+<path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z">
+</path>
+</svg>
+</span>
+<span>
+                    الإعدادات
+                </span>
+</a>
+<a href="about.html">
+<span aria-hidden="true" class="menu-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="9">
+</circle>
+<path d="M12 10v6"></path>
+<path d="M12 7h.01"></path>
+</svg>
+</span>
+<span>
+                    نبذة عن القافية
+                </span>
+</a>
+</nav>
+<div class="side-menu-footer">
+<a aria-label="البريد الإلكتروني" class="q-side-email" data-q-email-placeholder="" href="#">البريد الإلكتروني</a>
+<div class="side-menu-socials q-contact-socials">
+<a aria-label="X" data-q-social-placeholder="x" href="#" title="X"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.38L6.49 22H3.38l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.52h1.73L8.29 4.34H6.43L17.8 19.52Z"></path></svg></a>
+<a aria-label="TikTok" data-q-social-placeholder="tiktok" href="#" title="TikTok"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M14.5 3c.4 2.4 1.8 3.9 4.2 4.3v3.2c-1.6 0-3-.5-4.2-1.4v6.2a6.3 6.3 0 1 1-5.4-6.2v3.3a3.1 3.1 0 1 0 2.2 3V3h3.2Z"></path></svg></a>
+<a aria-label="Instagram" data-q-social-placeholder="instagram" href="#" title="Instagram"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><rect height="18" rx="5" width="18" x="3" y="3"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg></a>
+<a aria-label="Threads" data-q-social-placeholder="threads" href="#" title="Threads"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M17.8 8.4c-1.2-2-3.2-3.1-5.7-3.1-4.3 0-7 2.7-7 6.7 0 4.1 2.8 6.8 7.1 6.8 3.6 0 6.1-1.9 6.1-4.7 0-2.5-2-4.1-5-4.1-2.7 0-4.5 1.3-4.5 3.2 0 1.6 1.3 2.7 3.2 2.7 2.6 0 4.4-1.8 4.4-4.6 0-1.6-.4-3-1.2-4.2"></path></svg></a>
+<a aria-label="Facebook" data-q-social-placeholder="facebook" href="#" title="Facebook"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M13.8 22v-8h2.7l.4-3.1h-3.1V9c0-.9.3-1.5 1.6-1.5H17V4.7c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2H7.5V14h2.8v8h3.5Z"></path></svg></a>
+<a aria-label="WhatsApp" data-q-social-placeholder="whatsapp" href="#" title="WhatsApp"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M20.5 11.8a8.4 8.4 0 0 1-12.4 7.4L3 20.6l1.4-4.9A8.4 8.4 0 1 1 20.5 11.8Z"></path><path d="M8.2 7.8c.3-.5.6-.5.9-.5h.5c.2 0 .4.1.5.4l.8 1.9c.1.3 0 .5-.1.7l-.6.8c-.2.2-.2.4 0 .7.5.9 1.2 1.6 2 2.2.9.6 1.7.9 2.1 1 .3.1.5 0 .7-.2l.9-1.1c.2-.2.4-.3.7-.2l2 .9c.3.1.4.3.4.5 0 .4-.2 1.3-.7 1.8-.6.6-1.5.9-2.4.9-1 0-2.3-.3-3.9-1.1-1.2-.6-2.5-1.5-3.7-2.8-1.1-1.2-1.9-2.5-2.3-3.6-.4-1-.4-1.8.2-2.3Z"></path></svg></a>
+<a aria-label="Telegram" data-q-social-placeholder="telegram" href="#" title="Telegram"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M21.5 4.2 18.3 19c-.2 1-1 1.2-1.8.7l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L5.9 12.6 1 11.1c-1-.3-1.1-1 .2-1.5l19.1-7.4c.9-.3 1.7.2 1.2 2Z"></path></svg></a>
+</div>
+<p>
+                © القافية
+            </p>
+</div>
+</aside>
+<div aria-hidden="true" class="notification-panel" id="notificationPanel">
+<div class="notification-header">
+<h3>
+                الإشعارات
+            </h3>
+<button aria-label="إغلاق الإشعارات" id="closeNotificationButton" type="button">
+
+                ×
+
+            </button>
+</div>
+<div class="notification-content" id="notificationContent">
+<p>
+                لا توجد إشعارات جديدة.
+            </p>
+</div>
+</div><main class="sj-shell" id="sijalMain">
+<div aria-live="polite" class="sj-notice" hidden="" id="sjNotice" role="status"></div>
+<div class="sj-panel sj-unavailable" hidden="" id="sjUnavailable"><h1>سِجال متوقف مؤقتاً</h1><p>تُجرى حالياً أعمال تطوير الألعاب الأدبية. يسعدنا لقاؤك قريباً.</p><a class="sj-btn sj-primary" href="index.html">العودة إلى القافية</a></div>
+<div hidden="" id="sjExperience">
+<section class="sj-hero"><span aria-hidden="true" class="sj-hero-mark"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24"><circle cx="12" cy="8" r="5"></circle><path d="m8 13-2 8 6-3 6 3-2-8"></path></svg></span><div><span class="sj-eyebrow">من القافية · ساحة الشعر والأدب</span><h1>سِجال</h1><p>تحدّيات أدبية تجمع متعة المنافسة وروعة القصيدة. اختر ألعابك، وتنافس وحدك أو مع الأصدقاء.</p></div><div class="sj-hero-counts"><div><strong id="sjGamesCount">—</strong><span>لعبة</span></div><div><strong id="sjQuestionsCount">—</strong><span>سؤال</span></div><div><strong id="sjPlayersCount">—</strong><span>متنافس</span></div></div></section>
+<nav aria-label="أقسام سِجال" class="sj-tabs"><button aria-selected="true" class="sj-tab active" data-sj-tab="play" type="button">الألعاب والتحديات</button><button aria-selected="false" class="sj-tab" data-sj-tab="ranking" type="button">التصنيف العام</button><button aria-selected="false" class="sj-tab" data-sj-tab="guide" type="button">طريقة اللعب</button></nav>
+<div id="sjViewPlay"><section class="sj-panel" id="sjSetup"><div class="sj-section-head"><div><span class="sj-eyebrow">المجموعة الأولى</span><h2>اختر ألعابك</h2><p>لعبة واحدة أو أكثر في الجولة نفسها؛ يمكنك اختيار كل الألعاب المتاحة.</p></div><button class="sj-link-btn" id="sjSelectAll" type="button">تحديد الكل</button></div>
+<div class="sj-filter-row"><label class="sj-search"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="10" cy="10" r="6"></circle><path d="m15 15 6 6"></path></svg><input aria-label="بحث عن لعبة" id="sjSearchGames" placeholder="ابحث في الألعاب الأدبية" type="search"/></label><select aria-label="تصنيف الألعاب" class="sj-field" id="sjCategoryFilter"><option value="">جميع التصنيفات</option></select></div><div class="sj-games" id="sjGameCards"></div></section>
+<section class="sj-panel" id="sjModeSetup"><div class="sj-section-head"><div><span class="sj-eyebrow">المجموعة الثانية</span><h2>طريقة المشاركة</h2><p>اختر اللعب الفردي أو التنافس بين فريقين إلى أربعة فرق.</p></div></div><fieldset class="sj-mode-picker"><legend class="sr-only">اختر نمط اللعب</legend><label class="sj-mode"><input checked="" name="sjMode" type="radio" value="solo"/><span class="sj-mode-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="12" cy="7" r="4"></circle><path d="M4 22a8 8 0 0 1 16 0"></path></svg></span><strong>فردي</strong><small>اجمع نقاطاً شخصية، ونافس على صدارة القافية.</small></label><label class="sj-mode"><input name="sjMode" type="radio" value="teams"/><span class="sj-mode-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="8" cy="7" r="3"></circle><circle cx="17" cy="9" r="2"></circle><path d="M2 22a6 6 0 0 1 12 0M14 15a5 5 0 0 1 8 5"></path></svg></span><strong>الفرق</strong><small>سمِّ الفرق فقط، أو أضف أسماء اللاعبين اختيارياً.</small></label></fieldset>
+<div class="sj-team-config" hidden="" id="sjTeamSetup"><div class="sj-form-line"><label>عدد الفرق <select class="sj-field" id="sjTeamCount"><option value="2">فريقان</option><option value="3">ثلاثة فرق</option><option value="4">أربعة فرق</option></select></label><label class="sj-check"><input id="sjDetailedPlayers" type="checkbox"/> تفصيل أسماء اللاعبين</label></div><div class="sj-team-fields" id="sjTeamFields"></div><p class="sj-small-note">نقاط الفرق خاصة بالجولة، ولا تُضاف إلى التصنيف الفردي العام.</p></div><div class="sj-form-line sj-start-row"><label>عدد الأسئلة <select class="sj-field" id="sjQuestionLimit"><option value="10">10 أسئلة</option><option value="20">20 سؤالاً</option><option value="30">30 سؤالاً</option><option value="9999">جميع الأسئلة المختارة</option></select></label><button class="sj-btn sj-primary" id="sjStart" type="button">ابدأ سِجالك <span aria-hidden="true">←</span></button></div></section></div>
+<section class="sj-panel sj-round" hidden="" id="sjRound"><div class="sj-round-header"><button class="sj-btn sj-outline" id="sjQuit" type="button">إنهاء الجولة</button><div class="sj-round-progress"><span id="sjCounter">السؤال الأول</span><div class="sj-progress-track"><div id="sjProgressFill"></div></div></div><strong aria-live="polite" id="sjTotalScore"></strong></div><div class="sj-turn-label" id="sjTurnLabel"></div><div class="sj-team-scores" id="sjTeamScores"></div><div id="sjQuestionHost"></div></section>
+<div hidden="" id="sjViewRanking"><section class="sj-panel"><div class="sj-section-head"><div><span class="sj-eyebrow">لوحة الشرف</span><h2>تصنيف الأفراد</h2><p>نقاط حقيقية من الأسئلة الصحيحة، تُحدّث مباشرة مع تقدم المشاركين.</p></div><button class="sj-link-btn" id="sjRefreshRanking">تحديث النتائج</button></div><div aria-live="polite" class="sj-leaderboard" id="sjLeaderboard">جارٍ تحميل النتائج…</div><p class="sj-small-note">تظهر نقاط الحسابات المسجّلة فقط؛ ونقاط الفرق خارج التصنيف.</p></section></div>
+<div hidden="" id="sjViewGuide"><div class="sj-guide"><article><strong>١</strong><h3>اختر أنواع الأسئلة</h3><p>من القائل، أكمل البيت، خمن الشاعر، صح وخطأ، ألغاز وأسئلة ثقافية أدبية.</p></article><article><strong>٢</strong><h3>حدد نمط اللعب</h3><p>مشاركة فردية، أو فريقان إلى أربعة فرق مع خيار تفصيل اللاعبين.</p></article><article><strong>٣</strong><h3>أجب واجمع النقاط</h3><p>اختر الإجابة الصحيحة لتربح النقاط؛ يُحتسب كل سؤال مرة واحدة لحسابك.</p></article></div></div>
+</div></main><div aria-hidden="true" class="login-modal" id="loginModal">
+<div class="login-box">
+<button aria-label="إغلاق" class="close-login-button" id="closeLoginButton" type="button">
+
+                ×
+
+            </button>
+<div id="loginForm">
+<h2>
+                    تسجيل الدخول
+                </h2>
+<p>
+                    سجّل دخولك إلى حسابك في القافية
+                </p>
+<div class="login-divider">
+<span>
+                        أو
+                    </span>
+</div>
+<label for="emailLogin">
+                    البريد الإلكتروني
+                </label>
+<input autocomplete="email" id="emailLogin" placeholder="أدخل بريدك الإلكتروني" type="email">
+<label for="passwordLogin">
+                    كلمة المرور
+                </label>
+<input autocomplete="current-password" id="passwordLogin" placeholder="أدخل كلمة المرور" type="password">
+<button class="login-submit" id="emailLoginButton" type="button">
+
+                    تسجيل الدخول
+
+                </button>
+<button class="login-register" id="showRegisterButton" type="button">
+
+                    إنشاء حساب جديد
+
+                </button>
+</input></input></div>
+<div id="registerForm" style="display:none;">
+<h2>
+                    إنشاء حساب
+                </h2>
+<p>
+                    أنشئ حسابك في القافية
+                </p>
+<label for="firstName">
+                    الاسم الأول
+                </label>
+<input autocomplete="given-name" id="firstName" placeholder="الاسم الأول" type="text">
+<label for="lastName">
+
+                    الاسم الأخير
+
+                    <span>
+                        (اختياري)
+                    </span>
+</label>
+<input autocomplete="family-name" id="lastName" placeholder="الاسم الأخير" type="text">
+<label>
+                    تاريخ الميلاد
+                </label>
+<div class="birth-date-fields">
+<select id="birthDay">
+<option value="">
+                            اليوم
+                        </option>
+</select>
+<select id="birthMonth">
+<option value="">
+                            الشهر
+                        </option>
+<option value="1">يناير</option>
+<option value="2">فبراير</option>
+<option value="3">مارس</option>
+<option value="4">أبريل</option>
+<option value="5">مايو</option>
+<option value="6">يونيو</option>
+<option value="7">يوليو</option>
+<option value="8">أغسطس</option>
+<option value="9">سبتمبر</option>
+<option value="10">أكتوبر</option>
+<option value="11">نوفمبر</option>
+<option value="12">ديسمبر</option>
+</select>
+<select id="birthYear">
+<option value="">
+                            السنة
+                        </option>
+</select>
+</div>
+<label for="gender">
+                    الجنس
+                </label>
+<select id="gender">
+<option value="">
+                        اختر الجنس
+                    </option>
+<option value="male">
+                        ذكر
+                    </option>
+<option value="female">
+                        أنثى
+                    </option>
+</select>
+<label for="emailRegister">
+                    البريد الإلكتروني
+                </label>
+<input autocomplete="email" id="emailRegister" placeholder="أدخل بريدك الإلكتروني" type="email"/>
+<label for="passwordRegister">
+                    كلمة المرور
+                </label>
+<input autocomplete="new-password" id="passwordRegister" placeholder="6 أحرف على الأقل" type="password"/>
+<label for="confirmPasswordRegister">
+                    تأكيد كلمة المرور
+                </label>
+<input autocomplete="new-password" id="confirmPasswordRegister" placeholder="أعد كتابة كلمة المرور" type="password"/>
+<button class="login-submit" id="registerSubmitButton" type="button">
+
+                    إنشاء الحساب
+
+                </button>
+<button class="login-register" id="showLoginButton" type="button">
+
+                    لدي حساب بالفعل
+
+                </button>
+</input></input></div>
+</div>
+</div>
+<footer class="site-footer">
+<div class="footer-container">
+<div class="footer-brand">
+<a class="footer-logo" href="index.html">
+
+                    القافية
+
+                </a>
+<p>
+                    موسوعة عربية مختصة في الشعر والأدب العربي،
+                    تجمع القصائد والشعراء والمقالات في مكان واحد.
+                </p>
+</div>
+<div class="footer-links">
+<h3>
+                    استكشف
+                </h3>
+<a href="Poems.html">
+                    القصائد
+                </a>
+<a href="poets.html">
+                    الشعراء
+                </a>
+<a href="articles.html">
+                    المقالات
+                </a>
+<a href="about.html">
+                    نبذة عن القافية
+                </a>
+</div>
+<div class="footer-links">
+<h3>
+                    الحساب
+                </h3>
+<a href="profile.html">
+                    الملف الشخصي
+                </a>
+<a href="favorites.html" id="footerFavoritesLink">
+
+                    المفضلة
+
+                </a>
+<a href="settings.html" id="footerSettingsLink">
+
+                    الإعدادات
+
+                </a>
+</div>
+<div class="footer-contact">
+<h3>
+                    تواصل معنا
+                </h3>
+<a aria-label="البريد الإلكتروني" class="q-contact-email" data-q-email-placeholder="" href="#">البريد الإلكتروني</a>
+<div class="footer-socials q-contact-socials">
+<a aria-label="X" data-q-social-placeholder="x" href="#" title="X"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.38L6.49 22H3.38l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.52h1.73L8.29 4.34H6.43L17.8 19.52Z"></path></svg></a>
+<a aria-label="TikTok" data-q-social-placeholder="tiktok" href="#" title="TikTok"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M14.5 3c.4 2.4 1.8 3.9 4.2 4.3v3.2c-1.6 0-3-.5-4.2-1.4v6.2a6.3 6.3 0 1 1-5.4-6.2v3.3a3.1 3.1 0 1 0 2.2 3V3h3.2Z"></path></svg></a>
+<a aria-label="Instagram" data-q-social-placeholder="instagram" href="#" title="Instagram"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><rect height="18" rx="5" width="18" x="3" y="3"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg></a>
+<a aria-label="Threads" data-q-social-placeholder="threads" href="#" title="Threads"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M17.8 8.4c-1.2-2-3.2-3.1-5.7-3.1-4.3 0-7 2.7-7 6.7 0 4.1 2.8 6.8 7.1 6.8 3.6 0 6.1-1.9 6.1-4.7 0-2.5-2-4.1-5-4.1-2.7 0-4.5 1.3-4.5 3.2 0 1.6 1.3 2.7 3.2 2.7 2.6 0 4.4-1.8 4.4-4.6 0-1.6-.4-3-1.2-4.2"></path></svg></a>
+<a aria-label="Facebook" data-q-social-placeholder="facebook" href="#" title="Facebook"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M13.8 22v-8h2.7l.4-3.1h-3.1V9c0-.9.3-1.5 1.6-1.5H17V4.7c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2H7.5V14h2.8v8h3.5Z"></path></svg></a>
+<a aria-label="WhatsApp" data-q-social-placeholder="whatsapp" href="#" title="WhatsApp"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M20.5 11.8a8.4 8.4 0 0 1-12.4 7.4L3 20.6l1.4-4.9A8.4 8.4 0 1 1 20.5 11.8Z"></path><path d="M8.2 7.8c.3-.5.6-.5.9-.5h.5c.2 0 .4.1.5.4l.8 1.9c.1.3 0 .5-.1.7l-.6.8c-.2.2-.2.4 0 .7.5.9 1.2 1.6 2 2.2.9.6 1.7.9 2.1 1 .3.1.5 0 .7-.2l.9-1.1c.2-.2.4-.3.7-.2l2 .9c.3.1.4.3.4.5 0 .4-.2 1.3-.7 1.8-.6.6-1.5.9-2.4.9-1 0-2.3-.3-3.9-1.1-1.2-.6-2.5-1.5-3.7-2.8-1.1-1.2-1.9-2.5-2.3-3.6-.4-1-.4-1.8.2-2.3Z"></path></svg></a>
+<a aria-label="Telegram" data-q-social-placeholder="telegram" href="#" title="Telegram"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M21.5 4.2 18.3 19c-.2 1-1 1.2-1.8.7l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L5.9 12.6 1 11.1c-1-.3-1.1-1 .2-1.5l19.1-7.4c.9-.3 1.7.2 1.2 2Z"></path></svg></a>
+</div>
+</div>
+</div>
+<div class="footer-bottom">
+<p>
+                © 2026 القافية — جميع الحقوق محفوظة
+            </p>
+<span>
+                موسوعة الشعر والأدب العربي
+            </span>
+</div>
+</footer><script src="enhancements.js?v=fonts-50-final"></script><script src="qafiyah-v2.js?v=revolution-2"></script><script src="qafiyah-auth-final.js?v=20260922-2"></script><script defer="" src="qafiyah-new-nav.js?v=4"></script><script defer="" src="sijal.js?v=4"></script></body></html>
