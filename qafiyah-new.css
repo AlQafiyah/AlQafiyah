@@ -1,0 +1,48 @@
+/* إضافات مستقلة عن التصميم الأصلي للقافية */
+.q-new-link{display:flex;align-items:center;gap:12px}
+.q-new-symbol{display:inline-grid;place-items:center;width:27px;min-width:27px;height:27px;font-size:20px}
+.q-app{font-family:inherit;direction:rtl;color:var(--primary-color,#3e2723);max-width:1100px;margin:32px auto 72px;padding:0 18px}
+.q-app *{box-sizing:border-box}
+.q-app h1{font-size:clamp(27px,4vw,40px);margin:8px 0 8px}
+.q-app p{line-height:1.9}
+.q-subtitle{opacity:.75;margin:0 0 24px}
+.q-panel{background:var(--card-bg,#fff);color:var(--primary-color,#3e2723);border:1px solid #decabe;border-radius:20px;box-shadow:0 10px 30px rgba(62,39,35,.05);padding:22px;margin-bottom:18px}
+.q-app button,.q-app input,.q-app textarea,.q-app select{font:inherit}
+.q-button{display:inline-flex;justify-content:center;align-items:center;gap:6px;padding:10px 19px;border:1px solid #7c4b39;border-radius:12px;background:#663d31;color:white;cursor:pointer;transition:opacity .2s}
+.q-button:hover{opacity:.86}
+.q-button.secondary{background:transparent;color:inherit;border-color:#b99c89}
+.q-button:disabled{opacity:.5;cursor:default}
+.q-input{width:100%;padding:12px;border:1px solid #cbb4a5;border-radius:11px;background:var(--card-bg,#fff);color:inherit;outline-offset:3px}
+.q-toolbar{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:12px 0}
+.q-muted{color:#806c62}
+.q-note{font-size:13px;color:#806c62}
+.q-notice{padding:12px 16px;background:#f8eee7;border-radius:12px;margin:12px 0;color:#50372f}
+.q-error{color:#a32222}
+.q-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:15px}
+.q-card{background:var(--card-bg,#fff);border:1px solid #e1cec0;border-radius:16px;padding:18px}
+.q-chip{font-size:12px;padding:3px 10px;border-radius:30px;background:#f1e2d6;color:#613d30;display:inline-block}
+.q-chat{height:min(58vh,560px);min-height:300px;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+.q-message{border-radius:16px;padding:13px 18px;max-width:88%;white-space:pre-wrap;line-height:2;background:#f3e7df;align-self:flex-end;overflow-wrap:anywhere}
+.q-message.bot{background:#fff;border:1px solid #e2d0c3;align-self:flex-start}
+.q-question{margin:20px 0;font-size:22px;line-height:1.9}
+.q-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.q-option{text-align:right;background:#fcf7f3;color:#3e2723;border:1px solid #d0b9aa;border-radius:14px;padding:15px;cursor:pointer;min-height:60px}
+.q-option[disabled]{opacity:.7}
+.q-option.correct{border-color:#277846;background:#ddf5e5}
+.q-option.wrong{border-color:#ae3333;background:#fbe2e2}
+.q-ranked{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #ecdcd0}
+/* إعدادات القصائد — لا تُمسّ القيم الأصلية إلا داخل صفحة القصيدة. */
+.q-poem-actions{margin:12px auto 18px;max-width:780px;display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap}
+.q-poem-actions button,.q-poem-actions select{font:inherit;padding:7px 13px;border-radius:10px;border:1px solid #ba9b88;color:inherit;background:var(--card-bg,#fff);cursor:pointer}
+.qafiyah-poem-lines.q-plain .qafiyah-poem-line{white-space:pre-wrap!important;text-align:right!important;width:100%;line-height:2.2}
+.qafiyah-poem-lines.q-diwani .qafiyah-poem-line{white-space:normal!important;display:flex;align-items:baseline;justify-content:center;gap:10px;flex-wrap:wrap;line-height:2.5}
+.qafiyah-poem-lines.q-diwani .q-hemistich{display:inline-block;flex:0 1 42%;text-align:center;min-width:130px}
+.qafiyah-poem-lines.q-diwani .q-hemistich:first-child{text-align:left}
+.qafiyah-poem-lines.q-diwani .q-hemistich:last-child{text-align:right}
+.qafiyah-poem-lines.q-modern .qafiyah-poem-line:nth-child(even){padding-inline-start:10%;opacity:.94}
+.qafiyah-poem-lines.q-modern .qafiyah-poem-line{white-space:normal!important;text-align:right!important}
+.q-poem-export{position:fixed;z-index:99999;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:18px}
+.q-poem-export>div{background:white;color:#3e2723;border-radius:18px;padding:16px;max-width:min(650px,96vw);max-height:90vh;overflow:auto}
+.q-poem-export img{display:block;max-width:100%;max-height:68vh;object-fit:contain;margin:auto}
+@media(max-width:520px){.q-panel{padding:14px}.q-chat{min-height:340px}.q-message{max-width:97%}.q-poem-actions{padding:6px}.qafiyah-poem-lines.q-diwani .q-hemistich{min-width:90px}}
+.qafiyah-poem-lines.q-settings .qafiyah-poem-line{font-size:var(--q-poem-size,24px)!important;white-space:normal}

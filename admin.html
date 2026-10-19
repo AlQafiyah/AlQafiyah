@@ -900,6 +900,8 @@ onclick="window.location.href='index.html'"
 <span class="nav-icon" data-admin-icon="users"></span>
 <span>المستخدمون</span>
 </button>
+<button class="nav-item" data-section="mujeeb" id="mujeebAdminNav" type="button" style="display:none"><span class="nav-icon" data-admin-icon="quote"></span><span>مُجيب</span></button>
+<button class="nav-item" data-section="midmar" id="midmarAdminNav" type="button" style="display:none"><span class="nav-icon" data-admin-icon="grid"></span><span>مِضمار</span></button>
 <button class="nav-item" data-section="admins" id="adminsNav" type="button">
 <span class="nav-icon" data-admin-icon="shield"></span>
 <span>الصلاحيات</span>
@@ -1304,6 +1306,40 @@ onclick="window.location.href='index.html'"
 </div>
 </section>
 <section class="admin-section" id="section-legal"><div class="content-card"><div class="card-header"><div><h3>حقوق الطبع والنشر وسياسة الخصوصية</h3><p>يمكن للمالك والمدير فقط تعديل هذين النصين.</p></div></div><div class="table-actions"><button class="btn btn-primary" id="editCopyright" type="button">تعديل حقوق الطبع والنشر</button><button class="btn btn-secondary" id="editPrivacy" type="button">تعديل سياسة الخصوصية</button></div></div></section>
+<section class="admin-section" id="section-mujeeb">
+ <div class="content-card"><div class="card-header"><div><h3>إعدادات «مُجيب»</h3><p>إدارة المساعد الأدبي. هذا القسم للمالك والمدير فقط.</p></div><a href="mujeeb.html" target="_blank" rel="noopener" class="btn btn-secondary">عرض مُجيب ↗</a></div>
+ <form id="mujeebAdminForm" class="form-grid" style="padding:20px">
+ <div class="form-group"><label>الاسم</label><input class="form-control" name="title" maxlength="70" required></div>
+ <div class="form-group"><label>حالة المساعد</label><select class="form-control" name="enabled"><option value="true">مفعّل</option><option value="false">متوقف</option></select></div>
+ <div class="form-group" style="grid-column:1/-1"><label>رسالة الترحيب</label><textarea class="form-control" name="greeting" rows="2" maxlength="1000"></textarea></div>
+ <div class="form-group" style="grid-column:1/-1"><label>تعليمات المساعد الأدبي (الشخصية والسياسة المعرفية)</label><textarea class="form-control" name="system_prompt" rows="9" maxlength="4000" required></textarea></div>
+ <div class="form-actions"><button class="btn btn-primary" type="submit">حفظ إعدادات مُجيب</button></div></form>
+ <p style="padding:0 20px 20px">يعمل المُجيب بواسطة Cloudflare Workers AI بعد تفعيل الربط. تعليمات النظام ليست بديلاً عن التحقق من الأوزان والمراجع الأدبية.</p></div>
+</section>
+<section class="admin-section" id="section-midmar">
+ <div class="content-card"><div class="card-header"><div><h3>إدارة مِضمار</h3><p>أنشئ المسابقات والأسئلة ونظّم الفرق والنتائج. التعديل للمالك والمدير حصراً.</p></div><a href="midmar.html" class="btn btn-secondary" target="_blank" rel="noopener">عرض مِضمار ↗</a></div>
+ <div style="padding:18px">
+ <h3>المسابقات والتحديات</h3><form id="challengeAdminForm" class="form-grid">
+ <input type="hidden" name="id"><div class="form-group"><label>العنوان</label><input class="form-control" name="title" maxlength="160" required></div>
+ <div class="form-group"><label>نوع اللعبة</label><select class="form-control" name="kind"><option value="quiz">أسئلة واختيارات</option><option value="riddle">لغز أدبي</option><option value="complete">أكمل البيت</option><option value="truefalse">صح أو خطأ</option></select></div>
+ <div class="form-group"><label>التصنيف</label><input class="form-control" name="category" value="الشعر والأدب" required></div>
+ <div class="form-group"><label>النشر</label><select class="form-control" name="published"><option value="false">مسودة</option><option value="true">منشورة</option></select></div>
+ <div class="form-group" style="grid-column:1/-1"><label>وصف المسابقة</label><textarea class="form-control" name="description" rows="2"></textarea></div>
+ <div class="form-actions"><button class="btn btn-primary" type="submit">حفظ المسابقة</button><button class="btn btn-secondary" id="resetChallengeForm" type="button">مسابقة جديدة</button></div></form>
+ <div class="table-wrapper"><table class="data-table"><thead><tr><th>اسم التحدي</th><th>النوع</th><th>الحالة</th><th>التحكم</th></tr></thead><tbody id="challengeAdminRows"></tbody></table></div>
+ <h3>الأسئلة</h3><p>اختر المسابقة وأدخل خياراتها في أسطر منفصلة ثم رقم الإجابة الصحيحة.</p>
+ <form id="questionAdminForm" class="form-grid"><input type="hidden" name="id">
+ <div class="form-group"><label>المسابقة</label><select class="form-control" id="questionChallenge" name="challenge_id" required></select></div>
+ <div class="form-group"><label>ترتيب السؤال</label><input type="number" class="form-control" name="position" value="0" min="0"></div>
+ <div class="form-group" style="grid-column:1/-1"><label>نص السؤال</label><textarea class="form-control" name="question_text" rows="3" required></textarea></div>
+ <div class="form-group"><label>الخيارات (سطر لكل خيار، من 2 إلى 6)</label><textarea class="form-control" name="options" rows="5" required placeholder="الأول&#10;الثاني&#10;الثالث"></textarea></div>
+ <div class="form-group"><label>رقم الإجابة الصحيحة (1 إلى 6)</label><input class="form-control" name="correct_number" type="number" min="1" max="6" value="1" required><label>النقاط</label><input class="form-control" name="points" type="number" min="1" max="100" value="10" required></div>
+ <div class="form-group" style="grid-column:1/-1"><label>شرح الإجابة بعد الحل</label><textarea class="form-control" name="explanation" rows="2"></textarea></div>
+ <div class="form-actions"><button class="btn btn-primary" type="submit">حفظ السؤال</button><button class="btn btn-secondary" type="button" id="resetQuestionForm">سؤال جديد</button></div></form>
+ <div class="table-wrapper"><table class="data-table"><thead><tr><th>السؤال</th><th>المسابقة</th><th>الإجراءات</th></tr></thead><tbody id="questionsAdminRows"></tbody></table></div>
+ <h3>إدارة الفرق</h3><div class="table-wrapper"><table class="data-table"><thead><tr><th>الفريق</th><th>الإجراءات</th></tr></thead><tbody id="teamsAdminRows"></tbody></table></div>
+ </div></div>
+</section>
 <section class="admin-section" id="section-users">
 <div class="content-card">
 <div class="card-header">
@@ -2787,6 +2823,7 @@ if(currentAdmin.role !== "owner") {
 document.querySelector('[data-section="users"]')?.style.setProperty("display","none");
 document.getElementById("statUsers")?.closest(".stat-card")?.style.setProperty("display","none");
 }
+if(["owner","manager"].includes(currentAdmin.role)) {document.getElementById("mujeebAdminNav")?.style.removeProperty("display");document.getElementById("midmarAdminNav")?.style.removeProperty("display");} else {document.getElementById("mujeebAdminNav")?.style.setProperty("display","none");document.getElementById("midmarAdminNav")?.style.setProperty("display","none");}
 if(!["owner","manager"].includes(currentAdmin.role)) document.getElementById("legalNav")?.style.setProperty("display","none");
 
 if (
@@ -4718,6 +4755,7 @@ loadAdmins
 
 function openSection(section) {
 
+if (["mujeeb","midmar"].includes(section) && !["owner","manager"].includes(currentAdmin?.role)) return;
 if (section === "users" && currentAdmin?.role !== "owner") return;
 if (section === "categories" && !["owner","manager"].includes(currentAdmin?.role)) return;
 
@@ -5844,6 +5882,8 @@ bindMediaInputs();
 
 if (type === "poem") {
 renderPoemAudioEditor();
+// يُحافظ على قيمة poet_id الأصلية مع بحث الاسم واللقب.
+if (window.setupQafiyahPoetSearch) window.setupQafiyahPoetSearch(editorFields.querySelector('[name="poet_id"]'), currentEditorItem?.poet_id);
 
 const poetSelect =
 editorFields.querySelector(
@@ -7650,5 +7690,6 @@ document.addEventListener('DOMContentLoaded',()=>{loadQAnalytics();setupBulkSele
 })();
 </script>
 
+<script src="admin-extras.js?v=1"></script>
 </body>
 </html>

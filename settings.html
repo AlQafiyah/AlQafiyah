@@ -297,4 +297,5 @@ const m=document.getElementById('languageModal');document.getElementById('langua
 async function legal(){try{const {data,error}=await supabaseClient.from('site_settings').select('key,content').in('key',['copyright','privacy']);if(error)throw error;const map=new Map((data||[]).map(x=>[x.key,x.content]));document.getElementById('copyrightContent').textContent=map.get('copyright')||'';document.getElementById('privacyContent').textContent=map.get('privacy')||''}catch(e){document.getElementById('copyrightContent').textContent='';document.getElementById('privacyContent').textContent=''}}legal();
 })();
 </script><script src="qafiyah-auth-final.js?v=20260922-2"></script>
+<script src="qafiyah-new-nav.js?v=1" defer></script>
 </body></html>

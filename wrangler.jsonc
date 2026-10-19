@@ -4,12 +4,17 @@
   "workers_dev": false,
   "preview_urls": false,
   "assets": {
-    "directory": "./"
+    "directory": "./",
+    "binding": "ASSETS"
   },
   "routes": [
     {
       "pattern": "alqafiyah.com",
       "custom_domain": true
     }
-  ]
+  ],
+  "main": "worker.js",
+  "ai": {
+    "binding": "AI"
+  }
 }

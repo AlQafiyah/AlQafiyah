@@ -1,0 +1,13 @@
+'use strict';
+document.addEventListener('DOMContentLoaded',async()=>{
+ const form=document.getElementById('muForm'),input=document.getElementById('muInput'),chat=document.getElementById('muChat'),send=document.getElementById('muSend'),status=document.getElementById('muStatus');
+ let history=[];
+ try {const {data}=await window.supabaseClient.from('qafiyah_mujeeb_settings').select('enabled,greeting,title').eq('id',1).maybeSingle();if(data){if(data.enabled===false){send.disabled=true;status.textContent='مُجيب متوقف مؤقتاً من إدارة القافية.';}if(data.greeting)chat.querySelector('.bot').textContent=data.greeting;}}catch{}
+ function append(message,isBot){const div=document.createElement('div');div.className='q-message'+(isBot?' bot':'');div.textContent=message;chat.append(div);chat.scrollTop=chat.scrollHeight;return div;}
+ form.addEventListener('submit',async e=>{e.preventDefault();if(send.disabled)return;const message=input.value.trim();if(!message)return;input.value='';append(message,false);send.disabled=true;status.textContent='مُجيب يصوغ الإجابة...';const pending=append('أفكر في الإجابة...',true);
+ try{const res=await fetch('/api/mujeeb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,history})});const data=await res.json();if(!res.ok)throw Error(data.error||'تعذّر الاتصال');pending.textContent=data.answer;history.push({role:'user',content:message},{role:'assistant',content:data.answer});history=history.slice(-8);status.textContent=data.has_library_context?'الرد يستعين بمقتطفات من مكتبة القافية عند توافرها.':'رد أدبي عام؛ لم يعثر البحث اللفظي على مرجع مطابق.';
+ }catch(err){pending.textContent='تعذر الحصول على الإجابة: '+err.message;status.textContent='تأكد من تفعيل خدمة Workers AI وخطوات الإعداد.';}finally{send.disabled=false;input.focus();chat.scrollTop=chat.scrollHeight;}});
+ document.getElementById('muClear').addEventListener('click',()=>{history=[];chat.replaceChildren();append('مرحباً! كيف يمكنني مساعدتك في الشعر والأدب العربي؟',true);status.textContent='محادثة جديدة';});
+ document.querySelectorAll('.mu-sample').forEach(btn=>btn.addEventListener('click',()=>{input.value=btn.dataset.question;input.focus();}));
+ document.getElementById('rhymeBtn').addEventListener('click',()=>{const text=document.getElementById('rhymeInput').value.trim();const words=text.replace(/[\u064b-\u065f\u0670\u0640،.!؟?]+/g,'').split(/\s+/).filter(Boolean);let end=words.at(-1)||'';end=end.replace(/[اويىه]$/,'')||end;const letter=[...end].at(-1);document.getElementById('rhymeResult').textContent=letter?`حرف الروي المحتمل: «${letter}». هذه قراءة آلية أولية؛ قد تختلف بحسب الوصل والخروج وحركات القافية.`:'اكتب نصاً لتحليله.';});
+});
