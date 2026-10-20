@@ -958,7 +958,7 @@ onclick="window.location.href='index.html'"
 <span class="nav-icon" data-admin-icon="grid"></span>
 <span>التصنيفات</span>
 </button>
-<button class="nav-item" data-section="legal" id="legalNav" type="button"><span class="nav-icon" data-admin-icon="document"></span><span>حقوق وسياسة الموقع</span></button>
+<button class="nav-item" data-section="legal" id="legalNav" type="button"><span class="nav-icon" data-admin-icon="document"></span><span>الوثائق النظامية</span></button>
 <button class="nav-item" data-section="users" type="button">
 <span class="nav-icon" data-admin-icon="users"></span>
 <span>المستخدمون</span>
@@ -1381,7 +1381,7 @@ onclick="window.location.href='index.html'"
 <div class="dashboard-grid" id="categoriesContainer" style="padding:20px;"></div>
 </div>
 </section>
-<section class="admin-section" id="section-legal"><div class="content-card"><div class="card-header"><div><h3>حقوق الطبع والنشر وسياسة الخصوصية</h3><p>يمكن للمالك والمدير فقط تعديل هذين النصين.</p></div></div><div class="table-actions"><button class="btn btn-primary" id="editCopyright" type="button">تعديل حقوق الطبع والنشر</button><button class="btn btn-secondary" id="editPrivacy" type="button">تعديل سياسة الخصوصية</button></div></div></section>
+<section class="admin-section" id="section-legal"><div class="content-card"><div class="card-header"><div><h3>الوثائق النظامية</h3><p>حرّر نصوص الصفحتين الرسميتين المنشورتين للعامة. ضع ## قبل عنوان كل قسم، ثم اكتب فقرته تحته.</p></div></div><div class="table-actions"><button class="btn btn-primary" id="editPrivacy" type="button">تحرير سياسة الخصوصية</button><button class="btn btn-secondary" id="editTerms" type="button">تحرير شروط الاستخدام والأحكام</button></div><p style="margin-top:16px"><a href="/privacy" target="_blank" rel="noopener">عرض سياسة الخصوصية ↗</a> &nbsp; · &nbsp; <a href="/terms" target="_blank" rel="noopener">عرض شروط الاستخدام والأحكام ↗</a></p></div></section>
 <style>
 #section-mujeeb .mu-admin-media small{display:block;color:var(--color-gray,#8a7770);font-size:12px;margin:6px 0 9px}
 #section-mujeeb .mu-admin-asset{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:7px 0 11px;min-width:0}
@@ -4897,7 +4897,7 @@ books: [
 
 legal: [
 "حقوق وسياسة الموقع",
-"حقوق الطبع والنشر وسياسة الخصوصية",
+"الوثائق النظامية",
 ()=>Promise.resolve()
 ],
 
@@ -7878,8 +7878,26 @@ document.getElementById('importBooksButton')?.addEventListener('click',()=>docum
 document.getElementById('booksImportInput')?.addEventListener('change',e=>imp(e.target.files[0],'books','books',x=>x?.title?{catalog_id:x.catalog_id||('qafiyah:book:'+x.title.trim().toLowerCase().replace(/\s+/g,'-')),title:x.title,author:x.author||null,literary_category:x.literary_category||x.category||null,era:x.era||null,cover_url:x.cover_url||null,file_url:x.file_url||null,description:x.description||null,is_featured:!!x.is_featured}:null));
 document.getElementById('importArticlesButton')?.addEventListener('click',()=>document.getElementById('articlesImportInput').click());
 document.getElementById('articlesImportInput')?.addEventListener('change',e=>imp(e.target.files[0],'articles','articles',x=>x?.title?{catalog_id:x.catalog_id||('qafiyah:article:'+x.title.trim().toLowerCase().replace(/\s+/g,'-')),title:x.title,author:x.author||null,category:x.category||null,summary:x.summary||null,content:x.content||'',image_url:x.image_url||null,is_featured:!!x.is_featured}:null));
-async function editLegal(key){if(!['owner','manager'].includes(currentAdmin?.role)){showToast('هذه الصلاحية للمالك والمدير فقط.','error');return}const r=await supabaseClient.from('site_settings').select('title,content').eq('key',key).maybeSingle();const content=prompt(key==='copyright'?'حقوق الطبع والنشر':'سياسة الخصوصية',r.data?.content||'');if(content===null)return;const u=await supabaseClient.from('site_settings').upsert({key,title:key==='copyright'?'حقوق الطبع والنشر':'سياسة الخصوصية',content,updated_by:currentUser.id},{onConflict:'key'});if(u.error)showToast(u.error.message,'error');else showToast('تم الحفظ.','success')}
-document.getElementById('editCopyright')?.addEventListener('click',()=>editLegal('copyright'));document.getElementById('editPrivacy')?.addEventListener('click',()=>editLegal('privacy'));
+async function editLegal(key){
+ if(!['owner','manager'].includes(currentAdmin?.role)){showToast('هذه الصلاحية للمالك والمدير فقط.','error');return}
+ const names={privacy:'سياسة الخصوصية',terms:'شروط الاستخدام والأحكام'};
+ const r=await supabaseClient.from('site_settings').select('title,content').eq('key',key).maybeSingle();
+ if(r.error){showToast(r.error.message,'error');return}
+ let starter='';try{const page=await fetch('/'+key+'.html');const html=await page.text();const doc=new DOMParser().parseFromString(html,'text/html');starter=[...doc.querySelectorAll('#legal-clauses .clause')].map(x=>'## '+x.querySelector('h2')?.textContent+'\n'+x.querySelector('p')?.textContent).join('\n\n')}catch(e){}
+ const old=document.getElementById('qLegalModal');if(old)old.remove();
+ const overlay=document.createElement('div');overlay.id='qLegalModal';overlay.style.cssText='position:fixed;inset:0;background:#0009;z-index:999999;display:grid;place-items:center;padding:18px';
+ const box=document.createElement('div');box.style.cssText='width:min(850px,100%);background:var(--card-bg,#fff);color:var(--text-color,#322);border-radius:18px;padding:24px;max-height:94vh;overflow:auto;box-shadow:0 20px 60px #0004';
+ const heading=document.createElement('h3');heading.textContent='تعديل '+names[key];heading.style.margin='0 0 12px';
+ const tip=document.createElement('p');tip.textContent='اكتب كل عنوان في سطر يبدأ بـ ## ثم النص أسفله. النص يُنشر مباشرة في صفحة /'+key;tip.style.fontSize='13px';
+ const area=document.createElement('textarea');area.value=(r.data?.content?.trim().startsWith('## ')?r.data.content:starter);area.rows=18;area.dir='rtl';area.style.cssText='width:100%;min-height:360px;resize:vertical;padding:16px;border:1px solid #ccc;border-radius:10px;font:15px/1.9 inherit;background:transparent;color:inherit';
+ const actions=document.createElement('div');actions.style.cssText='display:flex;gap:10px;justify-content:flex-end;margin-top:14px';
+ const cancel=document.createElement('button');cancel.className='btn btn-secondary';cancel.textContent='إلغاء';cancel.onclick=()=>overlay.remove();
+ const save=document.createElement('button');save.className='btn btn-primary';save.textContent='حفظ ونشر';save.onclick=async()=>{if(!area.value.trim()){showToast('لا يمكن نشر صفحة فارغة','error');return}save.disabled=true;const u=await supabaseClient.from('site_settings').upsert({key,title:names[key],content:area.value.trim(),updated_by:currentUser.id},{onConflict:'key'});save.disabled=false;if(u.error)showToast(u.error.message,'error');else{showToast('تم الحفظ والنشر.','success');overlay.remove()}};
+ actions.append(cancel,save);box.append(heading,tip,area,actions);overlay.append(box);document.body.append(overlay);overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});
+}
+
+document.getElementById('editPrivacy')?.addEventListener('click',()=>editLegal('privacy'));
+document.getElementById('editTerms')?.addEventListener('click',()=>editLegal('terms'));
 window.loadQAnalytics=async function loadQAnalytics(){try{if(!['owner','manager'].includes(currentAdmin?.role))return;const r=await supabaseClient.rpc('qafiyah_analytics_summary');if(r.error)throw r.error;const d=Array.isArray(r.data)?r.data[0]:r.data;if(!d)return;const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=Number(v||0).toLocaleString('en-US')};set('statVisitsAll',d.total_visits);set('statDevicesAll',d.unique_devices);set('statAccountsAll',d.unique_accounts);set('statActiveNow',d.active_now);set('statVisitsToday',d.today);set('statVisits7',d.last_7_days);set('statVisits30',d.last_30_days);set('statVisitsMonth',d.this_month);set('statVisits365',d.last_365_days);set('statVisitsYear',d.this_year);
  const yearHost=document.getElementById('analyticsYears'),monthHost=document.getElementById('analyticsMonths');
  if(yearHost){const years=Array.isArray(d.years)?d.years:[];yearHost.innerHTML=years.length?`<div class="analytics-list">${years.slice().reverse().map(x=>`<div><span>${Number(x.year||0).toLocaleString('en-US',{useGrouping:false})}</span><strong>${Number(x.visits||0).toLocaleString('en-US')}</strong></div>`).join('')}</div>`:'لا توجد بيانات بعد.'}

@@ -141,8 +141,8 @@
 <section class="q-setting-disclosure" id="fontDisclosure"><button class="q-setting-trigger" type="button"><span><strong>الخطوط</strong><small id="fontCurrent">الأساسي</small></span><span class="q-setting-chevron">⌄</span></button><div class="q-setting-options" id="fontChoices"></div></section>
 <section class="q-setting-disclosure" id="themeDisclosure"><button class="q-setting-trigger" type="button"><span><strong>المظهر</strong><small id="themeCurrent">نهاري</small></span><span class="q-setting-chevron">⌄</span></button><div class="q-setting-options" id="themeChoices"></div></section>
 
-<section class="q-setting-disclosure q-setting-legal" data-setting-key="copyright"><button class="q-setting-trigger" type="button"><span><strong>حقوق الطبع والنشر</strong><small>معلومات حقوق المحتوى واستخدامه</small></span><span class="q-setting-chevron">⌄</span></button><div class="q-setting-options"><div class="q-setting-legal-content" id="copyrightContent"></div></div></section>
-<section class="q-setting-disclosure q-setting-legal" data-setting-key="privacy"><button class="q-setting-trigger" type="button"><span><strong>سياسة الخصوصية</strong><small>طريقة التعامل مع البيانات والخصوصية</small></span><span class="q-setting-chevron">⌄</span></button><div class="q-setting-options"><div class="q-setting-legal-content" id="privacyContent"></div></div></section>
+
+
 </div></main><div aria-hidden="true" class="login-modal" id="loginModal">
 <div class="login-box">
 <button aria-label="إغلاق" class="close-login-button" id="closeLoginButton" type="button">
@@ -312,9 +312,9 @@ function drawFonts(){let current=localStorage.getItem('qafiyah_font')||'saudi';i
 const themes=[['morning','نهاري','المظهر الأصلي لقافية'],['night','ليلي','هادئ بطابع الليل'],['natural','بنيّ','الطابع البني الكلاسيكي'],['evening','خزامى','درجات الخزامى الهادئة'],['dark','داكن','داكن دافئ عالي الوضوح']],th=document.getElementById('themeChoices'),themeCur=document.getElementById('themeCurrent');function drawThemes(){const cur=E.normalizeTheme?E.normalizeTheme(localStorage.getItem('qafiyah_theme')||'morning'):(localStorage.getItem('qafiyah_theme')||'morning');th.innerHTML='';themes.forEach(([key,name,note])=>{const b=document.createElement('button');b.type='button';b.className='q-choice'+(key===cur?' active':'');b.innerHTML='<strong>'+name+'</strong><small>'+note+'</small>';b.onclick=()=>{E.applyTheme?E.applyTheme(key):(localStorage.setItem('qafiyah_theme',key),document.documentElement.setAttribute('data-q-theme',key),document.body.setAttribute('data-q-theme',key));drawThemes()};th.appendChild(b)});themeCur.textContent=(themes.find(x=>x[0]===cur)||themes[0])[1]}drawThemes();
 document.querySelectorAll('.q-setting-disclosure:not(#languageDisclosure)').forEach(box=>box.querySelector('.q-setting-trigger')?.addEventListener('click',()=>box.classList.toggle('open')));
 
-async function legal(){try{const {data,error}=await supabaseClient.from('site_settings').select('key,content').in('key',['copyright','privacy']);if(error)throw error;const map=new Map((data||[]).map(x=>[x.key,x.content]));document.getElementById('copyrightContent').textContent=map.get('copyright')||'';document.getElementById('privacyContent').textContent=map.get('privacy')||''}catch(e){document.getElementById('copyrightContent').textContent='';document.getElementById('privacyContent').textContent=''}}legal();
+
 })();
 </script><script src="qafiyah-auth-final.js?v=20260922-2"></script>
 <script src="qafiyah-new-nav.js?v=sijal-20261019" defer></script>
 <script src="qafiyah-public-menu.js?v=1" defer></script>
-</body></html>
+<div class="q-legal-footer-links" style="text-align:center;padding:20px 12px 34px;font-size:13px;opacity:.8"><a href="/privacy" style="margin:0 10px;color:inherit">سياسة الخصوصية</a><a href="/terms" style="margin:0 10px;color:inherit">شروط الاستخدام والأحكام</a></div></body></html>
