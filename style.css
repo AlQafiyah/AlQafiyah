@@ -3508,9 +3508,15 @@ select {
     .poets-toolbar {
         width: min(calc(100% - 30px), 700px);
 
-        grid-template-columns: 1fr;
-
         padding: 25px 0;
+    }
+
+    .articles-toolbar {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    }
+
+    .poets-toolbar {
+        grid-template-columns: 1fr;
     }
 
     .articles-list,
@@ -4113,3 +4119,6 @@ select {
     height: 32px;
     display: block;
 }
+/* Classic monochrome outline icons: replace legacy emoji glyphs only. */
+.q-classic-icon{display:inline-block;width:24px;height:24px;vertical-align:middle;flex-shrink:0;color:inherit}
+.articles-empty-icon .q-classic-icon{width:32px;height:32px}

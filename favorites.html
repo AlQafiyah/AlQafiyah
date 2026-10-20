@@ -7,7 +7,7 @@
 <meta content="#3E2723" name="theme-color"/>
 <title>المفضلة | القافية</title>
 <link href="style.css" rel="stylesheet"/>
-<link href="enhancements.css?v=fonts-50-final" rel="stylesheet"/>
+<link href="enhancements.css?v=20261020-v12" rel="stylesheet"/>
 <style>
 .q-simple-top{background:#3E2723;color:#fff}.q-simple-top>div{width:min(1080px,calc(100% - 30px));margin:auto;min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}.q-simple-top a{color:#fff;text-decoration:none}.q-brand{font-size:1.55rem;font-weight:700}.q-back{opacity:.85}.q-fav-card .q-favorite-btn{position:static;margin-inline-start:auto;flex:0 0 auto}
 .q-fav-tools{display:grid;grid-template-columns:minmax(0,2fr) minmax(150px,1fr) minmax(150px,1fr);gap:10px;margin:0 0 22px}.q-fav-tools input,.q-fav-tools select{width:100%;min-height:46px;border:1px solid var(--q-border);border-radius:14px;background:var(--q-surface);color:var(--q-text);padding:0 14px;font:inherit}.q-fav-status{font-size:.9rem;opacity:.65;margin:-8px 0 18px}.q-fav-card small{display:block;opacity:.66;margin-top:6px}.q-fav-card mark{background:transparent;color:inherit}
@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="qafiyah-auth-final.css?v=20260922">
 </head>
 <body>
-<script>(function(){try{var t=localStorage.getItem('qafiyah_theme')||'natural';if(t==='light')t='evening';if(!/^(natural|dark|morning|evening|night)$/.test(t))t='natural';document.documentElement.setAttribute('data-q-theme',t);document.body.setAttribute('data-q-theme',t)}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('qafiyah_theme')||'morning';if(t==='light')t='evening';if(!/^(natural|dark|morning|evening|night)$/.test(t))t='natural';document.documentElement.setAttribute('data-q-theme',t);document.body.setAttribute('data-q-theme',t)}catch(e){}})();</script>
 <header class="site-header">
 <div class="header-container">
 <button aria-controls="sideMenu" aria-expanded="false" aria-label="فتح القائمة" class="menu-button" id="menuButton" type="button">
@@ -62,9 +62,7 @@
             </button>
 </div>
 <div class="user-section">
-<div class="user-avatar">
-                👤
-            </div>
+<div class="user-avatar"><svg class="q-classic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg></div>
 <div class="user-info">
 <strong id="menuUserName">
                     مرحبًا بك
@@ -76,35 +74,35 @@
 </div>
 <nav aria-label="القائمة الرئيسية" class="side-navigation">
 <a href="index.html">
-<span>⌂</span>
+<span><svg class="q-classic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10.5V20h5v-6h4v6h5v-9.5"/></svg></span>
 <span>الرئيسية</span>
 </a>
 <a href="Poems.html">
-<span>📜</span>
+<span><svg class="q-classic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></span>
 <span>القصائد</span>
 </a>
 <a href="poets.html">
-<span>✒</span>
+<span><svg class="q-classic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h6M14.5 4.5a2.12 2.12 0 0 1 3 3L9 16l-4 1 1-4Z"/></svg></span>
 <span>الشعراء</span>
 </a>
 <a class="active" href="articles.html">
-<span>📝</span>
+<span><svg class="q-classic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l3 3v15H6Z"/><path d="M14 3v4h4M9 11h6M9 15h6"/></svg></span>
 <span>المقالات</span>
 </a>
 <a href="profile.html" id="profileLink">
-<span>👤</span>
+<span><svg class="q-classic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg></span>
 <span>الملف الشخصي</span>
 </a>
 <a href="favorites.html" id="favoritesLink">
-<span>⭐</span>
+<span><svg class="q-classic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.8 6.4.9-4.6 4.5 1.1 6.4L12 17.6l-5.7 3 1.1-6.4-4.6-4.5 6.4-.9Z"/></svg></span>
 <span>المفضلة</span>
 </a>
 <a href="settings.html" id="settingsLink">
-<span>⚙️</span>
+<span><svg class="q-classic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06-2 2-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21h-2.8v-.1A1.7 1.7 0 0 0 10.5 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06-2-2 .06-.06A1.7 1.7 0 0 0 7 15.87a1.7 1.7 0 0 0-1.55-1H5.3v-2.8h.1A1.7 1.7 0 0 0 7 10.5a1.7 1.7 0 0 0-.34-1.87L6.6 8.57l2-2 .06.06a1.7 1.7 0 0 0 1.87.34A1.7 1.7 0 0 0 11.5 5.4V5.3h2.8v.1A1.7 1.7 0 0 0 15.87 7a1.7 1.7 0 0 0 1.87-.34l.06-.06 2 2-.06.06a1.7 1.7 0 0 0-.34 1.87A1.7 1.7 0 0 0 21 11.5h.1v2.8H21a1.7 1.7 0 0 0-1.6.7Z"/></svg></span>
 <span>الإعدادات</span>
 </a>
 <a href="about.html">
-<span>ℹ️</span>
+<span><svg class="q-classic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>
 <span>نبذة عن قافية</span>
 </a>
 </nav>
@@ -139,12 +137,13 @@
 </div>
 </div><main class="q-page-shell">
 <h1 class="q-page-title">المفضلة</h1>
-<p class="q-page-lead">كل ما حفظته من مقالات وقصائد وشعراء في مكان واحد.</p>
+<p class="q-page-lead">كل ما فضّلته في مكان واحد</p>
 <div class="q-tabs" id="favoriteTabs">
 <button class="q-tab active" data-filter="all">الكل</button>
 <button class="q-tab" data-filter="article">المقالات</button>
 <button class="q-tab" data-filter="poem">القصائد</button>
 <button class="q-tab" data-filter="poet">الشعراء</button>
+<button class="q-tab" data-filter="book">الكتب</button>
 </div>
 <div class="q-fav-tools">
 <input aria-label="البحث في المفضلة" autocomplete="off" id="favoriteSearch" placeholder="ابحث بالاسم أو اللقب أو جزء من النص..." type="search"/>
@@ -312,7 +311,7 @@
                 موسوعة الشعر والأدب العربي
             </span>
 </div>
-</footer><script src="enhancements.js?v=fonts-50-final"></script>
+</footer><script src="enhancements.js?v=20261020-v12"></script>
 <script>
 (function(){
 'use strict';
@@ -323,7 +322,7 @@ const category=document.getElementById('favoriteCategory');
 const status=document.getElementById('favoriteStatus');
 let filter='all', enriched=new Map(), remoteMatches=null, timer=null, searchSerial=0;
 const esc=s=>String(s||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-const typeName={article:'مقال',poem:'قصيدة',poet:'شاعر'};
+const typeName={article:'مقال',poem:'قصيدة',poet:'شاعر',book:'كتاب'};
 function norm(v){return String(v||'').normalize('NFKD').replace(/[ً-ٰٟۖ-ۭ]/g,'').replace(/ـ/g,'').replace(/[إأآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/ة/g,'ه').replace(/\s+/g,' ').trim().toLowerCase()}
 function data(){try{return JSON.parse(localStorage.getItem('qafiyah_favorites')||'[]')}catch{return[]}}
 function save(v){localStorage.setItem('qafiyah_favorites',JSON.stringify(v))}
@@ -335,15 +334,17 @@ async function queryChunks(table,ids,fields){const out=[];for(const batch of chu
 async function hydrate(){
  const items=data(); if(!window.supabaseClient||!items.length){render();return}
  try{
-  const [articles,poems,poets]=await Promise.all([
+  const [articles,poems,poets,books]=await Promise.all([
    queryChunks('articles',idsByType(items,'article'),'id,title,author,category,image_url').catch(()=>[]),
    queryChunks('poems',idsByType(items,'poem'),'id,title,poet,era,category,image_url').catch(()=>[]),
-   queryChunks('poets',idsByType(items,'poet'),'id,name,nickname,era,image_url').catch(()=>[])
+   queryChunks('poets',idsByType(items,'poet'),'id,name,nickname,era,image_url').catch(()=>[]),
+   queryChunks('books',idsByType(items,'book'),'id,title,author,era,literary_category,cover_url').catch(()=>[])
   ]);
   const index=new Map();
   articles.forEach(x=>index.set('article:'+x.id,{title:x.title,meta:[x.author,x.category].filter(Boolean).join(' • '),category:x.category,img:x.image_url}));
   poems.forEach(x=>index.set('poem:'+x.id,{title:x.title,meta:[x.poet,x.era,x.category].filter(Boolean).join(' • '),era:x.era,category:x.category,img:x.image_url}));
   poets.forEach(x=>index.set('poet:'+x.id,{title:x.name,meta:[x.nickname,x.era].filter(Boolean).join(' • '),nickname:x.nickname,era:x.era,img:x.image_url}));
+  books.forEach(x=>index.set('book:'+x.id,{title:x.title,meta:[x.author,x.literary_category,x.era].filter(Boolean).join(' • '),era:x.era,category:x.literary_category,img:x.cover_url}));
   items.forEach(x=>enriched.set(x.key,{...x,...(index.get(x.key)||{})}));
   fillSelect(era,[...enriched.values()].map(x=>x.era),'جميع العصور');
   fillSelect(category,[...enriched.values()].map(x=>x.category),'جميع الموضوعات والتصنيفات');
@@ -355,7 +356,7 @@ async function searchRemote(q){
  if(!q||!window.supabaseClient){remoteMatches=null;render();return}
  const matched=new Set();
  const configs={
-  article:{table:'articles'}, poem:{table:'poems'}, poet:{table:'poets'}
+  article:{table:'articles'}, poem:{table:'poems'}, poet:{table:'poets'}, book:{table:'books'}
  };
  await Promise.all(Object.entries(configs).map(async([type,cfg])=>{
   const ids=idsByType(items,type); if(!ids.length)return;

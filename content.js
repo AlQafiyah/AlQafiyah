@@ -2325,7 +2325,7 @@
         container.insertAdjacentElement("afterend", sentinel);
 
         function card(poem) {
-            const meta = [poem.poet, poem.era].filter(Boolean).map(escapeHtml).join(" • ");
+            const meta = [poem.poet ? `<span class="poem-meta-poet">${escapeHtml(poem.poet)}</span>` : "", poem.era ? `<span class="poem-meta-era">${escapeHtml(poem.era)}</span>` : ""].filter(Boolean).join(' <span class="poem-meta-separator">•</span> ');
             return `
                 <article class="content-card qafiyah-content-card qafiyah-poem-index-card">
                     ${renderImage(poem.image_url, poem.title, "qafiyah-card-image")}

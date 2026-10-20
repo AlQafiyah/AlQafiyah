@@ -612,3 +612,72 @@ body[data-q-theme]:not([data-q-theme='natural']) .q-contact-socials a:hover{colo
   .side-menu-footer .q-contact-socials{max-width:280px}
   .side-menu-footer .q-contact-socials a{max-width:32px}
 }
+
+/* النهاري المصحح: الخلفية عاجية، والأسطح البيضاء منفصلة بوضوح.
+   الحفاظ على ألوان أسماء الكتّاب والتصنيفات والتواريخ، وعلى مظاهر مُجيب المستقلة. */
+html[data-q-theme='morning']{background:#f9f4e8!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page){
+ --q-bg:#f9f4e8;--q-bg-2:#f9f4e8;--q-surface:#ffffff;--q-surface-2:#fffaf4;--q-surface-3:#f2e7dc;
+ --q-text:#35221f;--q-heading:#35221f;--q-muted:#756158;--q-border:rgba(53,34,31,.16);
+ --q-accent:#9a5f4c;--q-accent-2:#ad7b79;--q-soft:#f1e3d6;--q-card-hover:#fffaf4;
+ --q-header:#ffffff;--q-header-text:#35221f;--q-input:#ffffff;--q-input-text:#35221f;
+ --q-shadow:rgba(53,34,31,.09);--q-on-accent:#ffffff;--q-overlay:rgba(53,34,31,.45);
+ --q-hero-start:#f9f4e8;--q-hero-end:#f9f4e8;--q-ring:rgba(53,34,31,.16);
+ --color-primary:#35221f;--color-background:#f9f4e8;--color-light:#35221f;
+ --color-card:#ffffff;--color-border:rgba(53,34,31,.16);
+ background:#f9f4e8!important;color:#35221f!important;
+}
+/* الرأس والذيل والقائمة الجانبية: بيضاء وليست بلون الصفحة */
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.site-header,.q-simple-top,.site-footer,.side-menu,.notification-panel,.account-dropdown,.qafiyah-account-dropdown){
+ background:#ffffff!important;color:#35221f!important;
+}
+/* الحقول والبحث والتصنيفات: خلفيات بيضاء وكتابة بنية */
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(input,textarea,select,.form-control,.search-input,.filter-input,.articles-search,.articles-filter,.poets-search,.poets-filter){
+ background-color:#ffffff!important;color:#35221f!important;
+}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(input,textarea,.search-input,.filter-input)::placeholder{color:#756158!important;opacity:1}
+/* تمييز بطاقة المستخدم دون صبغ القائمة الجانبية بالكامل */
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.user-section,.q-side-profile,.side-menu-user,.side-user-card){
+ background:#f9e7da!important;color:#35221f!important;
+}
+/* الحفاظ على التمييز اللوني التحريري للمؤلف والتصنيف والتاريخ */
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page){--qa-author:#a04b32;--qa-category:#a96f48}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.q-article-author-name){color:#a04b32!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.q-article-category){color:#a96f48!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.q-article-date,.qafiyah-card-date,.qafiyah-detail-date){color:#806f64!important}
+
+/* V11: تنسيق القوائم والمرشحات دون تغيير مُجيب أو المظاهر الأخرى */
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :is(.qafiyah-poet-card,.qafiyah-poem-index-card,.poet-card,.book-row){background:#fff!important;color:#35221f!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :is(.qafiyah-poet-card,.qafiyah-poem-index-card,.poet-card,.book-row) :is(h2,h3,.qafiyah-card-title){color:#35221f!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :is(.poet-card-era,.poem-meta-era,.book-meta-era){color:#806f64!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :is(.poet-card-category,.section-label,.book-meta-category){color:#a96f48!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :is(.poem-meta-poet,.book-meta-author){color:#a04b32!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :is(.poem-poet,.qafiyah-card-meta,.book-row-meta){opacity:1!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :is(.poet-card-description,.poet-card-category){color:#806f64}
+/* خلفية الحقول البيضاء داخل الحدود فقط، لا خلفها */
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :is(.articles-search,.articles-filter,.poets-search,.poets-filter,.search-input-wrapper){background:transparent!important;border:0!important;box-shadow:none!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :is(.articles-search input,.articles-filter select,.books-toolbar input,.books-toolbar select){background:#fff!important;color:#35221f!important;box-sizing:border-box!important}
+/* الكتب والقصائد: البحث ثم العصر ثم التصنيف على صف واحد حتى على الجوال */
+.books-toolbar,.qafiyah-poems-toolbar{display:grid!important;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr)!important;gap:8px!important;align-items:stretch!important}
+.books-toolbar>* ,.qafiyah-poems-toolbar>*{min-width:0!important;width:100%!important;box-sizing:border-box!important}
+.qafiyah-poems-toolbar .articles-search,.qafiyah-poems-toolbar .articles-filter{padding:0!important;margin:0!important}
+.qafiyah-poems-toolbar :is(input,select),.books-toolbar :is(input,select){min-width:0!important;width:100%!important;box-sizing:border-box!important}
+/* الشعراء: البحث والعصر في صف واحد */
+.poets-toolbar{display:grid!important;grid-template-columns:minmax(0,2fr) minmax(0,1fr)!important;gap:8px!important;align-items:stretch!important}
+.poets-toolbar>*{min-width:0!important;width:100%!important;box-sizing:border-box!important}
+@media(max-width:640px){
+ .books-toolbar,.qafiyah-poems-toolbar{gap:6px!important}
+ .books-toolbar :is(input,select),.qafiyah-poems-toolbar :is(input,select),.poets-toolbar :is(input,select){font-size:clamp(10px,2.4vw,13px)!important;padding-inline:5px!important;min-height:48px!important;text-overflow:ellipsis!important}
+ .qafiyah-poems-toolbar .search-input-wrapper input{padding-inline:6px!important}
+ .poets-toolbar{grid-template-columns:minmax(0,2fr) minmax(0,1fr)!important}
+}
+
+/* V12: favorites filters one row, no outer white slabs */
+.q-fav-tools{display:grid!important;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr)!important;gap:8px!important;align-items:stretch}
+.q-fav-tools>*{min-width:0!important;width:100%!important;box-sizing:border-box!important;background:#fff!important;box-shadow:none!important;font-size:clamp(10px,2.7vw,15px)!important;padding-inline:7px!important}
+.q-fav-tools input{padding-inline:10px!important}
+@media(max-width:640px){.q-fav-tools{gap:5px!important}}
+/* Heart-only design on books and article rows */
+.book-row>.q-favorite-btn,.q-article-card>.q-favorite-btn{background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;border-radius:0!important;padding:0!important}
+.book-row>.q-favorite-btn.is-favorite,.q-article-card>.q-favorite-btn.is-favorite{background:transparent!important;border:0!important;color:#b4233b!important}
+.book-row,.q-article-card{position:relative}

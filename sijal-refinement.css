@@ -180,3 +180,11 @@ body.sijal-page[data-sj-mode="solo"] #sjModeSetup .sj-start-row{padding:0;margin
 .sijal-page .sj-stage-hero.sj-has-cover::before,
 .sijal-page .sj-stage-hero.sj-has-cover::after{display:none!important}
 .sijal-page .sj-stage-hero.sj-has-cover .sj-hero-glow{opacity:.06}
+
+/* V12: mobile filters side by side; select all below */
+.sijal-page .sj-choose-panel .sj-filter-row{display:grid!important;grid-template-columns:minmax(0,2fr) minmax(0,1fr)!important;max-width:none;gap:10px;align-items:stretch}
+.sijal-page .sj-choose-panel .sj-filter-row>*{min-width:0;width:100%;box-sizing:border-box}
+.sijal-page .sj-choose-panel .sj-filter-row .sj-search{min-width:0;padding-inline:8px}
+.sijal-page .sj-choose-panel .sj-filter-row .sj-field{min-width:0;padding-inline:6px;font-size:clamp(11px,2.9vw,15px)}
+.sijal-page .sj-select-all-row{display:flex;justify-content:flex-start;margin:-8px 0 15px}
+.sijal-page .sj-select-all-row .sj-link-btn{text-decoration:none!important;border:0!important;background:transparent!important}
