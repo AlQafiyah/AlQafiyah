@@ -1246,6 +1246,19 @@ onclick="window.location.href='index.html'"
 </div>
 <div class="table-actions"><button class="btn btn-secondary" id="articlesSelectToggle" type="button">تحديد</button><button class="btn btn-secondary" id="importArticlesButton" type="button">استيراد مقالات</button><button class="btn btn-primary" id="addArticleButton" type="button">+ إضافة مقال</button><input id="articlesImportInput" type="file" accept="application/json,.json" hidden></div>
 </div>
+<div class="toolbar" id="articlesLayoutToolbar">
+<div class="filter-box">
+<label class="sr-only" for="articlesListFeatureMode">طريقة إبراز المقالات</label>
+<select class="filter-input" id="articlesListFeatureMode">
+<option value="latest">تكبير أحدث مقالة</option>
+<option value="featured">تكبير أحدث مقالة مميزة</option>
+<option value="none">بدون مقالة كبيرة</option>
+</select>
+</div>
+<div class="table-actions">
+<button class="btn btn-secondary" id="saveArticlesListModeButton" type="button">حفظ طريقة العرض</button>
+</div>
+</div>
 <div class="bulk-toolbar" id="articlesBulkToolbar">
 <button class="btn btn-secondary btn-small" type="button" data-bulk-visible="articles">تحديد الظاهر</button>
 <button class="btn btn-secondary btn-small" type="button" data-bulk-all="articles">تحديد الكل</button>
@@ -1575,6 +1588,7 @@ let poemsAdminTotal = 0;
 let poemsAdminSearchTimer = null;
 const POEMS_ADMIN_PAGE_SIZE = 100;
 let articlesCache = [];
+let articlesListFeatureMode = 'latest';
 let metersCache = [];
 let rhymesCache = [];
 let videosCache = [];
@@ -3849,6 +3863,49 @@ ${canEditContentItem(poem)?`<button class="btn btn-danger btn-small" onclick="de
 .join("");
 }
 
+
+async function loadArticlesListModeSetting() {
+try {
+const { data, error } = await supabaseClient
+.from('site_settings')
+.select('content')
+.eq('key','articles_list_feature_mode')
+.maybeSingle();
+if (error) throw error;
+const mode = String(data?.content || 'latest').trim();
+articlesListFeatureMode = ['latest','featured','none'].includes(mode) ? mode : 'latest';
+const control = document.getElementById('articlesListFeatureMode');
+if (control) control.value = articlesListFeatureMode;
+} catch (error) {
+console.warn('تعذر تحميل إعداد إبراز المقالات.', error);
+articlesListFeatureMode = 'latest';
+const control = document.getElementById('articlesListFeatureMode');
+if (control) control.value = articlesListFeatureMode;
+}
+}
+
+async function saveArticlesListModeSetting() {
+const control = document.getElementById('articlesListFeatureMode');
+if (!control) return;
+const mode = ['latest','featured','none'].includes(control.value) ? control.value : 'latest';
+try {
+const { error } = await supabaseClient
+.from('site_settings')
+.upsert({
+key: 'articles_list_feature_mode',
+title: 'طريقة إبراز المقالات',
+content: mode,
+updated_by: currentUser?.id || null
+}, { onConflict: 'key' });
+if (error) throw error;
+articlesListFeatureMode = mode;
+showToast('تم حفظ طريقة إبراز المقالات.','success');
+} catch (error) {
+console.error(error);
+showToast(error.message || 'تعذر حفظ طريقة إبراز المقالات.','error');
+}
+}
+
 async function loadArticles() {
 const tbody =
 document.getElementById(
@@ -3895,6 +3952,8 @@ return;
 
 articlesCache =
 data || [];
+
+await loadArticlesListModeSetting();
 
 setFilterOptions(
 document.getElementById(
@@ -7505,6 +7564,27 @@ document
 .addEventListener(
 "change",
 filterArticles
+);
+
+
+document
+.getElementById(
+"articlesListFeatureMode"
+)
+?.addEventListener(
+"change",
+function () {
+articlesListFeatureMode = document.getElementById('articlesListFeatureMode').value || 'latest';
+}
+);
+
+document
+.getElementById(
+"saveArticlesListModeButton"
+)
+?.addEventListener(
+"click",
+saveArticlesListModeSetting
 );
 
 document

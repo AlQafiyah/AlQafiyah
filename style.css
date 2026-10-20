@@ -3508,9 +3508,15 @@ select {
     .poets-toolbar {
         width: min(calc(100% - 30px), 700px);
 
-        grid-template-columns: 1fr;
-
         padding: 25px 0;
+    }
+
+    .articles-toolbar {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    }
+
+    .poets-toolbar {
+        grid-template-columns: 1fr;
     }
 
     .articles-list,

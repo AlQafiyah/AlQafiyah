@@ -21,12 +21,15 @@ function cover(article){const img=safe(article.image_url);const label=E(article.
 function card(article,featured=false){return `<article class="q-article-card${featured?' q-article-featured':''}">
  ${cover(article)}<div class="q-article-card-content"><h2 class="q-article-card-title"><a href="${link(article)}">${E(article.title||'بدون عنوان')}</a></h2>
  ${excerpt(article)?`<p class="q-article-card-excerpt">${E(excerpt(article))}</p>`:''}${meta(article)}</div></article>`;}
+function sortByNewest(items){return [...(items||[])].sort((a,b)=>new Date(b?.created_at||0)-new Date(a?.created_at||0));}
+async function articleListMode(db){try{const {data,error}=await db.from('site_settings').select('content').eq('key','articles_list_feature_mode').maybeSingle();if(error)throw error;const mode=String(data?.content||'latest').trim();return ['latest','featured','none'].includes(mode)?mode:'latest';}catch(e){console.warn('تعذر تحميل نمط إبراز المقالات، سيتم اعتماد الأحدث.',e);return 'latest';}}
+function arrangeForDisplay(items,mode){const ordered=sortByNewest(items);if(!ordered.length)return {items:ordered,featuredId:null};if(mode==='none')return {items:ordered,featuredId:null};if(mode==='featured'){const picked=ordered.find(x=>x?.is_featured);return picked?{items:[picked,...ordered.filter(x=>x?.id!==picked.id)],featuredId:picked.id}:{items:ordered,featuredId:null};}return {items:ordered,featuredId:ordered[0]?.id??null};}
 async function allArticles(db){const all=[],batch=500;for(let i=0;i<10000;i+=batch){const {data,error}=await db.from('articles').select('id,title,summary,content,author,category,image_url,created_at,is_featured').order('created_at',{ascending:false}).range(i,i+batch-1);if(error)throw error;all.push(...(data||[]));if(!data||data.length<batch)break;}return all;}
 async function initList(){const host=$('articlesContainer');if(!host)return;const loading=$('articlesLoading'),empty=$('articlesEmpty'),search=$('articleSearch'),category=$('articleCategory');
- try{const all=await allArticles(window.supabaseClient);const categories=[...new Set(all.map(x=>x.category).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'ar'));
+ try{const [all,displayMode]=await Promise.all([allArticles(window.supabaseClient),articleListMode(window.supabaseClient)]);const categories=[...new Set(all.map(x=>x.category).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'ar'));
  for(const name of categories){const opt=document.createElement('option');opt.value=name;opt.textContent=name;category?.append(opt);}
  const render=()=>{const q=norm(search?.value),cat=category?.value;const matched=all.filter(a=>(!cat||a.category===cat)&&(!q||norm([a.title,a.summary,a.author,a.category,plainContent(a)].join(' ')).includes(q)));
- host.innerHTML=matched.length?matched.map((x,i)=>card(x,i===0)).join(''):'';if(empty)empty.hidden=!!matched.length;if(loading)loading.hidden=true;};
+ const arranged=arrangeForDisplay(matched,displayMode);host.innerHTML=arranged.items.length?arranged.items.map(x=>card(x,arranged.featuredId!==null&&x.id===arranged.featuredId)).join(''):'';if(empty)empty.hidden=!!arranged.items.length;if(loading)loading.hidden=true;};
  search?.addEventListener('input',render);category?.addEventListener('change',render);render();
  }catch(e){console.error('مقالات القافية',e);if(loading)loading.hidden=true;host.innerHTML='<p class="q-article-error">تعذر تحميل المقالات حالياً.</p>';}}
 function contentHtml(value){return blocks(value).map(block=>{
@@ -42,10 +45,11 @@ function contentHtml(value){return blocks(value).map(block=>{
 async function initDetail(){const root=$('articleDetail');if(!root)return;const id=new URLSearchParams(location.search).get('id');if(!id){root.innerHTML='<p class="q-article-error">تعذر العثور على المقال.</p>';return;}
  try{const {data:a,error}=await window.supabaseClient.from('articles').select('*').eq('id',id).maybeSingle();if(error)throw error;if(!a){root.innerHTML='<p class="q-article-error">المقال غير موجود.</p>';return;}
  document.title=`${a.title||'المقال'} | القافية`;
+ const hero=safe(a.image_url);
  root.innerHTML=`<div class="q-article-detail-shell"><a href="articles.html" class="q-article-back">العودة إلى المقالات</a><article class="q-article-detail">
- <header class="q-article-detail-heading">${a.category?`<span class="q-article-category">${E(a.category)}</span>`:''}
+ <header class="q-article-detail-heading${hero?' has-cover':''}"><div class="q-article-detail-copy">${a.category?`<span class="q-article-category">${E(a.category)}</span>`:''}
  <h1>${E(a.title||'بدون عنوان')}</h1>${a.summary?`<p class="q-article-deck">${E(a.summary)}</p>`:''}
- <div class="q-article-byline">${authorHtml(a)}${a.created_at?`<time datetime="${E(a.created_at)}">${E(date(a.created_at))}</time>`:''}</div></header>
+ <div class="q-article-byline">${authorHtml(a)}${a.created_at?`<time datetime="${E(a.created_at)}">${E(date(a.created_at))}</time>`:''}</div></div>${hero?`<div class="q-article-detail-cover"><img src="${E(hero)}" alt="${E(a.title||'المقال')}" loading="eager" decoding="async"></div>`:''}</header>
  <div class="qafiyah-article-body q-article-rich-body">${contentHtml(a.content)}</div>
  </article></div>`;
  }catch(e){console.error(e);root.innerHTML='<p class="q-article-error">تعذر تحميل المقال. حاول مرة أخرى لاحقاً.</p>';}}
