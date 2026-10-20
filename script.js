@@ -682,7 +682,7 @@
     function oauthRedirectUrl() {
         // Always return OAuth users to the canonical home page.
         // Supabase then detects the OAuth grant in the URL and persists the session.
-        return "https://alqafiyah.com/";
+        return "https://alqafiyah.com/auth-callback.html";
     }
 
     function normalizePhone(value) {
