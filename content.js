@@ -117,7 +117,7 @@
         if (
             document.getElementById(
                 "articlesContainer"
-            )
+            ) && !window.__QAFIYAH_ARTICLES_V2__
         ) {
 
             jobs.push(
@@ -173,10 +173,10 @@
         // ========================================================
 
         if (
-            document.getElementById(
-                "articleDetail"
-            ) ||
-            page === "article.html"
+            !window.__QAFIYAH_ARTICLES_V2__ && (
+                document.getElementById("articleDetail") ||
+                page === "article.html"
+            )
         ) {
 
             jobs.push(

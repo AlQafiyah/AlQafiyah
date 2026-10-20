@@ -870,6 +870,7 @@ gap: 6px;
 #section-sijal .sj-admin-player-action-panel .sj-admin-card-actions{display:flex;flex-wrap:wrap;gap:10px;}
 @media(max-width:600px){#section-sijal .sj-admin-toolbar{flex-wrap:wrap}#section-sijal .sj-admin-size-control{width:100%;}#section-sijal .sj-admin-player-action-panel .sj-admin-action-fields{grid-template-columns:1fr}}
 </style>
+<link rel="stylesheet" href="article-editor.css?v=20261020-1">
 </head>
 <body>
 <div class="checking-screen" id="checkingScreen">
@@ -5282,24 +5283,11 @@ placeholder="تظهر في قائمة المقالات."
 
 </div>
 
-<div class="form-group full">
-
-<label>
-محتوى المقال كاملًا
-</label>
-
-<textarea
-class="form-control"
-name="content"
-required
-style="min-height:340px;"
->${fieldValue(item,"content")}</textarea>
-
-</div>
+${window.QafiyahArticleEditor?.formHTML() || '<p>تعذر تحميل محرر المقالات. حدّث الصفحة.</p>'}
 
 ${mediaPicker(
 "image_url",
-"صورة المقال",
+"صورة بطاقة المقال — مربعة 1:1 في القائمة (منفصلة تماماً عن الصور داخل المقال)",
 item.image_url,
 "image",
 "articles"
@@ -5973,6 +5961,7 @@ getFormFields(
 type,
 currentEditorItem
 );
+if (type === "article") window.QafiyahArticleEditor?.init(currentEditorItem);
 
 editorModal
 .classList
@@ -6452,6 +6441,18 @@ payloadFromForm(
 formData
 );
 
+if (currentEditorType === "article") {
+  try {
+    const rich = await window.QafiyahArticleEditor.prepare(uploadMedia);
+    payload.content = rich.content;
+    uploadedPaths.push(...rich.uploaded);
+    oldPathsToDelete.push(...rich.oldToDelete);
+  } catch (err) {
+    if (err.articleUploadedPaths) uploadedPaths.push(...err.articleUploadedPaths);
+    throw err;
+  }
+}
+
 const mediaResult =
 await applyMediaToPayload(
 currentEditorType,
@@ -6462,11 +6463,9 @@ if (currentEditorType === "book" && !payload.file_url) {
 throw new Error("يرجى اختيار ملف PDF للكتاب.");
 }
 
-uploadedPaths =
-mediaResult.uploaded;
+uploadedPaths.push(...mediaResult.uploaded);
 
-oldPathsToDelete =
-mediaResult.oldToDelete;
+oldPathsToDelete.push(...mediaResult.oldToDelete);
 
 let result;
 
@@ -7790,6 +7789,7 @@ document.addEventListener('DOMContentLoaded',()=>{loadQAnalytics();setupBulkSele
 })();
 </script>
 
+<script src="article-editor.js?v=20261020-1"></script>
 <script src="admin-extras.js?v=sijal-20261020-admin-r1"></script>
 </body>
 </html>
