@@ -613,6 +613,7 @@ body[data-q-theme]:not([data-q-theme='natural']) .q-contact-socials a:hover{colo
   .side-menu-footer .q-contact-socials a{max-width:32px}
 }
 
+<<<<<<< HEAD
 /* القافية — النهاري: هوية ثنائية اللون، دون التأثير في مظاهر مُجيب المستقلة */
 body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page){
  --q-bg:#FFE8D6;--q-bg-2:#FFE8D6;--q-surface:#FFE8D6;--q-surface-2:#FFE8D6;--q-surface-3:#FFE8D6;
@@ -638,3 +639,37 @@ body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.q-arti
 body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.q-article-category){border:1px solid #35221F;border-radius:6px;padding:1px 7px}
 body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.q-article-cover-empty){background:#35221F!important;color:#FFE8D6!important}
 body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) ::selection{background:#35221F!important;color:#FFE8D6!important}
+=======
+/* النهاري المصحح: الخلفية عاجية، والأسطح البيضاء منفصلة بوضوح.
+   الحفاظ على ألوان أسماء الكتّاب والتصنيفات والتواريخ، وعلى مظاهر مُجيب المستقلة. */
+html[data-q-theme='morning']{background:#f9f4e8!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page){
+ --q-bg:#f9f4e8;--q-bg-2:#f9f4e8;--q-surface:#ffffff;--q-surface-2:#fffaf4;--q-surface-3:#f2e7dc;
+ --q-text:#35221f;--q-heading:#35221f;--q-muted:#756158;--q-border:rgba(53,34,31,.16);
+ --q-accent:#9a5f4c;--q-accent-2:#ad7b79;--q-soft:#f1e3d6;--q-card-hover:#fffaf4;
+ --q-header:#ffffff;--q-header-text:#35221f;--q-input:#ffffff;--q-input-text:#35221f;
+ --q-shadow:rgba(53,34,31,.09);--q-on-accent:#ffffff;--q-overlay:rgba(53,34,31,.45);
+ --q-hero-start:#f9f4e8;--q-hero-end:#f9f4e8;--q-ring:rgba(53,34,31,.16);
+ --color-primary:#35221f;--color-background:#f9f4e8;--color-light:#35221f;
+ --color-card:#ffffff;--color-border:rgba(53,34,31,.16);
+ background:#f9f4e8!important;color:#35221f!important;
+}
+/* الرأس والذيل والقائمة الجانبية: بيضاء وليست بلون الصفحة */
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.site-header,.q-simple-top,.site-footer,.side-menu,.notification-panel,.account-dropdown,.qafiyah-account-dropdown){
+ background:#ffffff!important;color:#35221f!important;
+}
+/* الحقول والبحث والتصنيفات: خلفيات بيضاء وكتابة بنية */
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(input,textarea,select,.form-control,.search-input,.filter-input,.articles-search,.articles-filter,.poets-search,.poets-filter){
+ background-color:#ffffff!important;color:#35221f!important;
+}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(input,textarea,.search-input,.filter-input)::placeholder{color:#756158!important;opacity:1}
+/* تمييز بطاقة المستخدم دون صبغ القائمة الجانبية بالكامل */
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.user-section,.q-side-profile,.side-menu-user,.side-user-card){
+ background:#f9e7da!important;color:#35221f!important;
+}
+/* الحفاظ على التمييز اللوني التحريري للمؤلف والتصنيف والتاريخ */
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page){--qa-author:#a04b32;--qa-category:#a96f48}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.q-article-author-name){color:#a04b32!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.q-article-category){color:#a96f48!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.q-article-date,.qafiyah-card-date,.qafiyah-detail-date){color:#806f64!important}
+>>>>>>> 0ebe628 (Fix daytime theme colors and restore visual contrast)
