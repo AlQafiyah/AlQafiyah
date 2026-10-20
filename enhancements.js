@@ -55,14 +55,14 @@ const fonts={
   alAwwalBold:"'QF Al Awwal Bold Web','Qafiyah Saudi',sans-serif"
 };
 const allowedThemes=new Set(['natural','dark','morning','evening','night']);
-function normalizeTheme(theme){return theme==='light'?'evening':(allowedThemes.has(theme)?theme:'natural')}
+function normalizeTheme(theme){return theme==='light'?'evening':(allowedThemes.has(theme)?theme:'morning')}
 function applyTheme(theme){
   const t=normalizeTheme(theme);
   localStorage.setItem(LS.theme,t);
   document.documentElement.setAttribute('data-q-theme',t);
   document.body?.setAttribute('data-q-theme',t);
   const meta=document.querySelector('meta[name="theme-color"]');
-  const metaColors={natural:'#3E2723',dark:'#1d1815',morning:'#fffaf1',evening:'#332832',night:'#111e2a'};
+  const metaColors={natural:'#3E2723',dark:'#1d1815',morning:'#FFE8D6',evening:'#332832',night:'#111e2a'};
   if(meta)meta.setAttribute('content',metaColors[t]||metaColors.natural);
   if(t==='natural')document.documentElement.style.removeProperty('color-scheme');
   else document.documentElement.style.colorScheme=(t==='morning'?'light':'dark');
@@ -71,7 +71,7 @@ function applyTheme(theme){
 window.QafiyahEnhancements={fonts,applyTheme,normalizeTheme};
 function getJSON(k,f){try{return JSON.parse(localStorage.getItem(k)||'')||f}catch{return f}}
 function setJSON(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function applyPrefs(){let fk=localStorage.getItem(LS.font)||'saudi';if(fk==='aref'){fk='ruqaaRegular';localStorage.setItem(LS.font,fk)}document.documentElement.style.setProperty('--qafiyah-font-family',fonts[fk]||fonts.saudi);applyTheme(localStorage.getItem(LS.theme)||'natural')}
+function applyPrefs(){let fk=localStorage.getItem(LS.font)||'saudi';if(fk==='aref'){fk='ruqaaRegular';localStorage.setItem(LS.font,fk)}document.documentElement.style.setProperty('--qafiyah-font-family',fonts[fk]||fonts.saudi);applyTheme(localStorage.getItem(LS.theme)||'morning')}
 if(document.body)applyPrefs();else document.addEventListener('DOMContentLoaded',applyPrefs);
 
 function typeFromHref(href){if(!href)return null; if(/article\.html\?id=/.test(href))return'article';if(/poet\.html\?id=/.test(href))return'poet';if(/poem\.html\?id=/.test(href))return'poem';return null}

@@ -612,3 +612,29 @@ body[data-q-theme]:not([data-q-theme='natural']) .q-contact-socials a:hover{colo
   .side-menu-footer .q-contact-socials{max-width:280px}
   .side-menu-footer .q-contact-socials a{max-width:32px}
 }
+
+/* القافية — النهاري: هوية ثنائية اللون، دون التأثير في مظاهر مُجيب المستقلة */
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page){
+ --q-bg:#FFE8D6;--q-bg-2:#FFE8D6;--q-surface:#FFE8D6;--q-surface-2:#FFE8D6;--q-surface-3:#FFE8D6;
+ --q-text:#35221F;--q-heading:#35221F;--q-muted:#35221F;--q-border:rgba(53,34,31,.22);
+ --q-accent:#35221F;--q-accent-2:#35221F;--q-soft:#FFE8D6;--q-card-hover:#FFE8D6;
+ --q-header:#FFE8D6;--q-header-text:#35221F;--q-input:#FFE8D6;--q-input-text:#35221F;
+ --q-shadow:rgba(53,34,31,.08);--q-on-accent:#FFE8D6;--q-overlay:rgba(53,34,31,.6);
+ --q-hero-start:#FFE8D6;--q-hero-end:#FFE8D6;--q-ring:rgba(53,34,31,.18);
+ --color-primary:#35221F;--color-background:#FFE8D6;--color-light:#35221F;
+ --color-accent:#35221F;--color-accent-dark:#35221F;--color-secondary:#35221F;
+ --color-gray:#35221F;--color-card:#FFE8D6;--color-border:rgba(53,34,31,.22);
+ background:#FFE8D6!important;color:#35221F!important;
+}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.primary-button,.btn-primary,.profile-save-button,.login-submit,.q-tab.active){background:#35221F!important;color:#FFE8D6!important;border-color:#35221F!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.site-header,.site-footer,.side-menu,.notification-panel,.page-hero,.content-card,.q-settings-card,.qafiyah-content-card,.qafiyah-detail-card,.qafiyah-poet-profile,.about-feature-card,.about-mission-card,.about-service,.about-final-content,.profile-card,.section-card,.quick-card,.quick-item,.welcome-card,.stat-card,.q-fav-card,.articles-empty,.poets-empty,.empty-state,.table-wrapper,.filter-box,.search-box,.q-article-card,.q-article-detail,.q-article-detail-shell){background-color:#FFE8D6!important;color:#35221F!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(input,textarea,select,.form-control,.search-input,.filter-input){background-color:#FFE8D6!important;color:#35221F!important;border-color:#35221F!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(input,textarea,.search-input,.filter-input)::placeholder{color:#35221F!important;opacity:.65}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.site-header a,.site-header button,.site-footer a,.side-menu a,.side-menu button){color:#35221F!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.qafiyah-read-more,.card-arrow,.section-kicker,.section-label,.about-section-heading,.footer-links a){color:#35221F!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.q-article-author-name,.q-article-category){color:#35221F!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page){--qa-author:#35221F;--qa-category:#35221F}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.q-article-author-name){text-decoration:underline;text-decoration-style:solid;text-underline-offset:4px}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.q-article-category){border:1px solid #35221F;border-radius:6px;padding:1px 7px}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :where(.q-article-cover-empty){background:#35221F!important;color:#FFE8D6!important}
+body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) ::selection{background:#35221F!important;color:#FFE8D6!important}
