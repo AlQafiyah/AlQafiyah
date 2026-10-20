@@ -677,7 +677,11 @@ body[data-q-theme='morning']:not(.mu-chat-page):not(.mujeeb-page) :is(.articles-
 .q-fav-tools>*{min-width:0!important;width:100%!important;box-sizing:border-box!important;background:#fff!important;box-shadow:none!important;font-size:clamp(10px,2.7vw,15px)!important;padding-inline:7px!important}
 .q-fav-tools input{padding-inline:10px!important}
 @media(max-width:640px){.q-fav-tools{gap:5px!important}}
-/* Heart-only design on books and article rows */
-.book-row>.q-favorite-btn,.q-article-card>.q-favorite-btn{background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;border-radius:0!important;padding:0!important}
-.book-row>.q-favorite-btn.is-favorite,.q-article-card>.q-favorite-btn.is-favorite{background:transparent!important;border:0!important;color:#b4233b!important}
 .book-row,.q-article-card{position:relative}
+
+/* V13: same circular heart button as poets and poems */
+.book-row>.q-favorite-btn,.q-article-card>.q-favorite-btn{border-radius:50%!important;border:1px solid var(--q-border)!important;background:var(--q-surface)!important;box-shadow:none!important;backdrop-filter:none!important;padding:0!important}
+.book-row>.q-favorite-btn.is-favorite,.q-article-card>.q-favorite-btn.is-favorite{color:#b4233b!important;background:#fff1f3!important;border-color:#f1b5c0!important}
+/* V13: five favorites tabs in exactly one row on mobile */
+#favoriteTabs{display:flex!important;flex-wrap:nowrap!important;gap:clamp(3px,1vw,8px)!important;width:100%;min-width:0;justify-content:space-between}
+#favoriteTabs>.q-tab{flex:1 1 0!important;min-width:0!important;white-space:nowrap!important;padding:10px 3px!important;text-align:center;font-size:clamp(11px,2.8vw,16px)!important}
