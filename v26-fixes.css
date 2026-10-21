@@ -1,0 +1,18 @@
+/* V26: preserve original site iconography, compact admin layout */
+:root{--q-admin-brown:#35221F}
+.admin-sidebar{background:#35221F!important}
+#section-dashboard .welcome-card h2{color:#35221F!important}
+#section-dashboard,#section-dashboard .content-card,#section-dashboard .quick-card,#section-dashboard .dashboard-panels{min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
+#section-dashboard .quick-card{overflow:hidden!important}
+#v21TrafficChart{width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:auto!important;box-sizing:border-box!important}
+#v21TrafficTable{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;max-height:260px!important;overflow:auto!important;box-sizing:border-box!important}
+#v21TrafficTable .v26-traffic-table{width:100%!important;min-width:0!important;max-width:100%!important;table-layout:fixed!important;border-collapse:collapse!important}
+#v21TrafficTable .v26-traffic-table th,#v21TrafficTable .v26-traffic-table td{width:50%!important;white-space:normal!important;overflow-wrap:anywhere!important;padding:8px!important}
+.admin-section .toolbar{display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;gap:8px!important;align-items:center!important;overflow-x:auto!important;max-width:100%!important}
+.admin-section .toolbar>*{min-width:130px!important;flex:0 0 auto!important}
+.admin-section .toolbar .search-box{min-width:170px!important;flex:1 0 170px!important}
+.admin-section .card-header .table-actions{display:flex!important;flex-flow:row nowrap!important;gap:8px!important;overflow-x:auto!important}
+.admin-section .card-header .table-actions>*{flex-shrink:0!important}
+.admin-section .table-wrapper{max-width:100%!important;overflow-x:auto!important}
+.q-legal-footer-links,.footer-bottom,.site-footer .footer-bottom{display:none!important}
+[data-q-social-placeholder][hidden],[data-q-email-placeholder][hidden]{display:none!important}

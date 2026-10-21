@@ -1,0 +1,5 @@
+/* القافية V25 — تعديل عناصر التواصل الأصلية دون تغيير الأيقونات */
+.q-legal-footer-links,.site-footer .footer-bottom{display:none!important}
+.q-contact-email,.q-side-email{display:block;text-align:center;margin:10px auto 14px;color:inherit;text-decoration:none}
+.q-contact-email:hover,.q-side-email:hover{text-decoration:underline}
+[data-q-social-placeholder][hidden],[data-q-email-placeholder][hidden]{display:none!important}

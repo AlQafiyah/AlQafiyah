@@ -136,10 +136,7 @@ function qFooterHTML(){
         <div class="footer-socials q-contact-socials">${qSocialLinks('')}</div>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>© 2026 القافية — جميع الحقوق محفوظة</p>
-      <span>موسوعة الشعر والأدب العربي</span>
-    </div>`;
+    `;
 }
 function qSideFooterHTML(){
   return `
@@ -148,7 +145,7 @@ function qSideFooterHTML(){
       <a href="#" class="q-side-email" data-q-email-placeholder aria-label="البريد الإلكتروني">البريد الإلكتروني</a>
       <div class="side-menu-socials q-contact-socials">${qSocialLinks('')}</div>
     </div>
-    <p>© القافية</p>`;
+    `;
 }
 window.QafiyahEnhancements.footerHTML=qFooterHTML;
 window.QafiyahEnhancements.sideFooterHTML=qSideFooterHTML;
@@ -183,6 +180,7 @@ function ensureUnifiedFooterAndContact(){
     if(scripts.length) document.body.insertBefore(footer,scripts[0]); else document.body.appendChild(footer);
   }
   footer.innerHTML=qFooterHTML();
+  document.querySelectorAll('.q-legal-footer-links').forEach(el=>el.remove());
 
   // تواصل معنا في أسفل القائمة الجانبية ذات الثلاثة خطوط.
   const sideMenu=document.querySelector('.side-menu');
@@ -196,6 +194,14 @@ function ensureUnifiedFooterAndContact(){
     sideFooter.innerHTML=qSideFooterHTML();
   }
 
+  // إزالة أي روابط اجتماعية مكررة خارج الأيقونات الأصلية.
+  document.querySelectorAll('.footer-socials,.side-menu-socials').forEach(group=>{
+    const seen=new Set();
+    group.querySelectorAll('a').forEach(a=>{
+      const key=a.dataset.qSocialPlaceholder;
+      if(!key || seen.has(key))a.remove(); else seen.add(key);
+    });
+  });
   // الروابط الاجتماعية placeholders إلى أن يضيف المالك اليوزرات/الروابط.
   document.querySelectorAll('[data-q-social-placeholder],[data-q-email-placeholder]').forEach(a=>{
     if(a.getAttribute('href')==='#'){
