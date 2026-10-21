@@ -692,6 +692,25 @@
         value
     ) {
 
+        const poemBlocksPrefix = 'QAFIYAH_POEM_BLOCKS_V1\n';
+        if (String(value || '').startsWith(poemBlocksPrefix)) {
+            try {
+                const blocks = JSON.parse(String(value).slice(poemBlocksPrefix.length)).blocks || [];
+                return blocks.map(block => {
+                    if (block.type === 'paragraph') return String(block.text || '').split(/\r?\n/).map(line => line.trim() ? `<p class="qafiyah-poem-line">${escapeHtml(line)}</p>` : '<div class="qafiyah-poem-gap" aria-hidden="true"></div>').join('');
+                    if (block.type === 'heading') return `<h2 class="q-poem-block-heading">${escapeHtml(block.text || '')}</h2>`;
+                    if (block.type === 'quote') return `<blockquote class="q-poem-block-quote">${escapeHtml(block.text || '').replace(/\n/g,'<br>')}</blockquote>`;
+                    if (block.type === 'image' || block.type === 'video') {
+                        const url = safeUrl(block.url);
+                        if (!url) return '';
+                        const size = ['square','landscape','wide','full'].includes(block.size) ? block.size : 'wide';
+                        const caption = escapeHtml(block.caption || '');
+                        return `<figure class="q-article-media q-article-media-${size}">${block.type === 'image' ? `<img src="${escapeHtml(url)}" loading="lazy" alt="${caption}">` : `<video src="${escapeHtml(url)}" controls playsinline></video>`}${caption ? `<figcaption>${caption}</figcaption>` : ''}</figure>`;
+                    }
+                    return '';
+                }).join('');
+            } catch (error) { console.warn('poem blocks',error); return ''; }
+        }
         return String(
             value ||
             ""
@@ -1152,7 +1171,8 @@
         url,
         alt,
         className =
-            "qafiyah-detail-image"
+            "qafiyah-detail-image",
+        imageShape = "square"
     ) {
 
         const safe =
@@ -1175,7 +1195,7 @@
                     escapeHtml(
                         className
                     )
-                }"
+                }" data-q-image-shape="${["square","portrait","landscape"].includes(imageShape)?imageShape:"square"}"
 
                 src="${
                     escapeHtml(
@@ -2140,15 +2160,14 @@
         function card(poet) {
             return `
                 <article class="content-card qafiyah-content-card qafiyah-poet-card">
-                    ${renderImage(poet.image_url, poet.name, "qafiyah-list-thumbnail")}
+                    ${renderImage(poet.image_url, poet.name, "qafiyah-list-thumbnail",poet.image_shape)}
                     <div class="qafiyah-card-body">
                         ${poet.era ? `<span class="section-label">${escapeHtml(poet.era)}</span>` : ""}
                         <h2 class="qafiyah-card-title">
                             <a href="poet.html?id=${encodeURIComponent(poet.id)}">${escapeHtml(poet.name || "بدون اسم")}</a>
                         </h2>
-                        ${poet.nickname ? `<p class="qafiyah-poet-nickname">${escapeHtml(poet.nickname)}</p>` : ""}
-                        ${poet.bio ? `<p class="qafiyah-card-summary">${escapeHtml(shortText(poet.bio,170))}</p>` : ""}
-                        <p class="qafiyah-card-meta">${Number(poet.poem_count || 0)} ${Number(poet.poem_count || 0) === 1 ? "قصيدة" : "قصائد"}</p>
+                        <div class="q5-poet-meta"><span>${escapeHtml(poet.nickname || 'دون لقب')}</span><span>${Number(poet.poem_count || 0)} ${Number(poet.poem_count || 0) === 1 ? 'قصيدة' : 'قصائد'}</span><span>${escapeHtml(poet.era || 'غير مصنف')}</span></div>
+                        ${poet.bio && !String(poet.bio).startsWith('QAFIYAH_ARTICLE_BLOCKS_V1') ? `<p class="qafiyah-card-summary">${escapeHtml(shortText(poet.bio,120))}</p>` : ''}
                         <a class="qafiyah-read-more" href="poet.html?id=${encodeURIComponent(poet.id)}">صفحة الشاعر</a>
                     </div>
                 </article>`;
@@ -2223,7 +2242,7 @@
 
                 let request = db
                     .from("poets")
-                    .select("id,name,nickname,era,bio,image_url,is_featured,poem_count")
+                    .select("id,name,nickname,era,bio,image_url,image_shape,is_featured,poem_count")
                     .order("is_featured", {ascending:false})
                     .order("name", {ascending:true})
                     .range(from, to);
@@ -2237,7 +2256,7 @@
                 if (result.error) {
                     // يضمن استمرار النسخة القديمة حتى تشغيل ملف الترقية SQL.
                     const message = String(result.error.message || "");
-                    if (/search_text|poem_count/i.test(message)) {
+                    if (/search_text|poem_count|image_shape|display_name_mode/i.test(message)) {
                         await legacyLoadAll();
                         return;
                     }
@@ -2247,6 +2266,12 @@
                 const batch = result.data || [];
                 hasMore = batch.length > PAGE_SIZE;
                 const visible = batch.slice(0, PAGE_SIZE);
+                // Count linked poems from their actual ownership, not a stale cached field.
+                await Promise.all(visible.map(async poet => {
+                    const counted = await db.from('poems').select('id', {count:'exact', head:true}).eq('poet_id', poet.id);
+                    if (!counted.error && typeof counted.count === 'number') poet.poem_count = counted.count;
+                }));
+                if (serial !== requestSerial) return;
                 rows = reset ? visible : rows.concat(visible);
                 page += 1;
                 paint();
@@ -2318,6 +2343,20 @@
         let busy = false;
         let timer = null;
         let serial = 0;
+        const poetLookup = new Map();
+        async function resolvePoets(poems) {
+            const ids = [...new Set(poems.map(row => row.poet_id).filter(id => id !== null && id !== undefined))];
+            const missing = ids.filter(id => !poetLookup.has(String(id)));
+            if (missing.length) {
+                const {data,error} = await db.from('poets').select('id,name,nickname,display_name_mode').in('id',missing);
+                if (!error) (data||[]).forEach(poet => poetLookup.set(String(poet.id),poet));
+                else {
+                    // Compatible with databases that have not yet added the optional display mode.
+                    const retry = await db.from('poets').select('id,name,nickname').in('id',missing);
+                    (retry.data||[]).forEach(poet => poetLookup.set(String(poet.id),poet));
+                }
+            }
+        }
 
         const sentinel = document.createElement("div");
         sentinel.className = "qafiyah-load-sentinel";
@@ -2325,10 +2364,13 @@
         container.insertAdjacentElement("afterend", sentinel);
 
         function card(poem) {
-            const meta = [poem.poet ? `<span class="poem-meta-poet">${escapeHtml(poem.poet)}</span>` : "", poem.era ? `<span class="poem-meta-era">${escapeHtml(poem.era)}</span>` : ""].filter(Boolean).join(' <span class="poem-meta-separator">•</span> ');
+            const poet = poetLookup.get(String(poem.poet_id));
+            const name = poet ? ((poet.display_name_mode === 'nickname' && poet.nickname) ? poet.nickname : poet.name) : poem.poet;
+            const poetLabel = name ? (poet?.id ? `<a class="poem-meta-poet" href="poet.html?id=${encodeURIComponent(poet.id)}">${escapeHtml(name)}</a>` : `<span class="poem-meta-poet">${escapeHtml(name)}</span>`) : '';
+            const meta = [poetLabel, poem.era ? `<span class="poem-meta-era">${escapeHtml(poem.era)}</span>` : '',poem.category ? `<span class="poem-meta-category">${escapeHtml(poem.category)}</span>` : ''].filter(Boolean).join(' <span class="poem-meta-separator">•</span> ');
             return `
                 <article class="content-card qafiyah-content-card qafiyah-poem-index-card">
-                    ${renderImage(poem.image_url, poem.title, "qafiyah-card-image")}
+                    ${renderImage(poem.image_url, poem.title, "qafiyah-card-image",poem.image_shape)}
                     <div class="qafiyah-card-body">
                         ${poem.category ? `<span class="section-label">${escapeHtml(poem.category)}</span>` : ""}
                         <h2 class="qafiyah-card-title"><a href="poem.html?id=${encodeURIComponent(poem.id)}">${escapeHtml(poem.title || "بدون عنوان")}</a></h2>
@@ -2383,7 +2425,7 @@
                 const selectedTopic = String(topic?.value || "");
 
                 let request = db.from("poems")
-                    .select("id,title,poet,era,category,image_url,is_featured,created_at")
+                    .select("id,title,poet,poet_id,era,category,image_url,image_shape,is_featured,created_at")
                     .order("is_featured", {ascending:false})
                     .order("created_at", {ascending:false})
                     .range(from,to);
@@ -2404,6 +2446,8 @@
                 const batch = result.data || [];
                 hasMore = batch.length > PAGE_SIZE;
                 const visible = batch.slice(0, PAGE_SIZE);
+                await resolvePoets(visible);
+                if (token !== serial) return;
                 rows = reset ? visible : rows.concat(visible);
                 page += 1;
                 paint();
@@ -2674,7 +2718,11 @@
     // الشاعر - التفاصيل
     // ============================================================
 
-    async function initPoetDetail() {
+    function q27RenderBiography(raw){
+ const prefix='QAFIYAH_ARTICLE_BLOCKS_V1\n';if(!String(raw||'').startsWith(prefix))return formatLongText(raw);
+ try{const blocks=JSON.parse(raw.slice(prefix.length)).blocks||[];return blocks.map(b=>{const text=escapeHtml(b.text||'').replace(/\n/g,'<br>');if(b.type==='paragraph')return `<p>${text}</p>`;if(b.type==='heading')return `<h2>${text}</h2>`;if(b.type==='quote')return `<blockquote>${text}</blockquote>`;if(b.type==='image'||b.type==='video'){const url=safeUrl(b.url);if(!url)return '';const size=['square','landscape','wide','full'].includes(b.size)?b.size:'wide';const caption=escapeHtml(b.caption||'');return `<figure class="q-article-media q-article-media-${size}">${b.type==='image'?`<img src="${escapeHtml(url)}" loading="lazy" alt="${caption}">`:`<video src="${escapeHtml(url)}" controls playsinline></video>`}${caption?`<figcaption>${caption}</figcaption>`:''}</figure>`}return ''}).join('')}catch(e){console.warn('poet biography',e);return ''}
+}
+async function initPoetDetail() {
 
         const db =
             window.supabaseClient;
@@ -2987,9 +3035,7 @@
                                             class="qafiyah-article-body">
 
                                             ${
-                                                formatLongText(
-                                                    poet.bio
-                                                )
+                                                q27RenderBiography(poet.bio)
                                             }
 
                                         </div>
@@ -3022,6 +3068,7 @@
 
                         </div>
 
+                        ${new URLSearchParams(location.search).get('all')==='1'?`<div class="q27-poet-search"><a href="poet.html?id=${encodeURIComponent(poet.id)}">العودة إلى الشاعر</a><input id="q27PoetSearch" type="search" placeholder="ابحث باسم القصيدة أو جزء من أبياتها" aria-label="البحث في قصائد الشاعر"></div>`:''}
                         ${
                             poems.length
 
@@ -3032,7 +3079,7 @@
 
                                         ${
                                             poems
-
+                                                .slice(0,new URLSearchParams(location.search).get('all')==='1'?poems.length:5)
                                                 .map(
                                                     function (
                                                         poem
@@ -3040,12 +3087,13 @@
 
                                                         return `
 
-                                                            <article
+                                                            <article data-q27-poem-search="${escapeHtml((poem.title||'')+' '+(poem.content||''))}"
                                                                 class="
                                                                     content-card
                                                                     qafiyah-content-card
                                                                 ">
 
+                                                                ${renderImage(poem.image_url, poem.title, "qafiyah-card-image", poem.image_shape)}
                                                                 <div
                                                                     class="qafiyah-card-body">
 
@@ -3131,11 +3179,14 @@
                                 `
                         }
 
+                        ${poems.length>5&&new URLSearchParams(location.search).get('all')!=='1'?`<a class="q27-all-poems" href="poet.html?id=${encodeURIComponent(poet.id)}&all=1">جميع قصائده (${poems.length})</a>`:''}
                     </section>
 
                 </section>
 
             `;
+            const q27Search=host.querySelector('#q27PoetSearch');
+            if(q27Search)q27Search.addEventListener('input',()=>{const term=normalizeArabic(q27Search.value);host.querySelectorAll('[data-q27-poem-search]').forEach(card=>{card.hidden=!!term&&!normalizeArabic(card.dataset.q27PoemSearch).includes(term)})});
 
         } catch (
             error
@@ -3309,11 +3360,8 @@
 
 
             const poetName =
-                poet?.name
-                ||
-                poem.poet
-                ||
-                "";
+                ((poet?.display_name_mode === 'nickname' && poet?.nickname) ? poet.nickname : poet?.name)
+                || poem.poet || "";
 
 
             const poetHref =

@@ -1,0 +1,21 @@
+/* المرحلة الرابعة: تحسينات قارئ القصائد دون المساس بالمقالات */
+#poemDetail .q-reader-toolbar{display:flex!important;flex-flow:row nowrap!important;align-items:center;gap:8px;max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:thin;padding-block:8px}
+#poemDetail .q-reader-toolbar>*{flex-shrink:0}
+#poemDetail .q-reader-content{min-width:0;max-width:100%;overflow-x:auto}
+#poemDetail .q-reader-content .q-reader-verse{overflow-wrap:normal!important;word-break:normal!important}
+#poemDetail .q-reader-content.q-poem-original .q-reader-verse,#poemDetail .q-reader-content.q-poem-star .q-reader-verse{white-space:nowrap!important;overflow-x:auto!important;max-width:100%}
+#poemDetail .q-reader-content.q-poem-diwan .q-reader-first,#poemDetail .q-reader-content.q-poem-diwan .q-reader-second{white-space:nowrap!important;overflow-x:auto!important;max-width:100%}
+#poemDetail .q-reader-content.q-poem-diwan .q-reader-first{text-align:right!important;align-self:flex-start!important}
+#poemDetail .q-reader-content.q-poem-diwan .q-reader-second{text-align:left!important;align-self:flex-end!important}
+#poemDetail .q-reader-icon.active{color:#a13447;fill:none}
+@media(max-width:640px){#poemDetail .q-reader-toolbar{padding-inline:4px}#poemDetail .q-reader-content{padding-inline:6px!important}}
+
+/* معلومات القصيدة في سطر واحد مع تمرير آمن عند ضيق العرض */
+.qafiyah-poem-index-card .qafiyah-card-meta{display:flex;align-items:center;flex-wrap:nowrap;gap:6px;overflow-x:auto;white-space:nowrap;max-width:100%;scrollbar-width:none}
+.qafiyah-poem-index-card .qafiyah-card-meta::-webkit-scrollbar{display:none}
+.qafiyah-poem-index-card .poem-meta-poet{color:#35221f;text-decoration:none;font-weight:700}
+.qafiyah-poem-index-card .poem-meta-poet:hover{text-decoration:underline}
+.qafiyah-poem-index-card .poem-meta-era{opacity:.8}
+.qafiyah-poem-index-card .poem-meta-category{opacity:.9}
+#poemDetail .q-reader-content .qafiyah-poem-line{white-space:nowrap;overflow-x:auto;max-width:100%;overflow-wrap:normal;word-break:normal}
+#poemDetail .q-reader-content.q-poem-diwan .qafiyah-poem-line:has(.q-reader-first){display:flex;flex-direction:column;gap:8px}

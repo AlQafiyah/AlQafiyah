@@ -1,0 +1,4 @@
+/* منع خروج أدوات القراءة عن الشاشة والحفاظ على الوسائط داخل القصائد */
+.q-reader-content img,.q-reader-content video,.q-reader-content iframe{max-width:100%;height:auto}
+.q-reader-toolbar{max-width:100%;box-sizing:border-box;overflow-x:auto;overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch}
+.q-reader-content .q-reader-verse{white-space:nowrap;overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}

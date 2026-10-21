@@ -1,0 +1,11 @@
+/* V29: تحسينات محددة دون المساس ببطاقات المقالات العامة أو محررها */
+:root{--q29-brown:#35221F;--q29-cream:#FBF4E8}
+.admin-section .table-wrapper{min-width:0!important;max-width:100%!important;overflow-x:auto!important}
+.admin-section .data-table{border-collapse:separate;border-spacing:0;min-width:680px}
+.admin-section .data-table th,.admin-section .data-table td{box-sizing:border-box;vertical-align:middle!important}
+.admin-section .data-table td:last-child{min-width:135px;max-width:280px;white-space:normal!important}
+.admin-section .data-table td:last-child button,.admin-section .data-table td:last-child a{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;margin:2px;max-width:100%;box-sizing:border-box}
+.q-reader-content.q-poem-star .q-reader-verse,.q-reader-content.q-poem-original .q-reader-verse{white-space:nowrap!important;max-width:100%;overflow-x:auto!important;overscroll-behavior-x:contain}
+[data-q-social-placeholder][hidden],[data-q-email-placeholder][hidden]{display:none!important}
+.book-viewer-stage{touch-action:pan-x pan-y;min-width:0}
+@media(max-width:650px){.admin-section .data-table td:last-child{min-width:125px}.book-viewer{width:auto!important;max-width:calc(100vw - 10px)!important}}

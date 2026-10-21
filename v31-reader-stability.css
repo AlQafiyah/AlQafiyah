@@ -1,0 +1,4 @@
+/* تحسينات حصرية لبطاقات الشعراء والقصائد وقارئ الأبيات */
+.q-reader-content.q-poem-star .q-reader-verse,.q-reader-content.q-poem-original .q-reader-verse{white-space:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;max-width:100%;-webkit-overflow-scrolling:touch}
+.q-reader-content .q-reader-verse{box-sizing:border-box;min-width:0}
+@media(max-width:720px){.q-reader-toolbar{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap!important}.q-reader-toolbar>*{flex:0 0 auto}}

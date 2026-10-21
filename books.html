@@ -40,10 +40,14 @@
 <meta name="twitter:description" content="القافية، أكبر موسوعة للشعر والأدب العربي في العالم؛ تجمع القصائد والشعراء والمقالات والكتب، ومُجيب، أول ذكاء اصطناعي صُمّم للأدب والشعر العربي، إلى جانب ألعاب ثقافية.">
 <meta name="twitter:image" content="https://alqafiyah.com/social-preview.png?v=14">
 <link rel="stylesheet" href="v25-social.css?v=25">
+<link rel="stylesheet" href="v28-completion.css?v=28"><link rel="stylesheet" href="v29-final.css?v=29"><link rel="stylesheet" href="v33-responsive-polish.css?v=33">
+<link rel="stylesheet" href="v34-layout-stability.css">
+<link rel="stylesheet" href="qafiyah-phase1.css?v=2">
+<link rel="stylesheet" href="qafiyah-phase67.css">
 </head>
 <body>
 <script>(function(){try{var t=localStorage.getItem('qafiyah_theme')||'morning';if(t==='light')t='evening';if(!/^(natural|dark|morning|evening|night)$/.test(t))t='natural';document.documentElement.setAttribute('data-q-theme',t);document.body.setAttribute('data-q-theme',t)}catch(e){}})();</script>
-<header class="site-header qv2-header"><div class="qv2-header-inner"><button class="menu-button" id="booksMenuButton" type="button" aria-label="فتح القائمة"><span></span><span></span><span></span></button><a class="qv2-header-title" href="index.html">القافية</a></div></header>
+<header class="site-header"><div class="header-container"><button class="menu-button" id="booksMenuButton" type="button" aria-label="فتح القائمة" aria-expanded="false"><span></span><span></span><span></span></button><a href="index.html" class="site-logo" aria-label="القافية - الصفحة الرئيسية">قافية</a><div class="header-actions"><button class="notification-button" id="notificationButton" type="button" aria-label="الإشعارات"><svg class="notification-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span class="notification-count" id="notificationCount">0</span></button><button class="login-button" id="loginButton" type="button">تسجيل الدخول</button></div></div></header>
 <div class="menu-overlay" id="booksMenuOverlay"></div>
 <aside class="side-menu qv2-side-menu" id="booksSideMenu" aria-hidden="true">
 <div class="side-menu-header"><h2>القافية</h2><button class="close-menu-button" id="booksCloseMenu" type="button" aria-label="إغلاق">×</button></div>
@@ -74,7 +78,7 @@
 <div class="book-viewer-top">
 <button class="book-viewer-btn" id="bookClose" type="button" aria-label="إغلاق">×</button>
 <div class="book-viewer-title" id="bookViewerTitle">—</div>
-<div class="book-viewer-actions">
+<div class="book-viewer-actions"><button class="book-viewer-btn" id="bookShare" type="button" aria-label="مشاركة الكتاب" title="مشاركة الكتاب"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5M8 13l8 5"/></svg></button><button class="book-viewer-btn" id="bookLock" type="button" aria-label="تثبيت التكبير" title="تثبيت التكبير"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></button><button class="book-viewer-btn" id="bookThumbnails" type="button" aria-label="التنقل السريع بين الصفحات" title="التنقل السريع"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16M4 12h16M4 19h16"/></svg></button>
 <button class="book-viewer-btn" id="bookZoomOut" type="button" aria-label="تصغير">−</button><span class="book-zoom-label" id="bookZoomLabel">100%</span><button class="book-viewer-btn" id="bookZoomIn" type="button" aria-label="تكبير">+</button>
 <button class="book-viewer-btn" id="bookFullscreen" type="button" aria-label="ملء الشاشة"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path></svg></button>
 </div>
@@ -82,13 +86,13 @@
 <button class="book-viewer-nav book-viewer-prev" id="bookPrev" type="button" aria-label="الصفحة السابقة">→</button>
 <button class="book-viewer-nav book-viewer-next" id="bookNext" type="button" aria-label="الصفحة التالية">←</button>
 <div class="book-viewer-stage" id="bookStage"><div class="book-viewer-message" id="bookViewerMessage">جاري فتح الكتاب...</div><div class="book-viewer-canvas-wrap" id="bookCanvasWrap" hidden><canvas id="bookCanvas"></canvas></div></div>
-<div class="book-viewer-bottom"><button class="book-viewer-btn" id="bookBottomPrev" type="button" aria-label="السابق">→</button><span class="book-page-count" id="bookPageCount">0 / 0</span><button class="book-viewer-btn" id="bookBottomNext" type="button" aria-label="التالي">←</button></div>
+<div class="book-quick-nav" id="bookQuickNav" hidden><input id="bookPageSlider" type="range" min="1" max="1" value="1" aria-label="الانتقال إلى صفحة"><input id="bookPageInput" type="number" min="1" value="1" aria-label="رقم الصفحة"><button id="bookGoPage" class="book-viewer-btn" type="button">اذهب</button></div><div class="book-viewer-bottom"><button class="book-viewer-btn" id="bookBottomPrev" type="button" aria-label="السابق">→</button><span class="book-page-count" id="bookPageCount">0 / 0</span><button class="book-viewer-btn" id="bookBottomNext" type="button" aria-label="التالي">←</button></div>
 </div>
 <script src="enhancements.js?v=20261020-v12"></script>
 <script src="qafiyah-v2.js?v=revolution-1"></script>
-<script src="books.js?v=20261020-v12"></script>
+<link rel="stylesheet" href="v27-final.css?v=27"><script src="books.js?v=20261020-v12"></script>
 <script src="qafiyah-auth-final.js?v=20260922-2"></script>
 <script src="qafiyah-new-nav.js?v=sijal-20261019" defer></script>
 <script src="qafiyah-public-menu.js?v=1" defer></script>
-<script defer src="v21-public.js"></script></body>
+<script defer src="v21-public.js"></script><script defer src="qafiyah-phase1.js?v=2"></script></body>
 </html>

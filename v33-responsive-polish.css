@@ -1,0 +1,14 @@
+/* V33: containment for management tables and reader controls; no article design changes. */
+@media (max-width: 900px) {
+  .q-reader-toolbar { display:flex; flex-wrap:nowrap!important; overflow-x:auto; max-width:100%; scrollbar-width:thin; }
+  .q-reader-toolbar > * { flex:0 0 auto; }
+}
+.q-reader-content, .q-reader-content * { box-sizing:border-box; }
+.q-reader-content img, .q-reader-content video { max-inline-size:100%; object-fit:contain; }
+.q-reader-verse { max-inline-size:100%; overflow-x:auto; overscroll-behavior-x:contain; }
+.v23-social-card, .v23-social-item { max-width:100%; box-sizing:border-box; }
+.v23-social-item small { overflow-wrap:anywhere; }
+/* Keep buttons associated with their table cells instead of widening the page. */
+#admin-content table, .admin-main table { max-width:100%; }
+#admin-content td, .admin-main td { overflow-wrap:anywhere; }
+#admin-content td button, .admin-main td button { max-width:100%; }

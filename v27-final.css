@@ -1,0 +1,53 @@
+/* V27 — تنسيق مخصص دون تعديل محرر المقالات أو بطاقاتها */
+:root{--q27-cream:#FBF4E8;--q27-brown:#35221F}
+#section-dashboard .welcome-card{background:#FBF4E8!important;color:#35221F!important;border:1px solid rgba(53,34,31,.12)!important}
+#section-dashboard .welcome-card h2,#section-dashboard .welcome-card p{color:#35221F!important}
+#articlesLayoutToolbar{display:flex!important;align-items:center!important;gap:12px!important;padding:14px 18px!important;flex-wrap:nowrap!important;max-width:100%!important;overflow-x:auto!important}
+#articlesLayoutToolbar .filter-box,#articlesLayoutToolbar .table-actions{flex:0 0 auto!important;margin:0!important}
+#articlesLayoutToolbar select{min-width:210px;max-width:100%}
+.admin-section .table-wrapper{max-width:100%!important;overflow-x:auto!important;overscroll-behavior-x:contain}
+.admin-section .data-table{width:100%;min-width:680px;table-layout:auto}
+.admin-section .data-table th,.admin-section .data-table td{vertical-align:middle!important;text-align:right!important;white-space:nowrap!important;padding:12px 10px!important}
+.admin-section .data-table td:last-child{min-width:130px;white-space:nowrap!important}
+.admin-section .data-table td:last-child .btn{font-size:12px!important;padding:7px 10px!important;min-width:0!important;white-space:nowrap!important}
+.admin-section .card-header{min-width:0!important;gap:12px!important}
+.admin-section .card-header .table-actions{display:flex!important;flex-wrap:nowrap!important;gap:7px!important;overflow-x:auto!important;max-width:100%!important}
+.admin-section .toolbar{display:flex!important;align-items:center!important;flex-wrap:nowrap!important;gap:10px!important;max-width:100%!important;overflow-x:auto!important}
+.admin-section .toolbar .search-box{flex:1 0 180px!important;min-width:180px!important}
+.admin-section .toolbar .filter-box{flex:0 0 160px!important;min-width:160px!important}
+.book-viewer{inset:clamp(10px,3vh,28px) clamp(8px,4vw,58px)!important;border-radius:16px!important;overflow:hidden!important;box-shadow:0 20px 90px #0008!important}
+.book-viewer:fullscreen{inset:0!important;border-radius:0!important}
+.book-viewer-stage{min-height:0!important;align-items:center!important;overflow:auto!important}
+.book-viewer-canvas-wrap{max-width:none!important;flex:0 0 auto!important}
+.book-quick-nav{display:flex;align-items:center;gap:12px;min-height:50px;padding:8px 15px;background:#29211f;direction:ltr}
+.book-quick-nav[hidden]{display:none!important}.book-quick-nav input[type=range]{flex:1;min-width:0}.book-quick-nav input[type=number]{width:72px;border-radius:8px;padding:7px;background:#fff;color:#35221F;border:0;text-align:center}
+.book-viewer-btn.is-active{background:#FBF4E8!important;color:#35221F!important}
+.book-viewer-actions{flex-wrap:wrap;justify-content:flex-end}
+.q-reader-toolbar{max-width:100%!important;display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;scrollbar-width:thin;overscroll-behavior-x:contain}
+.q-reader-toolbar>*{flex-shrink:0!important}
+.q-reader-content.q-poem-original .q-reader-verse{white-space:nowrap!important;overflow-x:auto!important;overflow-wrap:normal!important}
+.q-reader-content.q-poem-diwan .q-reader-first,.q-reader-content.q-poem-diwan .q-reader-second{white-space:nowrap!important;overflow-x:auto!important;max-width:100%!important}
+#poemDetail[data-q-reader-theme=night],#poemDetail[data-q-reader-theme=dark]{background:#201c1b!important;color:#f5ebe3!important;border-radius:15px}
+#poemDetail[data-q-reader-theme=morning]{background:#FBF4E8!important;color:#35221F!important;border-radius:15px}
+#poemDetail[data-q-reader-theme=evening]{background:#e3c9b4!important;color:#35221F!important;border-radius:15px}
+#poemDetail[data-q-reader-theme=natural]{background:#fdfbf7!important;color:#35221F!important;border-radius:15px}
+@media(max-width:650px){.book-viewer{inset:8px 5px!important;border-radius:12px!important}.book-viewer-top{gap:5px!important;padding:7px!important}.book-viewer-btn{width:35px!important;height:35px!important}.book-viewer-title{font-size:14px!important}.book-viewer-stage{padding:8px 4px!important}.admin-section .card-header{flex-wrap:wrap!important}.admin-section .card-header .table-actions{width:100%!important}.admin-section .table-wrapper{width:100%!important}}
+/* بطاقات الشعراء والقصائد: المقاس المرئي بدون إطار للصورة الشفافة */
+.qafiyah-poets-list .qafiyah-poet-card,.qafiyah-poems-list .qafiyah-poem-index-card{height:auto!important;min-height:0!important;align-items:center!important}
+.qafiyah-poets-list .qafiyah-poet-card .qafiyah-card-body{display:flex!important;flex-direction:column!important;gap:8px!important;justify-content:center!important;padding:16px!important}
+.qafiyah-poets-list .qafiyah-poet-card .qafiyah-card-body>*{margin-block:0!important}
+.qafiyah-poets-list .qafiyah-poet-card .qafiyah-list-thumbnail,.qafiyah-poem-index-card .qafiyah-card-image{object-fit:contain!important;background:transparent!important;border:0!important;box-shadow:none!important}
+.qafiyah-poets-list .qafiyah-poet-card .qafiyah-card-meta{white-space:normal!important}
+.qafiyah-related-section{max-width:100%!important;min-width:0!important}
+.qafiyah-related-section .qafiyah-list-grid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))!important;gap:14px!important}
+.qafiyah-related-section .qafiyah-content-card{height:auto!important;min-height:0!important}
+.q27-poet-search{display:flex;align-items:center;gap:12px;margin:15px 0;flex-wrap:wrap}
+.q27-poet-search a,.q27-all-poems{color:var(--q27-brown);font-weight:700;text-decoration:none}
+.q27-poet-search input{flex:1;min-width:180px;padding:12px;border:1px solid #d8c5b5;border-radius:12px;font:inherit;background:var(--q27-cream);color:var(--q27-brown)}
+.q27-all-poems{display:block;width:max-content;max-width:100%;margin:18px auto;padding:12px 20px;border:1px solid #b8a393;border-radius:12px;background:var(--q27-cream)}
+.qafiyah-biography .qafiyah-article-body figure{margin:24px auto;max-width:100%;text-align:center}
+.qafiyah-biography .qafiyah-article-body figure img,.qafiyah-biography .qafiyah-article-body figure video{display:block;width:100%;height:auto;max-height:70vh;object-fit:contain;border-radius:12px}
+.qafiyah-biography .qafiyah-article-body .q-article-media-square{max-width:480px;aspect-ratio:1}
+.qafiyah-biography .qafiyah-article-body .q-article-media-landscape{max-width:720px;aspect-ratio:4/3}
+.qafiyah-biography .qafiyah-article-body .q-article-media-wide{max-width:840px;aspect-ratio:16/9}
+.qafiyah-biography .qafiyah-article-body .q-article-media-full{max-width:100%}

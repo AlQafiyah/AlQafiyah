@@ -1,0 +1,22 @@
+/* المرحلتان السادسة والسابعة: تكامل العرض دون تغيير هوية القافية */
+.book-cover[data-q-image-shape="square"]{aspect-ratio:1/1}
+.book-cover[data-q-image-shape="portrait"]{aspect-ratio:4/5}
+.book-cover[data-q-image-shape="landscape"]{aspect-ratio:4/3}
+.book-cover[src$=".png"],.book-cover[src*=".png?"]{background:transparent!important;box-shadow:none!important;border:0!important}
+.book-viewer.open{overscroll-behavior:contain}
+.book-viewer-stage{touch-action:pan-x pan-y;overscroll-behavior:contain}
+.book-quick-nav:not([hidden]){display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.book-quick-nav input[type="range"]{flex:1;min-width:100px}
+[data-q-social-placeholder][hidden],[data-q-email-placeholder][hidden]{display:none!important}
+@media(max-width:640px){.book-viewer-actions{display:flex;flex-wrap:nowrap;overflow-x:auto;max-width:100%}.book-viewer-stage{min-height:0}.book-viewer-bottom{display:flex;justify-content:center;align-items:center;gap:12px}}
+
+/* Reader accessibility and mobile controls */
+.book-viewer[aria-hidden="true"]{visibility:hidden;pointer-events:none}
+.book-viewer[aria-hidden="false"]{visibility:visible}
+.book-viewer .book-viewer-stage{min-width:0;overflow:auto}
+.book-viewer .book-viewer-canvas-wrap{max-width:100%;overflow:auto}
+.book-viewer .book-viewer-canvas-wrap canvas{max-width:none}
+.book-viewer .book-viewer-bottom{direction:rtl}
+.book-viewer .book-page-count{white-space:nowrap;direction:ltr;unicode-bidi:isolate}
+[data-q-social-placeholder][hidden],[data-q-email-placeholder][hidden]{display:none!important;margin:0!important;padding:0!important}
+@media(max-width:640px){.book-viewer .book-viewer-actions{max-width:100%;overflow-x:auto;scrollbar-width:thin}.book-viewer .book-viewer-btn{flex-shrink:0}.book-viewer .book-quick-nav{max-width:100%}}

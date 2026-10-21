@@ -1,0 +1,11 @@
+/* V34: prevent controls and management tables from expanding the viewport. */
+.q-reader-toolbar { box-sizing:border-box; width:100%; max-width:100%; display:flex; align-items:center; gap:6px; flex-wrap:nowrap; overflow-x:auto; overscroll-behavior-x:contain; -webkit-overflow-scrolling:touch; }
+.q-reader-toolbar > * { flex:0 0 auto; }
+.q-reader-toolbar .q-reader-select { max-width:min(190px,55vw); }
+.q-reader-content { min-width:0; max-width:100%; }
+.q-reader-content .q-reader-verse { box-sizing:border-box; max-width:100%; }
+@media(max-width:760px){
+ .v23-social-item { min-width:0; }
+ .v23-social-item strong,.v23-social-item small { min-width:0; }
+ .v23-social-item small { overflow-wrap:anywhere; word-break:break-word; }
+}

@@ -1,0 +1,29 @@
+/* Article administration only. Public article cards and content editor untouched. */
+#adminApp #section-articles .content-card{min-width:0;max-width:100%;overflow:hidden}
+#adminApp #section-articles .card-header{display:flex;gap:16px;align-items:center;justify-content:space-between}
+#adminApp #section-articles .card-header>.table-actions{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;max-width:100%;padding:3px 0}
+#adminApp #section-articles .card-header>.table-actions>.btn{flex:none;white-space:nowrap}
+#adminApp #articlesLayoutToolbar{display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;max-width:100%;padding:18px 16px;margin:15px 0 18px;border:1px solid rgba(53,34,31,.15);border-radius:14px;background:rgba(251,244,232,.55);overflow:visible}
+#adminApp #articlesLayoutToolbar .filter-box{flex:0 1 300px;min-width:min(100%,240px);max-width:100%}
+#adminApp #articlesLayoutToolbar select{width:100%;min-height:42px}
+#adminApp #articlesLayoutToolbar .table-actions{flex:0 0 auto;overflow:visible}
+#adminApp #articlesLayoutToolbar .btn{white-space:nowrap;min-height:42px}
+#adminApp #section-articles .toolbar:not(#articlesLayoutToolbar){display:flex;align-items:center;gap:12px;flex-wrap:nowrap;overflow-x:auto;max-width:100%;padding:5px 0 10px;scrollbar-width:thin}
+#adminApp #section-articles .toolbar:not(#articlesLayoutToolbar) .search-box{flex:1 1 310px;min-width:200px;max-width:none}
+#adminApp #section-articles .toolbar:not(#articlesLayoutToolbar) .filter-box{flex:0 0 220px;min-width:170px}
+#adminApp #section-articles .toolbar:not(#articlesLayoutToolbar) :is(input,select){width:100%;max-width:100%;box-sizing:border-box}
+#adminApp #section-articles .table-wrapper{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+#adminApp #section-articles .data-table{width:100%;min-width:940px;table-layout:fixed;border-collapse:separate;border-spacing:0}
+#adminApp #section-articles .data-table :is(th,td){box-sizing:border-box;vertical-align:middle;padding:12px 10px;white-space:nowrap;text-align:right;overflow:hidden;text-overflow:ellipsis}
+#adminApp #section-articles .data-table :is(th,td):nth-child(1){width:68px;text-align:center}
+#adminApp #section-articles .data-table :is(th,td):nth-child(2){width:19%}
+#adminApp #section-articles .data-table :is(th,td):nth-child(3){width:22%}
+#adminApp #section-articles .data-table :is(th,td):nth-child(4){width:13%}
+#adminApp #section-articles .data-table :is(th,td):nth-child(5){width:12%}
+#adminApp #section-articles .data-table :is(th,td):nth-child(6){width:85px}
+#adminApp #section-articles .data-table :is(th,td):last-child{width:205px;min-width:205px;text-align:center;overflow:visible}
+#adminApp #section-articles .data-table td:last-child .table-actions{display:flex;flex-wrap:nowrap;align-items:center;justify-content:center;gap:5px;min-width:0}
+#adminApp #section-articles .data-table td:last-child .btn{flex:none;margin:0;white-space:nowrap}
+#adminApp #section-articles .bulk-toolbar{max-width:100%;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:thin}
+#adminApp #section-articles .bulk-toolbar>*{flex:none;white-space:nowrap}
+@media(max-width:760px){#adminApp #section-articles .card-header{align-items:stretch;flex-direction:column}#adminApp #section-articles .card-header>.table-actions{width:100%}#adminApp #articlesLayoutToolbar{padding:14px 10px;gap:9px}#adminApp #articlesLayoutToolbar .filter-box{flex:1 1 100%}#adminApp #articlesLayoutToolbar .table-actions{flex:1 1 100%;display:flex;justify-content:center}#adminApp #section-articles .data-table{min-width:940px}}

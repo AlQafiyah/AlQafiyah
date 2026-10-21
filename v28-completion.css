@@ -1,0 +1,12 @@
+/* V28: corrections restricted to requested interfaces */
+:root{--q28-brown:#35221F;--q28-cream:#FBF4E8}
+body:has(.books-page-main) .site-header .header-container{width:100%;max-width:1320px;margin-inline:auto}
+body:has(.books-page-main) .site-header .header-actions{display:flex;align-items:center;gap:10px}
+body:has(.books-page-main) .book-row{min-width:0}
+body:has(.books-page-main) .book-cover{background:transparent;box-shadow:none;object-fit:contain}
+body:has(.books-page-main) .book-viewer{max-width:calc(100vw - 12px);max-height:calc(100dvh - 12px)}
+.admin-section .table-wrapper{overflow-x:auto!important;max-width:100%!important}
+.admin-section .data-table td:last-child{white-space:nowrap!important}
+.admin-section .data-table td:last-child button{max-width:100%;box-sizing:border-box}
+.qafiyah-related-section{width:100%;box-sizing:border-box}
+@media(max-width:640px){body:has(.books-page-main) .site-header .header-container{padding-inline:12px}body:has(.books-page-main) .header-actions{gap:6px}body:has(.books-page-main) .book-viewer{max-width:calc(100vw - 8px)}}

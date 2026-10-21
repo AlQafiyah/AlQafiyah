@@ -1,0 +1,45 @@
+/* القافية — المرحلة الأولى: قواعد الهوية والتجاوب المشتركة */
+:root{--q-brand:#35221F;--q-sand:#FBF4E8;--q-space-xs:6px;--q-space-sm:10px;--q-space-md:16px;--q-space-lg:24px;--q-radius-sm:10px;--q-radius-md:15px;--q-radius-lg:20px;--color-primary:#35221F;--primary-color:#35221F}
+html{max-width:100%;overflow-x:clip}body{max-width:100%;min-width:0}img,video,svg{max-width:100%}img{height:auto}main,section,article,.container,.content-container,.page-content{min-width:0}button,input,select,textarea{font:inherit}button,a{-webkit-tap-highlight-color:transparent}
+/* Preserve the existing light/dark theme and deliberately excluded article cards/editor. */
+body:not(.dark-mode):not([data-theme="dark"]){--q-page-sand:#FBF4E8}
+.site-header,.header-container{box-sizing:border-box;max-width:100%}.header-container{width:100%;min-width:0}.header-actions{display:flex;align-items:center;gap:10px;min-width:0}.side-menu{box-sizing:border-box;max-width:min(100vw,420px)}.side-navigation{min-width:0}.side-navigation a{min-width:0}
+/* Shared image fit controls; never paint an artificial box behind transparent PNG. */
+.q-media-frame{position:relative;display:block;overflow:hidden;min-width:0;max-width:100%;background:transparent!important;box-shadow:none!important;border:0!important;border-radius:var(--q-radius-md)}
+.q-media-frame[data-image-shape="square"]{aspect-ratio:1/1}.q-media-frame[data-image-shape="portrait"]{aspect-ratio:4/5}.q-media-frame[data-image-shape="landscape"]{aspect-ratio:4/3}
+.q-media-frame>img{display:block;width:100%;height:100%;object-fit:cover;background:transparent!important;border:0!important;box-shadow:none!important}
+.q-media-frame[data-image-fit="contain"]>img,.q-media-frame>img[data-transparent="true"]{object-fit:contain!important}
+img[data-transparent="true"]{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
+/* Admin tables scroll inside their own container rather than expanding the viewport. */
+#adminMain,.admin-main,.admin-section,.admin-section .content-card,.admin-section .card-body{min-width:0;max-width:100%}
+.admin-section .table-wrapper,.admin-section .table-responsive,.admin-section .table-container{width:100%;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.admin-section table,.admin-section .data-table{border-collapse:separate;border-spacing:0;table-layout:auto;width:100%;min-width:680px}
+.admin-section th,.admin-section td{box-sizing:border-box;vertical-align:middle;white-space:normal;overflow-wrap:anywhere;padding:10px 12px}
+.admin-section th{white-space:nowrap}.admin-section td:last-child{min-width:150px;white-space:normal}.admin-section td:last-child .actions,.admin-section td:last-child .action-buttons{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.admin-section td:last-child button,.admin-section td:last-child a{max-width:100%;vertical-align:middle}
+@media(max-width:767px){.header-container{gap:8px;padding-inline:12px}.header-actions{gap:6px}.admin-section th,.admin-section td{padding:9px 10px}.admin-section .data-table{min-width:650px}.q-media-frame{border-radius:var(--q-radius-sm)}}
+
+/* Shared, scoped layout rules. Existing article cards and article editor are intentionally untouched. */
+:root{--qafiyah-brown:#35221F;--qafiyah-beige:#FBF4E8;--qafiyah-radius:16px;--qafiyah-gap:16px}
+body{overflow-x:clip} .site-header{width:100%;max-width:100%;z-index:90}.site-header .site-logo{flex-shrink:0}.site-header .header-container{display:flex;align-items:center;justify-content:space-between;gap:12px}.site-header .header-actions{margin-inline-start:auto;flex-shrink:0}
+.side-menu,.qv2-side-menu{max-width:min(400px,100vw);overflow-x:hidden}.side-menu .side-navigation,.qv2-side-menu .side-navigation{max-width:100%}.side-navigation a{display:flex;align-items:center;gap:12px;box-sizing:border-box;overflow-wrap:anywhere}
+#section-poets .table-wrapper,#section-poems .table-wrapper,#section-articles .table-wrapper,#section-books .table-wrapper{overflow-x:auto;max-width:100%;width:100%;-webkit-overflow-scrolling:touch}
+#section-poets .data-table,#section-poems .data-table,#section-articles .data-table,#section-books .data-table{width:100%;min-width:max-content;table-layout:auto}
+#section-poets .data-table :is(th,td),#section-poems .data-table :is(th,td),#section-articles .data-table :is(th,td),#section-books .data-table :is(th,td){padding:12px 14px;vertical-align:middle;box-sizing:border-box;white-space:nowrap;overflow-wrap:normal}
+#section-poets .data-table td:last-child,#section-poems .data-table td:last-child,#section-articles .data-table td:last-child,#section-books .data-table td:last-child{white-space:nowrap;min-width:150px}
+#section-poets .toolbar,#section-poems .toolbar,#section-articles .toolbar,#section-books .toolbar{max-width:100%;min-width:0;gap:10px;flex-wrap:wrap}
+#section-poets .search-box,#section-poems .search-box,#section-articles .search-box,#section-books .search-box{min-width:0;flex:1 1 210px}
+#section-poets .search-input,#section-poems .search-input,#section-articles .search-input,#section-books .search-input{max-width:100%}
+/* Explicit image modes: square, portrait, landscape; contain is ideal for transparent assets. */
+.q-image{display:block;max-width:100%;position:relative;overflow:hidden;background:transparent!important;border:0!important;box-shadow:none!important;border-radius:var(--qafiyah-radius)}
+.q-image[data-q-shape=square]{aspect-ratio:1}.q-image[data-q-shape=portrait]{aspect-ratio:4/5}.q-image[data-q-shape=landscape]{aspect-ratio:4/3}
+.q-image img{width:100%;height:100%;display:block;object-fit:cover;object-position:center;background:transparent!important;border:0!important;box-shadow:none!important}
+.q-image[data-q-fit=contain] img,.q-image[data-q-transparent=true] img{object-fit:contain}
+@media(max-width:640px){.site-header .header-container{padding-inline:12px;gap:8px}.site-header .header-actions{gap:7px}#section-poets .toolbar,#section-poems .toolbar,#section-articles .toolbar,#section-books .toolbar{align-items:center}}
+
+/* Phase 1: persisted card image size, without changing article images. */
+:is(.qafiyah-poet-card,.qafiyah-poem-index-card,.book-row) img[data-q-image-shape]{display:block;object-fit:cover;object-position:center;max-width:100%;height:auto;border:0;box-shadow:none;background:transparent}
+:is(.qafiyah-poet-card,.qafiyah-poem-index-card,.book-row) img[data-q-image-shape="square"]{aspect-ratio:1/1}
+:is(.qafiyah-poet-card,.qafiyah-poem-index-card,.book-row) img[data-q-image-shape="portrait"]{aspect-ratio:4/5}
+:is(.qafiyah-poet-card,.qafiyah-poem-index-card,.book-row) img[data-q-image-shape="landscape"]{aspect-ratio:4/3}
+:is(.qafiyah-poet-card,.qafiyah-poem-index-card,.book-row) img[data-q-transparent="true"]{object-fit:contain!important}

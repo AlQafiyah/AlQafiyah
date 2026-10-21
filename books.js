@@ -4,12 +4,12 @@ const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g
 const list=$('booksList'),status=$('booksStatus'),search=$('bookSearch'),era=$('bookEra'),category=$('bookCategory');let timer=null,serial=0;
 function menu(){const m=$('booksSideMenu'),o=$('booksMenuOverlay');const open=()=>{m.classList.add('open');o.classList.add('active');m.setAttribute('aria-hidden','false')};const close=()=>{m.classList.remove('open');o.classList.remove('active');m.setAttribute('aria-hidden','true')};$('booksMenuButton')?.addEventListener('click',open);$('booksCloseMenu')?.addEventListener('click',close);o?.addEventListener('click',close)}
 function clean(v){return String(v||'').trim()}
-function row(b){const meta=[b.author,b.literary_category,b.era].map((x,i)=>x?`<span class="book-meta-${['author','category','era'][i]}">${esc(x)}</span>`:'').join('');return `<article class="book-row" tabindex="0" role="button" data-book-id="${esc(b.id)}"><div>${b.cover_url?`<img class="book-cover" src="${esc(b.cover_url)}" alt="غلاف ${esc(b.title)}" loading="lazy">`:`<div class="book-cover-placeholder" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v17H6.5A2.5 2.5 0 0 0 4 22Z"></path><path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v17h4.5A2.5 2.5 0 0 1 20 22Z"></path></svg></div>`}</div><div class="book-row-body"><h2>${esc(b.title||'بدون عنوان')}</h2><div class="book-row-meta">${meta}</div>${b.description?`<p class="book-row-desc">${esc(b.description)}</p>`:''}</div></article>`}
+function row(b){const meta=[b.author,b.literary_category,b.era].map((x,i)=>x?`<span class="book-meta-${['author','category','era'][i]}">${esc(x)}</span>`:'').join('');return `<article class="book-row" tabindex="0" role="button" data-book-id="${esc(b.id)}"><div>${b.cover_url?`<img class="book-cover" data-q-image-shape="${esc(b.image_shape||'square')}" src="${esc(b.cover_url)}" alt="غلاف ${esc(b.title)}" loading="lazy">`:`<div class="book-cover-placeholder" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v17H6.5A2.5 2.5 0 0 0 4 22Z"></path><path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v17h4.5A2.5 2.5 0 0 1 20 22Z"></path></svg></div>`}</div><div class="book-row-body"><h2>${esc(b.title||'بدون عنوان')}</h2><div class="book-row-meta">${meta}</div>${b.description?`<p class="book-row-desc">${esc(b.description)}</p>`:''}</div></article>`}
 async function filterOptions(){try{const {data,error}=await supabaseClient.from('books').select('era,literary_category').limit(1000);if(error)throw error;const eras=[...new Set((data||[]).map(x=>clean(x.era)).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ar'));const cats=[...new Set((data||[]).map(x=>clean(x.literary_category)).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ar'));era.innerHTML='<option value="">جميع العصور</option>'+eras.map(x=>`<option>${esc(x)}</option>`).join('');category.innerHTML='<option value="">جميع الفئات الأدبية</option>'+cats.map(x=>`<option>${esc(x)}</option>`).join('')}catch(e){console.warn(e)}}
 async function load(){const s=++serial;status.hidden=false;status.textContent='جاري تحميل الكتب...';list.innerHTML='';let q=supabaseClient.from('books').select('*').order('is_featured',{ascending:false}).order('created_at',{ascending:false}).limit(120);const term=clean(search.value);if(term)q=q.or(`title.ilike.%${term.replace(/[,()]/g,' ')}%,author.ilike.%${term.replace(/[,()]/g,' ')}%`);if(era.value)q=q.eq('era',era.value);if(category.value)q=q.eq('literary_category',category.value);try{const {data,error}=await q;if(error)throw error;if(s!==serial)return;const rows=data||[];status.hidden=!!rows.length;status.textContent=rows.length?'':(term||era.value||category.value?'لا توجد كتب مطابقة لبحثك.':'لا توجد كتب مضافة حتى الآن.');list.innerHTML=rows.map(row).join('');list.querySelectorAll('.book-row').forEach((el,i)=>{const b=rows[i];const open=()=>viewer.open(b);el.addEventListener('click',e=>{if(e.target.closest('.q-favorite-btn'))return;open()});el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}})});const wanted=new URLSearchParams(location.search).get('id');if(wanted&&!window.__qafiyahBookOpened){const selected=rows.find(b=>String(b.id)===wanted);if(selected){window.__qafiyahBookOpened=true;viewer.open(selected)}}}catch(e){console.error(e);status.hidden=false;status.textContent='تعذر تحميل الكتب.'}}
 search?.addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(load,260)});era?.addEventListener('change',load);category?.addEventListener('change',load);
 const viewer=(function(){
-let mode=null,epubBook=null,epubRendition=null,epubFontSize=100;
+let mode=null,epubBook=null,epubRendition=null,epubFontSize=100,pdfDoc=null,pdfPage=1,pdfScale=1,pdfLocked=false,bookCurrent=null,renderSeq=0,openSeq=0,previousFocus=null,previousOverflow='';
 const root=$('bookViewer'),wrap=$('bookCanvasWrap'),stage=$('bookStage'),msg=$('bookViewerMessage');
 const MEDIA_BUCKET='qafiyah-media';
 
@@ -154,30 +154,25 @@ function isIOS(){
         (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
 }
 
-function openPdf(url){
-    mode='pdf';
-    wrap.hidden=true;
-    epubWrap.hidden=true;
-    msg.hidden=true;
-    $('bookPageCount').textContent='PDF';
-    $('bookZoomLabel').textContent='—';
-    setPdfControls(true);
-
-    // على iPhone/iPad عارض Safari الأصلي أكثر ثباتًا من PDF.js والـ iframe.
-    if(isIOS()){
-        window.location.href=url;
-        return;
-    }
-
-    if(!nativeFrame)throw new Error('NATIVE_PDF_FRAME_MISSING');
-    nativeWrap.hidden=false;
-    nativeFrame.src=url + (url.includes('#')?'':'#view=FitH');
+async function renderPdf(){
+ if(!pdfDoc)return;const seq=++renderSeq;const currentDoc=pdfDoc;const requestedPage=pdfPage;const page=await currentDoc.getPage(requestedPage);if(seq!==renderSeq||currentDoc!==pdfDoc)return;const stageWidth=Math.max(260,stage.clientWidth-40);const base=page.getViewport({scale:1});const scale=Math.min(2,stageWidth/base.width)*pdfScale;const view=page.getViewport({scale});const canvas=$('bookCanvas');const ctx=canvas.getContext('2d');const pixel=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.floor(view.width*pixel);canvas.height=Math.floor(view.height*pixel);canvas.style.width=view.width+'px';canvas.style.height=view.height+'px';if(seq!==renderSeq||currentDoc!==pdfDoc)return;try{await page.render({canvasContext:ctx,viewport:view,transform:pixel!==1?[pixel,0,0,pixel,0,0]:null}).promise}catch(error){if(seq!==renderSeq||currentDoc!==pdfDoc)return;throw error}if(seq!==renderSeq||currentDoc!==pdfDoc)return;
+ $('bookPageCount').textContent=`${pdfPage} / ${pdfDoc.numPages}`;$('bookZoomLabel').textContent=Math.round(pdfScale*100)+'%';$('bookPageSlider').max=pdfDoc.numPages;$('bookPageSlider').value=pdfPage;$('bookPageInput').max=pdfDoc.numPages;$('bookPageInput').value=pdfPage;
+}
+async function openPdf(url){
+ const opening=openSeq;
+ mode='pdf';pdfPage=1;pdfScale=1;pdfDoc=null;nativeWrap.hidden=true;epubWrap.hidden=true;wrap.hidden=true;msg.hidden=false;msg.textContent='جاري تحميل صفحات الكتاب...';setPdfControls(false);
+ await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',()=>!!window.pdfjsLib);
+ if(opening!==openSeq||!root.classList.contains('open'))return;
+ const lib=window.pdfjsLib;if(!lib)throw Error('PDF_LIBRARY_UNAVAILABLE');lib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+ const loaded=await lib.getDocument({url,withCredentials:false}).promise;if(opening!==openSeq||!root.classList.contains('open')){loaded.destroy();return;}pdfDoc=loaded;msg.hidden=true;wrap.hidden=false;setPdfControls(false);await renderPdf();
 }
 
 async function openEpub(url){
+    const opening=openSeq;
     mode='epub';
     setPdfControls(false);
     const ePub=await epubjs();
+    if(opening!==openSeq||!root.classList.contains('open'))return;
     wrap.hidden=true;
     nativeWrap.hidden=true;
     if(nativeFrame)nativeFrame.src='about:blank';
@@ -198,6 +193,7 @@ async function openEpub(url){
         }
     });
     await epubRendition.display();
+    if(opening!==openSeq||!root.classList.contains('open'))return;
     msg.hidden=true;
     $('bookPageCount').textContent='EPUB';
     $('bookZoomLabel').textContent='100%';
@@ -206,6 +202,7 @@ async function openEpub(url){
 async function open(book){
     const url=normalizeBookUrl(book?.file_url);
     if(!url){
+        openSeq++;previousFocus=document.activeElement;previousOverflow=document.body.style.overflow;bookCurrent=book;
         root.classList.add('open');
         root.setAttribute('aria-hidden','false');
         document.body.style.overflow='hidden';
@@ -214,15 +211,11 @@ async function open(book){
         return;
     }
 
-    // PDF على iOS يفتح مباشرة قبل أي await حتى لا يمنع المتصفح الفتح.
-    if(fileType(url)==='pdf' && isIOS()){
-        openPdf(url);
-        return;
-    }
 
-    root.classList.add('open');
+    openSeq++;previousFocus=document.activeElement;previousOverflow=document.body.style.overflow;bookCurrent=book;root.classList.add('open');
     root.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden';
+    $('bookClose')?.focus({preventScroll:true});
     $('bookViewerTitle').textContent=book?.title||'الكتاب';
     msg.hidden=false;
     msg.textContent='جاري فتح الكتاب...';
@@ -238,17 +231,20 @@ async function open(book){
         epubRendition=null;
         epubBook=null;
         if(fileType(url)==='epub')await openEpub(url);
-        else openPdf(url);
+        else await openPdf(url);
     }catch(e){
-        setGenericError(e);
+        if(root.classList.contains('open'))setGenericError(e);
     }
 }
 
 function close(){
+    openSeq++;
+    if(document.fullscreenElement===root)document.exitFullscreen().catch(()=>{});
     root.classList.remove('open');
     root.setAttribute('aria-hidden','true');
-    document.body.style.overflow='';
-    mode=null;
+    document.body.style.overflow=previousOverflow;
+    if(previousFocus?.isConnected)previousFocus.focus({preventScroll:true});
+    mode=null;try{Promise.resolve(pdfDoc?.destroy?.()).catch(()=>{})}catch{}pdfDoc=null;renderSeq++;$('bookQuickNav').hidden=true;
     try{epubRendition?.destroy?.()}catch{}
     try{epubBook?.destroy?.()}catch{}
     epubRendition=null;
@@ -262,19 +258,19 @@ function close(){
 
 async function prev(){
     try{
-        if(mode==='epub'&&epubRendition)await epubRendition.prev();
+        if(mode==='pdf'&&pdfDoc&&pdfPage>1){pdfPage--;await renderPdf()}else if(mode==='epub'&&epubRendition)await epubRendition.prev();
     }catch(e){setGenericError(e)}
 }
 
 async function next(){
     try{
-        if(mode==='epub'&&epubRendition)await epubRendition.next();
+        if(mode==='pdf'&&pdfDoc&&pdfPage<pdfDoc.numPages){pdfPage++;await renderPdf()}else if(mode==='epub'&&epubRendition)await epubRendition.next();
     }catch(e){setGenericError(e)}
 }
 
 async function zoom(delta){
     try{
-        if(mode==='epub'&&epubRendition){
+        if(mode==='pdf'&&pdfDoc){pdfScale=Math.max(.6,Math.min(2.5,pdfScale+(delta>0?.15:-.15)));await renderPdf()}else if(mode==='epub'&&epubRendition){
             epubFontSize=Math.max(70,Math.min(180,epubFontSize+(delta>0?10:-10)));
             epubRendition.themes.fontSize(epubFontSize+'%');
             $('bookZoomLabel').textContent=epubFontSize+'%';
@@ -282,7 +278,14 @@ async function zoom(delta){
     }catch(e){setGenericError(e)}
 }
 
-$('bookClose')?.addEventListener('click',close);
+$('bookClose')?.addEventListener('click',close);root?.addEventListener('click',e=>{if(e.target===root)close()});
+$('bookThumbnails')?.addEventListener('click',()=>{$('bookQuickNav').hidden=!$('bookQuickNav').hidden});
+$('bookLock')?.addEventListener('click',()=>{pdfLocked=!pdfLocked;$('bookLock').classList.toggle('is-active',pdfLocked);$('bookLock').setAttribute('aria-pressed',String(pdfLocked))});
+$('bookShare')?.addEventListener('click',async()=>{const url=new URL(location.href);url.searchParams.set('id',bookCurrent?.id||'');if(navigator.share){try{await navigator.share({title:bookCurrent?.title||'كتاب',url:url.href})}catch{}}else{try{await navigator.clipboard.writeText(url.href);$('bookShare').title='تم نسخ الرابط'}catch{}}});
+const goto=()=>{if(mode!=='pdf'||!pdfDoc)return;const n=Number($('bookPageInput').value||$('bookPageSlider').value);pdfPage=Math.max(1,Math.min(pdfDoc.numPages,Math.round(n)));renderPdf()};
+$('bookGoPage')?.addEventListener('click',goto);$('bookPageSlider')?.addEventListener('input',e=>{$('bookPageInput').value=e.target.value;goto()});$('bookPageInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')goto()});
+let touchX=null,touchDistance=null,pinchPending=0;stage.addEventListener('touchstart',e=>{if(e.touches.length===1){touchX=e.touches[0].clientX;touchDistance=null;}else if(e.touches.length===2){touchX=null;touchDistance=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY)}},{passive:true});stage.addEventListener('touchend',e=>{if(touchX!==null&&e.changedTouches.length===1&&e.touches.length===0){const diff=e.changedTouches[0].clientX-touchX;if(Math.abs(diff)>85&&mode==='pdf'){diff>0?prev():next()}touchX=null}if(e.touches.length<2)touchDistance=null},{passive:true});stage.addEventListener('touchmove',e=>{if(!pdfLocked&&touchDistance&&e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(Math.abs(d-touchDistance)>45){const delta=d>touchDistance?.15:-.15;touchDistance=d;if(!pinchPending){pinchPending=1;Promise.resolve(zoom(delta)).finally(()=>{pinchPending=0})}}}},{passive:true});
+
 $('bookPrev')?.addEventListener('click',prev);
 $('bookBottomPrev')?.addEventListener('click',prev);
 $('bookNext')?.addEventListener('click',next);

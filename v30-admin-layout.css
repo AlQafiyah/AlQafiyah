@@ -1,0 +1,8 @@
+/* إصلاح احتواء جداول الإدارة فقط */
+#adminMain,.admin-main,.admin-section,.admin-section .content-card,.admin-section .card-body{min-width:0;max-width:100%;box-sizing:border-box}
+.admin-section table{border-collapse:separate;border-spacing:0;table-layout:auto}
+.admin-section th,.admin-section td{vertical-align:middle;overflow-wrap:anywhere}
+.admin-section th:last-child,.admin-section td:last-child{min-width:130px;text-align:center}
+.admin-section td:last-child .actions,.admin-section td:last-child .action-buttons{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;align-items:center}
+.admin-section td:last-child button{max-width:100%;white-space:normal}
+@media(max-width:760px){.admin-section .table-responsive,.admin-section .table-wrapper,.admin-section .table-container{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}}
