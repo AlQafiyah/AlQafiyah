@@ -1005,10 +1005,10 @@ onclick="window.location.href='index.html'"
 <div class="admin-content">
 <section class="admin-section active" id="section-dashboard">
 <div class="welcome-card">
-<h2 id="welcomeTitle">مرحبًا بك في لوحة الإدارة</h2>
-<p>إدارة موسوعة القافية من مكان واحد.</p>
+<h2 id="welcomeTitle">إدارة القافية</h2>
+<p>إدارة القافية من مكان واحد.</p>
 </div>
-<h3 class="v21-group-title">المحتوى المنشور</h3><div class="stats-grid">
+<h3 class="v21-group-title">إحصائيات عامة</h3><div class="stats-grid">
 <div class="stat-card">
 <div class="stat-label">الشعراء</div>
 <div class="stat-value" id="statPoets">0</div>
@@ -1038,9 +1038,9 @@ onclick="window.location.href='index.html'"
 <div class="stat-label">المستخدمون</div>
 <div class="stat-value" id="statUsers">0</div>
 </div>
-<div class="stat-card"><div class="stat-label">إجمالي الزيارات</div><div class="stat-value" id="statVisitsAll">0</div></div><div class="stat-card"><div class="stat-label">الأجهزة المختلفة</div><div class="stat-value" id="statDevicesAll">0</div></div><div class="stat-card"><div class="stat-label">الحسابات المختلفة</div><div class="stat-value" id="statAccountsAll">0</div></div><div class="stat-card"><div class="stat-label">النشطون الآن</div><div class="stat-value" id="statActiveNow">0</div></div>
+
 </div>
-<h3 class="v21-group-title">الزيارات والنشاط</h3><div class="analytics-detail" id="analyticsDetail">
+<h3 class="v21-group-title">الزيارات والنشاط</h3><div class="stats-grid"><div class="stat-card"><div class="stat-label">إجمالي الزيارات</div><div class="stat-value" id="statVisitsAll">0</div></div><div class="stat-card"><div class="stat-label">الأجهزة المختلفة</div><div class="stat-value" id="statDevicesAll">0</div></div><div class="stat-card"><div class="stat-label">الحسابات المختلفة</div><div class="stat-value" id="statAccountsAll">0</div></div><div class="stat-card"><div class="stat-label">النشطون الآن</div><div class="stat-value" id="statActiveNow">0</div></div></div><div class="analytics-detail" id="analyticsDetail">
   <div class="stats-grid analytics-period-grid">
     <div class="stat-card"><div class="stat-label">زيارات اليوم</div><div class="stat-value" id="statVisitsToday">0</div></div>
     <div class="stat-card"><div class="stat-label">آخر 7 أيام</div><div class="stat-value" id="statVisits7">0</div></div>
@@ -1054,7 +1054,7 @@ onclick="window.location.href='index.html'"
     <div class="quick-card"><h4>الزيارات حسب الأشهر</h4><div id="analyticsMonths">لا توجد بيانات بعد.</div></div>
   </div>
 </div>
-<div class="quick-card" style="margin-top:18px"><h4>مخطط الزيارات الشهرية</h4><div class="v21-chart" id="v21TrafficChart" aria-label="مخطط الزيارات الشهرية"></div><div id="v21TrafficTable"></div></div>
+<div class="quick-card" style="margin-top:18px"><div class="v22-chart-heading"><h4>مخطط الزيارات</h4><div class="v22-switch"><button type="button" class="btn btn-secondary" id="v22ByMonths">حسب الشهور</button><button type="button" class="btn btn-secondary" id="v22ByYears">حسب السنوات</button></div></div><div class="v21-chart" id="v21TrafficChart" aria-label="مخطط الزيارات الشهرية"></div><div id="v21TrafficTable"></div></div>
 <h3 class="v21-group-title">ملخص المحتوى والمميز</h3><div class="dashboard-panels">
 <div class="quick-card">
 <h4>إحصائيات المحتوى</h4>
@@ -1514,7 +1514,7 @@ onclick="window.location.href='index.html'"
 <table class="data-table">
 <thead>
 <tr>
-<th>User ID</th>
+<th>المستخدم</th><th>البريد الإلكتروني</th><th>User ID</th>
 <th>الصلاحية</th>
 <th>الحالة</th>
 <th>التاريخ</th>
@@ -1526,7 +1526,7 @@ onclick="window.location.href='index.html'"
 </div>
 </div>
 </section>
-<section class="admin-section" id="section-media"><div class="content-card"><div class="card-header"><div><h3>إدارة الإعلام والتواصل</h3><p>تعديل الروابط والبريد وإظهارها أو إخفاؤها في جميع صفحات الموقع.</p></div><button class="btn btn-primary" id="v21AddSocial">إضافة وسيلة تواصل</button></div><div id="v21SocialRows"></div></div></section>
+<section class="admin-section" id="section-media"><div class="content-card"><div class="card-header"><div><h3>الإعلام</h3><p>تعديل الروابط والبريد وإظهارها أو إخفاؤها في جميع صفحات الموقع.</p></div></div><div id="v21SocialRows" class="v22-media-grid"></div></div></section>
 <section class="admin-section" id="section-advertising"><div class="content-card"><div class="card-header"><div><h3>الإعلانات</h3><p>إدارة الإعلانات والتحكم في ظهورها ومدتها.</p></div><button class="btn btn-primary" id="v21AddAd">إضافة إعلان</button></div><div id="v21AdStats" class="v21-kpis"></div><div id="v21AdRows"></div></div></section>
 <section class="admin-section" id="section-maintenance"><div class="content-card"><div class="card-header"><div><h3>وضع الصيانة</h3><p>يستمر وصول المالك والمديرين أثناء الصيانة.</p></div></div><label class="v21-switch"><input type="checkbox" id="v21MaintenanceSwitch"> إغلاق الموقع مؤقتًا</label><label class="v21-field">رسالة الصيانة<textarea id="v21MaintenanceMessage" rows="3" placeholder="نعمل على تحسين القافية، نعود قريبًا."></textarea></label><button class="btn btn-primary" id="v21MaintenanceSave">حفظ حالة الموقع</button><p id="v21MaintenanceStatus"></p></div></section>
 </div>
@@ -7916,5 +7916,5 @@ document.addEventListener('DOMContentLoaded',()=>{loadQAnalytics();setupBulkSele
 
 <script src="article-editor.js?v=20261020-1"></script>
 <script src="admin-extras.js?v=sijal-20261020-admin-r1"></script>
-<link rel="stylesheet" href="v21-admin.css"><script src="v21-admin.js"></script></body>
+<link rel="stylesheet" href="v21-admin.css"><link rel="stylesheet" href="v22-admin.css"><script src="v21-admin.js"></script><script src="v22-admin.js"></script></body>
 </html>

@@ -1,0 +1,10 @@
+
+/* V22 — هوية القافية النهارية وتنظيم موحد */
+:root{--v22-brown:#75533a;--v22-paper:#faf7f1;--v22-border:#e7ddd0}
+.admin-content .welcome-card{background:var(--v22-paper)!important;color:var(--v22-brown)!important;border:1px solid var(--v22-border)!important}
+.admin-content .welcome-card h2,.admin-content .welcome-card p{color:var(--v22-brown)!important}
+.admin-section .toolbar,.admin-section .sj-admin-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:nowrap;overflow-x:auto}
+.admin-section .toolbar .search-box{flex:1;min-width:190px}.admin-section .toolbar select{min-width:130px;flex-shrink:0}
+.v22-chart-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.v22-switch{display:flex;gap:8px}.v22-switch .active{background:var(--v22-brown);color:#fff}
+.v21-chart .bar{background:var(--v22-brown)}.v22-media-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:18px;padding:14px}.v22-media-card{background:var(--v22-paper);border:1px solid var(--v22-border);border-radius:14px;padding:16px}.v22-media-card h4{margin:0 0 14px;color:var(--v22-brown)}.v22-media-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--v22-border)}.v22-media-row small{display:block;direction:ltr;max-width:220px;overflow:hidden;text-overflow:ellipsis}.v22-pages{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px}.v22-pages label{display:flex;gap:6px;align-items:center;padding:7px;border:1px solid var(--v22-border);border-radius:8px}.v22-media-preview{width:100%;max-height:220px;object-fit:contain;border-radius:8px}.admin-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+@media(max-width:600px){.v22-media-grid{grid-template-columns:1fr}.admin-section .toolbar{overflow-x:auto}}
