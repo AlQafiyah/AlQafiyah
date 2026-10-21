@@ -1006,7 +1006,7 @@ onclick="window.location.href='index.html'"
 <section class="admin-section active" id="section-dashboard">
 <div class="welcome-card">
 <h2 id="welcomeTitle">إدارة القافية</h2>
-<p>إدارة القافية من مكان واحد.</p>
+<p>إدارة محتوى القافية وإحصاءاتها من مكان واحد.</p>
 </div>
 <h3 class="v21-group-title">إحصائيات عامة</h3><div class="stats-grid">
 <div class="stat-card">
@@ -1038,9 +1038,9 @@ onclick="window.location.href='index.html'"
 <div class="stat-label">المستخدمون</div>
 <div class="stat-value" id="statUsers">0</div>
 </div>
-
 </div>
-<h3 class="v21-group-title">الزيارات والنشاط</h3><div class="stats-grid"><div class="stat-card"><div class="stat-label">إجمالي الزيارات</div><div class="stat-value" id="statVisitsAll">0</div></div><div class="stat-card"><div class="stat-label">الأجهزة المختلفة</div><div class="stat-value" id="statDevicesAll">0</div></div><div class="stat-card"><div class="stat-label">الحسابات المختلفة</div><div class="stat-value" id="statAccountsAll">0</div></div><div class="stat-card"><div class="stat-label">النشطون الآن</div><div class="stat-value" id="statActiveNow">0</div></div></div><div class="analytics-detail" id="analyticsDetail">
+<h3 class="v21-group-title">الزيارات والنشاط</h3><div class="stats-grid"><div class="stat-card"><div class="stat-label">إجمالي الزيارات</div><div class="stat-value" id="statVisitsAll">0</div></div><div class="stat-card"><div class="stat-label">الأجهزة المختلفة</div><div class="stat-value" id="statDevicesAll">0</div></div><div class="stat-card"><div class="stat-label">الحسابات المختلفة</div><div class="stat-value" id="statAccountsAll">0</div></div><div class="stat-card"><div class="stat-label">النشطون الآن</div><div class="stat-value" id="statActiveNow">0</div></div>
+</div><div class="analytics-detail" id="analyticsDetail">
   <div class="stats-grid analytics-period-grid">
     <div class="stat-card"><div class="stat-label">زيارات اليوم</div><div class="stat-value" id="statVisitsToday">0</div></div>
     <div class="stat-card"><div class="stat-label">آخر 7 أيام</div><div class="stat-value" id="statVisits7">0</div></div>
@@ -1054,7 +1054,7 @@ onclick="window.location.href='index.html'"
     <div class="quick-card"><h4>الزيارات حسب الأشهر</h4><div id="analyticsMonths">لا توجد بيانات بعد.</div></div>
   </div>
 </div>
-<div class="quick-card" style="margin-top:18px"><div class="v22-chart-heading"><h4>مخطط الزيارات</h4><div class="v22-switch"><button type="button" class="btn btn-secondary" id="v22ByMonths">حسب الشهور</button><button type="button" class="btn btn-secondary" id="v22ByYears">حسب السنوات</button></div></div><div class="v21-chart" id="v21TrafficChart" aria-label="مخطط الزيارات الشهرية"></div><div id="v21TrafficTable"></div></div>
+<div class="quick-card" style="margin-top:18px"><h4>مخطط الزيارات</h4><div class="v23-chart-tabs"><button type="button" class="btn btn-primary btn-small" data-traffic-mode="months">حسب الشهور</button><button type="button" class="btn btn-secondary btn-small" data-traffic-mode="years">حسب السنوات</button></div><div class="v21-chart" id="v21TrafficChart" aria-label="مخطط الزيارات الشهرية"></div><div id="v21TrafficTable"></div></div>
 <h3 class="v21-group-title">ملخص المحتوى والمميز</h3><div class="dashboard-panels">
 <div class="quick-card">
 <h4>إحصائيات المحتوى</h4>
@@ -1489,6 +1489,7 @@ onclick="window.location.href='index.html'"
 <thead>
 <tr>
 <th>الاسم</th>
+<th>User ID</th>
 <th>البريد الإلكتروني</th>
 <th>الهاتف</th>
 <th>تاريخ الميلاد</th>
@@ -1514,7 +1515,8 @@ onclick="window.location.href='index.html'"
 <table class="data-table">
 <thead>
 <tr>
-<th>المستخدم</th><th>البريد الإلكتروني</th><th>User ID</th>
+<th>الاسم والبريد</th>
+<th>User ID</th>
 <th>الصلاحية</th>
 <th>الحالة</th>
 <th>التاريخ</th>
@@ -1526,7 +1528,7 @@ onclick="window.location.href='index.html'"
 </div>
 </div>
 </section>
-<section class="admin-section" id="section-media"><div class="content-card"><div class="card-header"><div><h3>الإعلام</h3><p>تعديل الروابط والبريد وإظهارها أو إخفاؤها في جميع صفحات الموقع.</p></div></div><div id="v21SocialRows" class="v22-media-grid"></div></div></section>
+<section class="admin-section" id="section-media"><div class="content-card"><div class="card-header"><div><h3>الإعلام</h3><p>تعديل الروابط والبريد وإظهارها أو إخفاؤها في جميع صفحات الموقع.</p></div><button class="btn btn-primary" id="v21AddSocial">إضافة وسيلة تواصل</button></div><div id="v21SocialRows"></div></div></section>
 <section class="admin-section" id="section-advertising"><div class="content-card"><div class="card-header"><div><h3>الإعلانات</h3><p>إدارة الإعلانات والتحكم في ظهورها ومدتها.</p></div><button class="btn btn-primary" id="v21AddAd">إضافة إعلان</button></div><div id="v21AdStats" class="v21-kpis"></div><div id="v21AdRows"></div></div></section>
 <section class="admin-section" id="section-maintenance"><div class="content-card"><div class="card-header"><div><h3>وضع الصيانة</h3><p>يستمر وصول المالك والمديرين أثناء الصيانة.</p></div></div><label class="v21-switch"><input type="checkbox" id="v21MaintenanceSwitch"> إغلاق الموقع مؤقتًا</label><label class="v21-field">رسالة الصيانة<textarea id="v21MaintenanceMessage" rows="3" placeholder="نعمل على تحسين القافية، نعود قريبًا."></textarea></label><button class="btn btn-primary" id="v21MaintenanceSave">حفظ حالة الموقع</button><p id="v21MaintenanceStatus"></p></div></section>
 </div>
@@ -2918,14 +2920,10 @@ roleLabel(
 currentAdmin.role
 );
 
-document
-.getElementById(
-"adminAvatar"
-)
-.textContent =
-email
-.charAt(0)
-.toUpperCase();
+const avatarElement=document.getElementById("adminAvatar");
+avatarElement.textContent="";
+avatarElement.innerHTML='<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-5 3-8 8-8s8 3 8 8"/></svg>';
+(async()=>{try{const r=await supabaseClient.from("profiles").select("avatar_url").eq("id",currentUser.id).maybeSingle();if(r.data?.avatar_url && /^https:\/\//i.test(r.data.avatar_url)){const img=document.createElement("img");img.src=r.data.avatar_url;img.alt="الصورة الشخصية";img.referrerPolicy="no-referrer";img.onerror=()=>img.remove();avatarElement.replaceChildren(img)}}catch(e){console.warn("avatar",e)}})();
 
 document
 .getElementById(
@@ -3402,7 +3400,7 @@ document.getElementById(
 
 setLoadingRow(
 tbody,
-5
+6
 );
 
 try {
@@ -3417,7 +3415,7 @@ console.error(error);
 
 setEmptyRow(
 tbody,
-5,
+6,
 "تعذر تحميل البحور."
 );
 }
@@ -3465,7 +3463,7 @@ if (!items.length) {
 
 setEmptyRow(
 tbody,
-5,
+6,
 "لا توجد بحور مطابقة."
 );
 
@@ -3554,7 +3552,7 @@ document.getElementById(
 
 setLoadingRow(
 tbody,
-5
+6
 );
 
 try {
@@ -3569,7 +3567,7 @@ console.error(error);
 
 setEmptyRow(
 tbody,
-5,
+6,
 "تعذر تحميل القوافي."
 );
 }
@@ -3617,7 +3615,7 @@ if (!items.length) {
 
 setEmptyRow(
 tbody,
-5,
+6,
 "لا توجد قوافٍ مطابقة."
 );
 
@@ -4139,7 +4137,7 @@ document.getElementById(
 
 setLoadingRow(
 tbody,
-5
+6
 );
 
 const {
@@ -4168,7 +4166,7 @@ console.error(error);
 
 setEmptyRow(
 tbody,
-5,
+6,
 "تعذر تحميل الفيديوهات."
 );
 
@@ -4221,7 +4219,7 @@ if (!items.length) {
 
 setEmptyRow(
 tbody,
-5,
+6,
 "لا توجد فيديوهات مطابقة."
 );
 
@@ -4303,7 +4301,7 @@ document.getElementById(
 
 setLoadingRow(
 tbody,
-5
+6
 );
 
 const {
@@ -4326,7 +4324,7 @@ console.error(error);
 
 setEmptyRow(
 tbody,
-5,
+6,
 "تعذر تحميل الإشعارات."
 );
 
@@ -4340,7 +4338,7 @@ if (!notificationsCache.length) {
 
 setEmptyRow(
 tbody,
-5,
+6,
 "لا توجد إشعارات."
 );
 
@@ -4557,7 +4555,7 @@ document.getElementById(
 
 setLoadingRow(
 tbody,
-6
+7
 );
 
 const {
@@ -4575,7 +4573,7 @@ console.error(error);
 
 setEmptyRow(
 tbody,
-6,
+7,
 "تعذر تحميل المستخدمين."
 );
 
@@ -4611,6 +4609,7 @@ normalize(name)
 .includes(search) ||
 normalize(user.email)
 .includes(search) ||
+normalize(user.user_id || user.id).includes(search) ||
 normalize(user.phone)
 .includes(search) ||
 normalize(user.provider)
@@ -4632,7 +4631,7 @@ if (!items.length) {
 
 setEmptyRow(
 tbody,
-6,
+7,
 "لا يوجد مستخدمون."
 );
 
@@ -4669,6 +4668,7 @@ ${escapeHtml(
 name || "-"
 )}
 </td>
+<td class="v23-id">${escapeHtml(user.user_id || user.id || "-")}</td>
 
 <td>
 ${escapeHtml(
@@ -4721,7 +4721,7 @@ document.getElementById(
 
 setLoadingRow(
 tbody,
-5
+6
 );
 
 const {
@@ -4744,7 +4744,7 @@ console.error(error);
 
 setEmptyRow(
 tbody,
-5,
+6,
 "تعذر تحميل الصلاحيات."
 );
 
@@ -4753,12 +4753,13 @@ return;
 
 adminsCache =
 data || [];
+try { const details=await supabaseClient.rpc("qafiyah_v23_admin_details"); if(!details.error){const map=new Map((details.data||[]).map(x=>[x.user_id,x]));adminsCache.forEach(a=>a.v23=map.get(a.user_id)||null);} }catch(e){console.warn(e)}
 
 if (!adminsCache.length) {
 
 setEmptyRow(
 tbody,
-5,
+6,
 "لا توجد صلاحيات."
 );
 
@@ -4775,7 +4776,7 @@ currentUser.id;
 
 return `
 <tr>
-
+<td>${escapeHtml(admin.v23?.display_name||"-")}<br><small>${escapeHtml(admin.v23?.email||"-")}</small></td>
 <td>
 ${escapeHtml(
 admin.user_id
@@ -7916,5 +7917,5 @@ document.addEventListener('DOMContentLoaded',()=>{loadQAnalytics();setupBulkSele
 
 <script src="article-editor.js?v=20261020-1"></script>
 <script src="admin-extras.js?v=sijal-20261020-admin-r1"></script>
-<link rel="stylesheet" href="v21-admin.css"><link rel="stylesheet" href="v22-admin.css"><script src="v21-admin.js"></script><script src="v22-admin.js"></script></body>
+<link rel="stylesheet" href="v21-admin.css"><script src="v21-admin.js"></script></body>
 </html>
