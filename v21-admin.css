@@ -1,0 +1,13 @@
+/* القافية V21: تنسيق كلاسيكي من دون تغيير ألوان الهوية */
+.v21-group-title{font-size:17px;margin:24px 0 12px;padding:0 12px;border-right:3px solid currentColor;font-weight:700}
+#section-dashboard .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px}
+#section-dashboard .stat-card{min-width:0;box-shadow:none;border:1px solid var(--border-color,#dcd7cf);border-radius:12px}
+#section-dashboard .dashboard-panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.v21-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0}
+.v21-kpis>div{border:1px solid #d9d4cc;border-radius:12px;padding:16px}.v21-kpis strong{display:block;font-size:24px;margin-top:6px}
+.v21-field{display:grid;gap:7px;margin:12px 0;font-weight:600}.v21-field input,.v21-field textarea,.v21-field select{width:100%;box-sizing:border-box;padding:11px;border:1px solid #ccc;border-radius:8px;background:var(--card-bg,#fff);color:inherit;font:inherit}
+.v21-row{display:grid;grid-template-columns:minmax(140px,1fr) minmax(160px,2fr) auto auto;gap:12px;align-items:center;padding:12px;border-bottom:1px solid #ddd}
+.v21-switch{display:flex;gap:12px;align-items:center;margin:20px 0;font-weight:700}.v21-switch input{width:20px;height:20px}
+.v21-modal{position:fixed;inset:0;background:#0009;z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;direction:rtl}.v21-dialog{width:min(620px,100%);max-height:90vh;overflow:auto;background:var(--card-bg,#fff);color:var(--text-color,#29251f);border-radius:14px;padding:24px;box-shadow:0 15px 60px #0004}.v21-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.v21-chart{min-height:190px;display:flex;align-items:flex-end;gap:7px;padding:12px 0}.v21-chart>div{flex:1;min-width:15px;text-align:center}.v21-chart .bar{display:block;background:currentColor;opacity:.65;min-height:3px;border-radius:5px 5px 0 0}.v21-chart small{font-size:10px}
+@media(max-width:700px){.v21-row{grid-template-columns:1fr 1fr}.v21-row button{width:100%}}

@@ -920,8 +920,7 @@ onclick="window.location.href='index.html'"
 <div class="sidebar-brand-title">القافية</div>
 <div class="sidebar-brand-subtitle">لوحة الإدارة</div>
 </div>
-<div class="sidebar-nav">
-<button class="nav-item active" data-section="dashboard" type="button">
+<div class="sidebar-nav"><button class="nav-item active" data-section="dashboard" type="button">
 <span class="nav-icon" data-admin-icon="home"></span>
 <span>لوحة التحكم</span>
 </button>
@@ -946,6 +945,8 @@ onclick="window.location.href='index.html'"
 <span>المقالات</span>
 </button>
 <button class="nav-item" data-section="books" type="button"><span class="nav-icon" data-admin-icon="document"></span><span>الكتب</span></button>
+<button class="nav-item" data-section="sijal" id="sijalAdminNav" type="button" style="display:none"><span class="nav-icon" data-admin-icon="grid"></span><span>سِجال</span></button>
+<button class="nav-item" data-section="mujeeb" id="mujeebAdminNav" type="button" style="display:none"><span class="nav-icon" data-admin-icon="quote"></span><span>مُجيب</span></button>
 <button class="nav-item" data-section="videos" type="button">
 <span class="nav-icon" data-admin-icon="video"></span>
 <span>الفيديوهات</span>
@@ -954,21 +955,17 @@ onclick="window.location.href='index.html'"
 <span class="nav-icon" data-admin-icon="bell"></span>
 <span>الإشعارات</span>
 </button>
-<button class="nav-item" data-section="categories" type="button">
-<span class="nav-icon" data-admin-icon="grid"></span>
-<span>التصنيفات</span>
-</button>
-<button class="nav-item" data-section="legal" id="legalNav" type="button"><span class="nav-icon" data-admin-icon="document"></span><span>الوثائق النظامية</span></button>
 <button class="nav-item" data-section="users" type="button">
 <span class="nav-icon" data-admin-icon="users"></span>
 <span>المستخدمون</span>
 </button>
-<button class="nav-item" data-section="mujeeb" id="mujeebAdminNav" type="button" style="display:none"><span class="nav-icon" data-admin-icon="quote"></span><span>مُجيب</span></button>
-<button class="nav-item" data-section="sijal" id="sijalAdminNav" type="button" style="display:none"><span class="nav-icon" data-admin-icon="grid"></span><span>سِجال</span></button>
 <button class="nav-item" data-section="admins" id="adminsNav" type="button">
 <span class="nav-icon" data-admin-icon="shield"></span>
 <span>الصلاحيات</span>
 </button>
+<button class="nav-item" data-section="media" type="button"><span class="nav-icon" data-admin-icon="external"></span><span>إدارة الإعلام</span></button>
+<button class="nav-item" data-section="advertising" type="button"><span class="nav-icon" data-admin-icon="grid"></span><span>الإعلانات</span></button>
+<button class="nav-item" data-section="maintenance" type="button"><span class="nav-icon" data-admin-icon="shield"></span><span>صيانة الموقع</span></button><button class="nav-item" data-section="legal" id="legalNav" type="button"><span class="nav-icon" data-admin-icon="document"></span><span>الوثائق</span></button>
 </div>
 <div class="sidebar-bottom">
 <div class="sidebar-admin">
@@ -1011,7 +1008,7 @@ onclick="window.location.href='index.html'"
 <h2 id="welcomeTitle">مرحبًا بك في لوحة الإدارة</h2>
 <p>إدارة موسوعة القافية من مكان واحد.</p>
 </div>
-<div class="stats-grid">
+<h3 class="v21-group-title">المحتوى المنشور</h3><div class="stats-grid">
 <div class="stat-card">
 <div class="stat-label">الشعراء</div>
 <div class="stat-value" id="statPoets">0</div>
@@ -1036,13 +1033,14 @@ onclick="window.location.href='index.html'"
 <div class="stat-label">الفيديوهات</div>
 <div class="stat-value" id="statVideos">0</div>
 </div>
+<div class="stat-card"><div class="stat-label">الكتب</div><div class="stat-value" id="statBooks">0</div></div>
 <div class="stat-card">
 <div class="stat-label">المستخدمون</div>
 <div class="stat-value" id="statUsers">0</div>
 </div>
 <div class="stat-card"><div class="stat-label">إجمالي الزيارات</div><div class="stat-value" id="statVisitsAll">0</div></div><div class="stat-card"><div class="stat-label">الأجهزة المختلفة</div><div class="stat-value" id="statDevicesAll">0</div></div><div class="stat-card"><div class="stat-label">الحسابات المختلفة</div><div class="stat-value" id="statAccountsAll">0</div></div><div class="stat-card"><div class="stat-label">النشطون الآن</div><div class="stat-value" id="statActiveNow">0</div></div>
 </div>
-<div class="analytics-detail" id="analyticsDetail">
+<h3 class="v21-group-title">الزيارات والنشاط</h3><div class="analytics-detail" id="analyticsDetail">
   <div class="stats-grid analytics-period-grid">
     <div class="stat-card"><div class="stat-label">زيارات اليوم</div><div class="stat-value" id="statVisitsToday">0</div></div>
     <div class="stat-card"><div class="stat-label">آخر 7 أيام</div><div class="stat-value" id="statVisits7">0</div></div>
@@ -1056,7 +1054,8 @@ onclick="window.location.href='index.html'"
     <div class="quick-card"><h4>الزيارات حسب الأشهر</h4><div id="analyticsMonths">لا توجد بيانات بعد.</div></div>
   </div>
 </div>
-<div class="dashboard-panels">
+<div class="quick-card" style="margin-top:18px"><h4>مخطط الزيارات الشهرية</h4><div class="v21-chart" id="v21TrafficChart" aria-label="مخطط الزيارات الشهرية"></div><div id="v21TrafficTable"></div></div>
+<h3 class="v21-group-title">ملخص المحتوى والمميز</h3><div class="dashboard-panels">
 <div class="quick-card">
 <h4>إحصائيات المحتوى</h4>
 <div id="dashboardSummary"></div>
@@ -1381,7 +1380,7 @@ onclick="window.location.href='index.html'"
 <div class="dashboard-grid" id="categoriesContainer" style="padding:20px;"></div>
 </div>
 </section>
-<section class="admin-section" id="section-legal"><div class="content-card"><div class="card-header"><div><h3>الوثائق النظامية</h3><p>حرّر نصوص الصفحتين الرسميتين المنشورتين للعامة. ضع ## قبل عنوان كل قسم، ثم اكتب فقرته تحته.</p></div></div><div class="table-actions"><button class="btn btn-primary" id="editPrivacy" type="button">تحرير سياسة الخصوصية</button><button class="btn btn-secondary" id="editTerms" type="button">تحرير شروط الاستخدام والأحكام</button></div><p style="margin-top:16px"><a href="/privacy" target="_blank" rel="noopener">عرض سياسة الخصوصية ↗</a> &nbsp; · &nbsp; <a href="/terms" target="_blank" rel="noopener">عرض شروط الاستخدام والأحكام ↗</a></p></div></section>
+<section class="admin-section" id="section-legal"><div class="content-card"><div class="card-header"><div><h3>السياسات والأحكام</h3><p>إدارة صفحات سياسة الخصوصية وشروط الاستخدام ومحتواهما وحالة ظهورهما.</p></div></div><div class="q-legal-admin-grid"><div><h4>سياسة الخصوصية</h4><button class="btn btn-primary" id="editPrivacy" type="button">تحرير سياسة الخصوصية</button><label class="q-legal-toggle"><input type="checkbox" id="showPrivacy" checked> إظهار الصفحة</label><a href="/privacy" target="_blank" rel="noopener">عرض سياسة الخصوصية</a></div><div><h4>شروط الاستخدام</h4><button class="btn btn-secondary" id="editTerms" type="button">تحرير شروط الاستخدام</button><label class="q-legal-toggle"><input type="checkbox" id="showTerms" checked> إظهار الصفحة</label><a href="/terms" target="_blank" rel="noopener">عرض شروط الاستخدام</a></div></div></div></section><style>.q-legal-admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:16px}.q-legal-admin-grid>div{border:1px solid var(--border-color,#e8ddd5);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}.q-legal-admin-grid h4{margin:0}.q-legal-admin-grid .btn{white-space:normal}.q-legal-toggle{display:flex;gap:8px;align-items:center;cursor:pointer}.q-legal-admin-grid a{text-decoration:none;color:inherit}@media(max-width:620px){.q-legal-admin-grid{grid-template-columns:1fr}}</style>
 <style>
 #section-mujeeb .mu-admin-media small{display:block;color:var(--color-gray,#8a7770);font-size:12px;margin:6px 0 9px}
 #section-mujeeb .mu-admin-asset{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:7px 0 11px;min-width:0}
@@ -1527,6 +1526,9 @@ onclick="window.location.href='index.html'"
 </div>
 </div>
 </section>
+<section class="admin-section" id="section-media"><div class="content-card"><div class="card-header"><div><h3>إدارة الإعلام والتواصل</h3><p>تعديل الروابط والبريد وإظهارها أو إخفاؤها في جميع صفحات الموقع.</p></div><button class="btn btn-primary" id="v21AddSocial">إضافة وسيلة تواصل</button></div><div id="v21SocialRows"></div></div></section>
+<section class="admin-section" id="section-advertising"><div class="content-card"><div class="card-header"><div><h3>الإعلانات</h3><p>إدارة الإعلانات والتحكم في ظهورها ومدتها.</p></div><button class="btn btn-primary" id="v21AddAd">إضافة إعلان</button></div><div id="v21AdStats" class="v21-kpis"></div><div id="v21AdRows"></div></div></section>
+<section class="admin-section" id="section-maintenance"><div class="content-card"><div class="card-header"><div><h3>وضع الصيانة</h3><p>يستمر وصول المالك والمديرين أثناء الصيانة.</p></div></div><label class="v21-switch"><input type="checkbox" id="v21MaintenanceSwitch"> إغلاق الموقع مؤقتًا</label><label class="v21-field">رسالة الصيانة<textarea id="v21MaintenanceMessage" rows="3" placeholder="نعمل على تحسين القافية، نعود قريبًا."></textarea></label><button class="btn btn-primary" id="v21MaintenanceSave">حفظ حالة الموقع</button><p id="v21MaintenanceStatus"></p></div></section>
 </div>
 </main>
 </div>
@@ -4852,6 +4854,9 @@ type="button"
 }
 
 const SECTION_INFO = {
+media:["إدارة الإعلام","وسائل التواصل وروابط الموقع",()=>window.v21LoadSocial?.()],
+advertising:["الإعلانات","إدارة الحملات وقياس نتائجها",()=>window.v21LoadAds?.()],
+maintenance:["صيانة الموقع","التحكم في إتاحة الموقع",()=>window.v21LoadMaintenance?.()],
 
 dashboard: [
 "لوحة التحكم",
@@ -4896,8 +4901,8 @@ books: [
 ],
 
 legal: [
-"حقوق وسياسة الموقع",
-"الوثائق النظامية",
+"الوثائق",
+"إدارة سياسة الخصوصية وشروط الاستخدام",
 ()=>Promise.resolve()
 ],
 
@@ -4934,6 +4939,7 @@ loadAdmins
 
 function openSection(section) {
 
+if (["media","advertising","maintenance"].includes(section) && !["owner","manager"].includes(currentAdmin?.role)) return;
 if (section === "mujeeb" && currentAdmin?.role !== "owner") return;
 if (section === "sijal" && !["owner","manager"].includes(currentAdmin?.role)) return;
 if (section === "users" && currentAdmin?.role !== "owner") return;
@@ -7880,22 +7886,23 @@ document.getElementById('importArticlesButton')?.addEventListener('click',()=>do
 document.getElementById('articlesImportInput')?.addEventListener('change',e=>imp(e.target.files[0],'articles','articles',x=>x?.title?{catalog_id:x.catalog_id||('qafiyah:article:'+x.title.trim().toLowerCase().replace(/\s+/g,'-')),title:x.title,author:x.author||null,category:x.category||null,summary:x.summary||null,content:x.content||'',image_url:x.image_url||null,is_featured:!!x.is_featured}:null));
 async function editLegal(key){
  if(!['owner','manager'].includes(currentAdmin?.role)){showToast('هذه الصلاحية للمالك والمدير فقط.','error');return}
- const names={privacy:'سياسة الخصوصية',terms:'شروط الاستخدام والأحكام'};
- const r=await supabaseClient.from('site_settings').select('title,content').eq('key',key).maybeSingle();
- if(r.error){showToast(r.error.message,'error');return}
- let starter='';try{const page=await fetch('/'+key+'.html');const html=await page.text();const doc=new DOMParser().parseFromString(html,'text/html');starter=[...doc.querySelectorAll('#legal-clauses .clause')].map(x=>'## '+x.querySelector('h2')?.textContent+'\n'+x.querySelector('p')?.textContent).join('\n\n')}catch(e){}
+ const names={privacy:'سياسة الخصوصية',terms:'شروط الاستخدام'};
+ const r=await supabaseClient.from('site_settings').select('title,content').eq('key',key).maybeSingle();if(r.error){showToast(r.error.message,'error');return}
+ let starter='';try{const page=await fetch('/'+key+'.html');const doc=new DOMParser().parseFromString(await page.text(),'text/html');starter=[...doc.querySelectorAll('#legal-clauses .clause')].map(x=>'## '+x.querySelector('h2')?.textContent+'\n'+x.querySelector('p')?.textContent).join('\n\n')}catch(e){}
  const old=document.getElementById('qLegalModal');if(old)old.remove();
- const overlay=document.createElement('div');overlay.id='qLegalModal';overlay.style.cssText='position:fixed;inset:0;background:#0009;z-index:999999;display:grid;place-items:center;padding:18px';
- const box=document.createElement('div');box.style.cssText='width:min(850px,100%);background:var(--card-bg,#fff);color:var(--text-color,#322);border-radius:18px;padding:24px;max-height:94vh;overflow:auto;box-shadow:0 20px 60px #0004';
- const heading=document.createElement('h3');heading.textContent='تعديل '+names[key];heading.style.margin='0 0 12px';
- const tip=document.createElement('p');tip.textContent='اكتب كل عنوان في سطر يبدأ بـ ## ثم النص أسفله. النص يُنشر مباشرة في صفحة /'+key;tip.style.fontSize='13px';
- const area=document.createElement('textarea');area.value=(r.data?.content?.trim().startsWith('## ')?r.data.content:starter);area.rows=18;area.dir='rtl';area.style.cssText='width:100%;min-height:360px;resize:vertical;padding:16px;border:1px solid #ccc;border-radius:10px;font:15px/1.9 inherit;background:transparent;color:inherit';
- const actions=document.createElement('div');actions.style.cssText='display:flex;gap:10px;justify-content:flex-end;margin-top:14px';
- const cancel=document.createElement('button');cancel.className='btn btn-secondary';cancel.textContent='إلغاء';cancel.onclick=()=>overlay.remove();
- const save=document.createElement('button');save.className='btn btn-primary';save.textContent='حفظ ونشر';save.onclick=async()=>{if(!area.value.trim()){showToast('لا يمكن نشر صفحة فارغة','error');return}save.disabled=true;const u=await supabaseClient.from('site_settings').upsert({key,title:names[key],content:area.value.trim(),updated_by:currentUser.id},{onConflict:'key'});save.disabled=false;if(u.error)showToast(u.error.message,'error');else{showToast('تم الحفظ والنشر.','success');overlay.remove()}};
- actions.append(cancel,save);box.append(heading,tip,area,actions);overlay.append(box);document.body.append(overlay);overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});
+ const overlay=document.createElement('div');overlay.id='qLegalModal';overlay.style.cssText='position:fixed;inset:0;background:#0009;z-index:999999;display:grid;place-items:center;padding:16px';
+ const box=document.createElement('div');box.style.cssText='width:min(900px,100%);background:var(--card-bg,#fff);color:var(--text-color,#322);border-radius:18px;padding:22px;max-height:94vh;overflow:auto;box-shadow:0 20px 60px #0004';
+ const heading=document.createElement('h3');heading.textContent='تحرير '+names[key];heading.style.margin='0 0 14px';
+ const host=document.createElement('div');host.style.cssText='display:flex;flex-direction:column;gap:12px';
+ function addBlock(title='',body=''){const block=document.createElement('div');block.style.cssText='padding:14px;border:1px solid #d9cbc3;border-radius:12px;display:grid;gap:10px';const h=document.createElement('input');h.placeholder='عنوان القسم';h.value=title;h.dir='rtl';h.style.cssText='width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;font:inherit';const p=document.createElement('textarea');p.placeholder='نص الفقرة';p.value=body;p.rows=5;p.dir='rtl';p.style.cssText='width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;font:inherit;resize:vertical';const controls=document.createElement('div');controls.style.cssText='display:flex;gap:8px;flex-wrap:wrap';[['أعلى',()=>block.previousElementSibling&&host.insertBefore(block,block.previousElementSibling)],['أسفل',()=>block.nextElementSibling&&host.insertBefore(block.nextElementSibling,block)],['حذف القسم',()=>{if(confirm('حذف هذا القسم؟'))block.remove()}]].forEach(([t,fn])=>{const b=document.createElement('button');b.type='button';b.className='btn btn-secondary';b.textContent=t;b.onclick=fn;controls.append(b)});block.append(h,p,controls);host.append(block)}
+ const raw=(r.data?.content?.trim().startsWith('## ')?r.data.content:starter);raw.split(/\n(?=##\s)/).map(x=>x.trim()).filter(Boolean).forEach(chunk=>{const lines=chunk.split('\n');addBlock(lines[0].replace(/^##\s*/,''),lines.slice(1).join('\n').trim())});if(!host.children.length)addBlock();
+ const add=document.createElement('button');add.className='btn btn-secondary';add.textContent='إضافة عنوان وفقرة';add.onclick=()=>addBlock();
+ const actions=document.createElement('div');actions.style.cssText='display:flex;gap:10px;justify-content:flex-end;margin-top:14px';const cancel=document.createElement('button');cancel.className='btn btn-secondary';cancel.textContent='إلغاء';cancel.onclick=()=>overlay.remove();
+ const save=document.createElement('button');save.className='btn btn-primary';save.textContent='حفظ ونشر';save.onclick=async()=>{const blocks=[...host.children].map(b=>({title:b.querySelector('input').value.trim(),body:b.querySelector('textarea').value.trim()}));if(blocks.some(b=>!b.title||!b.body)){showToast('أكمل عنوان ونص كل قسم.','error');return}save.disabled=true;const content=blocks.map(b=>'## '+b.title+'\n'+b.body).join('\n\n');const u=await supabaseClient.from('site_settings').upsert({key,title:names[key],content,updated_by:currentUser.id},{onConflict:'key'});save.disabled=false;if(u.error)showToast(u.error.message,'error');else{showToast('تم الحفظ والنشر.','success');overlay.remove()}};
+ actions.append(cancel,save);box.append(heading,host,add,actions);overlay.append(box);document.body.append(overlay);overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});
 }
-
+async function setupLegalVisibility(){const r=await supabaseClient.from('site_settings').select('key,is_visible').in('key',['privacy','terms']);if(r.error)return;for(const [key,id] of [['privacy','showPrivacy'],['terms','showTerms']]){const el=document.getElementById(id);if(!el)continue;const row=(r.data||[]).find(x=>x.key===key);el.checked=row?.is_visible!==false;el.onchange=async()=>{el.disabled=true;const u=await supabaseClient.from('site_settings').update({is_visible:el.checked,updated_by:currentUser.id}).eq('key',key);el.disabled=false;if(u.error){el.checked=!el.checked;showToast(u.error.message,'error')}else showToast(el.checked?'تم إظهار الصفحة':'تم إخفاء الصفحة','success')}}}
+document.getElementById('legalNav')?.addEventListener('click',setupLegalVisibility);
 document.getElementById('editPrivacy')?.addEventListener('click',()=>editLegal('privacy'));
 document.getElementById('editTerms')?.addEventListener('click',()=>editLegal('terms'));
 window.loadQAnalytics=async function loadQAnalytics(){try{if(!['owner','manager'].includes(currentAdmin?.role))return;const r=await supabaseClient.rpc('qafiyah_analytics_summary');if(r.error)throw r.error;const d=Array.isArray(r.data)?r.data[0]:r.data;if(!d)return;const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=Number(v||0).toLocaleString('en-US')};set('statVisitsAll',d.total_visits);set('statDevicesAll',d.unique_devices);set('statAccountsAll',d.unique_accounts);set('statActiveNow',d.active_now);set('statVisitsToday',d.today);set('statVisits7',d.last_7_days);set('statVisits30',d.last_30_days);set('statVisitsMonth',d.this_month);set('statVisits365',d.last_365_days);set('statVisitsYear',d.this_year);
@@ -7909,5 +7916,5 @@ document.addEventListener('DOMContentLoaded',()=>{loadQAnalytics();setupBulkSele
 
 <script src="article-editor.js?v=20261020-1"></script>
 <script src="admin-extras.js?v=sijal-20261020-admin-r1"></script>
-</body>
+<link rel="stylesheet" href="v21-admin.css"><script src="v21-admin.js"></script></body>
 </html>
