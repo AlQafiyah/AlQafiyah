@@ -7,7 +7,7 @@ const FONT_LABELS={saudi:'السعودي (الأساسي)',expo:'المعرض ا
 const ICONS={heart:'<path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"/>',eye:'<path d="M3 12s3.4-6 9-6 9 6 9 6-3.4 6-9 6-9-6-9-6Z"/><circle cx="12" cy="12" r="3"/>',plus:'<path d="M12 5v14M5 12h14"/>',minus:'<path d="M5 12h14"/>',font:'<path d="m4 19 7-14 7 14M6 15h10"/><path d="M20 8v11"/>',space:'<path d="M8 4h12M8 20h12M4 7v10m-2-8 2-2 2 2m-4 6 2 2 2-2"/>',share:'<path d="M18 8a3 3 0 1 0-2.9-3.8L8.9 8.4a3 3 0 1 0 0 7.2l6.2 4.2a3 3 0 1 0 1.1-2.4L10 13.2M10 10.8l6.2-4.2"/>',image:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>',copy:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 11v7m-3-3 3 3 3-3"/>',link:'<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',chev:'<path d="m6 9 6 6 6-6"/>',close:'<path d="M18 6 6 18M6 6l12 12"/>'};
 const svg=(name)=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]||''}</svg>`;
 const $=(parent,selector)=>parent.querySelector(selector);
-const pageType=()=>document.body?.dataset.qafiyahDetail|| (location.pathname.toLowerCase().endsWith('poem.html')?'poem':location.pathname.toLowerCase().endsWith('article.html')?'article':location.pathname.toLowerCase().endsWith('poet.html')?'poet':null);
+const pageType=()=>document.getElementById('poemDetail')?'poem':document.getElementById('articleDetail')?'article':document.getElementById('poetDetail')?'poet':document.body?.dataset.qafiyahDetail||null;
 const max=(a,b,c)=>Math.min(c,Math.max(b,a));
 let active=null;
 function button(icon,label,fn){const b=document.createElement('button');b.type='button';b.className='q-reader-icon';b.innerHTML=svg(icon);b.title=label;b.setAttribute('aria-label',label);b.addEventListener('click',fn);return b;}
@@ -137,6 +137,15 @@ function enhance(){const type=pageType();if(!type)return;const root=document.get
  const richContent=type==='poem'&&!!target.querySelector('img,video,iframe,figure,h1,h2,h3,h4,blockquote,table,[data-block-type]');
  const s={target,root,type,title,settings,richContent,baseFont:getComputedStyle(target).fontFamily,verses:type==='poem'&&!richContent?parseVerses(extractLines(target,type)):[],message:null};active=s;addToolbar(s);apply(s);
 }
-function init(){enhance();const type=pageType();if(!type)return;const root=document.getElementById(type==='poem'?'poemDetail':type==='article'?'articleDetail':'poetDetail');if(!root)return;new MutationObserver(()=>enhance()).observe(root,{childList:true,subtree:false});}
+function init(){
+ const type=pageType();if(!type)return;
+ const root=document.getElementById(type==='poem'?'poemDetail':type==='article'?'articleDetail':'poetDetail');if(!root)return;
+ // Supabase renders the poem asynchronously. Observe the actual detail container,
+ // not the URL: Cloudflare can serve /poem and /poem/ instead of poem.html.
+ let queued=false;
+ const refresh=()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;enhance();});};
+ new MutationObserver(refresh).observe(root,{childList:true,subtree:false});
+ refresh();
+} 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
