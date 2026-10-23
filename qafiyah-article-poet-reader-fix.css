@@ -18,3 +18,13 @@
 .q-reader-toolbar .q-reader-size .q-reader-icon{width:42px!important;min-width:42px!important;padding:2px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}
 .q-reader-toolbar .q-reader-arabic-size{font-family:inherit!important;font-size:13px!important;line-height:1!important;white-space:nowrap!important;direction:rtl!important}
 .q-reader-toolbar .q-reader-lines .q-reader-icon svg{width:20px!important;height:20px!important}
+
+/* 2026-10-24: controls only; remove center labels and give favorite a filled red heart. */
+.q-reader-toolbar .q-reader-symbol,.q-reader-toolbar .q-reader-gap{display:none!important}
+.q-reader-toolbar .q-reader-lines{gap:3px!important}
+.q-reader-toolbar .q-reader-lines .q-reader-icon svg{width:20px!important;height:20px!important}
+.q-reader-toolbar .q-reader-icon.active[aria-pressed="true"]{color:#b42339!important}
+.q-reader-toolbar .q-reader-icon.active[aria-pressed="true"] svg{fill:#b42339!important;stroke:#b42339!important}
+.q-reader-theme-wrap{position:relative;display:inline-flex;align-items:center;justify-content:space-around;gap:3px;width:43px;height:30px;border:1px solid rgba(130,89,63,.33);border-radius:7px;background:transparent;color:inherit;flex:0 0 43px}
+.q-reader-theme-wrap>svg{width:16px;height:16px;pointer-events:none}
+.q-reader-theme-wrap .q-reader-theme-select{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;opacity:0!important;cursor:pointer!important;padding:0!important;appearance:auto!important}
