@@ -1,28 +1,65 @@
-/* جداول الإدارة: جدول طبيعي في الكمبيوتر وبطاقات منظمة على الجوال دون قص الأعمدة */
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) .table-wrapper{width:100%!important;max-width:100%!important;overflow-x:auto!important;box-sizing:border-box!important}
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) .data-table{border-collapse:collapse!important;table-layout:auto!important}
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) .data-table td:last-child .table-actions{display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;gap:6px!important;align-items:center!important;justify-content:flex-start!important}
-#adminApp #articlesLayoutToolbar{display:flex!important;align-items:center!important;flex-direction:row!important;flex-wrap:nowrap!important;gap:10px!important;max-width:100%!important}
-#adminApp #articlesLayoutToolbar .filter-box{flex:1 1 auto!important;min-width:0!important}
-#adminApp #articlesLayoutToolbar .table-actions{flex:0 0 auto!important;min-width:0!important;display:flex!important;align-items:center!important}
-#adminApp #articlesLayoutToolbar button{white-space:nowrap!important}
-@media(max-width:700px){
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) .table-wrapper{overflow:visible!important}
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) table.data-table{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;table-layout:auto!important}
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) table.data-table thead{display:none!important}
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) table.data-table tbody{display:block!important;width:100%!important}
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) table.data-table tbody tr{display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:100%!important;max-width:100%!important;border-bottom:1px solid #e9ddd3;padding:10px 12px;gap:0;background:transparent}
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) table.data-table tbody td{display:flex!important;flex-flow:row wrap!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;min-width:0!important;max-width:100%!important;width:100%!important;white-space:normal!important;overflow-wrap:anywhere!important;text-align:start!important;padding:9px 0!important;border:0!important;box-sizing:border-box!important}
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) table.data-table tbody td::before{content:attr(data-q-label);display:inline-block;flex:0 0 auto;font-size:12px;font-weight:700;opacity:.72;max-width:42%;white-space:normal}
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) table.data-table tbody td[data-q-label="الإجراءات"]{justify-content:space-between!important}
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) table.data-table tbody td .table-actions{display:flex!important;flex-flow:row wrap!important;align-items:center!important;justify-content:flex-end!important;width:auto!important;max-width:100%!important;min-width:0!important;gap:5px!important}
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) table.data-table tbody td .table-actions button{font-size:12px!important;padding:7px 9px!important;min-width:0!important}
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) table.data-table tbody td[colspan]{display:block!important;text-align:center!important}
-#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) table.data-table tbody td[colspan]::before{display:none!important}
-#adminApp #section-admins table.data-table{min-width:0!important;width:100%!important}
-#adminApp #section-admins table.data-table td:last-child :is(button,a){display:inline-flex!important;width:auto!important;margin:2px!important;white-space:nowrap!important}
-#adminApp #articlesLayoutToolbar{padding:10px 8px!important;gap:8px!important}
-#adminApp #articlesLayoutToolbar .filter-box{flex:1 1 50%!important;min-width:0!important}
-#adminApp #articlesLayoutToolbar .table-actions{flex:0 1 auto!important}
-#adminApp #articlesLayoutToolbar .table-actions button{font-size:12px!important;padding:9px 7px!important}
+/* AlQafiyah: restore actual horizontal tables (no stacked mobile cards). */
+/* Only the four requested admin sections; other sections, social and site untouched. */
+#adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) .table-wrapper {
+  display:block!important; width:100%!important; max-width:100%!important;
+  overflow-x:auto!important; overflow-y:hidden!important; box-sizing:border-box!important;
+  -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain;
+}
+#adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) table.data-table {
+  display:table!important; width:100%!important; min-width:940px!important;
+  max-width:none!important; table-layout:auto!important; border-collapse:collapse!important;
+  direction:rtl!important;
+}
+#adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) table.data-table thead {
+  display:table-header-group!important;
+}
+#adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) table.data-table tbody {
+  display:table-row-group!important;
+}
+#adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) table.data-table tr {
+  display:table-row!important; width:auto!important; max-width:none!important;
+  padding:0!important; border:0!important; background:transparent!important;
+}
+#adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) table.data-table :is(th,td) {
+  display:table-cell!important; width:auto!important; max-width:none!important;
+  min-width:0!important; box-sizing:border-box!important;
+  padding:12px 11px!important; text-align:right!important;
+  vertical-align:middle!important; white-space:normal!important;
+  overflow-wrap:break-word!important; word-break:normal!important;
+  border-bottom:1px solid #e9ddd3!important;
+}
+#adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) table.data-table th {
+  white-space:nowrap!important; font-weight:700!important;
+}
+#adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) table.data-table td::before {
+  content:none!important; display:none!important;
+}
+#adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) table.data-table :is(.table-title,.table-muted) {
+  max-width:260px!important; overflow-wrap:anywhere!important;
+}
+#adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) table.data-table td:last-child {
+  min-width:225px!important; white-space:nowrap!important;
+}
+#adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) table.data-table td:last-child .table-actions {
+  display:flex!important; flex-direction:row!important; flex-wrap:nowrap!important;
+  gap:5px!important; align-items:center!important; justify-content:flex-start!important;
+  width:max-content!important; max-width:none!important;
+}
+#adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) table.data-table td:last-child .table-actions :is(button,a) {
+  display:inline-flex!important; width:auto!important; flex:0 0 auto!important;
+  white-space:nowrap!important; padding:7px 9px!important;
+}
+#adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) table.data-table td img {
+  max-width:64px!important; max-height:64px!important; object-fit:contain!important;
+}
+@media(max-width:700px) {
+  #adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) .table-wrapper {
+    overflow-x:auto!important; overflow-y:hidden!important;
+  }
+  #adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) table.data-table {
+    min-width:1000px!important;
+  }
+  #adminApp :is(#section-articles,#section-books,#section-poems,#section-poets) table.data-table :is(th,td) {
+    padding:10px 9px!important; font-size:12px!important;
+  }
 }
