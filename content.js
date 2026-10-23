@@ -2365,7 +2365,7 @@
 
         function card(poem) {
             const poet = poetLookup.get(String(poem.poet_id));
-            const name = poet ? ((poet.display_name_mode === 'nickname' && poet.nickname) ? poet.nickname : poet.name) : poem.poet;
+            const name = poet ? ((String(poet.display_name_mode||'name').toLowerCase() === 'nickname' && poet.nickname) ? poet.nickname : poet.name) : poem.poet;
             const poetLabel = name ? (poet?.id ? `<a class="poem-meta-poet" href="poet.html?id=${encodeURIComponent(poet.id)}">${escapeHtml(name)}</a>` : `<span class="poem-meta-poet">${escapeHtml(name)}</span>`) : '';
             const meta = [poetLabel, poem.era ? `<span class="poem-meta-era">${escapeHtml(poem.era)}</span>` : '',poem.category ? `<span class="poem-meta-category">${escapeHtml(poem.category)}</span>` : ''].filter(Boolean).join(' <span class="poem-meta-separator">•</span> ');
             return `
@@ -3359,7 +3359,7 @@ async function initPoetDetail() {
 
 
             const poetName =
-                ((poet?.display_name_mode === 'nickname' && poet?.nickname) ? poet.nickname : poet?.name)
+                ((String(poet?.display_name_mode||'name').toLowerCase() === 'nickname' && poet?.nickname) ? poet.nickname : poet?.name)
                 || poem.poet || "";
 
 

@@ -7,3 +7,7 @@
 #poemDetail .q-reader-content.q-poem-diwan .q-reader-second{align-self:flex-end!important;text-align:left!important}
 #poemDetail .q-reader-toolbar{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;max-width:100%;min-width:0;align-items:center;scrollbar-width:thin}
 #poemDetail .q-reader-toolbar>*{flex-shrink:0}
+
+#poemDetail .q-reader-content .q-reader-verse{line-height:var(--q-reader-line-height,1.9)!important;margin-block:var(--q-reader-gap,10px)!important;overflow:visible!important;max-width:none!important;min-width:max-content!important;white-space:nowrap!important}
+#poemDetail .q-reader-content .q-reader-first,#poemDetail .q-reader-content .q-reader-second{line-height:var(--q-reader-line-height,1.9)!important;white-space:nowrap!important;max-width:none!important;overflow:visible!important}
+#poemDetail .q-reader-content{overflow-x:auto!important;max-width:100%!important}
