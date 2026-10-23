@@ -42,3 +42,8 @@
 /* بطاقة القصيدة فقط: إبقاء الخلفية الخارجية على إعداد المستخدم */
 #poemDetail .qafiyah-detail-card[data-q-reader-theme]{transition:background-color .15s,color .15s;background-image:none!important}
 #poemDetail .qafiyah-detail-card[data-q-reader-theme] :is(h1,h2,h3,p,.qafiyah-poem-line,.q-reader-content,.q-reader-first,.q-reader-second){color:inherit!important}
+
+/* Reader recovery: Arabic size buttons stay inside their own outlines. */
+.q-reader-toolbar .q-reader-size .q-reader-icon{width:42px!important;min-width:42px!important;padding:2px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}
+.q-reader-toolbar .q-reader-arabic-size{font-family:inherit!important;font-size:13px!important;line-height:1!important;white-space:nowrap!important;direction:rtl!important}
+.q-reader-toolbar .q-reader-lines .q-reader-icon svg{width:20px!important;height:20px!important}

@@ -13,3 +13,8 @@
 #articleDetail .q-reader-content :is(p,li,blockquote),#poetDetail .q-reader-content :is(p,li,blockquote){font-family:inherit!important;font-size:inherit!important;line-height:inherit!important}
 #articleDetail .q-reader-toolbar .q-reader-share,#poetDetail .q-reader-toolbar .q-reader-share{font-size:0!important}
 @media(max-width:380px){#articleDetail .q-reader-toolbar,#poetDetail .q-reader-toolbar{gap:1px!important}#articleDetail .q-reader-toolbar .q-reader-icon,#poetDetail .q-reader-toolbar .q-reader-icon{width:24px!important;height:27px!important}#articleDetail .q-reader-toolbar .q-reader-select,#poetDetail .q-reader-toolbar .q-reader-select{width:65px!important}}
+
+/* Reader recovery: Arabic size buttons stay inside their own outlines. */
+.q-reader-toolbar .q-reader-size .q-reader-icon{width:42px!important;min-width:42px!important;padding:2px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}
+.q-reader-toolbar .q-reader-arabic-size{font-family:inherit!important;font-size:13px!important;line-height:1!important;white-space:nowrap!important;direction:rtl!important}
+.q-reader-toolbar .q-reader-lines .q-reader-icon svg{width:20px!important;height:20px!important}
