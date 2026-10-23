@@ -3323,7 +3323,7 @@ async function initPoetDetail() {
                         )
 
                         .select(
-                            "id,name,nickname,era,image_url"
+                            "id,name,nickname,display_name_mode,era,image_url"
                         )
 
                         .eq(
@@ -3334,14 +3334,13 @@ async function initPoetDetail() {
                         .maybeSingle();
 
 
-                if (
-                    !poetError
-                ) {
-
-                    poet =
-                        poetData ||
-                        null;
-
+                if (!poetError) {
+                    poet = poetData || null;
+                } else if (/display_name_mode/i.test(String(poetError.message || ''))) {
+                    const fallback = await db.from('poets')
+                        .select('id,name,nickname,era,image_url')
+                        .eq('id', poem.poet_id).maybeSingle();
+                    if (!fallback.error) poet = fallback.data || null;
                 }
 
             }
