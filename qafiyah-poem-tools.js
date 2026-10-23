@@ -13,7 +13,7 @@ let active=null;
 function button(icon,label,fn){const b=document.createElement('button');b.type='button';b.className='q-reader-icon';b.innerHTML=svg(icon);b.title=label;b.setAttribute('aria-label',label);b.addEventListener('click',fn);return b;}
 function splitCouplet(text){
  // نفصل فقط عند وجود فاصل شطرين صريح، دون المساس بالعلامات داخل أي شطر.
- const segments=String(text).trim().split(/\s*(?:\*\*\*+|\*\*|···|۞|\s+\.\.\.\s+|\s+…\s+|\s+[|¦]\s+|\s+\/\s+)\s*/).filter(Boolean);
+ const segments=String(text).trim().split(/\s*(?:\*\*\*+|\*\*|···|۞|\s+\.\.\.\s+|\s+…\s+|\s*[|¦]\s*|\s+\/\s+)\s*/).filter(Boolean);
  return segments.length===2?segments:null;
 }
 function parseVerses(raw){

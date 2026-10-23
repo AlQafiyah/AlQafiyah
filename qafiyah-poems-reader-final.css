@@ -1,6 +1,6 @@
 /* القافية: قارئ القصائد فقط، دون تعديل بقية الموقع */
 #poemDetail .qafiyah-poem-lines.q-reader-content{font-family:var(--q-reader-font,"Qafiyah Saudi",sans-serif)!important;min-width:0;max-width:100%;overflow-x:auto;overflow-y:visible;overscroll-behavior-inline:contain}
-#poemDetail .qafiyah-poem-lines.q-reader-content .qafiyah-poem-line{white-space:nowrap!important;overflow-wrap:normal!important;word-break:normal!important;min-width:max-content;max-width:none!important;line-height:1.9!important}
+#poemDetail .qafiyah-poem-lines.q-reader-content .qafiyah-poem-line{white-space:nowrap!important;overflow-wrap:normal!important;word-break:normal!important;min-width:max-content;max-width:none!important;line-height:var(--q-reader-line-height,1.9)!important}
 #poemDetail .q-reader-content.q-poem-diwan .qafiyah-poem-line{min-width:100%;width:max-content;display:flex!important;flex-direction:column!important;align-items:stretch!important}
 #poemDetail .q-reader-content.q-poem-diwan .q-reader-first,#poemDetail .q-reader-content.q-poem-diwan .q-reader-second{white-space:nowrap!important;max-width:none!important;overflow:visible!important;display:block!important;width:max-content}
 #poemDetail .q-reader-content.q-poem-diwan .q-reader-first{align-self:flex-start!important;text-align:right!important}
@@ -11,3 +11,8 @@
 #poemDetail .q-reader-content .q-reader-verse{line-height:var(--q-reader-line-height,1.9)!important;margin-block:var(--q-reader-gap,10px)!important;overflow:visible!important;max-width:none!important;min-width:max-content!important;white-space:nowrap!important}
 #poemDetail .q-reader-content .q-reader-first,#poemDetail .q-reader-content .q-reader-second{line-height:var(--q-reader-line-height,1.9)!important;white-space:nowrap!important;max-width:none!important;overflow:visible!important}
 #poemDetail .q-reader-content{overflow-x:auto!important;max-width:100%!important}
+
+/* قارئ القصائد: احتفظ بكل شطر كوحدة مستقلة وبأحجام الخط التي يختارها القارئ */
+#poemDetail .qafiyah-poem-lines.q-reader-content .qafiyah-poem-line{font-size:var(--q-reader-size,24px)!important;font-family:var(--q-reader-font,"Qafiyah Saudi",sans-serif)!important}
+#poemDetail .q-reader-content.q-poem-diwan .qafiyah-poem-line{min-width:100%!important;box-sizing:border-box}
+#poemDetail .q-reader-content.q-poem-diwan .q-reader-second{margin-inline-start:auto!important}
