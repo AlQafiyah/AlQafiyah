@@ -16,3 +16,29 @@
 #poemDetail .qafiyah-poem-lines.q-reader-content .qafiyah-poem-line{font-size:var(--q-reader-size,24px)!important;font-family:var(--q-reader-font,"Qafiyah Saudi",sans-serif)!important}
 #poemDetail .q-reader-content.q-poem-diwan .qafiyah-poem-line{min-width:100%!important;box-sizing:border-box}
 #poemDetail .q-reader-content.q-poem-diwan .q-reader-second{margin-inline-start:auto!important}
+
+/* قارئ القصائد: أدوات مضغوطة، جميعها ظاهرة دون سحب أفقي */
+#poemDetail .q-reader-toolbar{display:flex!important;flex-wrap:wrap!important;overflow:visible!important;width:100%!important;max-width:100%!important;gap:5px!important;justify-content:center!important;padding:8px 2px!important;box-sizing:border-box!important}
+#poemDetail .q-reader-toolbar>*{flex:0 0 auto!important;min-width:0!important}
+#poemDetail .q-reader-group{gap:2px!important;display:inline-flex!important;align-items:center!important}
+#poemDetail .q-reader-icon{height:30px!important;min-width:30px!important;width:30px!important;padding:4px!important;flex-shrink:0!important}
+#poemDetail .q-reader-icon svg{width:16px!important;height:16px!important}
+#poemDetail .q-reader-symbol{width:22px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;flex:none}
+#poemDetail .q-reader-symbol svg{width:20px;height:20px}
+#poemDetail .q-reader-select{height:30px!important;min-width:0!important;padding:3px 5px!important;font-size:11px!important;max-width:110px!important}
+#poemDetail .q-reader-font-select{max-width:108px!important}
+#poemDetail .q-reader-toolbar .q-reader-hint:empty{display:none!important}
+#poemDetail .q-reader-share{width:30px!important;min-width:30px!important}
+#poemDetail .q-reader-status:empty{display:none!important}
+/* المظهر المؤقت يغيّر البطاقة نفسها وليس خلفيتها المحيطة */
+#poemDetail .qafiyah-detail-card[data-q-reader-theme="natural"]{background:#fffdf9!important;color:#35221f!important;border-color:#e2d8d0!important}
+#poemDetail .qafiyah-detail-card[data-q-reader-theme="morning"]{background:#fff6e9!important;color:#35221f!important;border-color:#d7bda8!important}
+#poemDetail .qafiyah-detail-card[data-q-reader-theme="evening"]{background:#f1e1d4!important;color:#503428!important;border-color:#c9a993!important}
+#poemDetail .qafiyah-detail-card[data-q-reader-theme="night"]{background:#263343!important;color:#f7efe4!important;border-color:#506071!important}
+#poemDetail .qafiyah-detail-card[data-q-reader-theme="dark"]{background:#221d1d!important;color:#f8efe8!important;border-color:#534747!important}
+#poemDetail .qafiyah-detail-card[data-q-reader-theme] .qafiyah-poem-line,#poemDetail .qafiyah-detail-card[data-q-reader-theme] .q-reader-toolbar,#poemDetail .qafiyah-detail-card[data-q-reader-theme] .q-reader-symbol{color:inherit!important}
+@media(max-width:480px){#poemDetail .q-reader-toolbar{gap:4px!important}#poemDetail .q-reader-select{max-width:98px!important}#poemDetail .q-reader-font-select{max-width:98px!important}}
+
+/* بطاقة القصيدة فقط: إبقاء الخلفية الخارجية على إعداد المستخدم */
+#poemDetail .qafiyah-detail-card[data-q-reader-theme]{transition:background-color .15s,color .15s;background-image:none!important}
+#poemDetail .qafiyah-detail-card[data-q-reader-theme] :is(h1,h2,h3,p,.qafiyah-poem-line,.q-reader-content,.q-reader-first,.q-reader-second){color:inherit!important}
