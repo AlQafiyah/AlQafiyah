@@ -55,7 +55,7 @@ ALTER TABLE public.qafiyah_ads ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.qafiyah_ad_events ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS v21_social_public ON public.qafiyah_social_links;
-CREATE POLICY v21_social_public ON public.qafiyah_social_links FOR SELECT TO anon,authenticated USING (is_visible);
+CREATE POLICY v21_social_public ON public.qafiyah_social_links FOR SELECT TO anon,authenticated USING (true);
 DROP POLICY IF EXISTS v21_social_admin_read ON public.qafiyah_social_links;
 CREATE POLICY v21_social_admin_read ON public.qafiyah_social_links FOR SELECT TO authenticated USING (public.qafiyah_my_role() IN ('owner','manager'));
 DROP POLICY IF EXISTS v21_social_admin ON public.qafiyah_social_links;
@@ -177,3 +177,22 @@ WHERE (src.placement='footer' OR src.placement IS NULL)
     WHERE (dst.placement='sidebar' OR dst.platform=concat('sidebar:',src.platform))
       AND (dst.platform=src.platform OR dst.platform=concat('sidebar:',src.platform))
   );
+
+-- ضمان وجود عناصر التواصل الأصلية في الذيل والقائمة الجانبية؛ لا تعدّل السجلات الموجودة.
+-- الروابط غير المحفوظة تبقى ظاهرة للتجهيز، ولا تُوجّه إلى عنوان مختلق.
+DO $$
+DECLARE v_scope text; v_platform text; v_order int;
+BEGIN
+  FOREACH v_scope IN ARRAY ARRAY['footer','sidebar'] LOOP
+    v_order := 0;
+    FOREACH v_platform IN ARRAY ARRAY['x','tiktok','instagram','threads','facebook','whatsapp','telegram','email'] LOOP
+      v_order := v_order + 1;
+      IF NOT EXISTS (SELECT 1 FROM public.qafiyah_social_links WHERE
+         (CASE WHEN platform LIKE 'footer:%' THEN 'footer' WHEN platform LIKE 'sidebar:%' THEN 'sidebar' ELSE coalesce(placement,'footer') END)=v_scope
+         AND split_part(platform,':',CASE WHEN position(':' in platform)>0 THEN 2 ELSE 1 END)=v_platform) THEN
+        INSERT INTO public.qafiyah_social_links(platform,label,url,is_visible,sort_order,placement)
+        VALUES(v_platform,v_platform,'',true,v_order,v_scope);
+      END IF;
+    END LOOP;
+  END LOOP;
+END $$;

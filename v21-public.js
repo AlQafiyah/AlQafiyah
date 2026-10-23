@@ -22,13 +22,13 @@ async function social(){const requestVersion=++socialRequestVersion;try{
   // Older installations stored a single link for both placements. Preserve it until a scoped row exists.
   const fallback=placement==='sidebar'&&!candidates.length?normalized.filter(x=>x._platform===platform&&x._placement==='footer'):[];
   const match=[...(candidates.length?candidates:fallback)].sort((a,b)=>new Date(b.updated_at||0)-new Date(a.updated_at||0)||Number(b.id||0)-Number(a.id||0))[0];
-  if(!match||match.is_visible===false){el.hidden=true;el.setAttribute('aria-hidden','true');el.style.setProperty('display','none','important');continue}
+  if(match?.is_visible===false){el.hidden=true;el.setAttribute('aria-hidden','true');el.style.setProperty('display','none','important');continue}
   let url=String(match?.url||'').trim();
   if(platform==='email'){
    if(url&&!url.startsWith('mailto:'))url='mailto:'+url;
    if(url&&!/^mailto:[^\s@]+@[^\s@?]+(?:\?[^\s]*)?$/.test(url))url='';
   }else url=validUrl(url)||'';
-  if(!url){el.hidden=true;el.setAttribute('aria-hidden','true');el.style.setProperty('display','none','important');continue;}
+  if(!url){el.hidden=false;el.removeAttribute('aria-hidden');el.style.removeProperty('display');el.style.removeProperty('visibility');el.href='#';el.onclick=e=>e.preventDefault();el.style.pointerEvents='auto';el.setAttribute('aria-disabled','true');continue;}
   el.hidden=false;el.removeAttribute('aria-hidden');el.style.removeProperty('display');el.style.removeProperty('visibility');
   el.setAttribute('href',url);el.onclick=null;el.removeAttribute('disabled');el.target=url.startsWith('https:')?'_blank':'_self';el.rel='noopener noreferrer';el.style.pointerEvents=url?'auto':'none';el.setAttribute('aria-disabled',url?'false':'true');
  }
