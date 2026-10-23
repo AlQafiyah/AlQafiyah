@@ -1,0 +1,15 @@
+/* القافية: إصلاح ملاحظات الإدارة المصورة 2026-10-23 */
+#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) .content-card{min-width:0;max-width:100%;overflow:hidden}
+#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) .table-wrapper{display:block;box-sizing:border-box;width:100%;max-width:100%;overflow-x:auto!important;overflow-y:hidden;-webkit-overflow-scrolling:touch;direction:rtl}
+#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) .data-table{table-layout:auto!important;width:max-content!important;min-width:100%!important;border-collapse:collapse!important}
+#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) .data-table :is(th,td){box-sizing:border-box!important;white-space:nowrap!important;overflow:visible!important;text-overflow:clip!important;max-width:none!important;vertical-align:middle!important;padding:12px 14px!important;text-align:right}
+#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) .data-table :is(th,td):last-child{min-width:155px!important;text-align:center!important}
+#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) .data-table td:last-child .table-actions{display:flex!important;flex-flow:row nowrap!important;align-items:center!important;justify-content:center!important;gap:7px!important;width:max-content;min-width:100%;overflow:visible!important}
+#adminApp :is(#section-poets,#section-poems,#section-articles,#section-books,#section-admins) .data-table td:last-child .table-actions>*{flex:0 0 auto!important;white-space:nowrap!important;margin:0!important}
+#adminApp #section-admins .data-table td:last-child{min-width:170px!important}
+#adminApp #articlesLayoutToolbar{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;flex-wrap:nowrap!important;gap:10px!important;min-width:0!important;max-width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;padding:12px!important}
+#adminApp #articlesLayoutToolbar .filter-box{flex:1 1 0!important;min-width:0!important;max-width:360px!important;margin:0!important}
+#adminApp #articlesLayoutToolbar .filter-box select{box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important}
+#adminApp #articlesLayoutToolbar .table-actions{display:flex!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;margin:0!important;overflow:visible!important}
+#adminApp #articlesLayoutToolbar .btn{width:auto!important;max-width:100%!important;white-space:nowrap!important;flex:none!important;padding-inline:12px!important}
+@media(max-width:600px){#adminApp #articlesLayoutToolbar{justify-content:flex-start!important}#adminApp #articlesLayoutToolbar .filter-box{flex:1 0 130px!important}#adminApp #articlesLayoutToolbar .btn{font-size:12px!important;padding-inline:9px!important}}

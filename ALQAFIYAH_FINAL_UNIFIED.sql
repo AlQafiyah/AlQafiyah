@@ -162,3 +162,18 @@ CREATE TRIGGER qafiyah_poem_count_sync AFTER INSERT OR DELETE OR UPDATE OF poet_
 FOR EACH ROW EXECUTE FUNCTION public.qafiyah_sync_poet_poem_count();
 UPDATE public.poets p SET poem_count=(SELECT count(*)::integer FROM public.poems m WHERE m.poet_id::text=p.id::text);
 COMMIT;
+
+
+-- توافق روابط التواصل القديمة مع مواقع العرض المستقلة دون مسح البيانات.
+-- يستنسخ إعدادات الذيل للقائمة الجانبية فقط إذا لم تكن لها إعدادات مستقلة.
+INSERT INTO public.qafiyah_social_links(platform,label,url,is_visible,sort_order,placement,updated_at)
+SELECT CASE WHEN position(':' in src.platform)>0 THEN split_part(src.platform,':',2) ELSE src.platform END,
+       src.label,src.url,src.is_visible,src.sort_order,'sidebar',now()
+FROM public.qafiyah_social_links src
+WHERE (src.placement='footer' OR src.placement IS NULL)
+  AND src.platform IN ('x','tiktok','instagram','threads','facebook','whatsapp','telegram','email')
+  AND NOT EXISTS (
+    SELECT 1 FROM public.qafiyah_social_links dst
+    WHERE (dst.placement='sidebar' OR dst.platform=concat('sidebar:',src.platform))
+      AND (dst.platform=src.platform OR dst.platform=concat('sidebar:',src.platform))
+  );

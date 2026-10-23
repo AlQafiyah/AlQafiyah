@@ -16,8 +16,12 @@ async function social(){const requestVersion=++socialRequestVersion;try{
   const platform=(el.getAttribute('data-q-social-placeholder')||'email').toLowerCase();
   if(!platforms.has(platform)){el.remove();continue}
   const placement=el.closest('.q-side-contact,.side-menu-socials,.side-menu,.mobile-menu,.sidebar,.side-menu-footer,.q-side-footer')?'sidebar':'footer';
-  const candidates=r.data.filter(x=>String(x.platform||'').toLowerCase()===platform&&(x.placement||'footer')===placement);
-  const match=[...candidates].sort((a,b)=>new Date(b.updated_at||0)-new Date(a.updated_at||0)||Number(b.id||0)-Number(a.id||0))[0];
+  // Compatibility with both historical "sidebar:x" keys and current placement column.
+  const normalized=r.data.map(x=>{const raw=String(x.platform||'').toLowerCase();const legacy=raw.match(/^(footer|sidebar):(.+)$/);return {...x,_platform:legacy?legacy[2]:raw,_placement:legacy?legacy[1]:(x.placement||'footer')};});
+  const candidates=normalized.filter(x=>x._platform===platform&&x._placement===placement);
+  // Older installations stored a single link for both placements. Preserve it until a scoped row exists.
+  const fallback=placement==='sidebar'&&!candidates.length?normalized.filter(x=>x._platform===platform&&x._placement==='footer'):[];
+  const match=[...(candidates.length?candidates:fallback)].sort((a,b)=>new Date(b.updated_at||0)-new Date(a.updated_at||0)||Number(b.id||0)-Number(a.id||0))[0];
   if(!match||match.is_visible===false){el.hidden=true;el.setAttribute('aria-hidden','true');el.style.setProperty('display','none','important');continue}
   let url=String(match?.url||'').trim();
   if(platform==='email'){
@@ -25,8 +29,12 @@ async function social(){const requestVersion=++socialRequestVersion;try{
    if(url&&!/^mailto:[^\s@]+@[^\s@?]+(?:\?[^\s]*)?$/.test(url))url='';
   }else url=validUrl(url)||'';
   if(!url){el.hidden=true;el.setAttribute('aria-hidden','true');el.style.setProperty('display','none','important');continue;}
-  el.hidden=false;el.removeAttribute('aria-hidden');el.style.removeProperty('display');
-  el.href=url||'#';el.onclick=url?null:(e=>e.preventDefault());el.removeAttribute('disabled');el.target=url.startsWith('https:')?'_blank':'_self';el.rel='noopener noreferrer';el.style.pointerEvents=url?'auto':'none';el.setAttribute('aria-disabled',url?'false':'true');
+  el.hidden=false;el.removeAttribute('aria-hidden');el.style.removeProperty('display');el.style.removeProperty('visibility');
+  el.setAttribute('href',url);el.onclick=null;el.removeAttribute('disabled');el.target=url.startsWith('https:')?'_blank':'_self';el.rel='noopener noreferrer';el.style.pointerEvents=url?'auto':'none';el.setAttribute('aria-disabled',url?'false':'true');
+ }
+ for(const holder of document.querySelectorAll('.side-menu-socials,.footer-socials')){
+   if(!holder.querySelector('a:not([hidden])')){holder.hidden=true;holder.style.setProperty('display','none','important');}
+   else {holder.hidden=false;holder.style.removeProperty('display');}
  }
  // لا تُنشأ روابط جديدة؛ تُحدَّث فقط العناصر الأصلية.
  }catch(e){console.warn('social',e)} }
