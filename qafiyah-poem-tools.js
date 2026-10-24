@@ -63,11 +63,14 @@ function fitPoem(s){
  ctx.font=`100px ${family}`;
  let longest=0;for(const row of rows)longest=Math.max(longest,ctx.measureText(row).width);
  const safe=longest?Math.floor(width*100/longest):36;
- const upper=Math.max(5,Math.min(40,safe));
+ const upper=Math.max(8,Math.min(60,safe));
  // The user's size buttons adjust the preferred size, but cannot exceed the fit limit.
- const actual=Math.max(5,Math.min(s.settings.size,upper));
+ // Start at a readable size that actually fits, so +/- respond on the first click.
+ if(!s.sizeInitialized){s.settings.size=Math.min(30,upper);s.sizeInitialized=true;}
+ const actual=Math.max(8,Math.min(s.settings.size,upper));
  target.style.setProperty('--q-reader-size',actual+'px');
  target.dataset.qFittedSize=String(actual);
+ s.lastFittedSize=actual;
 }
 function queuePoemFit(s){
  if(s.type!=='poem')return;
@@ -109,14 +112,14 @@ function addToolbar(s){const tool=document.createElement('div');tool.className='
  const compact=(name,icon,action)=>{const b=button(icon,name,action);b.classList.add('q-reader-compact');return b;};
  const symbol=(name,html)=>{const el=document.createElement('span');el.className='q-reader-symbol';el.setAttribute('role','img');el.setAttribute('aria-label',name);el.title=name;el.innerHTML=html;return el;};
  const d=document.createElement('div');d.className='q-reader-group q-reader-size';
- const smaller=compact('تصغير الخط','minus',()=>{s.settings.size=max(s.settings.size-2,12,60);apply(s);});smaller.innerHTML='<span class="q-reader-arabic-size">ع −</span>';const bigger=compact('تكبير الخط','plus',()=>{s.settings.size=max(s.settings.size+2,12,60);apply(s);});bigger.innerHTML='<span class="q-reader-arabic-size">ع +</span>';d.append(smaller,bigger);tool.append(d);
+ const smaller=compact('تصغير الخط','minus',()=>{s.settings.size=max((s.lastFittedSize||s.settings.size)-2,8,60);apply(s);});smaller.innerHTML='<span class="q-reader-arabic-size">ع −</span>';const bigger=compact('تكبير الخط','plus',()=>{s.settings.size=max((s.lastFittedSize||s.settings.size)+2,8,60);apply(s);});bigger.innerHTML='<span class="q-reader-arabic-size">ع +</span>';d.append(smaller,bigger);tool.append(d);
  const lineGap=document.createElement('div');lineGap.className='q-reader-group q-reader-lines';
  lineGap.append(
   compact('تقارب السطور','linesCloser',()=>{s.settings.lineHeight=max(s.settings.lineHeight-.1,1.2,3);apply(s);}),
   compact('تباعد السطور','linesFarther',()=>{s.settings.lineHeight=max(s.settings.lineHeight+.1,1.2,3);apply(s);})
  );tool.append(lineGap);
  if(s.type==='poem'){
-  const group=document.createElement('div');group.className='q-reader-group';const label=document.createElement('label');label.className='q-reader-hint';label.textContent='';const sel=document.createElement('select');sel.className='q-reader-select';sel.setAttribute('aria-label','طريقة عرض القصيدة');for(const [key,name] of Object.entries(FORMATS))sel.add(new Option(name,key));sel.value=s.settings.mode;sel.addEventListener('change',()=>{s.settings.mode=sel.value;apply(s);});group.append(label,sel);tool.append(group);
+  const group=document.createElement('div');group.className='q-reader-group';const label=document.createElement('label');label.className='q-reader-hint';label.textContent='';const sel=document.createElement('select');sel.className='q-reader-select';sel.setAttribute('aria-label','طريقة عرض القصيدة');for(const [key,name] of Object.entries(FORMATS))sel.add(new Option(name,key));sel.value=s.settings.mode;sel.addEventListener('change',()=>{s.settings.mode=sel.value;s.sizeInitialized=false;apply(s);});group.append(label,sel);tool.append(group);
  }
  const fontsGroup=document.createElement('div');fontsGroup.className='q-reader-group';const fontsLabel=document.createElement('label');fontsLabel.className='q-reader-hint';fontsLabel.textContent='';const fontSelect=document.createElement('select');fontSelect.className='q-reader-select q-reader-font-select';fontSelect.setAttribute('aria-label','تغيير خط المحتوى فقط');fontSelect.add(new Option('السعودي (الافتراضي)','default'));const available=window.QafiyahEnhancements?.fonts||{};Object.keys(available).forEach(key=>fontSelect.add(new Option(FONT_LABELS[key]||key,key))); fontSelect.value='default';fontSelect.addEventListener('change',async()=>{s.settings.font=fontSelect.value;apply(s);const family=effectiveFont(s).split(',')[0].replace(/[\"']/g,'').trim();try{await document.fonts.load('24px \"'+family+'\"','قصيدة عربية');}catch(e){console.warn('تعذر تحميل الخط',family,e);}});fontsGroup.append(fontsLabel,fontSelect);tool.append(fontsGroup);
  if(s.type==='poem'){const vowels=button('eye','إزالة أو إظهار التشكيل',()=>{s.settings.vowels=!s.settings.vowels;apply(s)});tool.append(vowels);const themes=document.createElement('select');themes.className='q-reader-select q-reader-theme-select';themes.setAttribute('aria-label','مظهر القصيدة المؤقت');[['','مظهر الموقع'],['morning','المظهر الأول'],['night','المظهر الثاني'],['dark','المظهر الثالث']].forEach(([k,v])=>themes.add(new Option(v,k)));themes.addEventListener('change',()=>{const val=themes.value;const card=s.root.querySelector('.qafiyah-detail-card')||s.root;if(val)card.setAttribute('data-q-reader-theme',val);else card.removeAttribute('data-q-reader-theme')});const themeWrap=document.createElement('span');themeWrap.className='q-reader-theme-wrap';themeWrap.innerHTML=svg('palette')+svg('chev');themeWrap.append(themes);tool.append(themeWrap);const fav=button('heart','إضافة القصيدة إلى المفضلة',()=>{const id=new URLSearchParams(location.search).get('id');if(!id){notice(s,'تعذر تحديد القصيدة للمفضلة');return;}const key='poem:'+id;let items=[];try{items=JSON.parse(localStorage.getItem('qafiyah_favorites')||'[]');if(!Array.isArray(items))items=[];}catch{}const exists=items.some(x=>x.key===key);items=exists?items.filter(x=>x.key!==key):[{key,type:'poem',id,title:s.title,url:location.href,img:'',meta:'',savedAt:Date.now()},...items];localStorage.setItem('qafiyah_favorites',JSON.stringify(items));document.dispatchEvent(new CustomEvent('qafiyah:favorites-changed'));document.querySelectorAll('.q-favorite-btn[data-type="poem"]').forEach(b=>{if(b.dataset.id===id)b.classList.toggle('is-favorite',!exists)});syncFavorite();});tool.append(fav);

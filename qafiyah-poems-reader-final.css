@@ -64,3 +64,9 @@
 #poemDetail .q-reader-content.q-poem-diwan .qafiyah-poem-line{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important}
 #poemDetail .q-reader-content.q-poem-diwan .q-reader-first,#poemDetail .q-reader-content.q-poem-diwan .q-reader-second{align-self:center!important;text-align:center!important;margin-inline:auto!important;max-width:100%!important}
 #poemDetail .q-reader-content.q-poem-original .qafiyah-poem-line,#poemDetail .q-reader-content.q-poem-star .qafiyah-poem-line{text-align:center!important}
+
+/* Restore the original diwan alignment: first hemistich right, second left.
+   Only formats two and three are centered; do not override the diwan. */
+#poemDetail .q-reader-content.q-poem-diwan .qafiyah-poem-line{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:initial!important;width:100%!important}
+#poemDetail .q-reader-content.q-poem-diwan .q-reader-first{align-self:flex-start!important;text-align:right!important;margin-inline:0!important;max-width:none!important}
+#poemDetail .q-reader-content.q-poem-diwan .q-reader-second{align-self:flex-end!important;text-align:left!important;margin-inline:0!important;max-width:none!important}
