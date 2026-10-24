@@ -32,6 +32,48 @@ function parseVerses(raw){
 }
 function extractLines(target,type){if(type==='poem')return [...target.children].map(n=>{if(n.classList.contains('qafiyah-poem-gap'))return null;const halves=n.querySelectorAll('.q-reader-first,.q-reader-second,.hemistich,.poem-half');if(halves.length===2)return halves[0].textContent.trim()+' ۞ '+halves[1].textContent.trim();return n.textContent.trim();});return target.innerText.split(/\n+/).map(x=>x.trim()).filter(Boolean);}
 function effectiveFont(s){const fonts=window.QafiyahEnhancements?.fonts||{};const selected=s.settings.font;return selected==='default'?(s.type==='poem'?'"Qafiyah Saudi", "Saudi", sans-serif':s.baseFont||getComputedStyle(s.target).fontFamily):(fonts[selected]||s.baseFont||getComputedStyle(document.body).fontFamily);}
+// Calculate one consistent font size per poem and per display mode.
+// Measure actual glyph widths with the active font, never character counts.
+function fitPoem(s){
+ if(s.type!=='poem'||!s.target.isConnected)return;
+ const target=s.target;
+ const width=Math.max(0,target.clientWidth-12);
+ if(width<40)return;
+ const family=effectiveFont(s);
+ const canvas=fitPoem.canvas||(fitPoem.canvas=document.createElement('canvas'));
+ const ctx=canvas.getContext('2d');if(!ctx)return;
+ const strip=t=>s.settings.vowels?t:String(t).replace(/[\u064b-\u065f\u0670\u06d6-\u06ed]/g,'');
+ const rows=[];
+ if(s.richContent){
+  target.querySelectorAll('.qafiyah-poem-line').forEach(p=>{
+   const raw=p.dataset.qOriginalText||p.textContent||'';
+   const pair=splitCouplet(raw);
+   if(pair){if(s.settings.mode==='diwan')rows.push(strip(pair[0]),strip(pair[1]));
+    else rows.push(strip(pair[0])+(s.settings.mode==='star'?'    ۞    ':'    ···    ')+strip(pair[1]));}
+   else rows.push(strip(raw));
+  });
+ }else{
+  for(const verse of s.verses){if(!verse)continue;
+   if(s.settings.mode==='diwan')rows.push(strip(verse.first),strip(verse.second||''));
+   else rows.push(strip(verse.first)+(verse.second?(s.settings.mode==='star'?'    ۞    ':'    ···    ')+strip(verse.second):''));
+  }
+ }
+ if(!rows.length)return;
+ // At font-size 100px, text measurement scales linearly.
+ ctx.font=`100px ${family}`;
+ let longest=0;for(const row of rows)longest=Math.max(longest,ctx.measureText(row).width);
+ const safe=longest?Math.floor(width*100/longest):36;
+ const upper=Math.max(5,Math.min(40,safe));
+ // The user's size buttons adjust the preferred size, but cannot exceed the fit limit.
+ const actual=Math.max(5,Math.min(s.settings.size,upper));
+ target.style.setProperty('--q-reader-size',actual+'px');
+ target.dataset.qFittedSize=String(actual);
+}
+function queuePoemFit(s){
+ if(s.type!=='poem')return;
+ cancelAnimationFrame(s.fitFrame);
+ s.fitFrame=requestAnimationFrame(()=>fitPoem(s));
+}
 function apply(s){
  const {target,type,settings}=s;target.classList.add('q-reader-content');target.style.setProperty('--q-reader-size',`${settings.size}px`);target.style.setProperty('--q-reader-gap',`${settings.gap}px`);target.style.setProperty('--q-reader-line-height',String(settings.lineHeight||1.9));target.style.setProperty('--q-reader-font',effectiveFont(s));if(type!=='poem')target.style.setProperty('--q-reader-line-height',String(settings.lineHeight||1.9));
  if(type!=='poem')return;
@@ -47,7 +89,7 @@ function apply(s){
     const a=document.createElement('span');a.className='q-reader-first';a.textContent=strip(pair[0]);
     const b=document.createElement('span');b.className='q-reader-second';b.textContent=strip(pair[1]);p.append(a,b);
    }else p.textContent=pair?strip(pair[0])+(settings.mode==='star'?'    ۞    ':'    ···    ')+strip(pair[1]):strip(raw);
-  });return;
+  });queuePoemFit(s);return;
  }
  target.replaceChildren();
  for(const rawVerse of s.verses){const verse=rawVerse&&!settings.vowels?{first:rawVerse.first.replace(/[\u064b-\u065f\u0670\u06d6-\u06ed]/g,''),second:rawVerse.second.replace(/[\u064b-\u065f\u0670\u06d6-\u06ed]/g,'')}:rawVerse;if(!verse){const gap=document.createElement('div');gap.className='qafiyah-poem-gap';target.append(gap);continue;}
@@ -60,6 +102,7 @@ function apply(s){
    if(verse.second){const second=document.createElement('span');second.className='q-reader-second';second.textContent=verse.second;p.append(second);}
   }target.append(p);
  }
+ queuePoemFit(s);
 }
 function notice(s,msg){const el=s.message;el.textContent=msg;clearTimeout(s.msgTimer);s.msgTimer=setTimeout(()=>{el.textContent='';},3500);}
 function addToolbar(s){const tool=document.createElement('div');tool.className='q-reader-toolbar';tool.setAttribute('role','toolbar');tool.setAttribute('aria-label','إعدادات القراءة والمشاركة');
@@ -157,11 +200,11 @@ async function showImage(s){const {sheet}=dialog(s,'صورة جاهزة للحف
  nav.append(prev,note,next,save,share);await update();new MutationObserver(()=>{if(!img.isConnected&&activeUrl)URL.revokeObjectURL(activeUrl);}).observe(document.body,{childList:true});
 }
 function enhance(){const type=pageType();if(!type)return;const root=document.getElementById(type==='poem'?'poemDetail':type==='article'?'articleDetail':'poetDetail');if(!root)return;
- const target=$(root,type==='poem'?'.qafiyah-poem-lines':'.qafiyah-article-body');if(!target||!target.textContent.trim()||active?.target===target)return; if(active?.toolbar?.isConnected)active.toolbar.remove(); if(active?.message?.isConnected)active.message.remove();
+ const target=$(root,type==='poem'?'.qafiyah-poem-lines':'.qafiyah-article-body');if(!target||!target.textContent.trim()||active?.target===target)return; if(active?.resizeObserver)active.resizeObserver.disconnect();if(active?.fitFrame)cancelAnimationFrame(active.fitFrame);if(active?.toolbar?.isConnected)active.toolbar.remove(); if(active?.message?.isConnected)active.message.remove();
  const title=$(root,'h1')?.textContent?.trim()||document.title;
- const settings={size:type==='poem'?24:18,gap:10,lineHeight:1.9,mode:'diwan',font:'default',vowels:true};
+ const settings={size:type==='poem'?36:18,gap:10,lineHeight:1.9,mode:'diwan',font:'default',vowels:true};
  const richContent=type==='poem'&&!!target.querySelector('img,video,iframe,figure,h1,h2,h3,h4,blockquote,table,[data-block-type]');
- const s={target,root,type,title,settings,richContent,baseFont:getComputedStyle(target).fontFamily,verses:type==='poem'&&!richContent?parseVerses(extractLines(target,type)):[],message:null};active=s;addToolbar(s);apply(s);
+ const s={target,root,type,title,settings,richContent,baseFont:getComputedStyle(target).fontFamily,verses:type==='poem'&&!richContent?parseVerses(extractLines(target,type)):[],message:null};active=s;addToolbar(s);apply(s);if(type==='poem'){s.resizeObserver=new ResizeObserver(()=>queuePoemFit(s));s.resizeObserver.observe(target);document.fonts?.ready?.then(()=>{if(active===s)queuePoemFit(s);});}
 }
 function init(){
  const type=pageType();if(!type)return;

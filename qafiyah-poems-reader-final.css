@@ -57,3 +57,10 @@
 .q-reader-theme-wrap{position:relative;display:inline-flex;align-items:center;justify-content:space-around;gap:3px;width:43px;height:30px;border:1px solid rgba(130,89,63,.33);border-radius:7px;background:transparent;color:inherit;flex:0 0 43px}
 .q-reader-theme-wrap>svg{width:16px;height:16px;pointer-events:none}
 .q-reader-theme-wrap .q-reader-theme-select{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;opacity:0!important;cursor:pointer!important;padding:0!important;appearance:auto!important}
+
+/* Responsive poem fitting: centered verses, no horizontal scrolling. */
+#poemDetail .qafiyah-poem-lines.q-reader-content{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;overflow-x:hidden!important;text-align:center!important}
+#poemDetail .qafiyah-poem-lines.q-reader-content .qafiyah-poem-line{width:100%!important;min-width:0!important;max-width:100%!important;box-sizing:border-box!important;text-align:center!important;white-space:nowrap!important;overflow:visible!important;margin-inline:auto!important}
+#poemDetail .q-reader-content.q-poem-diwan .qafiyah-poem-line{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important}
+#poemDetail .q-reader-content.q-poem-diwan .q-reader-first,#poemDetail .q-reader-content.q-poem-diwan .q-reader-second{align-self:center!important;text-align:center!important;margin-inline:auto!important;max-width:100%!important}
+#poemDetail .q-reader-content.q-poem-original .qafiyah-poem-line,#poemDetail .q-reader-content.q-poem-star .qafiyah-poem-line{text-align:center!important}
